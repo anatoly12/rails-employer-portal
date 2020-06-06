@@ -42,6 +42,17 @@ Rails.application.configure do
   # Raises error for missing translations.
   # config.action_view.raise_on_missing_translations = true
 
+  # Database options
+  config.sequel.schema_format = :sql
+
+  # Set default host
+  config.hosts = ['employer-portal.test']
+  if File.basename($0) == 'rails'
+    puts
+    puts "You can now go to http://employer-portal.test:#{ENV['PORT']}"
+    puts
+  end
+
   # Use an evented file watcher to asynchronously detect changes in source code,
   # routes, locales, etc. This feature depends on the listen gem.
   config.file_watcher = ActiveSupport::EventedFileUpdateChecker
