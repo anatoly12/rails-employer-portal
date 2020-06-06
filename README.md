@@ -18,6 +18,23 @@ To run the test suite:
 
 # Development
 
+Install dependencies:
+
+On MacOS with install with homebrew:
+
+```
+brew install openssl mysql@5.7 yarn hivemind
+brew link --force mysql@5.7
+```
+
+Then run `bundler` and `yarn` to get deps:
+
+```
+bundle config build.mysql2 --with-ldflags=-L/usr/local/Cellar/openssl@1.1/1.1.1g/lib --with-cppflags=-I/usr/local/Cellar/openssl@1.1/1.1.1g/include`
+bundle install
+yarn install
+```
+
 Add into you local hosts file (`/etc/hosts` for Linux/MacOS, `C:\Windows\System32\drivers\etc\hosts` for Windows):
 
 ```
