@@ -1,0 +1,14 @@
+commons: &commons
+  adapter: "mysql2"
+
+development:
+  <<: *commons
+  database: "employer-portal-dev"
+
+test:
+  <<: *commons
+  database: "employer-portal-test"
+
+production:
+  <<: *commons
+  database: "employer-portal-prod"
