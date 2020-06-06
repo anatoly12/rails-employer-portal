@@ -1,28 +1,31 @@
-# README
+# MySQL version
 
-This README would normally document whatever steps are necessary to get the
-application up and running.
+Install MySQL 5.7.x (to stay compatible with production version):
 
-Things you may want to cover:
+https://dev.mysql.com/downloads/mysql/
 
-* Ruby version
+# Database initialization
 
-* System dependencies
+To drop the DB, create the DB, run the migrations and the seeds:
 
-* Configuration
+- `rake prepare`
 
-* Database creation
+# Tests
 
-* Database initialization
-
-* How to run the test suite
+To run the test suite:
 
 - `bin/rspec`
 
-* Services (job queues, cache servers, search engines, etc.)
+# Development
 
-* Deployment instructions
+In development, we want to run `bin/webpack-dev-server` alongside with `rails server`. For that purpose, we need a tool to manage Procfile-based applications, such as [foreman](https://github.com/ddollar/foreman), [overmind](https://github.com/DarthSim/overmind) or [hivemind](https://github.com/DarthSim/hivemind).
 
-* Compile assets
+With overmind:
+
+- define `OVERMIND_PROCFILE=Procfile.dev`
+- start the server with `overmind start`
+- connect to the Rails process for debug purposes with `overmind connect web`
+
+# Compile assets
 
 - `rails webpacker:compile`
