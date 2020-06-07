@@ -1,22 +1,26 @@
-# MySQL version
+# Employer Portal
+
+Employer Portal for Digital Health Passport
+
+## MySQL version
 
 Find a version compatible with production (MySQL Community Server 5.7.x) at:
 
 https://dev.mysql.com/downloads/mysql/
 
-# Database initialization
+## Database initialization
 
 Drop the development DB, create the development DB, run the migrations and the seeds then prepare the tests all-in-one:
 
 - `rake prepare`
 
-# Tests
+## Tests
 
 To run the test suite:
 
 - `bin/rspec`
 
-# Development
+## Development
 
 Install dependencies:
 
@@ -49,8 +53,8 @@ With overmind:
 - start the server with `overmind start`
 - connect to the Rails process for debug purposes with `overmind connect web`
 
-# Compile assets for production
+## Compile assets for production
 
 - `rails webpacker:compile`
 
-# Deploy
+## Deploy
