@@ -3,3 +3,7 @@ build:
     web: Dockerfile
 run:
   web: ./bin/puma -C config/puma.rb
+release:
+  image: web
+  command:
+    - ./bin/rails db:migrate
