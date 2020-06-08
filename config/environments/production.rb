@@ -72,12 +72,9 @@ Rails.application.configure do
     config.logger    = ActiveSupport::TaggedLogging.new(logger)
   end
 
-  # This setting disabled the automatic connect after Rails init
-  config.sequel.skip_connect = false
-
   # Configure if Sequel should try to 'test' the database connection in order
   # to fail early
-  config.sequel.test_connect = true
+  config.sequel.test_connect = false
 
   # Inserts middleware to perform automatic connection switching.
   # The `database_selector` hash is used to pass options to the DatabaseSelector
