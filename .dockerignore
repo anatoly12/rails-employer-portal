@@ -1,6 +1,8 @@
 # Ignore all log and temp files
 log/
 tmp/
+!log/.keep
+!tmp/.keep
 
 # Ignore special OS files
 .DS_Store
