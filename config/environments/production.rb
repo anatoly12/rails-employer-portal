@@ -75,6 +75,7 @@ Rails.application.configure do
   # Configure if Sequel should try to 'test' the database connection in order
   # to fail early
   config.sequel.test_connect = false
+  config.sequel.max_connections = ENV.fetch("RAILS_MAX_THREADS") { 5 }
 
   # Inserts middleware to perform automatic connection switching.
   # The `database_selector` hash is used to pass options to the DatabaseSelector

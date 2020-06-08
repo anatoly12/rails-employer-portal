@@ -2,7 +2,9 @@
 log/
 tmp/
 !log/.keep
-!tmp/.keep
+!tmp/cache/.keep
+!tmp/sockets/.keep
+!tmp/pids/.keep
 
 # Ignore special OS files
 .DS_Store
