@@ -1,44 +1,24 @@
 <div class="min-h-screen bg-white relative">
-  <div class="pb-24">
-    <header class="h-24">
-      <div class="container mx-auto px-4 h-full flex items-center">
-        <%= image_pack_tag "lockup.svg", alt: "Essential Health Passport", class: "h-12" %>
-        <nav class="flex-1 text-right">
-        </nav>
-      </div>
-    </header>
+  <div class="pb-40 md:pb-24">
+    <%= render partial: "common/header" %>
     <main>
-      <div class="bg-blue-gradiant">
-        <div class="bg-fingerprints text-white py-8">
-          <div class="container mx-auto px-4">
-            <h1 class="text-5xl font-thin">Employer Portal Login</h1>
-            <hr class="mt-4 mb-6 border-t-2">
-            <div class="text-3xl">Welcome to the Health Passport Employer Portal!</div>
-            <div class="text-3xl font-thin">Getting your team back to business the better way.</div>
-          </div>
-        </div>
-      </div>
+      <%= render layout: "common/gradient_with_fingerprints" do %>
+        <h1 class="text-3xl font-thin md:text-5xl">Employer Portal Login</h1>
+        <hr class="mt-4 mb-6 border-t-2 border-white">
+        <div class="text-xl md:text-3xl">Welcome to the Health Passport Employer Portal!</div>
+        <div class="text-xl font-thin md:text-3xl">Getting your team back to business the better way.</div>
+      <% end %>
       <div class="container mx-auto px-4">
-        this is a test<br>
-        this is a test<br>
-        this is a test<br>
-        this is a test<br>
-        this is a test<br>
-        this is a test<br>
-        this is a test<br>
-        this is a test<br>
-        this is a test<br>
-        this is a test<br>
-        this is a test<br>
-        this is a test<br>
-        this is a test<br>
-        this is a test<br>
+        <%= form_for :session do |f| %>
+          <%= f.hidden_field :return_path %>
+          <%= f.label :username %>
+          <%= f.text_field :username %>
+          <%= f.label :password %>
+          <%= f.password_field :password %>
+          <button type="submit">Test</button>
+        <% end %>
       </div>
     </main>
   </div>
-  <footer class="absolute bottom-0 left-0 h-24 w-full border-blue-e3 border-solid border-t">
-    <div class="container h-full flex items-center mx-auto">
-      test inside
-    </div>
-  </footer>
+  <%= render partial: "common/footer" %>
 </div>
