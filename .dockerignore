@@ -1,0 +1,24 @@
+# Ignore all log and temp files
+log/
+tmp/
+
+# Ignore special OS files
+.DS_Store
+
+# Ignore all node_modules
+node_modules/
+
+# Remove tests
+spec/
+
+# Remove locally compiled assets
+public/packs/
+
+# Ignore .git as we don't need it
+.git
+
+# Ignore local .env
+.env
+.ruby-version
+.tool-versions
+.rspec
