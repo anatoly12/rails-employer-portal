@@ -5,3 +5,14 @@
 body{
   overscroll-behavior-y: none;
 }
+.border-blue-e3{
+  border-color: #00a9e6;
+}
+.bg-blue-gradiant{
+  background-image: linear-gradient(to bottom, #17a9e6 0%, #1394c9 100%);
+}
+.bg-fingerprints{
+  background-image: url(../images/fingerprint-left.png), url(../images/fingerprint-right.png);
+  background-position: top left, bottom right;
+  background-repeat: no-repeat;
+}
