@@ -56,5 +56,5 @@ CREATE TABLE `users` (
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2020-06-06 15:17:46
+-- Dump completed
 INSERT INTO `schema_migrations` (`filename`) VALUES ('20200606090034_create_users.rb');

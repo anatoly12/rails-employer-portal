@@ -15,7 +15,7 @@ gem 'jbuilder', '~> 2.7'
 gem 'bcrypt', '~> 3.1', '>= 3.1.12'
 # Database
 gem 'mysql2'
-gem 'sequel-rails'
+gem 'sequel-rails', '1.1.1'
 
 # Reduces boot times through caching; required in config/boot.rb
 gem 'bootsnap', '>= 1.4.2', require: false
