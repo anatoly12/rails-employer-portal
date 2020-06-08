@@ -73,7 +73,7 @@ Rails.application.configure do
   end
 
   # This setting disabled the automatic connect after Rails init
-  config.sequel.skip_connect = true
+  config.sequel.skip_connect = false
 
   # Configure if Sequel should try to 'test' the database connection in order
   # to fail early
