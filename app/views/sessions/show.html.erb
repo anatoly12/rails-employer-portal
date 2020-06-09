@@ -10,6 +10,7 @@
       <% end %>
       <div class="container mx-auto px-4">
         <%= form_for model, html: {class: "max-w-lg mx-auto my-4 md:my-20"} do |f| %>
+          <%= model.errors.full_messages.inspect %>
           <h2 class="text-3xl font-thin">Sign into your account<h2>
           <div class="mb-4">
             <%= link_to "I need to create an account", "#", class: primary_link_class %>

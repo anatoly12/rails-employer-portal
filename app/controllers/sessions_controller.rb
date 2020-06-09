@@ -6,6 +6,15 @@ class SessionsController < ApplicationController
   def show
   end
 
+  def create
+    if model.valid?
+      session[:account_id] = model.account_id
+      redirect_to(model.return_path || root_path)
+    else
+      render :show
+    end
+  end
+
 private
 
   def permitted_params
@@ -16,5 +25,4 @@ private
     @model ||= Session.new permitted_params
   end
   helper_method :model
-
 end
