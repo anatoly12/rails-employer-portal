@@ -20,7 +20,8 @@ private
   def account_not_found
     return_path = (request.fullpath unless controller_path=="sessions")
     return_path = nil if return_path=="/"
-    redirect_to_without_cache sessions_path(session: {return_path: return_path})
+    session_params = {return_path: return_path} if return_path
+    redirect_to_without_cache sessions_path(session: session_params)
   end
 
   def redirect_to_without_cache(to)

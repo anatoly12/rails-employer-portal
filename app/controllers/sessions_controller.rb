@@ -9,7 +9,7 @@ class SessionsController < ApplicationController
 private
 
   def permitted_params
-    params.require(:session).permit(:return_path, :username, :password)
+    params.fetch(:session, {}).permit(:return_path, :username, :password)
   end
 
   def model
