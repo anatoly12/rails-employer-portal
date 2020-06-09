@@ -55,6 +55,6 @@ With overmind:
 
 ## Compile assets for production
 
-- `rails webpacker:compile`
+- `RAILS_ENV=production NODE_ENV=production rails webpacker:compile`
 
 ## Deploy

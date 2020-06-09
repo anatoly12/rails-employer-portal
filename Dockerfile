@@ -31,6 +31,7 @@ RUN yarn install --frozen-lockfile
 COPY . .
 
 # Compile static assets
+ENV NODE_ENV=production
 RUN ./bin/rails webpacker:compile
 
 # ---- Application stage ----
