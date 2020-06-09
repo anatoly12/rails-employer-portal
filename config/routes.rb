@@ -1,5 +1,5 @@
 Rails.application.routes.draw do
-  get "/", to: "welcome#index"
+  root to: "welcome#index"
   get "/welcome", to: "welcome#index"
   resource :sessions, path: "/sign-in", only: [:show, :create, :destroy]
 

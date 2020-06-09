@@ -1,5 +1,6 @@
 class SessionsController < ApplicationController
   skip_before_action :ensure_access!, except: :destroy
+  before_action :redirect_if_signed_in, except: :destroy
 
   helper :form
 
@@ -15,7 +16,16 @@ class SessionsController < ApplicationController
     end
   end
 
+  def destroy
+    reset_session
+    redirect_to action: :show
+  end
+
 private
+
+  def redirect_if_signed_in
+    redirect_to root_path if current_context.account_id
+  end
 
   def permitted_params
     params.fetch(:session, {}).permit(:return_path, :username, :password)
