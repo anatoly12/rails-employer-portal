@@ -1,13 +1,16 @@
 {
   "name": "employer_portal",
   "private": true,
+  "version": "0.1.0",
+  "scripts": {
+    "format": "prettier --config app/javascript/src/prettier.config.js --write \"app/javascript/**/*.js\" --write"
+  },
   "dependencies": {
     "@rails/ujs": "^6.0.0",
     "@rails/webpacker": "4.2.2",
     "easy-pie-chart": "^2.1.7",
     "tailwindcss": "^1.4.6"
   },
-  "version": "0.1.0",
   "devDependencies": {
     "prettier": "2.0.5",
     "webpack-dev-server": "^3.11.0"

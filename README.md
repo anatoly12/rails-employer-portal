@@ -55,7 +55,7 @@ With overmind:
 
 ## Reformat JS automatically
 
-- `npx prettier --config app/javascript/src/prettier.config.js --write app/javascript/src/index.js`
+- `npm run format`
 
 ## Compile assets for production
 
