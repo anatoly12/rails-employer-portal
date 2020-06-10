@@ -1,10 +1,22 @@
 <header class="h-24">
   <div class="container mx-auto px-4 h-full flex items-center justify-between">
-    <%= image_pack_tag "lockup.svg", alt: "Essential Health Passport", class: "h-12" %>
+    <% if current_page?("/") %>
+      <%= image_pack_tag "lockup.svg", alt: "Essential Health Passport", class: "h-12" %>
+    <% else %>
+      <%= link_to root_path do %>
+        <%= image_pack_tag "lockup.svg", alt: "Essential Health Passport", class: "h-12" %>
+      <% end %>
+    <% end %>
     <nav>
       <% if current_context.signed_in? %>
-        <ul class="ml-auto flex items-center">
-          <li class="hidden m-3 text-blue-500 font-semibold lg:block"><a href="#">Dashboard</a></li>
+        <ul class="ml-auto flex items-center select-none">
+          <% if current_page?(controller: "dashboard") %>
+            <li class="hidden m-3 text-blue-500 font-semibold lg:block">Dashboard</li>
+          <% else %>
+            <li class="hidden m-3 text-blue-400 lg:block">
+              <%= link_to "Dashboard", root_path %>
+            </li>
+          <% end %>
           <li class="hidden m-3 text-blue-400 lg:block"><a href="#">Your Plan</a></li>
           <li class="hidden m-3 text-blue-400 lg:block"><a href="#">COVID-19 Guidelines</a></li>
           <li class="hidden m-3 text-blue-400 lg:block"><a href="#">Support</a></li>
