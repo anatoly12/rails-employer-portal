@@ -8,8 +8,9 @@ Sequel.migration do
       String :email
       String :first_name
       String :last_name
-      String :phone_number
+      String :phone
       String :state
+      String :zipcode
       DateTime :created_at
       DateTime :updated_at
     end

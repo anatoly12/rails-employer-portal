@@ -4,7 +4,10 @@ class EmployeesController < ApplicationController
   end
 
   def create
-    bulk = EmployerPortal::EmployeeBulkImport.new(params)
+    bulk = EmployerPortal::EmployeeBulkImport.new(
+      current_context.account,
+      params[:file]
+    )
     if bulk.has_file?
       raise "bulk: #{bulk.csv.inspect}"
     else

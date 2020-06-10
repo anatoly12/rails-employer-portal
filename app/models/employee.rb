@@ -1,11 +1,17 @@
 class Employee < Sequel::Model
 
   # ~~ validations ~~
-  validates :first_name, presence: true
-  validates :last_name, presence: true
-  validates :email, presence: true, format: { with: /\A[^@\s]+@[^@\s]+\z/ }
-  validates :phone_number, presence: true
-  validates :state, presence: true, inclusion: { in: UsaState.CODES }
+  plugin :validation_helpers
+  def validate
+    super
+    validates_presence [:first_name, :last_name, :email, :phone]
+    if zipcode.present?
+      validate_zipcode
+    else
+      validates_presence :state
+      validates_inclusion UsaState.state_codes, :state
+    end
+  end
 
   # ~~ plugins ~~
   plugin :uuid
@@ -15,4 +21,15 @@ class Employee < Sequel::Model
   many_to_one :employer, class: "Employer"
   one_to_many :employees, class: "Employee"
 
+private
+
+  # ~~ private instance methods ~~
+  def validate_zipcode
+    zip = ZipCode.where(zip: zipcode).limit(1).first
+    if zip
+      state = zip.state
+    else
+      errors.add(:zipcode, "must be a valid ZIP Code")
+    end
+  end
 end

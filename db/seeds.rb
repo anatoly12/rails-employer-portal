@@ -1,3 +1,10 @@
+ZipCode.create(
+  zip: '10001',
+  city: 'New York',
+  state: 'NY',
+  geopoint: Sequel.function(:GeomFromText, "POINT(40.750742 -73.99653)")
+)
+
 company = Company.create(
   name: Faker::Company.name
 )

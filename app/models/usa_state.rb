@@ -56,7 +56,6 @@ class UsaState
     WI: 'Wisconsin'
     WY: 'Wyoming'
   }.freeze
-  CODES = NAME_BY_CODE.keys
 
   # ~~ virtual attributes ~~
   attr_accessor :name, :code
@@ -64,6 +63,10 @@ class UsaState
   # ~~ public class methods ~~
   def self.all
     NAME_BY_CODE.map{|code, name| new code: code, name: name }
+  end
+
+  def self.state_codes
+    NAME_BY_CODE.keys
   end
 
   def self.find_by_code(code)
