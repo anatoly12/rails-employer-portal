@@ -25,7 +25,7 @@ module EmployerPortal
       raise Error::Account::NotFound unless signed_in?
     end
 
-    private
+  private
 
     attr_reader :hash
 

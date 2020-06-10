@@ -10,11 +10,11 @@
     <nav class="xl:text-lg xl:tracking-wide">
       <% if current_context.signed_in? %>
         <ul class="ml-auto flex items-center select-none">
-          <% if current_page?(controller: "dashboard") %>
+          <% if current_page?(controller: "employees") %>
             <li class="hidden m-3 text-blue-500 font-semibold lg:block">Dashboard</li>
           <% else %>
             <li class="hidden m-3 text-blue-400 lg:block">
-              <%= link_to "Dashboard", root_path %>
+              <%= link_to "Dashboard", employees_path %>
             </li>
           <% end %>
           <li class="hidden m-3 text-blue-400 lg:block"><a href="#">Your Plan</a></li>

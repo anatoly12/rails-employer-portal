@@ -1,0 +1,23 @@
+<%= render "common/main" do %>
+  <%= render "common/gradient_with_fingerprints" do %>
+    <h1 class="text-xl font-semibold py-1 leading-none tracking-wide md:text-3xl"><%= current_context.account.first_name %>'s Dashboard</h1>
+  <% end %>
+  <div class="container mx-auto px-4">
+    <%= render "employees/charts" %>
+    <div class="my-4">was here</div>
+  </div>
+  <% if employees.empty? %>
+    <%= render "employees/backdrop" do %>
+      We accept 3 formats:
+      <a href="/employee_bulk_import/sample.csv" target="_blank" rel="noopener noreferrer" download>Comma-separated values (.csv)</a>,
+      <a href="/employee_bulk_import/sample.tsv" target="_blank" rel="noopener noreferrer" download>Tab-separated values (.tsv)</a>,
+      <a href="/employee_bulk_import/sample.txt" target="_blank" rel="noopener noreferrer" download>Unicode Text (.txt)</a>
+
+      CSV import:
+      <%= form_tag employees_path, multipart: true do %>
+        <%= file_field_tag :file %>
+        <%= submit_tag "Import CSV" %>
+      <% end %>
+    <% end %>
+  <% end %>
+<% end %>
