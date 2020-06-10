@@ -15,6 +15,7 @@ private
   end
 
   def password_matches_username
+    return if username.blank? || password.blank?
     return if account.try(:authenticate, password)
 
     errors.add(:base, "Invalid username or password")

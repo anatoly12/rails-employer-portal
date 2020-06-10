@@ -17,8 +17,12 @@ module EmployerPortal
       end
     end
 
+    def signed_in?
+      !account.kind_of?(NoAccount)
+    end
+
     def ensure_access!
-      raise Error::Account::NotFound unless account.id
+      raise Error::Account::NotFound unless signed_in?
     end
 
     private

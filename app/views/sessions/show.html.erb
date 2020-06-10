@@ -1,36 +1,11 @@
-<div class="min-h-screen bg-white relative">
-  <div class="pb-40 md:pb-24">
-    <%= render partial: "common/header" %>
-    <main>
-      <%= render layout: "common/gradient_with_fingerprints" do %>
-        <h1 class="text-3xl font-thin md:text-5xl">Employer Portal Login</h1>
-        <hr class="mt-4 mb-6 border-t-2 border-white">
-        <div class="text-xl md:text-3xl">Welcome to the Health Passport Employer Portal!</div>
-        <div class="text-xl font-thin md:text-3xl">Getting your team back to business the better way.</div>
-      <% end %>
-      <div class="container mx-auto px-4">
-        <%= form_for model, html: {class: "max-w-lg mx-auto my-4 md:my-20"} do |f| %>
-          <%= model.errors.full_messages.inspect %>
-          <h2 class="text-3xl font-thin">Sign into your account<h2>
-          <div class="mb-4">
-            <%= link_to "I need to create an account", "#", class: primary_link_class %>
-          </div>
-          <%= f.hidden_field :return_path %>
-          <div class="mb-4">
-            <%= f.text_field :username, placeholder: "Email", class: text_field_class %>
-          </div>
-          <div class="mb-4">
-            <%= f.password_field :password, placeholder: "Password", class: text_field_class %>
-          </div>
-          <div class="-mt-2 mb-4">
-            <%= link_to "I forgot my password", "#", class: secondary_link_class %>
-          </div>
-          <div class="md:mt-12">
-            <%= button_tag "Sign In", type: "submit", class: primary_button_class %>
-          </div>
-        <% end %>
-      </div>
-    </main>
+<%= render "common/main" do %>
+  <%= render "common/gradient_with_fingerprints" do %>
+    <h1 class="md:my-4 text-3xl font-thin md:text-5xl">Employer Portal Login</h1>
+    <hr class="mb-6 border-t-2 border-white">
+    <div class="text-xl md:text-3xl">Welcome to the Health Passport Employer Portal!</div>
+    <div class="md:mb-4 text-xl font-thin md:text-3xl">Getting your team back to business the better way.</div>
+  <% end %>
+  <div class="container mx-auto px-4">
+    <%= render "sessions/form" %>
   </div>
-  <%= render partial: "common/footer" %>
-</div>
+<% end %>

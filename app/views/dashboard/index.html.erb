@@ -1,0 +1,8 @@
+<%= render "common/main" do %>
+  <%= render "common/gradient_with_fingerprints" do %>
+    <h1 class="text-xl font-semibold py-1 leading-none tracking-wide md:text-3xl"><%= current_context.account.first_name %>'s Dashboard</h1>
+  <% end %>
+  <div class="container mx-auto px-4">
+    <%= render "dashboard/charts" %>
+  </div>
+<% end %>

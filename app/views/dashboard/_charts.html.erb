@@ -1,0 +1,21 @@
+<div class="lg:flex lg:my-4 xl:my-6 text-xs xl:text-sm">
+  <div class="lg:flex-1 lg:mr-2 xl:mr-4 py-4 lg:p-2 xl:p-4 border-b lg:border-none lg:shadow">
+    <h3 class="font-semibold text-xl">Overview Symptoms</h3>
+    <div><strong>Your Plan: 70 of 100</strong> available entries</div>
+    <div class="md:flex">
+      <%= render "dashboard/chart", color: "#1dd678", percent: 20, label: "No Symptoms" %>
+      <%= render "dashboard/chart", color: "#f35200", percent: 50, label: "Symptoms" %>
+      <%= render "dashboard/chart", color: "#16a3e5", percent: 30, label: "Did Not Submit" %>
+    </div>
+  </div>
+  <div class="lg:flex-1 lg:ml-2 xl:ml-4 py-4 lg:p-2 xl:p-4 border-b lg:border-none lg:shadow">
+    <h3 class="font-semibold text-xl">Overview Testing Status</h3>
+    <div><strong>Your Plan: 70 of 100</strong> available entries</div>
+    <div class="md:flex">
+      <%= render "dashboard/chart", color: "#1dd678", percent: 20, label: "Cleared" %>
+      <%= render "dashboard/chart", color: "#f35200", percent: 50, label: "Inconclusive" %>
+      <%= render "dashboard/chart", color: "#16a3e5", percent: 30, label: "In Progress" %>
+    </div>
+  </div>
+</div>
+was here

@@ -2,8 +2,6 @@ class SessionsController < ApplicationController
   skip_before_action :ensure_access!, except: :destroy
   before_action :redirect_if_signed_in, except: :destroy
 
-  helper :form
-
   def show
   end
 
@@ -24,7 +22,7 @@ class SessionsController < ApplicationController
 private
 
   def redirect_if_signed_in
-    redirect_to root_path if current_context.account_id
+    redirect_to root_path if current_context.signed_in?
   end
 
   def permitted_params

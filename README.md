@@ -53,6 +53,10 @@ With overmind:
 - start the server with `overmind start`
 - connect to the Rails process for debug purposes with `overmind connect web`
 
+## Reformat JS automatically
+
+- `npx prettier --config app/javascript/src/prettier.config.js --write app/javascript/src/index.js`
+
 ## Compile assets for production
 
 - `RAILS_ENV=production NODE_ENV=production rails webpacker:compile`

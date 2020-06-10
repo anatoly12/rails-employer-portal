@@ -1,6 +1,8 @@
 class ApplicationController < ActionController::Base
   http_basic_authenticate_with name: "ecp", password: "ecp"
 
+  helper :css_class
+
   before_action :ensure_access!
   rescue_from EmployerPortal::Error::Account::NotFound, with: :account_not_found
 

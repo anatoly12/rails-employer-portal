@@ -1,9 +1,9 @@
-module FormHelper
+module CssClassHelper
 
   def text_field_class(has_error = false)
     res = "appearance-none border-b w-full py-1 text-gray-700 focus:border-black focus:outline-none"
     if has_error
-      res += "border-red-500"
+      res += " placeholder-red-300 border-red-500"
     end
     return res
   end
