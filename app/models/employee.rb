@@ -5,6 +5,8 @@ class Employee < Sequel::Model
   def validate
     super
     validates_presence [:first_name, :last_name, :email, :phone]
+    validates_format /\A[^@\s]+@[^@\s]+\z/, :email
+    validates_unique [:company_id, :email]
     if zipcode.present?
       validate_zipcode
     else

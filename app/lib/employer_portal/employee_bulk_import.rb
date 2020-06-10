@@ -17,6 +17,7 @@ module EmployerPortal
       Sequel::Model.db.transaction do
         parsed_csv.drop(1).each do |row|
           Employee.create(
+            company_id: employer.company_id,
             employer_id: employer.id,
             first_name: row[0],
             last_name: row[1],

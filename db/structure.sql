@@ -42,7 +42,8 @@ DROP TABLE IF EXISTS `employees`;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `employees` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
-  `employer_id` int(11) NOT NULL,
+  `company_id` int(11) NOT NULL,
+  `employer_id` int(11) DEFAULT NULL,
   `uuid` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
   `email` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `first_name` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
@@ -54,8 +55,10 @@ CREATE TABLE `employees` (
   `updated_at` datetime DEFAULT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `uuid` (`uuid`),
+  UNIQUE KEY `employees_company_id_email_index` (`company_id`,`email`),
   KEY `employer_id` (`employer_id`),
-  CONSTRAINT `employees_ibfk_1` FOREIGN KEY (`employer_id`) REFERENCES `employers` (`id`) ON DELETE CASCADE
+  CONSTRAINT `employees_ibfk_1` FOREIGN KEY (`company_id`) REFERENCES `companies` (`id`) ON DELETE CASCADE,
+  CONSTRAINT `employees_ibfk_2` FOREIGN KEY (`employer_id`) REFERENCES `employers` (`id`) ON DELETE SET NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
