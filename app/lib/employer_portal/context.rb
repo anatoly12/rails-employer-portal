@@ -30,7 +30,7 @@ module EmployerPortal
     attr_reader :hash
 
     def find_account_by_id(id)
-      User.where(id: id).limit(1).first
+      Employer.where(id: id).limit(1).first
     end
 
     def no_account

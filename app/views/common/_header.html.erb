@@ -7,7 +7,7 @@
         <%= image_pack_tag "lockup.svg", alt: "Essential Health Passport", class: "h-12" %>
       <% end %>
     <% end %>
-    <nav>
+    <nav class="xl:text-lg xl:tracking-wide">
       <% if current_context.signed_in? %>
         <ul class="ml-auto flex items-center select-none">
           <% if current_page?(controller: "dashboard") %>

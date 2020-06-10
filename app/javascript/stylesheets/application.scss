@@ -27,6 +27,7 @@ body{
     opacity:1;
   }
 }
+// charts
 .chart canvas{
   position: absolute;
   top: 0;
@@ -35,4 +36,8 @@ body{
 .chart .percent{
   width: 4rem;
   line-height: 4rem;
+}
+// overlay
+.blur-3{
+  backdrop-filter: blur(3px);
 }

@@ -6,4 +6,9 @@
     <%= render "dashboard/charts" %>
     <div class="my-4">was here</div>
   </div>
+  <% if employees.empty? %>
+    <%= render "dashboard/backdrop" do %>
+      inside
+    <% end %>
+  <% end %>
 <% end %>
