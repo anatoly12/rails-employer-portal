@@ -6,7 +6,8 @@ ZipCode.create(
 )
 
 company = Company.create(
-  name: Faker::Company.name
+  name: Faker::Company.name,
+  plan: "unlimited"
 )
 
 first_name = Faker::Name.first_name
@@ -15,7 +16,8 @@ employer = Employer.create(
   first_name: first_name,
   last_name: Faker::Name.last_name,
   email: ENV.fetch("EMPLOYER_EMAIL", Faker::Internet.safe_email(name: first_name)),
-  password: ENV.fetch("EMPLOYER_PASSWORD", Faker::Internet.password)
+  password: ENV.fetch("EMPLOYER_PASSWORD", Faker::Internet.password),
+  role: "super_admin"
 )
 
 puts

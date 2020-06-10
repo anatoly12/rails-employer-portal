@@ -8,6 +8,7 @@ Sequel.migration do
       primary_key :id
       String :uuid, null: false, unique: true
       String :name
+      String :plan
       DateTime :created_at
       DateTime :updated_at
     end

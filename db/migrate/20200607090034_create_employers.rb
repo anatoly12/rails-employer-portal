@@ -9,8 +9,10 @@ Sequel.migration do
       String :first_name
       String :last_name
       String :password_digest
+      String :role
       DateTime :created_at
       DateTime :updated_at
+      index [:company_id, :email], unique: true
     end
 
   end

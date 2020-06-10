@@ -1,5 +1,4 @@
 class UsaState
-  include ActiveModel::Model
 
   # ~~ constants ~~
   NAME_BY_CODE = {
@@ -57,29 +56,13 @@ class UsaState
     WY: 'Wyoming'
   }.freeze
 
-  # ~~ virtual attributes ~~
-  attr_accessor :name, :code
-
   # ~~ public class methods ~~
-  def self.all
-    NAME_BY_CODE.map{|code, name| new code: code, name: name }
-  end
-
   def self.state_codes
     NAME_BY_CODE.keys
   end
 
-  def self.find_by_code(code)
-    return unless NAME_BY_CODE.key? code
-    new code: code, name: NAME_BY_CODE[code]
+  def self.for_select
+    NAME_BY_CODE.map{|code, name| [name, code]}.sort
   end
 
-  # ~~ public instance methods ~~
-  def ==(other)
-    other.class == self.class && other.code == code
-  end
-
-  def for_select
-    [name, code]
-  end
 end

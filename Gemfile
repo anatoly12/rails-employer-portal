@@ -11,11 +11,10 @@ gem 'puma', '~> 4.1'
 gem 'webpacker', '~> 4.0'
 # Build JSON APIs with ease. Read more: https://github.com/rails/jbuilder
 gem 'jbuilder', '~> 2.7'
-# Use Active Model has_secure_password
-gem 'bcrypt', '~> 3.1', '>= 3.1.12'
 # Database
 gem 'mysql2'
 gem 'sequel-rails', '1.1.1'
+gem 'sequel_secure_password', '0.2.15'
 
 # Reduces boot times through caching; required in config/boot.rb
 gem 'bootsnap', '>= 1.4.2', require: false
