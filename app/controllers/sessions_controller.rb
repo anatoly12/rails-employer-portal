@@ -10,6 +10,7 @@ class SessionsController < ApplicationController
       session[:account_id] = model.account_id
       redirect_to(model.return_path || root_path)
     else
+      flash.now.alert = "Please review errors and try submitting it again."
       render :show
     end
   end
