@@ -28,7 +28,7 @@ class Employee < Sequel::Model
 
   # ~~ private instance methods ~~
   def validate_zipcode
-    zip = ZipCode.where(zip: zipcode).limit(1).first
+    zip = ZipCode[zipcode]
     if zip
       set state: zip.state
     else
