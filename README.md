@@ -53,6 +53,10 @@ With overmind:
 - start the server with `overmind start`
 - connect to the Rails process for debug purposes with `overmind connect web`
 
+## Reformat Ruby automatically
+
+- `bin/rufo .`
+
 ## Reformat JS automatically
 
 - `npm run format`
@@ -62,3 +66,19 @@ With overmind:
 - `RAILS_ENV=production NODE_ENV=production rails webpacker:compile`
 
 ## Deploy
+
+Use the provided `Dockerfile` and don't forget to run the migrations on each release with:
+
+- `./bin/rails db:migrate`
+
+In addition, you need to define the following environment variables:
+
+- `TZ="utc"`
+- `LANG="en_US.UTF-8"`
+- `RACK_ENV="production"`
+- `RAILS_ENV="production"`
+- `DATABASE_URL="mysql2://username:password@host:port/dbname?charset=utf8mb4&collation=utf8mb4_unicode_ci"`
+
+It's possible to tweak the number of web server threads and the size of the DB connection pool with the following environment variable:
+
+- `RAILS_MAX_THREADS=5`
