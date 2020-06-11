@@ -10,7 +10,7 @@ module EmployerPortal
     end
 
     def has_file?
-      file.respond_to?(:path) && File.size(file.path)>0
+      file.respond_to?(:path) && File.size(file.path) > 0
     end
 
     def csv
@@ -23,13 +23,13 @@ module EmployerPortal
             last_name: row[1],
             email: row[2],
             phone: row[3],
-            zipcode: row[4]
+            zipcode: row[4],
           )
         end
       end
     end
 
-  private
+    private
 
     attr_reader :employer, :file
 
@@ -38,15 +38,15 @@ module EmployerPortal
     end
 
     def column_separator
-      original_ext==".csv" ? "," : "\t"
+      original_ext == ".csv" ? "," : "\t"
     end
 
     def encoding
-      (original_ext==".csv" || original_ext==".tsv") ? "UTF-8" : "bom|UTF-16LE"
+      (original_ext == ".csv" || original_ext == ".tsv") ? "UTF-8" : "bom|UTF-16LE"
     end
 
     def parsed_csv
-      options = {col_sep: column_separator, skip_blanks: true}
+      options = { col_sep: column_separator, skip_blanks: true }
       retries = 0
       begin
         content = File.read file.tempfile.path, encoding: encoding, mode: "rb"
@@ -61,6 +61,5 @@ module EmployerPortal
         end
       end
     end
-
   end
 end

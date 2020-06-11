@@ -19,7 +19,7 @@ task update_zipcodes: :environment do
       zip: row["Zip"],
       city: row["City"],
       state: row["State"],
-      geopoint: Sequel.function(:GeomFromText, "POINT(#{row["Latitude"]} #{row["Longitude"]})")
+      geopoint: Sequel.function(:GeomFromText, "POINT(#{row["Latitude"]} #{row["Longitude"]})"),
     )
   end
   puts "Done."

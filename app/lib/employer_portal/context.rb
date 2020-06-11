@@ -6,15 +6,15 @@ module EmployerPortal
 
     delegate :id, to: :account, prefix: :account
 
-    def initialize(hash={})
+    def initialize(hash = {})
       @hash = hash
     end
 
     def account
       @account ||= begin
-        given_account_id = hash[:account_id]
-        (find_account_by_id given_account_id if given_account_id) || no_account
-      end
+          given_account_id = hash[:account_id]
+          (find_account_by_id given_account_id if given_account_id) || no_account
+        end
     end
 
     def signed_in?
@@ -25,7 +25,7 @@ module EmployerPortal
       raise Error::Account::NotFound unless signed_in?
     end
 
-  private
+    private
 
     attr_reader :hash
 

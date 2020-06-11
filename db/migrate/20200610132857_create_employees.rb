@@ -1,6 +1,5 @@
 Sequel.migration do
   change do
-
     create_table :employees do
       primary_key :id
       foreign_key :company_id, table: :companies, null: false, on_delete: :cascade
@@ -16,6 +15,5 @@ Sequel.migration do
       DateTime :updated_at
       index [:company_id, :email], unique: true
     end
-
   end
 end

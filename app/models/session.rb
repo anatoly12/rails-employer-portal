@@ -12,7 +12,7 @@ class Session
   validates :password, presence: true
   validate :password_matches_username
 
-private
+  private
 
   # ~~ private instance methods ~~
   def account

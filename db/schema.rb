@@ -1,13 +1,13 @@
 Sequel.migration do
   change do
     create_table(:schema_migrations) do
-      column :filename, "varchar(255)", :null=>false
-      
+      column :filename, "varchar(255)", :null => false
+
       primary_key [:filename]
     end
-    
+
     create_table(:users) do
-      primary_key :id, :type=>"int(11)"
+      primary_key :id, :type => "int(11)"
       column :email, "varchar(255)"
     end
   end

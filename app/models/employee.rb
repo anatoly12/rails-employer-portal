@@ -24,7 +24,7 @@ class Employee < Sequel::Model
   many_to_one :employer, class: "Employer"
   one_to_many :employees, class: "Employee"
 
-private
+  private
 
   # ~~ private instance methods ~~
   def validate_zipcode

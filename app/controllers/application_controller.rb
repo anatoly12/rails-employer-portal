@@ -6,13 +6,14 @@ class ApplicationController < ActionController::Base
   before_action :ensure_access!
   rescue_from EmployerPortal::Error::Account::NotFound, with: :account_not_found
 
-private
+  private
 
   def current_context
     @current_context ||= EmployerPortal::Context.new(
-      account_id: session[:account_id]
+      account_id: session[:account_id],
     )
   end
+
   helper_method :current_context
 
   def ensure_access!
@@ -20,9 +21,9 @@ private
   end
 
   def account_not_found
-    return_path = (request.fullpath unless controller_path=="sessions")
-    return_path = nil if return_path=="/"
-    session_params = {return_path: return_path} if return_path
+    return_path = (request.fullpath unless controller_path == "sessions")
+    return_path = nil if return_path == "/"
+    session_params = { return_path: return_path } if return_path
     redirect_to_without_cache sessions_path(session: session_params)
   end
 

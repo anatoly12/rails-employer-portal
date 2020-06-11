@@ -1,5 +1,4 @@
 module CssClassHelper
-
   def text_field_class(has_error = false)
     res = "appearance-none border-b w-full py-1 text-gray-700 focus:border-black focus:outline-none"
     if has_error
@@ -20,7 +19,7 @@ module CssClassHelper
     link_class(true)
   end
 
-private
+  private
 
   def link_class(primary)
     res = "text-xs font-bold underline focus:outline-none"
@@ -39,5 +38,4 @@ private
     end
     return res
   end
-
 end

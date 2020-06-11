@@ -17,5 +17,4 @@ class Employer < Sequel::Model
 
   # ~~ associations ~~
   many_to_one :company, class: "Company"
-
 end

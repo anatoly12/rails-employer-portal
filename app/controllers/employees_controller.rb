@@ -1,5 +1,4 @@
 class EmployeesController < ApplicationController
-
   def index
   end
 
@@ -15,11 +14,11 @@ class EmployeesController < ApplicationController
     end
   end
 
-private
+  private
 
   def employees
     []
   end
-  helper_method :employees
 
+  helper_method :employees
 end

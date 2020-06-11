@@ -19,7 +19,7 @@ class SessionsController < ApplicationController
     redirect_to action: :show
   end
 
-private
+  private
 
   def redirect_if_signed_in
     redirect_to root_path if current_context.signed_in?
@@ -32,5 +32,6 @@ private
   def model
     @model ||= Session.new permitted_params
   end
+
   helper_method :model
 end

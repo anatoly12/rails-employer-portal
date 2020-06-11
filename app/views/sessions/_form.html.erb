@@ -1,9 +1,9 @@
-<%= form_for model, html: {class: "max-w-lg mx-auto my-4 md:my-20"} do |f| %>
+<%= form_for model, html: { class: "max-w-lg mx-auto my-4 md:my-20" } do |f| %>
   <h2 class="text-3xl font-thin">Sign into your account<h2>
   <div class="mb-4">
     <%= link_to "I need to create an account", "#", class: primary_link_class %>
   </div>
-  <% if model.errors[:base].any?  %>
+  <% if model.errors[:base].any? %>
     <p class="text-red-400 mb-4"><%= model.errors[:base].to_sentence %></p>
   <% end %>
   <%= f.hidden_field :return_path %>
