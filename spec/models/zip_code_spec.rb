@@ -1,15 +1,20 @@
 require "rails_helper"
 
 RSpec.describe ZipCode, type: :model do
+  let(:zip) { Faker::Address.zip_code }
+  let(:city) { Faker::Address.city }
+  let(:state) { Faker::Address.state_abbr }
+  let(:lat) { Faker::Address.latitude }
+  let(:long) { Faker::Address.longitude }
+  let(:point) { "POINT(#{lat} #{long})" }
+  let(:geopoint) { Sequel.function(:GeomFromText, point) }
+
   it "uses cache" do
-    ZipCode.create(
-      zip: "10001",
-      city: "New York",
-      state: "NY",
-      geopoint: Sequel.function(:GeomFromText, "POINT(40.750742 -73.99653)"),
-    )
-    zip_code = ZipCode["10001"]
+    ZipCode.create(zip: zip, city: city, state: state, geopoint: geopoint)
+    zip_code = ZipCode[zip]
     ZipCode.dataset.delete
-    expect(ZipCode["10001"]).to be(zip_code)
+    expect(ZipCode[zip]).to be(zip_code)
+    ZipCode.cache_delete_pk(zip)
+    expect(ZipCode[zip]).to be_nil
   end
 end

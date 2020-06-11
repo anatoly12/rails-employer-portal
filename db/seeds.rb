@@ -10,12 +10,11 @@ company = Company.create(
   plan: "unlimited",
 )
 
-first_name = Faker::Name.first_name
 employer = Employer.create(
   company_id: company.id,
-  first_name: first_name,
+  first_name: Faker::Name.first_name,
   last_name: Faker::Name.last_name,
-  email: ENV.fetch("EMPLOYER_EMAIL", Faker::Internet.safe_email(name: first_name)),
+  email: ENV.fetch("EMPLOYER_EMAIL", Faker::Internet.safe_email),
   password: ENV.fetch("EMPLOYER_PASSWORD", Faker::Internet.password),
   role: "super_admin",
 )
