@@ -9,13 +9,13 @@ class Employee < Sequel::Model
   def validate
     super
     validates_presence [:first_name, :last_name, :email, :phone]
-    validates_format /\A[^@\s]+@[^@\s]+\z/, :email
-    validates_unique [:company_id, :email], message: Sequel.lit("email is already taken")
+    validates_format EmployerPortal::Regexp::EMAIL_FORMAT, :email, allow_blank: true
+    validates_unique(:email) { |ds| ds.where(company_id: company_id) }
     if zipcode.present?
       validate_zipcode
     else
       validates_presence :state
-      validates_inclusion UsaState.state_codes, :state
+      validates_includes UsaState.state_codes, :state, allow_blank: true, message: "must be a valid state code"
     end
   end
 

@@ -58,10 +58,10 @@ class UsaState
 
   # ~~ public class methods ~~
   def self.state_codes
-    NAME_BY_CODE.keys
+    @state_codes ||= NAME_BY_CODE.keys.map(&:to_s)
   end
 
   def self.for_select
-    NAME_BY_CODE.map { |code, name| [name, code] }.sort
+    @for_select ||= NAME_BY_CODE.map { |code, name| [name, code] }.sort
   end
 end

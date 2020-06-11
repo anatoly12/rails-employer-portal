@@ -10,7 +10,7 @@ module EmployerPortal
       @cache = {}
     end
 
-    def set(key, object, _ttl=nil)
+    def set(key, object, _ttl = nil)
       if cache.key? key
         cache.delete(key)
         cache[key] = object

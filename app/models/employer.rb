@@ -11,8 +11,8 @@ class Employer < Sequel::Model
   def validate
     super
     validates_presence [:email, :role]
-    validates_format /\A[^@\s]+@[^@\s]+\z/, :email
-    validates_unique [:company_id, :email], message: Sequel.lit("email is already taken")
+    validates_format EmployerPortal::Regexp::EMAIL_FORMAT, :email
+    validates_unique(:email) { |ds| ds.where(company_id: company_id) }
   end
 
   # ~~ associations ~~

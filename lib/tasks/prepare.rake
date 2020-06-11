@@ -1,4 +1,3 @@
-# encoding: utf-8
 task :prepare do
   Rake::Task["db:drop"].invoke rescue nil
   system("rake db:create")

@@ -6,5 +6,4 @@ class ZipCode < Sequel::Model
   # ~~ plugins ~~
   unrestrict_primary_key
   plugin :caching, CACHE
-
 end
