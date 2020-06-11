@@ -1,14 +1,14 @@
 require "rails_helper"
 
 RSpec.describe Employee, type: :model do
+  subject { build :employee }
+
+  it "can be saved" do
+    expect(subject).to be_valid
+    subject.save
+  end
+
   context "validations" do
-    subject { build :employee }
-
-    it "can be saved" do
-      expect(subject).to be_valid
-      subject.save
-    end
-
     it "requires first name" do
       subject.first_name = nil
       expect(subject).not_to be_valid
