@@ -204,6 +204,7 @@ GEM
     thread_safe (0.3.6)
     tzinfo (1.2.7)
       thread_safe (~> 0.1)
+    victor (0.3.2)
     web-console (4.0.2)
       actionview (>= 6.0.0)
       activemodel (>= 6.0.0)
@@ -242,11 +243,12 @@ DEPENDENCIES
   puma (~> 4.1)
   rails (~> 6.0.3, >= 6.0.3.1)
   rspec-rails (~> 4.0, >= 4.0.1)
-  rufo
+  rufo (~> 0.12.0)
   sequel-rails (= 1.1.1)
   sequel_secure_password (= 0.2.15)
   talentbox-delayed_job_sequel
   tzinfo-data
+  victor (~> 0.3.2)
   web-console (>= 3.3.0)
   webdrivers (~> 4.4, >= 4.4.1)
   webpacker (~> 4.0)

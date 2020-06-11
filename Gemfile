@@ -34,7 +34,8 @@ group :development do
   # Access an interactive console on exception pages or by calling 'console' anywhere in the code.
   gem "web-console", ">= 3.3.0"
   gem "listen", "~> 3.2"
-  gem "rufo"
+  gem "rufo", "~> 0.12.0"
+  gem "victor", "~> 0.3.2"
 end
 
 group :test do
