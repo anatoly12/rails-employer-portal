@@ -2,15 +2,16 @@ commons: &commons
   adapter: "mysql2"
   charset: "utf8mb4"
   collation: "utf8mb4_unicode_ci"
-  username: "<%= ENV["USER"] %>"
 
 development:
   <<: *commons
   database: "employer-portal-dev"
+  username: "<%= ENV["USER"] %>"
 
 test:
   <<: *commons
   database: "employer-portal-test"
+  username: "<%= ENV["USER"] %>"
 
 production:
   <<: *commons
