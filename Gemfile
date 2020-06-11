@@ -16,12 +16,15 @@ gem "mysql2"
 gem "sequel-rails", "1.1.1"
 gem "sequel_secure_password", "0.2.15"
 
+# Debug
+gem "pry", require: false
+
 # Reduces boot times through caching; required in config/boot.rb
 gem "bootsnap", ">= 1.4.2", require: false
 
 group :development, :test do
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console
-  gem "byebug", platforms: [:mri, :mingw, :x64_mingw]
+  # gem "byebug", platforms: [:mri, :mingw, :x64_mingw]
   gem "rspec-rails", "~> 4.0.0"
   gem "faker", "~> 2.12"
 end
