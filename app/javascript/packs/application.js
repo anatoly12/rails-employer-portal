@@ -4,6 +4,7 @@
 // that code so it'll be compiled.
 
 require('@rails/ujs').start()
+require("turbolinks").start()
 
 import 'stylesheets/application.scss'
 

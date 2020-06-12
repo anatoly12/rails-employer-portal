@@ -2,6 +2,9 @@ class EmployeesController < ApplicationController
   def index
   end
 
+  def bulk_import
+  end
+
   def create
     bulk = EmployerPortal::EmployeeBulkImport.new(
       current_context.account,

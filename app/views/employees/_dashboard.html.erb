@@ -1,0 +1,7 @@
+<%= render "common/gradient_with_fingerprints" do %>
+  <h1 class="text-xl font-semibold py-1 leading-none tracking-wide md:text-3xl"><%= current_context.account.first_name %>'s Dashboard</h1>
+<% end %>
+<div id="dashboard" class="container mx-auto px-4" data-turbolinks-permanent>
+  <%= render "employees/charts" %>
+  <div class="my-4">was here</div>
+</div>

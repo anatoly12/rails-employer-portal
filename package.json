@@ -9,7 +9,8 @@
     "@rails/ujs": "^6.0.0",
     "@rails/webpacker": "4.2.2",
     "easy-pie-chart": "^2.1.7",
-    "tailwindcss": "^1.4.6"
+    "tailwindcss": "^1.4.6",
+    "turbolinks": "^5.2.0"
   },
   "devDependencies": {
     "prettier": "2.0.5",
