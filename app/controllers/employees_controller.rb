@@ -1,8 +1,19 @@
 class EmployeesController < ApplicationController
+  # ~~ collection actions ~~
   def index
   end
 
   def bulk_import
+  end
+
+  def delete_all
+    dataset = Employee.where(employer_id: current_context.account_id)
+    flash.notice = "#{dataset.count} employees were deleted successfully."
+    dataset.delete
+    redirect_to action: :index
+  end
+
+  def new
   end
 
   def create
@@ -19,17 +30,16 @@ class EmployeesController < ApplicationController
         flash.now.alert = e.message
         render :bulk_import
       end
+    elsif model.save raise_on_failure: false
+      flash.notice = "Employee was created successfully."
+      redirect_to action: :index
     else
-      raise "manual create"
+      render :new
     end
   end
 
-  def delete_all
-    dataset = Employee.where(employer_id: current_context.account_id)
-    flash.notice = "#{dataset.count} employees were deleted successfully."
-    dataset.delete
-    redirect_to action: :index
-  end
+  # ~~ member actions ~~
+  # show/edit/delete
 
   private
 
@@ -38,4 +48,16 @@ class EmployeesController < ApplicationController
   end
 
   helper_method :employees
+
+  def permitted_params
+    params.fetch(:employee, {}).permit(:first_name, :last_name, :email, :phone, :state)
+  end
+
+  def model
+    @model ||= Employee.new(permitted_params.merge(
+      company_id: current_context.account.company_id,
+      employer_id: current_context.account_id
+    ))
+  end
+  helper_method :model
 end

@@ -1,7 +1,7 @@
 <%= render "common/gradient_with_fingerprints" do %>
   <h1 class="text-xl font-semibold py-1 leading-none tracking-wide md:text-3xl"><%= current_context.account.first_name %>'s Dashboard</h1>
 <% end %>
-<div id="dashboard" class="container mx-auto px-4" data-turbolinks-permanent>
+<div class="container mx-auto px-4">
   <%= render "employees/charts" %>
   <div class="flex flex-col items-start mt-4 -mx-2 md:flex-row md:justify-end">
     <%= link_to({action: :new}, class: "#{secondary_button_class(:blue)} flex items-center mb-4 mx-2") do %>
