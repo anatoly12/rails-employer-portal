@@ -4,6 +4,7 @@ Rails.application.routes.draw do
   resource :sessions, path: "/sign-in", only: [:show, :create, :destroy]
   resources :employees do
     get "bulk_import", on: :collection
+    delete "delete_all", on: :collection
   end
   root to: "employees#index"
 end

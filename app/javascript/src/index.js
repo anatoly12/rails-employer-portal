@@ -4,7 +4,7 @@ document.addEventListener('turbolinks:load', () => {
   // allow closing flash messages
   setTimeout(() => {
     document.querySelectorAll('[role=notice]').forEach((notice) => {
-      alert.classList.add("opacity-0");
+      notice.classList.add("opacity-0");
     });
   }, 3000);
   document.querySelectorAll('[role=alert], [role=notice]').forEach((alert) => {
