@@ -1,5 +1,5 @@
 <% if flash.any? %>
-  <div class="fixed bottom-0 left-0 w-full z-20 md:absolute md:w-auto md:bottom-auto md:left-auto md:top-0 md:right-0 md:m-10">
+  <div class="pointer-events-none fixed bottom-0 left-0 w-full z-20 md:absolute md:w-auto md:bottom-auto md:left-auto md:top-0 md:right-0 md:m-10">
     <% flash.each do |type, message| %>
       <%= render "common/flash_message", type: type, message: message %>
     <% end %>
