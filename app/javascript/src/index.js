@@ -13,22 +13,25 @@ document.addEventListener('turbolinks:load', () => {
 
   // display charts
   document.querySelectorAll('.chart').forEach((chart) => {
-    if (chart.dataset.easyPieChart) return;
-    let color = chart.dataset.color
-    chart.dataset.easyPieChart = new EasyPieChart(chart, {
-      easing: 'easeOutElastic',
-      delay: 3000,
-      barColor: color,
-      trackColor: color,
-      scaleColor: false,
-      size: 64,
-      lineWidth: 6,
-      trackWidth: 1.5,
-      lineCap: 'butt',
-      onStep: (_from, _to, percent) => {
-        chart.children[0].innerHTML = `${Math.round(percent)}%`
-      },
-    })
+    if (chart.easyPieChart) {
+      chart.easyPieChart.update(chart.dataset.percent)
+    } else {
+      let color = chart.dataset.color
+      chart.easyPieChart = new EasyPieChart(chart, {
+        easing: 'easeOutElastic',
+        delay: 3000,
+        barColor: color,
+        trackColor: color,
+        scaleColor: false,
+        size: 64,
+        lineWidth: 6,
+        trackWidth: 1.5,
+        lineCap: 'butt',
+        onStep: (_from, _to, percent) => {
+          chart.children[0].innerHTML = `${Math.round(percent)}%`
+        }
+      })
+    }
   });
 
   // remove tooltip from input[file]
