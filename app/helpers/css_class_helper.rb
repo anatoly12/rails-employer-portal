@@ -11,12 +11,16 @@ module CssClassHelper
     link_class(true)
   end
 
+  def secondary_link_class
+    link_class(false)
+  end
+
   def primary_button_class
     button_class(true)
   end
 
-  def secondary_link_class
-    link_class(true)
+  def secondary_button_class
+    button_class(false)
   end
 
   private
@@ -32,9 +36,11 @@ module CssClassHelper
   end
 
   def button_class(primary)
-    res = "appearance-none border-2 w-full py-3 font-bold focus:outline-none"
+    res = "appearance-none bg-white text-blue-400 border-blue-400 hover:border-blue-700 hover:text-blue-800 focus:outline-none focus:border-blue-700"
     if primary
-      res += " text-lg uppercase tracking-widest text-blue-400 border-blue-400 hover:border-blue-800 focus:border-blue-800"
+      res += " border-2 w-full py-3 font-bold text-lg uppercase tracking-widest"
+    else
+      res += " border-2 px-3 leading-6 font-semibold"
     end
     return res
   end

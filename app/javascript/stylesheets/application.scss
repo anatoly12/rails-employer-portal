@@ -41,3 +41,7 @@ body{
 .blur-3{
   backdrop-filter: blur(3px);
 }
+// fix for file input
+.cursor-pointer[type=file]::-webkit-file-upload-button{
+  visibility: hidden;
+}

@@ -7,8 +7,8 @@
       </h1>
       <div class="text-2xl">Start by adding employees individually or via bulk upload.</div>
       <div class="mt-4 md:text-right xl:-mt-8">
-        <%= render "employees/link_add", url_options: {action: :new}, label: "Add New" %>
-        <%= render "employees/link_add", url_options: {action: :bulk_import}, label: "Bulk Upload" %>
+        <%= render "common/link_with_icon", link_class: "mr-4 md:mr-0", url_options: {action: :new}, icon: "add_outline", label: "Add New" %>
+        <%= render "common/link_with_icon", link_class: "md:ml-4", url_options: {action: :bulk_import}, icon: "add_outline", label: "Bulk Upload" %>
       </div>
     <% end %>
   <% end %>

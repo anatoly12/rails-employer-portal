@@ -1,6 +1,7 @@
-var EasyPieChart = require('easy-pie-chart')
+const EasyPieChart = require('easy-pie-chart')
 
-document.addEventListener('DOMContentLoaded', () => {
+document.addEventListener('turbolinks:load', () => {
+  // allow closing flash messages
   setTimeout(() => {
     document.querySelectorAll('[role=notice]').forEach((notice) => {
       alert.classList.add("opacity-0");
@@ -10,9 +11,11 @@ document.addEventListener('DOMContentLoaded', () => {
     alert.addEventListener('click', () => alert.classList.add("opacity-0"));
   });
 
+  // display charts
   document.querySelectorAll('.chart').forEach((chart) => {
+    if (chart.dataset.easyPieChart) return;
     let color = chart.dataset.color
-    new EasyPieChart(chart, {
+    chart.dataset.easyPieChart = new EasyPieChart(chart, {
       easing: 'easeOutElastic',
       delay: 3000,
       barColor: color,
@@ -26,5 +29,11 @@ document.addEventListener('DOMContentLoaded', () => {
         chart.children[0].innerHTML = `${Math.round(percent)}%`
       },
     })
-  })
-})
+  });
+
+  // remove tooltip from input[file]
+  document.querySelectorAll('.cursor-pointer[type=file]').forEach((input) => {
+    input.setAttribute('title', '');
+    input.addEventListener('change', () => input.form.submit());
+  });
+});
