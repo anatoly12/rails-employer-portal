@@ -1,0 +1,10 @@
+<% link = pagy_link_proc(pagy) -%>
+<nav class="flex justify-end">
+  <div class="mr-1"><strong><%= pagy.from %>-<%= pagy.to %></strong>&nbsp;of <%= pagy.count %></div>
+  <div class="page prev <%= pagy.prev ? "text-gray-500" : "text-gray-300 pointer-events-none" %>">
+    <%== link.call(pagy.prev, render("icon/cheveron_left", icon_class: "h-6 w-6"), "data-persist-scroll") %>
+  </div>
+  <div class="page next <%= pagy.next ? "text-gray-500" : "text-gray-300 pointer-events-none" %>">
+    <%== link.call(pagy.next, render("icon/cheveron_right", icon_class: "h-6 w-6"), "data-persist-scroll") %>
+  </div>
+</nav>

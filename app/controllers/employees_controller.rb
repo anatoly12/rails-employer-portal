@@ -1,9 +1,12 @@
-class EmployeesController < ApplicationController
+class EmployeesController < PaginatedController
   # ~~ collection actions ~~
   def index
+    dataset = Employee.where employer_id: current_context.account_id
+    @pagy, @employees = pagy(dataset)
   end
 
   def bulk_import
+    index
   end
 
   def delete_all
@@ -42,12 +45,6 @@ class EmployeesController < ApplicationController
   # show/edit/delete
 
   private
-
-  def employees
-    Employee.where(employer_id: current_context.account_id).all
-  end
-
-  helper_method :employees
 
   def permitted_params
     params.fetch(:employee, {}).permit(:first_name, :last_name, :email, :phone, :state)

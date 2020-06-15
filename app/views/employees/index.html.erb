@@ -1,6 +1,6 @@
 <%= render "common/main" do %>
   <%= render "employees/dashboard" %>
-  <% if employees.empty? %>
+  <% if @pagy.count==0 %>
     <%= render "common/backdrop" do %>
       <h1 class="text-3xl font-medium">
         Welcome <%= current_context.account.first_name %>!

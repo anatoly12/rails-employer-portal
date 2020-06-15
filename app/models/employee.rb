@@ -24,6 +24,11 @@ class Employee < Sequel::Model
   many_to_one :employer, class: "Employer"
   one_to_many :employees, class: "Employee"
 
+  # ~~~ public instance methods ~~~
+  def full_name
+    "#{first_name} #{last_name}"
+  end
+
   private
 
   # ~~ private instance methods ~~

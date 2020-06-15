@@ -15,6 +15,7 @@ gem "jbuilder", "~> 2.7"
 gem "mysql2"
 gem "sequel-rails", "1.1.1"
 gem "sequel_secure_password", "0.2.15"
+gem "pagy", "~> 3.8", ">= 3.8.2"
 
 # Debug
 gem "pry", require: false
