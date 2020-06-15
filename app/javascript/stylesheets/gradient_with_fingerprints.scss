@@ -1,0 +1,18 @@
+.bg-blue-gradient{
+  background-image: linear-gradient(to bottom, #17a9e6 0%, #1394c9 100%);
+}
+.bg-fingerprints{
+  background-image: url(../images/fingerprint-right.png);
+  background-position: bottom right;
+  background-repeat: no-repeat;
+  opacity:.5;
+  /* Medium (md) */
+  @media (min-width: 768px) {
+    background-image: url(../images/fingerprint-left.png), url(../images/fingerprint-right.png);
+    background-position: top left, bottom right;
+  }
+  /* Extra Extra Large (2xl) */
+  @media (min-width: 1860px) {
+    opacity:1;
+  }
+}

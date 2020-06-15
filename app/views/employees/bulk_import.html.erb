@@ -19,7 +19,7 @@
           <%= render "icon/arrow_outline_down", icon_class: "h-3 w-3 mr-2" %>
           <span>Download Sample</span>
         </a>
-        <button href="/employee_bulk_import/sample.txt" class="<%= secondary_button_class(:blue) %> flex items-center mb-4 mx-2 md:mx-4 overflow-hidden relative" target="_blank" rel="noopener noreferrer" download>
+        <button type="button" class="<%= secondary_button_class(:blue) %> flex items-center mb-4 mx-2 md:mx-4 overflow-hidden relative cursor-default select-none">
           <%= render "icon/arrow_outline_up", icon_class: "h-3 w-3 mr-2" %>
           <span>Upload File</span>
           <%= file_field_tag :file, class: "cursor-pointer absolute block opacity-0 left-0 top-0 w-full h-full" %>
