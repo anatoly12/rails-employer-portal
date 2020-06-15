@@ -1,0 +1,25 @@
+<tr class="border-t border-black">
+  <td class="w-8 hidden lg:table-cell">check</td>
+  <td class="w-8">
+    <%= render "icon/exclamation_solid", icon_class: "h-4 w-4 text-orange-500 mx-auto" %>
+  </td>
+  <td class="w-10 hidden md:table-cell">
+    WS
+  </td>
+  <td class="px-2 py-4 font-medium truncate md:hidden" colspan="2">
+    <%= link_to employee.full_name, employee_path(employee), class: "underline hover:text-blue-500" %>
+  </td>
+  <td class="px-2 py-4 font-medium truncate hidden md:table-cell">
+    <%= link_to employee.full_name, employee_path(employee), class: "underline hover:text-blue-500" %>
+  </td>
+  <td class="px-2 py-4 font-medium hidden lg:table-cell">
+    <%= employee.state %>
+  </td>
+  <td class="px-2 py-4 hidden md:table-cell">Did Not Submit</td>
+  <td class="px-2 py-4 font-medium hidden lg:table-cell">04/12/20</td>
+  <td class="px-2 py-4 hidden lg:table-cell">Send Reminder</td>
+  <td class="pl-2 py-4 hidden md:table-cell lg:hidden" colspan="2">Physician Reviewing</td>
+  <td class="px-2 py-4 hidden lg:table-cell">Physician Reviewing</td>
+  <td class="px-2 py-4 font-medium hidden lg:table-cell">04/12/20</td>
+  <td class="pr-2 py-4 font-medium hidden lg:table-cell">Send Reminder</td>
+</tr>
