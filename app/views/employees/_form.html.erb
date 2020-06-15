@@ -1,4 +1,4 @@
-<%= form_for model, as: :employee, url: {action: :create}, html: {autocomplete: "off"} do |f| %>
+<%= form_for model, as: :employee, url: { action: :create }, html: { autocomplete: "off" } do |f| %>
   <% if model.errors.on(:base) %>
     <p class="text-red-400 mb-4"><%= model.errors.on(:base).to_sentence %></p>
   <% end %>
@@ -9,7 +9,7 @@
     <%= render "employees/text_field", form: f, column: :phone, label: "Phone Number", placeholder: "555-555-555" %>
     <div>
       <%= f.label :state, class: "text-3xl font-thin" %>
-      <%= f.select :state, UsaState.for_select, {include_blank: true}, class: select_field_class(model.errors.on(:state)) %>
+      <%= f.select :state, UsaState.for_select, { include_blank: true }, class: select_field_class(model.errors.on(:state)) %>
       <%= render "common/errors", errors: model.errors.on(:state) %>
     </div>
   </div>

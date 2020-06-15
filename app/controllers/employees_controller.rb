@@ -56,8 +56,9 @@ class EmployeesController < ApplicationController
   def model
     @model ||= Employee.new(permitted_params.merge(
       company_id: current_context.account.company_id,
-      employer_id: current_context.account_id
+      employer_id: current_context.account_id,
     ))
   end
+
   helper_method :model
 end

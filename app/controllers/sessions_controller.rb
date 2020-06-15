@@ -33,5 +33,6 @@ class SessionsController < ApplicationController
   def model
     @model ||= Session.new permitted_params
   end
+
   helper_method :model
 end
