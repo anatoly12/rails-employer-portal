@@ -17,11 +17,11 @@
       <span>Delete all</span>
     <% end %>
   </div>
-  <table class="w-full table-fixed">
+  <table class="w-full table-fixed mb-10">
     <thead>
       <tr class="text-left text-xs">
         <th class="px-2 w-8"></th>
-        <th class="px-2 py-4">Employee Name</th>
+        <th class="px-2 py-4"><%== render partial: "common/pagination", locals: {pagy: @pagy} %></th>
       </tr>
     </thead>
     <tbody>
@@ -37,7 +37,4 @@
       <% end %>
     </tbody>
   </table>
-  <div class="my-4">
-    <%== render partial: "common/pagination", locals: {pagy: @pagy} %>
-  </div>
 </div>
