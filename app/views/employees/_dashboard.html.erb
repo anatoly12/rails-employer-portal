@@ -17,26 +17,5 @@
       <span>Delete all</span>
     <% end %>
   </div>
-  <table class="table-fixed w-full mb-10 md:table-auto">
-    <thead class="text-left text-xs">
-      <tr>
-        <th class="w-8 hidden lg:table-cell"></th>
-        <th class="w-8"></th>
-        <th class="w-10 hidden md:table-cell"></th>
-        <th class="px-2 py-4 font-medium">Employee Name</th>
-        <th class="px-2 py-4 font-medium hidden lg:table-cell">State</th>
-        <th class="px-2 py-4 hidden md:table-cell"">Daily Checkup</th>
-        <th class="px-2 py-4 font-medium hidden lg:table-cell">Last Updated</th>
-        <th class="px-2 py-4 hidden lg:table-cell"></th>
-        <th class="w-1 whitespace-no-wrap pl-2 py-4 hidden md:table-cell">Testing Status</th>
-        <th class="px-2 py-4 font-medium hidden lg:table-cell">Last Updated</th>
-        <th class="pr-2 py-4 font-medium"><%== render partial: "common/pagination", locals: {pagy: @pagy} %></th>
-      </tr>
-    </thead>
-    <tbody>
-      <% @employees.each do |employee| %>
-        <%= render "employees/employee", employee: employee %>
-      <% end %>
-    </tbody>
-  </table>
+  <%= render "employees/employees", pagy: @pagy, employees: @employees %>
 </div>

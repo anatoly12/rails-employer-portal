@@ -1,7 +1,6 @@
 class EmployeesController < PaginatedController
   # ~~ collection actions ~~
   def index
-    dataset = Employee.where employer_id: current_context.account_id
     @pagy, @employees = pagy(dataset)
   end
 
@@ -10,7 +9,6 @@ class EmployeesController < PaginatedController
   end
 
   def delete_all
-    dataset = Employee.where(employer_id: current_context.account_id)
     flash.notice = "#{dataset.count} employees were deleted successfully."
     dataset.delete
     redirect_to action: :index
@@ -48,6 +46,10 @@ class EmployeesController < PaginatedController
 
   def permitted_params
     params.fetch(:employee, {}).permit(:first_name, :last_name, :email, :phone, :state)
+  end
+
+  def dataset
+    Employee.where employer_id: current_context.account_id
   end
 
   def model

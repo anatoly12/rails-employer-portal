@@ -1,5 +1,0 @@
-<div>
-  <%= form.label column, label, class: "text-3xl font-thin" %>
-  <%= form.text_field column, class: text_field_class(model.errors.on(column)), placeholder: local_assigns[:placeholder].presence %>
-  <%= render "common/errors", errors: model.errors.on(column) %>
-</div>
