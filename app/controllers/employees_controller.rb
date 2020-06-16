@@ -47,6 +47,16 @@ class EmployeesController < PaginatedController
   def edit
   end
 
+  def update
+    model.set permitted_params
+    if model.save raise_on_failure: false
+      flash.notice = "Employee was updated successfully."
+      redirect_to action: :index
+    else
+      render :new
+    end
+  end
+
   # update/delete
 
   private

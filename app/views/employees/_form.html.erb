@@ -1,4 +1,4 @@
-<%= form_for model, as: :employee, url: { action: (model.new? ? :create : :update) }, html: { autocomplete: "off" } do |f| %>
+<%= form_for model, as: :employee, url: { action: (model.new? ? :create : :update) }, method: (model.new? ? :post : :patch), html: { autocomplete: "off" } do |f| %>
   <% if model.errors.on(:base) %>
     <p class="text-red-400 mb-4"><%= model.errors.on(:base).to_sentence %></p>
   <% end %>
