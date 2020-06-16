@@ -40,7 +40,14 @@ class EmployeesController < PaginatedController
   end
 
   # ~~ member actions ~~
-  # show/edit/delete
+  def show
+    redirect_to action: :edit
+  end
+
+  def edit
+  end
+
+  # update/delete
 
   private
 
@@ -53,10 +60,15 @@ class EmployeesController < PaginatedController
   end
 
   def model
-    @model ||= Employee.new(permitted_params.merge(
-      company_id: current_context.account.company_id,
-      employer_id: current_context.account_id,
-    ))
+    @model ||= if params[:id].present?
+      dataset.where(uuid: params[:id]).limit(1).first ||
+        raise(EmployerPortal::Error::Employee::NotFound)
+    else
+      Employee.new(permitted_params.merge(
+        company_id: current_context.account.company_id,
+        employer_id: current_context.account_id,
+      ))
+    end
   end
 
   helper_method :model

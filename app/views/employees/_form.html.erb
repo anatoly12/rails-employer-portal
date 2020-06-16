@@ -1,12 +1,12 @@
-<%= form_for model, as: :employee, url: { action: :create }, html: { autocomplete: "off" } do |f| %>
+<%= form_for model, as: :employee, url: { action: (model.new? ? :create : :update) }, html: { autocomplete: "off" } do |f| %>
   <% if model.errors.on(:base) %>
     <p class="text-red-400 mb-4"><%= model.errors.on(:base).to_sentence %></p>
   <% end %>
   <div class="grid gap-10 mb-20 md:grid-cols-2 lg:gap-20">
-    <%= render "employees/text_field", form: f, column: :first_name, label: "First Name", errors: model.errors.on(:first_name) %>
-    <%= render "employees/text_field", form: f, column: :last_name, label: "Last Name", errors: model.errors.on(:last_name) %>
-    <%= render "employees/text_field", form: f, column: :email, label: "Email", errors: model.errors.on(:email) %>
-    <%= render "employees/text_field", form: f, column: :phone, label: "Phone Number", errors: model.errors.on(:phone), placeholder: "555-555-555" %>
+    <%= render "form/text_field", form: f, column: :first_name, label: "First Name", errors: model.errors.on(:first_name) %>
+    <%= render "form/text_field", form: f, column: :last_name, label: "Last Name", errors: model.errors.on(:last_name) %>
+    <%= render "form/text_field", form: f, column: :email, label: "Email", errors: model.errors.on(:email) %>
+    <%= render "form/text_field", form: f, column: :phone, label: "Phone Number", errors: model.errors.on(:phone), placeholder: "555-555-555" %>
     <div>
       <%= f.label :state, class: "text-3xl font-thin" %>
       <%= f.select :state, UsaState.for_select, { include_blank: true }, class: select_field_class(model.errors.on(:state)) %>

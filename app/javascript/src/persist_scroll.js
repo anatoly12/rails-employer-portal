@@ -7,12 +7,11 @@ document.addEventListener('turbolinks:render', () => {
   }
 });
 document.addEventListener('turbolinks:load', () => {
-  const elements = document.querySelectorAll(`[data-persist-scroll]`)
-  for (let i = 0; i < elements.length; i++) {
-    elements[i].addEventListener('click', () => {
+  document.querySelectorAll(`[data-persist-scroll]`).forEach((link) => {
+    link.addEventListener('click', () => {
       document.addEventListener("turbolinks:before-render", () => {
         scrollPosition = window.scrollY;
       }, {once: true});
     });
-  }
+  });
 });

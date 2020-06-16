@@ -2,12 +2,10 @@
   <%= render "employees/dashboard" %>
   <%= render "common/backdrop" do %>
     <div class="bg-white text-black shadow-2xl p-4 md:max-w-xl md:mx-auto md:p-8">
-      <div class="text-right">
-        <%= link_to({ action: :index }, class: "inline-block hover:text-blue-500 hover:border-blue-500") do %>
-          <%= render "icon/close_outline", icon_class: "h-5 w-5" %>
-        <% end %>
-      </div>
-      <h2 class="font-semibold">Please match your fields to the sample below.</h2>
+      <%= render "common/link_to_back", default_url: { action: :index } %>
+      <h2 class="font-semibold clear-both">
+        Please match your fields to the sample below.
+      </h2>
       <div>
         Upload type accepted:
         <a href="/employee_bulk_import/sample.txt" class="hover:text-blue-500" target="_blank" rel="noopener noreferrer" download>Unicode Text (.txt)</a>,

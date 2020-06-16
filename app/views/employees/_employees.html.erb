@@ -1,4 +1,4 @@
-<table class="table-fixed w-full mb-10 text-sm md:table-auto">
+<table class="table-fixed w-full mb-10 text-sm lg:table-auto">
   <thead>
     <tr class="text-left align-middle text-xs">
       <th class="w-5 hidden lg:table-cell"></th>
@@ -23,7 +23,7 @@
       <th class="w-1 px-2 font-medium hidden lg:table-cell">
         <%= render "employees/sort_header", label: "Last Updated" %>
       </th>
-      <th class="w-1 py-3 font-medium xl:w-32">
+      <th class="w-8 py-3 font-medium md:w-32">
         <%== render partial: "common/pagination", locals: {pagy: pagy} %>
       </th>
     </tr>

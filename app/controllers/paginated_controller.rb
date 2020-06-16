@@ -7,7 +7,7 @@ class PaginatedController < ApplicationController
     {
       count: collection.count,
       page: params["page"],
-      items: vars[:items] || 50
+      items: vars[:items]
     }
   end
 end

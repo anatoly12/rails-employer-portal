@@ -1,0 +1,13 @@
+<%= render "common/main" do %>
+  <%= render "common/gradient_with_fingerprints" do %>
+    <h1 class="text-xl font-semibold py-1 leading-none tracking-wide md:text-3xl">Employee Details</h1>
+  <% end %>
+  <div class="container mx-auto px-4">
+    <h2 class="text-3xl font-thin mt-4">
+      <%= render "common/link_to_back", default_url: { action: :index } %>
+      Review, edit or deactivate an employee's account
+    </h2>
+    <p class="text-sm font-medium mb-10">A deactivated employee will still be saved in the system for reference or available if you need to reactivate the account.</p>
+    <%= render "employees/form" %>
+  </div>
+<% end %>
