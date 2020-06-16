@@ -61,14 +61,14 @@ class EmployeesController < PaginatedController
 
   def model
     @model ||= if params[:id].present?
-      dataset.where(uuid: params[:id]).limit(1).first ||
-        raise(EmployerPortal::Error::Employee::NotFound)
-    else
-      Employee.new(permitted_params.merge(
-        company_id: current_context.account.company_id,
-        employer_id: current_context.account_id,
-      ))
-    end
+        dataset.where(uuid: params[:id]).limit(1).first ||
+          raise(EmployerPortal::Error::Employee::NotFound)
+      else
+        Employee.new(permitted_params.merge(
+          company_id: current_context.account.company_id,
+          employer_id: current_context.account_id,
+        ))
+      end
   end
 
   helper_method :model

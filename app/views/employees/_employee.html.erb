@@ -12,7 +12,7 @@
   </td>
   <td class="px-2 py-4 truncate">
     <div class="lg:hidden"><%= employee.full_name %></div>
-    <%= link_to employee.full_name, {action: :edit, id: employee.uuid}, class: "hidden underline hover:text-blue-500 lg:block" %>
+    <%= link_to employee.full_name, { action: :edit, id: employee.uuid }, class: "hidden underline hover:text-blue-500 lg:block" %>
   </td>
   <td class="px-2 py-4 hidden lg:table-cell">
     <%= employee.state %>
@@ -24,7 +24,7 @@
   <td class="px-2 py-4 hidden lg:table-cell">04/12/20</td>
   <td class="px-2 py-4 hidden lg:table-cell">Send Reminder</td>
   <td class="lg:hidden">
-    <%= link_to({action: :edit, id: employee.uuid}, class: "block text-gray-300 ml-auto mr-2 h-8 w-8 p-2 hover:text-blue-500") do %>
+    <%= link_to({ action: :edit, id: employee.uuid }, class: "block text-gray-300 ml-auto mr-2 h-8 w-8 p-2 hover:text-blue-500") do %>
       <%= render "icon/edit_pencil", icon_class: "pointer-events-none" %>
     <% end %>
   </td>
