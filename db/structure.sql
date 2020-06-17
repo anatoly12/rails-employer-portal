@@ -35,6 +35,32 @@ CREATE TABLE `companies` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
+-- Table structure for table `delayed_jobs`
+--
+
+DROP TABLE IF EXISTS `delayed_jobs`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `delayed_jobs` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `priority` int(11) DEFAULT '0',
+  `attempts` int(11) DEFAULT '0',
+  `handler` text COLLATE utf8mb4_unicode_ci,
+  `last_error` text COLLATE utf8mb4_unicode_ci,
+  `run_at` datetime DEFAULT NULL,
+  `locked_at` datetime DEFAULT NULL,
+  `failed_at` datetime DEFAULT NULL,
+  `locked_by` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `queue` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `created_at` datetime DEFAULT NULL,
+  `updated_at` datetime DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  KEY `delayed_jobs_priority_run_at_index` (`priority`,`run_at`),
+  KEY `delayed_jobs_failed_at_index` (`failed_at`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
 -- Table structure for table `employees`
 --
 
@@ -52,8 +78,12 @@ CREATE TABLE `employees` (
   `phone` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `state` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `zipcode` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `sync_id` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `created_at` datetime DEFAULT NULL,
   `updated_at` datetime DEFAULT NULL,
+  `last_sync_at` datetime DEFAULT NULL,
+  `sync_remote_id` bigint(20) DEFAULT NULL,
+  `sync_last_at` datetime DEFAULT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `uuid` (`uuid`),
   UNIQUE KEY `employees_company_id_email_index` (`company_id`,`email`),
@@ -132,3 +162,5 @@ INSERT INTO `schema_migrations` (`filename`) VALUES ('20200606143002_create_comp
 INSERT INTO `schema_migrations` (`filename`) VALUES ('20200607090034_create_employers.rb');
 INSERT INTO `schema_migrations` (`filename`) VALUES ('20200610132857_create_employees.rb');
 INSERT INTO `schema_migrations` (`filename`) VALUES ('20200610202031_create_zip_codes.rb');
+INSERT INTO `schema_migrations` (`filename`) VALUES ('20200617081746_add_sync_to_employees.rb');
+INSERT INTO `schema_migrations` (`filename`) VALUES ('20200617084221_create_delayed_jobs.rb');
