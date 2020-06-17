@@ -1,0 +1,117 @@
+properties properties: [
+  disableConcurrentBuilds()
+]
+
+def customImage = ''
+def imageTag = ''
+def imageName = 'essentialconnect-employer-portal'
+def registryURI = '047140049356.dkr.ecr.us-east-1.amazonaws.com'
+
+node {
+    try {
+        stage('Checkout') {
+            checkout scm
+            notifyBuild('STARTED')
+        }
+    } catch (e) {
+        failureMessage = 'SCM checkout failed!'
+        currentBuild.result = "FAILED"
+        notifyBuild(currentBuild.result)
+        throw e
+    }
+    docker.withRegistry("https://${registryURI}/${imageName}", 'ecr:us-east-1:e3-aws-credentials') {
+        try {
+            stage('Build Docker Image') {
+                // Kinda ugly for now, until I can find a proper env variable
+                sh "git rev-parse --short HEAD > .git/commit-id"
+                commit_id = readFile('.git/commit-id').replace('\n', '')
+
+                // Define our image_tag and build
+                imageTag = "${BRANCH_NAME}-${commit_id}".replace('_', '-').replace('/', '-')
+                customImage = docker.build("${imageName}:${imageTag}", "-f docker/Dockerfile .")
+            }
+        } catch (e) {
+            failureMessage = 'Docker image build failed!'
+            currentBuild.result = "FAILED"
+            notifyBuild(currentBuild.result)
+            throw e
+        }
+        try {
+            stage('Publish Docker Image') {
+                customImage.push()
+            }
+        } catch (e) {
+            failureMessage = 'Failed to publish docker image!'
+            currentBuild.result = "FAILED"
+            notifyBuild(currentBuild.result)
+            throw e
+        }
+        // Deploy to AWS ECS, if appropriate
+        try {
+            stage ('Deploy') {
+                switch (BRANCH_NAME) {
+                    case "develop":
+                        stack = 'dev'
+                        break
+                    case 'release':
+                        stack = 'test'
+                        break
+                    case 'master':
+                        stack = 'prod'
+                        break
+                    default:
+                        stack = false
+                        break
+                }
+                if (stack) {
+                    build job: '../_DEPLOY_', parameters: [
+                        [$class: 'StringParameterValue', name: 'ENVIRONMENT', value: stack],
+                        [$class: 'StringParameterValue', name: 'APP', value: 'essentialconnect'],
+                        [$class: 'StringParameterValue', name: 'COMPONENT', value: 'employer-portal'],
+                        [$class: 'StringParameterValue', name: 'IMAGE_TAG', value: imageTag]
+                    ]
+                }
+            }
+        } catch (e) {
+            failureMessage = 'Failed to deploy!'
+            throw e
+            currentBuild.result = "FAILED"
+        } finally {
+            // Success or failure, always send notifications
+            notifyBuild(currentBuild.result)
+        }
+    }
+}
+
+def notifyBuild(String buildStatus = 'STARTED') {
+    // build status of null means successful
+    buildStatus =  buildStatus ?: 'SUCCESSFUL'
+
+    // Default values
+    def colorName = 'RED'
+    def colorCode = '#FF0000'
+    def subject = "${buildStatus}: Job '${JOB_NAME} [${BUILD_NUMBER}]'"
+    def summary = "${subject} (${BUILD_URL})"
+    def details = """<p>STARTED: Job '${JOB_NAME} [${BUILD_NUMBER}]':</p>
+    <p>Check console output at "<a href="${BUILD_URL}">${JOB_NAME} [${BUILD_NUMBER}]</a>"</p>"""
+
+    // Override default values based on build status
+    if (buildStatus == 'STARTED') {
+        color = 'YELLOW'
+        colorCode = '#FFFF00'
+    } else if (buildStatus == 'SUCCESSFUL') {
+        color = 'GREEN'
+        colorCode = '#00FF00'
+    } else {
+        color = 'RED'
+        colorCode = '#FF0000'
+    }
+
+    // Send notifications
+    emailext (
+        subject: subject,
+        body: details,
+        from: "jenkins@dev.essentialdx.com",
+        recipientProviders: [[$class: 'CulpritsRecipientProvider']]
+    )
+}
