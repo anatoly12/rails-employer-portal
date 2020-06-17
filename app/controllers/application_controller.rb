@@ -6,6 +6,10 @@ class ApplicationController < ActionController::Base
   before_action :ensure_access!
   rescue_from EmployerPortal::Error::Account::NotFound, with: :account_not_found
 
+  def check
+    head :ok
+  end
+
   private
 
   def current_context
