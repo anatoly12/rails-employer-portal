@@ -98,3 +98,7 @@ It's possible to tweak the number of web server threads and the size of the DB c
 Allow background jobs to be processed by running the following process:
 
 - `bin/delayed_job run`
+
+To push logs toward STDOUT instead of `log/production.log` just add the `RAILS_LOG_TO_STDOUT` environment variable with any value, for example:
+
+- `RAILS_LOG_TO_STDOUT="1"`

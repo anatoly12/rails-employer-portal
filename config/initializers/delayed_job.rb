@@ -15,5 +15,9 @@ if table_exists
   Delayed::Worker.default_queue_name = 'default'
   Delayed::Worker.delay_jobs = !Rails.env.test?
   Delayed::Worker.raise_signal_exceptions = :term
-  Delayed::Worker.logger = Logger.new(STDOUT)
+  Delayed::Worker.logger = if ENV["RAILS_LOG_TO_STDOUT"].present?
+    Logger.new(STDOUT)
+  else
+    Logger.new(Rails.root.join("log", "delayed_job.log"))
+  end
 end
