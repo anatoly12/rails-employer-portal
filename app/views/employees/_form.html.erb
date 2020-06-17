@@ -3,15 +3,11 @@
     <p class="text-red-400 mb-4"><%= editor.errors_on(:base).to_sentence %></p>
   <% end %>
   <div class="grid gap-10 mb-20 md:grid-cols-2 lg:gap-20">
-    <%= render "form/text_field", form: f, column: :first_name, label: "First Name", errors: editor.errors_on(:first_name) %>
-    <%= render "form/text_field", form: f, column: :last_name, label: "Last Name", errors: editor.errors_on(:last_name) %>
-    <%= render "form/text_field", form: f, column: :email, label: "Email", errors: editor.errors_on(:email) %>
-    <%= render "form/text_field", form: f, column: :phone, label: "Phone Number", errors: editor.errors_on(:phone), placeholder: "555-555-555" %>
-    <div>
-      <%= f.label :state, class: "text-3xl font-thin" %>
-      <%= f.select :state, UsaState.for_select, { include_blank: true }, class: select_field_class(editor.errors_on(:state)) %>
-      <%= render "common/errors", errors: editor.errors_on(:state) %>
-    </div>
+    <%= render "form/text_field", form: f, column: :first_name, label: "First Name" %>
+    <%= render "form/text_field", form: f, column: :last_name, label: "Last Name" %>
+    <%= render "form/text_field", form: f, column: :email %>
+    <%= render "form/text_field", form: f, column: :phone, label: "Phone Number", placeholder: "555-555-555" %>
+    <%= render "form/select", form: f, column: :state, options: UsaState.for_select %>
   </div>
   <div class="mb-20">
     <%= button_tag "Submit", type: "submit", class: primary_button_class %>

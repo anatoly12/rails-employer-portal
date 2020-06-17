@@ -6,9 +6,9 @@ class SessionsController < ApplicationController
   end
 
   def create
-    if model.valid?
-      session[:account_id] = model.account_id
-      redirect_to(model.return_path || root_path)
+    if editor.valid?
+      session[:account_id] = editor.account_id
+      redirect_to(editor.return_path || root_path)
     else
       flash.now.alert = "Please review errors and try submitting it again."
       render :show
@@ -26,13 +26,13 @@ class SessionsController < ApplicationController
     redirect_to root_path if current_context.signed_in?
   end
 
-  def permitted_params
+  def editor_params
     params.fetch(:session, {}).permit(:return_path, :username, :password)
   end
 
-  def model
-    @model ||= Session.new permitted_params
+  def editor
+    @editor ||= EmployerPortal::SessionEditor.new editor_params
   end
 
-  helper_method :model
+  helper_method :editor
 end

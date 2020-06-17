@@ -1,19 +1,19 @@
-<%= form_for model, html: { class: "max-w-lg mx-auto my-4 md:my-20" } do |f| %>
+<%= form_for editor, as: :session, url: {action: :create}, html: { class: "max-w-lg mx-auto my-4 md:my-20" } do |f| %>
   <h2 class="text-3xl font-thin">Sign into your account<h2>
   <div class="mb-4">
     <%= link_to "I need to create an account", "#", class: primary_link_class %>
   </div>
-  <% if model.errors[:base].any? %>
-    <p class="text-red-400 mb-4"><%= model.errors[:base].to_sentence %></p>
+  <% if editor.errors_on(:base) %>
+    <p class="text-red-400 mb-4"><%= editor.errors_on(:base).to_sentence %></p>
   <% end %>
   <%= f.hidden_field :return_path %>
   <div class="mb-4">
-    <%= f.text_field :username, placeholder: "Email", class: text_field_class(model.errors[:username].any?), autocomplete: "off" %>
-    <%= render "common/errors", errors: model.errors[:username] %>
+    <%= f.text_field :username, placeholder: "Email", class: text_field_class(editor.errors_on(:username)), autocomplete: "off" %>
+    <%= render "common/errors", errors: editor.errors_on(:username) %>
   </div>
   <div class="mb-4">
-    <%= f.password_field :password, placeholder: "Password", class: text_field_class(model.errors[:password].any?), autocomplete: "off" %>
-    <%= render "common/errors", errors: model.errors[:password] %>
+    <%= f.password_field :password, placeholder: "Password", class: text_field_class(editor.errors_on(:password)), autocomplete: "off" %>
+    <%= render "common/errors", errors: editor.errors_on(:password) %>
   </div>
   <div class="-mt-2 mb-4">
     <%= link_to "I forgot my password", "#", class: secondary_link_class %>
