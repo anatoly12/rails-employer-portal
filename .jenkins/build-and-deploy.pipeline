@@ -28,7 +28,7 @@ node {
 
                 // Define our image_tag and build
                 imageTag = "${BRANCH_NAME}-${commit_id}".replace('_', '-').replace('/', '-')
-                customImage = docker.build("${imageName}:${imageTag}", "-f docker/Dockerfile .")
+                customImage = docker.build("${imageName}:${imageTag}", ".")
             }
         } catch (e) {
             failureMessage = 'Docker image build failed!'
