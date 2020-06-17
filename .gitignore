@@ -27,3 +27,4 @@ yarn-debug.log*
 
 # Ignore machine specific environment variables
 .env
+.vscode
