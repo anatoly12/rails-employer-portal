@@ -1,4 +1,4 @@
-<%= form_for editor, as: :employee, url: { action: (editor.persisted? ? :update : :create) }, method: (editor.persisted? ? :patch : :post), html: { autocomplete: "off" } do |f| %>
+<%= form_for editor, html: { autocomplete: "off" } do |f| %>
   <% if editor.errors_on(:base) %>
     <p class="text-red-400 mb-4"><%= editor.errors_on(:base).to_sentence %></p>
   <% end %>

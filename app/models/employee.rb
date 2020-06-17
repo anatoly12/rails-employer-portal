@@ -4,6 +4,7 @@ class Employee < Sequel::Model
   plugin :uuid
   plugin :timestamps, update_on_create: true
   plugin :validation_helpers
+  plugin :active_model
 
   # ~~ validations ~~
   def validate
@@ -25,6 +26,10 @@ class Employee < Sequel::Model
   one_to_many :employees, class: "Employee"
 
   # ~~~ public instance methods ~~~
+  def to_param
+    uuid
+  end
+
   def full_name
     "#{first_name} #{last_name}"
   end

@@ -2,7 +2,8 @@ module EmployerPortal
   class EmployeeEditor
 
     # ~~ delegates ~~
-    delegate :first_name, :last_name, :email, :phone, :state, to: :edited
+    delegate :first_name, :last_name, :email, :phone, :state, :to_key,
+      :to_model, to: :edited
 
     # ~~ public instance methods ~~
     def initialize(context, id)
