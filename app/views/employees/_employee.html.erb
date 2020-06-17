@@ -1,7 +1,4 @@
-<tr class="border-t border-black align-middle">
-  <td class="w-5 select-none hidden lg:table-cell">
-    <%= render "form/check_box", name: "selected[]", value: employee.uuid %>
-  </td>
+<tr class="border-t align-middle">
   <td class="w-8 lg:px-2">
     <%= render "icon/exclamation_solid", icon_class: "h-4 w-4 text-orange-500 mx-auto" %>
   </td>
@@ -23,7 +20,7 @@
   <td class="px-2 hidden md:table-cell">Physician Reviewing</td>
   <td class="px-2 py-4 hidden lg:table-cell">04/12/20</td>
   <td class="px-2 py-4 hidden lg:table-cell">Send Reminder</td>
-  <td class="lg:hidden">
+  <td>
     <%= link_to({ action: :edit, id: employee.uuid }, class: "block text-gray-300 ml-auto mr-2 h-8 w-8 p-2 hover:text-blue-500") do %>
       <%= render "icon/edit_pencil", icon_class: "pointer-events-none" %>
     <% end %>

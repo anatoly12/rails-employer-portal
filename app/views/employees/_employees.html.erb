@@ -1,35 +1,35 @@
 <table class="table-fixed w-full mb-10 text-sm lg:table-auto">
   <thead>
     <tr class="text-left align-middle text-xs">
-      <th class="w-5 hidden lg:table-cell"></th>
       <th class="w-8"></th>
       <th class="w-10 hidden md:table-cell"></th>
       <th class="px-2 font-medium">
-        <%= render "employees/sort_header", label: "Employee Name" %>
+        <%= render "employees/sort_header", column: "fullname", label: "Employee Name" %>
       </th>
       <th class="w-1 px-2 font-medium hidden lg:table-cell">
-        <%= render "employees/sort_header", label: "State" %>
+        <%= render "employees/sort_header", column: "state", label: "State" %>
       </th>
-      <th class="w-32 px-2 font-medium hidden md:table-cell">
-        <%= render "employees/sort_header", label: "Daily Checkup" %>
+      <th class="px-2 font-medium hidden md:table-cell">
+        <%= render "employees/sort_header", column: "checkup", label: "Daily Checkup" %>
       </th>
       <th class="w-1 px-2 font-medium hidden lg:table-cell">
-        <%= render "employees/sort_header", label: "Last Updated" %>
+        <%= render "employees/sort_header", column: "checkup_updated_at", label: "Last Updated" %>
       </th>
       <th class="px-2 hidden lg:table-cell xl:w-32"></th>
-      <th class="w-40 px-2 font-medium hidden md:table-cell">
-        <%= render "employees/sort_header", label: "Testing Status" %>
+      <th class="px-2 font-medium hidden md:table-cell">
+        <%= render "employees/sort_header", column: "testing", label: "Testing Status" %>
       </th>
       <th class="w-1 px-2 font-medium hidden lg:table-cell">
-        <%= render "employees/sort_header", label: "Last Updated" %>
+        <%= render "employees/sort_header", column: "testing_updated_at", label: "Last Updated" %>
       </th>
+      <th class="px-2 hidden lg:table-cell xl:w-32"></th>
       <th class="w-8 py-3 font-medium md:w-32">
-        <%== render partial: "common/pagination", locals: { pagy: pagy } %>
+        <%== render partial: "common/pagination", locals: { pagination: search.pagination } %>
       </th>
     </tr>
   </thead>
   <tbody>
-    <% employees.each do |employee| %>
+    <% search.results.each do |employee| %>
       <%= render "employees/employee", employee: employee %>
     <% end %>
   </tbody>

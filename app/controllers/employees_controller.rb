@@ -1,14 +1,13 @@
-class EmployeesController < PaginatedController
+class EmployeesController < ApplicationController
   # ~~ collection actions ~~
   def index
-    @pagy, @employees = pagy(dataset)
   end
 
   def bulk_import
-    index
   end
 
   def delete_all
+    dataset = Employee.where employer_id: current_context.account_id
     flash.notice = "#{dataset.count} employees were deleted successfully."
     dataset.delete
     redirect_to action: :index
@@ -19,7 +18,7 @@ class EmployeesController < PaginatedController
 
   def create
     bulk = EmployerPortal::EmployeeBulkImport.new(
-      current_context.account,
+      current_context,
       params[:file]
     )
     if bulk.has_file?
@@ -31,7 +30,7 @@ class EmployeesController < PaginatedController
         flash.now.alert = e.message
         render :bulk_import
       end
-    elsif model.save raise_on_failure: false
+    elsif editor.update_attributes editor_params
       flash.notice = "Employee was created successfully."
       redirect_to action: :index
     else
@@ -48,8 +47,7 @@ class EmployeesController < PaginatedController
   end
 
   def update
-    model.set permitted_params
-    if model.save raise_on_failure: false
+    if editor.update_attributes editor_params
       flash.notice = "Employee was updated successfully."
       redirect_to action: :index
     else
@@ -57,29 +55,27 @@ class EmployeesController < PaginatedController
     end
   end
 
-  # update/delete
+  # delete
 
   private
 
-  def permitted_params
+  def search_params
+    params.permit(:filters, :order)
+  end
+
+  def search
+    @search ||= EmployerPortal::EmployeeSearch.new current_context, search_params
+  end
+
+  helper_method :search
+
+  def editor_params
     params.fetch(:employee, {}).permit(:first_name, :last_name, :email, :phone, :state)
   end
 
-  def dataset
-    Employee.where employer_id: current_context.account_id
+  def editor
+    @editor ||= EmployerPortal::EmployeeEditor.new current_context, params[:id]
   end
 
-  def model
-    @model ||= if params[:id].present?
-        dataset.where(uuid: params[:id]).limit(1).first ||
-          raise(EmployerPortal::Error::Employee::NotFound)
-      else
-        Employee.new(permitted_params.merge(
-          company_id: current_context.account.company_id,
-          employer_id: current_context.account_id,
-        ))
-      end
-  end
-
-  helper_method :model
+  helper_method :editor
 end

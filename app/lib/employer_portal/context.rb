@@ -5,6 +5,7 @@ module EmployerPortal
     end
 
     delegate :id, to: :account, prefix: :account
+    delegate :first_name, :company_id, to: :account
 
     def initialize(hash = {})
       @hash = hash

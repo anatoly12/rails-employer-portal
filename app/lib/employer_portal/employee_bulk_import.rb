@@ -4,8 +4,8 @@ module EmployerPortal
   class EmployeeBulkImport
 
     # ~~ public instance methods ~~
-    def initialize(employer, file)
-      @employer = employer
+    def initialize(context, file)
+      @context = context
       @file = file
     end
 
@@ -17,8 +17,8 @@ module EmployerPortal
       Sequel::Model.db.transaction do
         parsed_csv.drop(1).each do |row|
           Employee.create(
-            company_id: employer.company_id,
-            employer_id: employer.id,
+            company_id: context.company_id,
+            employer_id: context.account_id,
             first_name: row[0],
             last_name: row[1],
             email: row[2],
@@ -31,7 +31,7 @@ module EmployerPortal
 
     private
 
-    attr_reader :employer, :file
+    attr_reader :context, :file
 
     def original_ext
       File.extname(file.original_filename).downcase
