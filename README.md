@@ -78,7 +78,23 @@ In addition, you need to define the following environment variables:
 - `RACK_ENV="production"`
 - `RAILS_ENV="production"`
 - `DATABASE_URL="mysql2://username:password@host:port/dbname?charset=utf8mb4&collation=utf8mb4_unicode_ci"`
+- `SYNC_DATABASE_URL="mysql2://username:password@host:port/ecp-prod?charset=utf8&collation=utf8_general_ci"`
+- `AWS_ACCESS_KEY_ID="XXXXXXXXXXXXXXXXXXXX"`
+- `AWS_SECRET_ACCESS_KEY="XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX"`
+- `S3_PREFIX="prod"`
+- `MAILER_ADDRESS="email-smtp.us-east-1.amazonaws.com"`
+- `MAILER_USERNAME="XXXXXXXXXX"`
+- `MAILER_PASSWORD="XXXXXXXXXX"`
+
+As displayed in these examples, notice the difference in charset and collation:
+
+- the new database (specific to Employer Portal) uses `utf8mb4` and `utf8mb4_unicode_ci`
+- the old database (shared with the other portals) uses `utf8` and `utf8_general_ci`
 
 It's possible to tweak the number of web server threads and the size of the DB connection pool with the following environment variable:
 
 - `RAILS_MAX_THREADS=5`
+
+Allow background jobs to be processed by running the following process:
+
+- `bin/delayed_job run`
