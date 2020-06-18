@@ -13,11 +13,10 @@ Sequel.migration do
       String :phone
       String :state
       String :zipcode
-      String :sync_id
       DateTime :created_at
       DateTime :updated_at
-      DateTime :last_sync_at
       index [:company_id, :email], unique: true
+      index :employer_id
     end
   end
 end
