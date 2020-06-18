@@ -78,16 +78,14 @@ CREATE TABLE `employees` (
   `phone` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `state` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `zipcode` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `sync_id` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `created_at` datetime DEFAULT NULL,
   `updated_at` datetime DEFAULT NULL,
-  `last_sync_at` datetime DEFAULT NULL,
   `sync_remote_id` bigint(20) DEFAULT NULL,
   `sync_last_at` datetime DEFAULT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `uuid` (`uuid`),
   UNIQUE KEY `employees_company_id_email_index` (`company_id`,`email`),
-  KEY `employer_id` (`employer_id`),
+  KEY `employees_employer_id_index` (`employer_id`),
   CONSTRAINT `employees_ibfk_1` FOREIGN KEY (`company_id`) REFERENCES `companies` (`id`) ON DELETE CASCADE,
   CONSTRAINT `employees_ibfk_2` FOREIGN KEY (`employer_id`) REFERENCES `employers` (`id`) ON DELETE SET NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
