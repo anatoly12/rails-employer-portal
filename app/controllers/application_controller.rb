@@ -2,7 +2,7 @@ class ApplicationController < ActionController::Base
   helper :css_class
 
   before_action :ensure_access!
-  rescue_from EmployerPortal::Error::Account::NotFound, with: :account_not_found
+  rescue_from ::EmployerPortal::Error::Account::NotFound, with: :account_not_found
 
   def check
     head :ok
@@ -11,7 +11,7 @@ class ApplicationController < ActionController::Base
   private
 
   def current_context
-    @current_context ||= EmployerPortal::Context.new(
+    @current_context ||= ::EmployerPortal::Context.new(
       account_id: session[:account_id],
     )
   end

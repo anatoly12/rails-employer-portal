@@ -1,6 +1,6 @@
 require "rails_helper"
 
-RSpec.describe EmployerPortal::MemoryCache do
+RSpec.describe ::EmployerPortal::MemoryCache do
   include ActiveSupport::Testing::TimeHelpers
 
   it "default max_size is 50" do

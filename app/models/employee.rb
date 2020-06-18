@@ -10,7 +10,7 @@ class Employee < Sequel::Model
   def validate
     super
     validates_presence [:first_name, :last_name, :email, :phone]
-    validates_format EmployerPortal::Regexp::EMAIL_FORMAT, :email, allow_blank: true
+    validates_format ::EmployerPortal::Regexp::EMAIL_FORMAT, :email, allow_blank: true
     validates_unique(:email) { |ds| ds.where(company_id: company_id) }
     if zipcode.present?
       validate_zipcode

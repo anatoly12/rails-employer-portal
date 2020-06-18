@@ -34,7 +34,7 @@ module EmployerPortal
         Employee.where(
           employer_id: context.account_id,
           uuid: given_id
-        ).limit(1).first || raise(EmployerPortal::Error::Employee::NotFound)
+        ).limit(1).first || raise(::EmployerPortal::Error::Employee::NotFound)
       else
         Employee.new(
           company_id: context.company_id,

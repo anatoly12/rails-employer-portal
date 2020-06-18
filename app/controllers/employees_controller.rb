@@ -17,7 +17,7 @@ class EmployeesController < ApplicationController
   end
 
   def create
-    bulk = EmployerPortal::EmployeeBulkImport.new(
+    bulk = ::EmployerPortal::EmployeeBulkImport.new(
       current_context,
       params[:file]
     )
@@ -60,11 +60,11 @@ class EmployeesController < ApplicationController
   private
 
   def search_params
-    params.permit(:filters, :order)
+    params.permit(:filters, :order, :page)
   end
 
   def search
-    @search ||= EmployerPortal::EmployeeSearch.new current_context, search_params
+    @search ||= ::EmployerPortal::EmployeeSearch.new current_context, search_params
   end
 
   helper_method :search
@@ -74,7 +74,7 @@ class EmployeesController < ApplicationController
   end
 
   def editor
-    @editor ||= EmployerPortal::EmployeeEditor.new current_context, params[:id]
+    @editor ||= ::EmployerPortal::EmployeeEditor.new current_context, params[:id]
   end
 
   helper_method :editor
