@@ -15,14 +15,14 @@
       <th class="w-1 px-2 font-medium hidden lg:table-cell">
         <%= render "employees/sort_header", column: "checkup_updated_at", label: "Last Updated" %>
       </th>
-      <th class="px-2 hidden lg:table-cell xl:w-32"></th>
+      <th class="w-32 px-2 hidden xl:table-cell"></th>
       <th class="px-2 font-medium hidden md:table-cell">
         <%= render "employees/sort_header", column: "testing", label: "Testing Status" %>
       </th>
       <th class="w-1 px-2 font-medium hidden lg:table-cell">
         <%= render "employees/sort_header", column: "testing_updated_at", label: "Last Updated" %>
       </th>
-      <th class="px-2 hidden lg:table-cell xl:w-32"></th>
+      <th class="w-32 px-2 hidden xl:table-cell"></th>
       <th class="w-8 py-3 font-medium md:w-32">
         <%== render partial: "common/pagination", locals: { pagination: search.pagination } %>
       </th>

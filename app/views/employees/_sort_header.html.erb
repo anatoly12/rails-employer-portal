@@ -1,10 +1,12 @@
-<div class="flex items-center">
+<% asc = "#{column}:asc" %>
+<% desc = "#{column}:desc" %>
+<%= link_to url_for(order: (search.sort_order==asc ? desc : asc)), class: "flex items-center hover:text-blue-500" do %>
   <div class="whitespace-no-wrap"><%= label %></div>
   <div class="inline-flex flex-col align-middle pl-1">
-    <% if true %>
-      <%= render "icon/cheveron_up", icon_class: "h-5 w-5 text-blue-500 -my-1" %>
-    <% else %>
-      <%= render "icon/cheveron_down", icon_class: "h-5 w-5 text-gray-300 -my-1" %>
+    <% if search.sort_order==asc %>
+      <%= render "icon/cheveron_up", icon_class: "h-5 w-5 -my-1" %>
+    <% elsif search.sort_order==desc %>
+      <%= render "icon/cheveron_down", icon_class: "h-5 w-5 -my-1" %>
     <% end %>
   </div>
-</div>
+<% end %>

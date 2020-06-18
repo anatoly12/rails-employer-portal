@@ -15,6 +15,10 @@ module EmployerPortal
       @pagination, @results = pagy(dataset)
     end
 
+    def sort_order
+      params[:order] || "fullname:asc"
+    end
+
     private
 
     attr_reader :context, :params
@@ -24,7 +28,7 @@ module EmployerPortal
       {
         count: collection.count,
         page: params["page"],
-        items: vars[:items],
+        items: vars[:items] || 2,
       }
     end
 
