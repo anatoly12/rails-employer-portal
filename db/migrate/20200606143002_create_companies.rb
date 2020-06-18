@@ -12,6 +12,16 @@ Sequel.migration do
       String :plan
       DateTime :created_at
       DateTime :updated_at
+
+      # TODO: using bigint as primary is a bad idea in MySQL
+      # https://logicalread.com/improve-perf-mysql-index-columns-mc12/
+      # but we must match the type of ecp_partners.partner_id on the remote DB
+      #
+      # If we switch to PostgreSQL for both, we can use UUID as primary_key and
+      # share a single UUID for both DB, then we wouldn't need the
+      # remote_id column anymore.
+      Bignum :remote_id
+      DateTime :remote_sync_at
     end
   end
 end

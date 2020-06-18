@@ -11,7 +11,8 @@ module EmployerPortal
     private
 
       def connect
-        @db ||= Sequel.connect ENV["SYNC_DATABASE_URL"]
+        @db.disconnect if defined? @db
+        @db = Sequel.connect ENV["SYNC_DATABASE_URL"]
         Rails.logger.info "Successfully connected to remote DB..."
       rescue Sequel::DatabaseConnectionError
         abort "Can't connect to remote DB, please check that SYNC_DATABASE_URL is correctly configured."

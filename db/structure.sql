@@ -29,6 +29,8 @@ CREATE TABLE `companies` (
   `plan` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `created_at` datetime DEFAULT NULL,
   `updated_at` datetime DEFAULT NULL,
+  `remote_id` bigint(20) DEFAULT NULL,
+  `remote_sync_at` datetime DEFAULT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `uuid` (`uuid`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
@@ -80,8 +82,8 @@ CREATE TABLE `employees` (
   `zipcode` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `created_at` datetime DEFAULT NULL,
   `updated_at` datetime DEFAULT NULL,
-  `sync_remote_id` bigint(20) DEFAULT NULL,
-  `sync_last_at` datetime DEFAULT NULL,
+  `remote_id` bigint(20) DEFAULT NULL,
+  `remote_sync_at` datetime DEFAULT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `uuid` (`uuid`),
   UNIQUE KEY `employees_company_id_email_index` (`company_id`,`email`),
@@ -160,5 +162,4 @@ INSERT INTO `schema_migrations` (`filename`) VALUES ('20200606143002_create_comp
 INSERT INTO `schema_migrations` (`filename`) VALUES ('20200607090034_create_employers.rb');
 INSERT INTO `schema_migrations` (`filename`) VALUES ('20200610132857_create_employees.rb');
 INSERT INTO `schema_migrations` (`filename`) VALUES ('20200610202031_create_zip_codes.rb');
-INSERT INTO `schema_migrations` (`filename`) VALUES ('20200617081746_add_sync_to_employees.rb');
 INSERT INTO `schema_migrations` (`filename`) VALUES ('20200617084221_create_delayed_jobs.rb');
