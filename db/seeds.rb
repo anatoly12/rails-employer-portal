@@ -8,6 +8,7 @@ ZipCode.create(
 company = Company.create(
   name: Faker::Company.name,
   plan: "billed_by_invoice",
+  remote_id: 21
 )
 
 employer = Employer.create(
