@@ -29,6 +29,7 @@ module EmployerPortal
             .left_join(:partner_access_codes, id: Sequel.qualify(:account_access_grants, :partner_access_code_id))
             .left_join(:covid19_daily_checkups, account_id: Sequel.qualify(:accounts, :id), updated_at: db[:covid19_daily_checkups].where(account_id: Sequel.qualify(:accounts, :id)).select(Sequel.function(:max, :updated_at)))
             .left_join(:covid19_daily_checkup_statuses, daily_checkup_status_code: Sequel.qualify(:covid19_daily_checkups, :daily_checkup_status_code))
+            .left_join(:covid19_evaluations, account_id: Sequel.qualify(:accounts, :id))
             .select(
               Sequel.qualify(:accounts, :id).as(:id),
               Sequel.qualify(:account_demographics, :full_legal_name).as(:full_name),
@@ -45,18 +46,17 @@ module EmployerPortal
               Sequel.case([
                 [{Sequel.qualify(:covid19_daily_checkups, :daily_checkup_status_code) => 1}, "Cleared"],
                 [{Sequel.qualify(:covid19_daily_checkups, :daily_checkup_status_code) => 2}, "Contact"],
-              ], "Send Reminder").as(:daily_checkup_action)
+              ], "Send Reminder").as(:daily_checkup_action),
+              Sequel.case([
+                [{Sequel.qualify(:covid19_evaluations, :status) => [1, 4]}, "Cleared"],
+                [{Sequel.qualify(:covid19_evaluations, :status) => 5}, "Inconclusive"],
+                [{Sequel.qualify(:covid19_evaluations, :lab_review_approved) => true}, "Submitted Results"],
+                [{Sequel.qualify(:covid19_evaluations, :identity_approved) => true}, "Intake"],
+                [Sequel.negate(Sequel.qualify(:covid19_evaluations, :status) => nil), "Registered"],
+              ], "Not Registered").as(:testing_status),
+              Sequel.function(:date, Sequel.qualify(:covid19_evaluations, :updated_at)).as(:testing_updated_at)
             )
         )
-        #         case when ce.status in (1,4) then 'Cleared'
-        #          when ce.status = 5 then 'Inconclusive'
-        #              when ce.lab_review_approved then 'Submitted Results'
-        #              when ce.identity_approved then 'Intake'
-        #              when ce.status is not null then 'Registered'
-        #              else 'Not Registered'
-        #         end as `Testing Status`,
-        #         ce.updated_at as `Last Updated`
-        # left join covid19_evaluations ce on ce.account_id = a.id
       end
     end
   end
