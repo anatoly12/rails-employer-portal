@@ -20,6 +20,7 @@ module EmployerPortal
 
       def create_or_replace_views
         Rails.logger.info "Create or replace views..."
+        # use query cache to speed up the view
         db.create_or_replace_view(
           :employer_portal_employees,
           db[:accounts]
@@ -31,7 +32,7 @@ module EmployerPortal
             .left_join(:covid19_daily_checkup_statuses, daily_checkup_status_code: Sequel.qualify(:covid19_daily_checkups, :daily_checkup_status_code))
             .left_join(:covid19_evaluations, account_id: Sequel.qualify(:accounts, :id))
             .select(
-              Sequel.qualify(:accounts, :id).as(:id),
+              Sequel.lit("SQL_CACHE ?", Sequel.qualify(:accounts, :id)).as(:id),
               Sequel.qualify(:account_demographics, :full_legal_name).as(:full_name),
               Sequel.qualify(:account_demographics, :state_of_residence).as(:state),
               Sequel.qualify(:identities, :selfie_s3_key).as(:selfie_s3_key),
