@@ -109,7 +109,7 @@ module EmployerPortal
               Sequel.qualify(:ec_questions, :question).as(:question),
               Sequel.qualify(:ec_questions, :response).as(:response),
               Sequel.qualify(:ec_data_types, :type_of).as(:question_type),
-              Sequel.function(:group_concat, Sequel.qualify(:ec_list_items, :item)).as(:options)
+              Sequel.function(:json_arrayagg, Sequel.qualify(:ec_list_items, :item)).as(:options)
             )
         )
       end
