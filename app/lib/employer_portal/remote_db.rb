@@ -55,7 +55,7 @@ module EmployerPortal
               Sequel.function(:any_value, Sequel.qualify(:account_demographics, :full_legal_name)).as(:full_name),
               Sequel.function(:any_value, Sequel.qualify(:account_demographics, :state_of_residence)).as(:state),
               Sequel.function(:any_value, Sequel.qualify(:identities, :selfie_s3_key)).as(:selfie_s3_key),
-              (db[:identities].columns.include?(:identity_approved) ? Sequel.function(:any_value, Sequel.qualify(:identities, :identity_approved)) : Sequel.lit("FALSE")).as(:identity_approved),
+              (db[:identities].columns.include?(:identity_verified) ? Sequel.function(:any_value, Sequel.qualify(:identities, :identity_verified)) : Sequel.lit("FALSE")).as(:identity_verified),
               Sequel.function(:any_value, Sequel.qualify(:partner_access_codes, :partner_id)).as(:partner_id),
               Sequel.function(:coalesce, Sequel.function(:any_value, Sequel.qualify(:covid19_daily_checkup_statuses, :daily_checkup_status)), "Did Not Submit").as(:daily_checkup_status),
               (db[:covid19_daily_checkups].columns.include?(:checkup_date) ? Sequel.function(:any_value, Sequel.qualify(:covid19_daily_checkups, :checkup_date)).as(:daily_checkup_updated_at) : Sequel.function(:any_value, Sequel.function(:date, Sequel.qualify(:covid19_daily_checkups, :updated_at)))).as(:daily_checkup_updated_at),
