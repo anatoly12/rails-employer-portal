@@ -1,5 +1,6 @@
-class Employee < Sequel::Model
+require "uri"
 
+class Employee < Sequel::Model
   # ~~ plugins ~~
   plugin :uuid
   plugin :timestamps, update_on_create: true
@@ -27,11 +28,35 @@ class Employee < Sequel::Model
 
   # ~~~ public instance methods ~~~
   def to_param
-    uuid
+    URI.encode_www_form_component(email)
   end
 
   def full_name
-    "#{first_name} #{last_name}"
+    values.fetch(:full_name, "#{first_name} #{last_name}")
+  end
+
+  def profile_picture_url
+    # TODO: do something with values[:selfie_s3_key]
+  end
+
+  def daily_checkup_status
+    values.fetch(:daily_checkup_status, "Did Not Submit")
+  end
+
+  def daily_checkup_updated_at
+    values.fetch(:daily_checkup_updated_at, "Never")
+  end
+
+  def daily_checkup_action
+    values.fetch(:daily_checkup_action, "Send Reminder")
+  end
+
+  def testing_status
+    values.fetch(:testing_status, "Not Registered")
+  end
+
+  def testing_updated_at
+    values.fetch(:testing_updated_at, "Never")
   end
 
   private

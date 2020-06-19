@@ -6,6 +6,7 @@ module EmployerPortal
       def init
         @url = ENV["SYNC_DATABASE_URL"]
         if url.present?
+          disconnect
           connect
           create_or_replace_views
         else
@@ -13,12 +14,20 @@ module EmployerPortal
         end
       end
 
+      def db_name
+        @db_name ||= db.get(Sequel.function(:database)).to_sym
+      end
+
+      def disconnect
+        db&.disconnect
+        @db = nil
+      end
+
       private
 
       attr_reader :url
 
       def connect
-        @db.disconnect if defined? @db
         @db = Sequel.connect url
         puts "Successfully connected to remote DB..."
       rescue Sequel::DatabaseConnectionError
@@ -42,6 +51,7 @@ module EmployerPortal
             .exclude(Sequel.qualify(:partner_access_codes, :partner_id) => nil)
             .select(
               Sequel.lit("SQL_CACHE ?", Sequel.qualify(:accounts, :id)).as(:id),
+              Sequel.qualify(:accounts, :email).as(:email),
               Sequel.function(:any_value, Sequel.qualify(:account_demographics, :full_legal_name)).as(:full_name),
               Sequel.function(:any_value, Sequel.qualify(:account_demographics, :state_of_residence)).as(:state),
               Sequel.function(:any_value, Sequel.qualify(:identities, :selfie_s3_key)).as(:selfie_s3_key),
