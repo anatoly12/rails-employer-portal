@@ -13,7 +13,7 @@ module EmployerPortal
         end
       end
 
-    private
+      private
 
       attr_reader :url
 
@@ -42,52 +42,25 @@ module EmployerPortal
             .exclude(Sequel.qualify(:partner_access_codes, :partner_id) => nil)
             .select(
               Sequel.lit("SQL_CACHE ?", Sequel.qualify(:accounts, :id)).as(:id),
-              Sequel.function(:any_value,
-                Sequel.qualify(:account_demographics, :full_legal_name)
-              ).as(:full_name),
-              Sequel.function(:any_value,
-                Sequel.qualify(:account_demographics, :state_of_residence)
-              ).as(:state),
-              Sequel.function(:any_value,
-                Sequel.qualify(:identities, :selfie_s3_key)
-              ).as(:selfie_s3_key),
-              (
-                db[:identities].columns.include?(:identity_approved) ?
-                  Sequel.function(:any_value, Sequel.qualify(:identities, :identity_approved)) :
-                  Sequel.lit("FALSE")
-              ).as(:identity_approved),
-              Sequel.function(:any_value,
-                Sequel.qualify(:partner_access_codes, :partner_id)
-              ).as(:partner_id),
-              Sequel.function(:coalesce,
-                Sequel.function(:any_value,
-                  Sequel.qualify(:covid19_daily_checkup_statuses, :daily_checkup_status)
-                ),
-                "Did Not Submit"
-              ).as(:daily_checkup_status),
-              (
-                db[:covid19_daily_checkups].columns.include?(:checkup_date) ?
-                  Sequel.function(:any_value, Sequel.qualify(:covid19_daily_checkups, :checkup_date)).as(:daily_checkup_updated_at) :
-                  Sequel.function(:any_value, Sequel.function(:date, Sequel.qualify(:covid19_daily_checkups, :updated_at)))
-              ).as(:daily_checkup_updated_at),
-              Sequel.function(:any_value,
-                Sequel.case([
-                  [{Sequel.qualify(:covid19_daily_checkups, :daily_checkup_status_code) => 1}, "Cleared"],
-                  [{Sequel.qualify(:covid19_daily_checkups, :daily_checkup_status_code) => 2}, "Contact"],
-                ], "Send Reminder")
-              ).as(:daily_checkup_action),
-              Sequel.function(:any_value,
-                Sequel.case([
-                  [{Sequel.qualify(:covid19_evaluations, :status) => [1, 4]}, "Cleared"],
-                  [{Sequel.qualify(:covid19_evaluations, :status) => 5}, "Inconclusive"],
-                  [{Sequel.qualify(:covid19_evaluations, :lab_review_approved) => true}, "Submitted Results"],
-                  [{Sequel.qualify(:covid19_evaluations, :identity_approved) => true}, "Intake"],
-                  [Sequel.negate(Sequel.qualify(:covid19_evaluations, :status) => nil), "Registered"],
-                ], "Not Registered")
-              ).as(:testing_status),
-              Sequel.function(:any_value,
-                Sequel.function(:date, Sequel.qualify(:covid19_evaluations, :updated_at))
-              ).as(:testing_updated_at)
+              Sequel.function(:any_value, Sequel.qualify(:account_demographics, :full_legal_name)).as(:full_name),
+              Sequel.function(:any_value, Sequel.qualify(:account_demographics, :state_of_residence)).as(:state),
+              Sequel.function(:any_value, Sequel.qualify(:identities, :selfie_s3_key)).as(:selfie_s3_key),
+              (db[:identities].columns.include?(:identity_approved) ? Sequel.function(:any_value, Sequel.qualify(:identities, :identity_approved)) : Sequel.lit("FALSE")).as(:identity_approved),
+              Sequel.function(:any_value, Sequel.qualify(:partner_access_codes, :partner_id)).as(:partner_id),
+              Sequel.function(:coalesce, Sequel.function(:any_value, Sequel.qualify(:covid19_daily_checkup_statuses, :daily_checkup_status)), "Did Not Submit").as(:daily_checkup_status),
+              (db[:covid19_daily_checkups].columns.include?(:checkup_date) ? Sequel.function(:any_value, Sequel.qualify(:covid19_daily_checkups, :checkup_date)).as(:daily_checkup_updated_at) : Sequel.function(:any_value, Sequel.function(:date, Sequel.qualify(:covid19_daily_checkups, :updated_at)))).as(:daily_checkup_updated_at),
+              Sequel.function(:any_value, Sequel.case([
+                [{ Sequel.qualify(:covid19_daily_checkups, :daily_checkup_status_code) => 1 }, "Cleared"],
+                [{ Sequel.qualify(:covid19_daily_checkups, :daily_checkup_status_code) => 2 }, "Contact"],
+              ], "Send Reminder")).as(:daily_checkup_action),
+              Sequel.function(:any_value, Sequel.case([
+                [{ Sequel.qualify(:covid19_evaluations, :status) => [1, 4] }, "Cleared"],
+                [{ Sequel.qualify(:covid19_evaluations, :status) => 5 }, "Inconclusive"],
+                [{ Sequel.qualify(:covid19_evaluations, :lab_review_approved) => true }, "Submitted Results"],
+                [{ Sequel.qualify(:covid19_evaluations, :identity_approved) => true }, "Intake"],
+                [Sequel.negate(Sequel.qualify(:covid19_evaluations, :status) => nil), "Registered"],
+              ], "Not Registered")).as(:testing_status),
+              Sequel.function(:any_value, Sequel.function(:date, Sequel.qualify(:covid19_evaluations, :updated_at))).as(:testing_updated_at)
             )
         )
         db.create_or_replace_view(
@@ -104,20 +77,16 @@ module EmployerPortal
             .select(
               Sequel.lit("SQL_CACHE ?", Sequel.qualify(:accounts, :id)).as(:account_id),
               Sequel.function(:date, Sequel.qualify(:ec_questions, :updated_at)).as(:log_date),
-              Sequel.function(:max, {Sequel.qualify(:ec_kits, :flagged_status) => "FLAGGED"}).as(:flagged),
-              Sequel.function(:max,
-                Sequel.case([
-                  [{Sequel.qualify(:ec_questions, :question) => "Temperature"}, Sequel.qualify(:ec_questions, :response)],
-                ], nil)
-              ).as(:temperature),
-              Sequel.function(:max,
-                Sequel.case([
-                  [{
-                    Sequel.qualify(:ec_questions, :sub_group) => "Symptoms",
-                    Sequel.qualify(:ec_questions, :response) => "Yes"
-                  }, true],
-                ], false)
-              ).as(:symptoms)
+              Sequel.function(:max, { Sequel.qualify(:ec_kits, :flagged_status) => "FLAGGED" }).as(:flagged),
+              Sequel.function(:max, Sequel.case([
+                [{ Sequel.qualify(:ec_questions, :question) => "Temperature" }, Sequel.qualify(:ec_questions, :response)],
+              ], nil)).as(:temperature),
+              Sequel.function(:max, Sequel.case([
+                [{
+                  Sequel.qualify(:ec_questions, :sub_group) => "Symptoms",
+                  Sequel.qualify(:ec_questions, :response) => "Yes",
+                }, true],
+              ], false)).as(:symptoms)
             )
         )
         db.create_or_replace_view(
@@ -131,13 +100,11 @@ module EmployerPortal
             .exclude(Sequel.qualify(:accounts, :id) => nil)
             .group_by(Sequel.qualify(:ec_questions, :question_id))
             .where(
-              Sequel.qualify(:ec_data_types, :type_of) => ["DATE", "TEXT", "LIST_OPT"]
+              Sequel.qualify(:ec_data_types, :type_of) => ["DATE", "TEXT", "LIST_OPT"],
             )
             .select(
               Sequel.lit("SQL_CACHE ?", Sequel.qualify(:ec_questions, :question_id)).as(:id),
-              Sequel.function(:any_value,
-                Sequel.qualify(:accounts, :id)
-              ).as(:account_id),
+              Sequel.function(:any_value, Sequel.qualify(:accounts, :id)).as(:account_id),
               Sequel.function(:date, Sequel.qualify(:ec_questions, :updated_at)).as(:log_date),
               Sequel.qualify(:ec_questions, :question).as(:question),
               Sequel.qualify(:ec_questions, :response).as(:response),

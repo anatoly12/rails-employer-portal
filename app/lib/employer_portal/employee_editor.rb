@@ -31,16 +31,16 @@ module EmployerPortal
     # ~~ private instance methods ~~
     def edited
       @edited ||= if given_id.present?
-        Employee.where(
-          employer_id: context.account_id,
-          uuid: given_id
-        ).limit(1).first || raise(::EmployerPortal::Error::Employee::NotFound)
-      else
-        Employee.new(
-          company_id: context.company_id,
-          employer_id: context.account_id,
-        )
-      end
+          Employee.where(
+            employer_id: context.account_id,
+            uuid: given_id,
+          ).limit(1).first || raise(::EmployerPortal::Error::Employee::NotFound)
+        else
+          Employee.new(
+            company_id: context.company_id,
+            employer_id: context.account_id,
+          )
+        end
     end
   end
 end
