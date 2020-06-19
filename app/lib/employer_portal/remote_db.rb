@@ -4,23 +4,30 @@ module EmployerPortal
       attr_reader :db
 
       def init
-        connect
-        create_or_replace_views
+        @url = ENV["SYNC_DATABASE_URL"]
+        if url.present?
+          connect
+          create_or_replace_views
+        else
+          puts "SYNC_DATABASE_URL not configured, skip connection to remote DB..."
+        end
       end
 
     private
 
+      attr_reader :url
+
       def connect
         @db.disconnect if defined? @db
-        @db = Sequel.connect ENV["SYNC_DATABASE_URL"]
-        Rails.logger.info "Successfully connected to remote DB..."
+        @db = Sequel.connect url
+        puts "Successfully connected to remote DB..."
       rescue Sequel::DatabaseConnectionError
         abort "Can't connect to remote DB, please check that SYNC_DATABASE_URL is correctly configured."
       end
 
       def create_or_replace_views
-        Rails.logger.info "Create or replace views..."
         # use query cache to speed up the view
+        # https://jacobt.com/speed-up-your-app-with-mysql-views-and-query-cache/
         db.create_or_replace_view(
           :employer_portal_employees,
           db[:accounts]
