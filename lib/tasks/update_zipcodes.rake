@@ -13,13 +13,16 @@ task update_zipcodes: :environment do
   puts "Truncate zip_codes table..."
   ZipCode.dataset.truncate
   puts "Read CSV and zip codes..."
+  columns = [:zip, :city, :state, :geopoint]
+  values = []
   CSV.read(filename, col_sep: ";", headers: true).each do |row|
-    ZipCode.create(
-      zip: row["Zip"],
-      city: row["City"],
-      state: row["State"],
-      geopoint: Sequel.function(:GeomFromText, "POINT(#{row["Latitude"]} #{row["Longitude"]})"),
-    )
+    values << [
+      row["Zip"],
+      row["City"],
+      row["State"],
+      Sequel.function(:GeomFromText, "POINT(#{row["Latitude"]} #{row["Longitude"]})"),
+    ]
   end
+  ZipCode.import columns, values
   puts "Done."
 end
