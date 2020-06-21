@@ -1,13 +1,11 @@
 module EmployerPortal
   class Sync
     class << self
-      attr_reader :schema
-
       def init
         return if in_rake_task?
-        log("already connected") && return if schema.present?
+        log("already connected") and return if connected?
         url = ENV["SYNC_DATABASE_URL"]
-        log("SYNC_DATABASE_URL not configured, skip") && return if url.blank?
+        log("SYNC_DATABASE_URL not configured, skip") and return if url.blank?
         @schema = Sequel[File.basename(URI.parse(url).path).to_sym]
         create_or_replace_views
         log("connected to #{schema.value}")
@@ -16,7 +14,13 @@ module EmployerPortal
         exit 1
       end
 
+      def connected?
+        schema.present?
+      end
+
       private
+
+      attr_reader :schema
 
       def in_rake_task?
         !Rails.const_defined?("Server") && !Rails.const_defined?("Console")
