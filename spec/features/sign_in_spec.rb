@@ -1,10 +1,10 @@
 require "rails_helper"
 
-describe "the signin process", type: :feature, js: true do
-  let(:password) { Faker::Internet.password }
-  let!(:employer) { create :employer, password: password }
+feature "Signing in" do
+  given(:password) { Faker::Internet.password }
+  given!(:employer) { create :employer, password: password }
 
-  it "signs me in" do
+  scenario "Signing in with correct credentials" do
     visit "/"
     within("#new_session") do
       fill_in "Email", with: employer.email
