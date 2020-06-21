@@ -36,3 +36,10 @@ pidfile ENV.fetch("PIDFILE") { "tmp/pids/server.pid" }
 
 # Allow puma to be restarted by `rails restart` command.
 plugin :tmp_restart
+
+# Display URL to use for development
+if ENV.fetch("RAILS_ENV") { "development" } == "development"
+  puts
+  puts "You can now go to http://employer-portal.test:#{ENV.fetch("PORT") { 3000 }}"
+  puts
+end

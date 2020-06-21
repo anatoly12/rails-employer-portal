@@ -47,11 +47,6 @@ Rails.application.configure do
 
   # Set default host
   config.hosts = ["employer-portal.test"]
-  if File.basename($0) == "rails"
-    puts
-    puts "You can now go to http://employer-portal.test:#{ENV["PORT"]}"
-    puts
-  end
 
   # Use an evented file watcher to asynchronously detect changes in source code,
   # routes, locales, etc. This feature depends on the listen gem.
