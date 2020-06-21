@@ -28,8 +28,7 @@ gem "bootsnap", ">= 1.4.2", require: false
 group :development, :test do
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console
   # gem "byebug", platforms: [:mri, :mingw, :x64_mingw]
-  gem "rspec-rails", "~> 4.0.0"
-  gem "factory_bot", "~> 5.2"
+  gem "factory_bot", "~> 6.0", ">= 6.0.2"
   gem "faker", "~> 2.12"
 end
 
@@ -38,6 +37,12 @@ group :development do
   gem "web-console", ">= 3.3.0"
   gem "listen", "~> 3.2"
   gem "rufo"
+end
+
+group :test do
+  gem "rspec-rails", "~> 4.0", ">= 4.0.1"
+  gem "capybara", "~> 3.33"
+  gem "webdrivers", "~> 4.4", ">= 4.4.1"
 end
 
 # Windows does not include zoneinfo files, so bundle the tzinfo-data gem
