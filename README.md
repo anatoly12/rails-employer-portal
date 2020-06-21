@@ -91,6 +91,8 @@ As displayed in these examples, notice the difference in charset and collation:
 - the new database (specific to Employer Portal) uses `utf8mb4` and `utf8mb4_unicode_ci`
 - the old database (shared with the other portals) uses `utf8` and `utf8_general_ci`
 
+Due to the way the sync works at the moment, the app requires the user for the new database/schema to also have access to the old database/schema, allowing to reuse the same connection for faster performance.
+
 It's possible to tweak the number of web server threads and the size of the DB connection pool with the following environment variable:
 
 - `RAILS_MAX_THREADS=5`
