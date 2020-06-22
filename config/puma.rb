@@ -38,8 +38,14 @@ pidfile ENV.fetch("PIDFILE") { "tmp/pids/server.pid" }
 plugin :tmp_restart
 
 # Display URL to use for development
+def bold(str)
+  "\e[1m#{str}\e[22m"
+end
+def blue(str)
+  "\e[94m#{str}\e[0m"
+end
 if ENV.fetch("RAILS_ENV") { "development" } == "development"
   puts
-  puts "You can now go to http://employer-portal.test:#{ENV.fetch("PORT") { 3000 }}"
+  puts "You can now go to #{bold(blue("http://employer-portal.test:#{ENV.fetch("PORT") { 3000 }}"))}"
   puts
 end
