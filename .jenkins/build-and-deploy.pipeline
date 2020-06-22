@@ -70,6 +70,12 @@ node {
                         [$class: 'StringParameterValue', name: 'COMPONENT', value: 'employer-portal'],
                         [$class: 'StringParameterValue', name: 'IMAGE_TAG', value: imageTag]
                     ]
+                    build job: '../_DEPLOY_', parameters: [
+                        [$class: 'StringParameterValue', name: 'ENVIRONMENT', value: stack],
+                        [$class: 'StringParameterValue', name: 'APP', value: 'essentialconnect'],
+                        [$class: 'StringParameterValue', name: 'COMPONENT', value: 'employer-portal-jobs'],
+                        [$class: 'StringParameterValue', name: 'IMAGE_TAG', value: imageTag]
+                    ]
                 }
             }
         } catch (e) {
