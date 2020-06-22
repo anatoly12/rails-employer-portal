@@ -7,6 +7,7 @@ abort("The Rails environment is running in production mode!") if Rails.env.produ
 require "rspec/rails"
 # Add additional requires below this line. Rails is not loaded until this point!
 require "capybara/rspec"
+require "database_cleaner/sequel"
 
 # Requires supporting ruby files with custom matchers and macros, etc, in
 # spec/support/ and its subdirectories. Files matching `spec/**/*_spec.rb` are
@@ -21,19 +22,11 @@ require "capybara/rspec"
 # directory. Alternatively, in the individual `*_spec.rb` files, manually
 # require only the support files necessary.
 #
-# Dir[Rails.root.join('spec', 'support', '**', '*.rb')].sort.each { |f| require f }
-require "support/factory_bot"
+Dir[Rails.root.join('spec', 'support', '**', '*.rb')].sort.each { |f| require f }
 
 RSpec.configure do |config|
   # Remove this line to enable support for ActiveRecord
   config.use_active_record = false
-
-  # If you enable ActiveRecord support you should unncomment these lines,
-  # note if you'd prefer not to run each example within a transaction, you
-  # should set use_transactional_fixtures to false.
-  #
-  # config.fixture_path = "#{::Rails.root}/spec/fixtures"
-  # config.use_transactional_fixtures = true
 
   # RSpec Rails can automatically mix in different behaviours to your tests
   # based on their file location, for example enabling you to call `get` and
@@ -54,4 +47,37 @@ RSpec.configure do |config|
   config.filter_rails_from_backtrace!
   # arbitrary gems may also be filtered via:
   # config.filter_gems_from_backtrace("gem name")
+
+  # ~~ Database cleaner ~~
+  config.before(:suite) do
+    Sequel::Model.db.run("SET FOREIGN_KEY_CHECKS=0")
+    DatabaseCleaner.clean_with(:truncation)
+    Sequel::Model.db.run("SET FOREIGN_KEY_CHECKS=1")
+  end
+
+  config.before(:each) do
+    DatabaseCleaner.strategy = :transaction
+  end
+
+  config.before(:each, type: :feature) do
+    # :rack_test driver's Rack app under test shares database connection
+    # with the specs, so continue to use transaction strategy for speed.
+    driver_shares_db_connection_with_specs = Capybara.current_driver == :rack_test
+
+    unless driver_shares_db_connection_with_specs
+      # Driver is probably for an external browser with an app
+      # under test that does *not* share a database connection with the
+      # specs, so use truncation/deletion strategy.
+      DatabaseCleaner.strategy = :deletion
+    end
+  end
+
+  config.before(:each) do
+    DatabaseCleaner.start
+  end
+
+  config.append_after(:each) do
+    DatabaseCleaner.clean
+    ZipCode::CACHE.clear
+  end
 end

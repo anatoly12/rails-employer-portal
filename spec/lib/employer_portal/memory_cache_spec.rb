@@ -52,4 +52,14 @@ RSpec.describe ::EmployerPortal::MemoryCache do
       expect(subject.get("key1")).to be_nil
     end
   end
+
+  it "allows to clear all keys at once" do
+    subject.set("key1", 1)
+    subject.set("key2", 2)
+    subject.set("key3", 3)
+    subject.clear
+    expect(subject.get("key1")).to be_nil
+    expect(subject.get("key2")).to be_nil
+    expect(subject.get("key3")).to be_nil
+  end
 end

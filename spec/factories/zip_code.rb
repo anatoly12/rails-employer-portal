@@ -10,5 +10,12 @@ FactoryBot.define do
     city { Faker::Address.city }
     state { Faker::Address.state_abbr }
     geopoint { Sequel.function(:GeomFromText, point) }
+
+    trait :new_york do
+      zip { "10001" }
+      city { "New York" }
+      state { "NY" }
+      geopoint { Sequel.function(:GeomFromText, "POINT(40.750742 -73.99653)") }
+    end
   end
 end

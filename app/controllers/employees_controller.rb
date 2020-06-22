@@ -23,10 +23,10 @@ class EmployeesController < ApplicationController
     )
     if bulk.has_file?
       begin
-        csv = bulk.csv
-        flash.notice = "#{csv.size} employees were imported successfully."
+        bulk.save!
+        flash.notice = "#{bulk.count} employees were imported successfully."
         redirect_to action: :index
-      rescue StandardError => e
+      rescue ::EmployerPortal::Error::EmployeeBulkImport::Invalid => e
         flash.now.alert = e.message
         render :bulk_import
       end

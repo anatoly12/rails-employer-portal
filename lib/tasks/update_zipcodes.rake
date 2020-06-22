@@ -13,7 +13,7 @@ task update_zipcodes: :environment do
   puts "Truncate zip_codes table..."
   ZipCode.dataset.truncate
   puts "Read CSV and zip codes..."
-  columns = [:zip, :city, :state, :geopoint]
+  keys = [:zip, :city, :state, :geopoint]
   values = []
   CSV.read(filename, col_sep: ";", headers: true).each do |row|
     values << [
@@ -23,6 +23,6 @@ task update_zipcodes: :environment do
       Sequel.function(:GeomFromText, "POINT(#{row["Latitude"]} #{row["Longitude"]})"),
     ]
   end
-  ZipCode.import columns, values
+  ZipCode.import keys, values
   puts "Done."
 end

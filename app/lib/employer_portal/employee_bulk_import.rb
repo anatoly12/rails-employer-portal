@@ -13,20 +13,23 @@ module EmployerPortal
       file.respond_to?(:path) && File.size(file.path) > 0
     end
 
-    def csv
-      Sequel::Model.db.transaction do
-        parsed_csv.drop(1).each do |row|
-          Employee.create(
-            company_id: context.company_id,
-            employer_id: context.account_id,
-            first_name: row[0],
-            last_name: row[1],
-            email: row[2],
-            phone: row[3],
-            zipcode: row[4],
-          )
+    def count
+      employees.size
+    end
+
+    def save!
+      raise_error "Error: can't find any employee in given file." if employees.empty?
+      values = []
+      employees.each_with_index do |employee, index|
+        if employee.valid?
+          values << employee.values.values
+        else
+          raise_error "Error(s) on row #{index+2}: #{employee.errors.full_messages.to_sentence}."
         end
       end
+      Employee.import employees.first.values.keys, values
+    rescue CSV::MalformedCSVError => e
+      raise_error "Error: invalid file format."
     end
 
     private
@@ -50,7 +53,7 @@ module EmployerPortal
       retries = 0
       begin
         content = File.read file.tempfile.path, encoding: encoding, mode: "rb"
-        CSV.parse content, options
+        CSV.parse content, **options
       rescue CSV::MalformedCSVError
         if retries.zero?
           options[:force_quotes] = true
@@ -60,6 +63,24 @@ module EmployerPortal
           raise
         end
       end
+    end
+
+    def employees
+      @employees ||= parsed_csv.drop(1).map do |row|
+        Employee.new(
+          company_id: context.company_id,
+          employer_id: context.account_id,
+          first_name: row[0],
+          last_name: row[1],
+          email: row[2],
+          phone: row[3],
+          zipcode: row[4],
+        )
+      end
+    end
+
+    def raise_error(message)
+      raise ::EmployerPortal::Error::EmployeeBulkImport::Invalid, message
     end
   end
 end

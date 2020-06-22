@@ -10,5 +10,8 @@ module EmployerPortal
     module Employee
       class NotFound < ::EmployerPortal::Error::NotFound; end
     end
+    module EmployeeBulkImport
+      class Invalid < ::EmployerPortal::Error::Base; end
+    end
   end
 end

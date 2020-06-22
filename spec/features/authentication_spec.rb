@@ -1,14 +1,13 @@
 require "rails_helper"
 
 feature "Authentication" do
-  given(:password) { Faker::Internet.password }
-  given!(:employer) { create :employer, password: password }
+  given(:employer) { create :employer, :with_password }
 
   scenario "Signing in with correct credentials" do
     visit "/"
     within("#new_session") do
       fill_in "Email", with: employer.email
-      fill_in "Password", with: password
+      fill_in "Password", with: employer.password
       click_button "Sign in"
     end
     expect(page).to have_content "Welcome #{employer.first_name}!"

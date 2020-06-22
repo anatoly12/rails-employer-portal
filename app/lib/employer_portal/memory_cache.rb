@@ -4,6 +4,9 @@ module EmployerPortal
     # ~~ accessors ~~
     attr_reader :max_size
 
+    # ~~ delegates ~~
+    delegate :delete, :clear, to: :cache
+
     # ~~ public instance methods ~~
     def initialize(max_size = 50)
       @max_size = max_size
@@ -22,10 +25,6 @@ module EmployerPortal
 
     def get(key)
       cache[key]
-    end
-
-    def delete(key)
-      cache.delete key
     end
 
     private
