@@ -23,8 +23,10 @@ module EmployerPortal
       attr_reader :schema
 
       def in_rake_task?
-        !Rails.const_defined?("Server") && !Rails.const_defined?("Console") &&
-          File.basename($0)!="delayed_job"
+        cmd = File.basename($0)
+        return false if cmd=="puma" || cmd=="delayed_job"
+
+        !Rails.const_defined?("Server") && !Rails.const_defined?("Console")
       end
 
       def db
