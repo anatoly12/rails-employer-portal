@@ -28,6 +28,7 @@ gem "bootsnap", ">= 1.4.2", require: false
 group :development, :test do
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console
   # gem "byebug", platforms: [:mri, :mingw, :x64_mingw]
+  gem "faker", "~> 2.12"
 end
 
 group :development do
@@ -41,7 +42,6 @@ end
 group :test do
   gem "rspec-rails", "~> 4.0", ">= 4.0.1"
   gem "factory_bot", "~> 6.0", ">= 6.0.2"
-  gem "faker", "~> 2.12"
   gem "capybara", "~> 3.33"
   gem "webdrivers", "~> 4.4", ">= 4.4.1"
   gem "database_cleaner-sequel", "~> 1.8"

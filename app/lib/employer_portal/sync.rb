@@ -1,17 +1,21 @@
 module EmployerPortal
   class Sync
+    SYNC_DATABASE_URL = ENV["SYNC_DATABASE_URL"]
+    SYNC_SECRET_KEY_BASE = ENV["SYNC_SECRET_KEY_BASE"]
+
     class << self
       def init
-        return if in_rake_task?
         log("already connected") and return if connected?
-        url = ENV["SYNC_DATABASE_URL"]
-        log("SYNC_DATABASE_URL not configured, skip") and return if url.blank?
-        @schema = Sequel[File.basename(URI.parse(url).path).to_sym]
+        log("SYNC_DATABASE_URL not configured, skip") and return if SYNC_DATABASE_URL.blank?
+        @schema = Sequel[schema_name.to_sym]
         create_or_replace_views
         log("connected to #{schema.value}")
       rescue URI::InvalidURIError, Sequel::Error
-        log("can't connect to #{url}")
-        exit 1
+        abort("Sync: can't connect to #{SYNC_DATABASE_URL}")
+      end
+
+      def schema_name
+        File.basename URI.parse(SYNC_DATABASE_URL).path
       end
 
       def connected?
@@ -32,20 +36,18 @@ module EmployerPortal
             reset_password_token: devise_reset_password_token,
             reset_password_sent_at: now,
             created_at: now,
-            updated_at: now
+            updated_at: now,
           )
-          unless account.user_id
-            account.update user_id: db[schema[:ec_users]].insert(
-              email: employee.email,
-              first_name: employee.first_name,
-              last_name: employee.last_name,
-              phone: employee.phone,
-              state: employee.state,
-              zipcode: employee.zipcode,
-              created_at: now,
-              updated_at: now
-            ).id
-          end
+          account.update user_id: db[schema[:ec_users]].insert(
+            email: employee.email,
+            first_name: employee.first_name,
+            last_name: employee.last_name,
+            phone: employee.phone,
+            state: employee.state,
+            zipcode: employee.zipcode,
+            created_at: now,
+            updated_at: now,
+          ).id unless account.user_id
         end
         # raise ::EmployerPortal::Error::Sync::CantCreateAccount, "not implemented"
         # - `Partner` - pre-exists in the db created by EHS technical staff
@@ -60,13 +62,6 @@ module EmployerPortal
       private
 
       attr_reader :schema
-
-      def in_rake_task?
-        cmd = File.basename($0)
-        return false if cmd == "puma" || cmd == "delayed_job"
-
-        !Rails.const_defined?("Server") && !Rails.const_defined?("Console")
-      end
 
       def db
         Sequel::Model.db
@@ -231,7 +226,7 @@ module EmployerPortal
 
     def devise_reset_password_token
       key = ActiveSupport::KeyGenerator.new(
-        ENV.fetch "SYNC_SECRET_KEY_BASE"
+        SYNC_SECRET_KEY_BASE
       ).generate_key("Devise reset_password_token")
       loop do
         raw = SecureRandom.urlsafe_base64(15).tr("lIO0", "sxyz")
