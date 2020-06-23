@@ -4,12 +4,13 @@ module EmployerPortal
     SYNC_SECRET_KEY_BASE = ENV["SYNC_SECRET_KEY_BASE"]
 
     class << self
-      def init
+      def connect
         log("already connected") and return if connected?
         log("SYNC_DATABASE_URL not configured, skip") and return if SYNC_DATABASE_URL.blank?
         @schema = Sequel[schema_name.to_sym]
         create_or_replace_views
         log("connected to #{schema.value}")
+        define_legacy_models
       rescue URI::InvalidURIError, Sequel::Error
         abort("Sync: can't connect to #{SYNC_DATABASE_URL}")
       end
@@ -23,9 +24,11 @@ module EmployerPortal
       end
 
       def create_account_for_employee(employee)
+        raise ArgumentError, "SYNC_SECRET_KEY_BASE not configured" unless SYNC_SECRET_KEY_BASE.present?
+
         now = Time.now
         db.transaction do
-          account = db[schema[:accounts]].on_duplicate_key_update(
+          account_id = Account.dataset.on_duplicate_key_update(
             :is_active,
             :reset_password_token,
             :reset_password_sent_at,
@@ -38,25 +41,27 @@ module EmployerPortal
             created_at: now,
             updated_at: now,
           )
-          account.update user_id: db[schema[:ec_users]].insert(
-            email: employee.email,
-            first_name: employee.first_name,
-            last_name: employee.last_name,
-            phone: employee.phone,
-            state: employee.state,
-            zipcode: employee.zipcode,
-            created_at: now,
-            updated_at: now,
-          ).id unless account.user_id
+          account = Account[account_id]
+          unless account.user_id
+            account.update user_id: User.insert(
+              email: employee.email,
+              first_name: employee.first_name,
+              last_name: employee.last_name,
+              created_at: now,
+              updated_at: now,
+            )
+          end
+          employee.update remote_id: account_id
+          # - `Partner` - pre-exists in the db created by EHS technical staff
+          # - `PartnerAccessCode` - 0..N pre-exist in the db created by EHS technical staff
+          # - User provides a valid access code
+          #   - `TKit` - found in the db, created by EHS technical staff
+          #   - `Kit` - created for the `TKit` and `Partner`
+          #   - `Requisition` - created for the `Kit` and `Account`
+          #   - `AccountAccessGrant` - created for the `Account` tying them to the `Partner`
         end
-        # raise ::EmployerPortal::Error::Sync::CantCreateAccount, "not implemented"
-        # - `Partner` - pre-exists in the db created by EHS technical staff
-        # - `PartnerAccessCode` - 0..N pre-exist in the db created by EHS technical staff
-        # - User provides a valid access code
-        #   - `TKit` - found in the db, created by EHS technical staff
-        #   - `Kit` - created for the `TKit` and `Partner`
-        #   - `Requisition` - created for the `Kit` and `Account`
-        #   - `AccountAccessGrant` - created for the `Account` tying them to the `Partner`
+      rescue Sequel::Error => e
+        raise ::EmployerPortal::Error::Sync::CantCreateAccount, e.message
       end
 
       private
@@ -222,16 +227,31 @@ module EmployerPortal
             )
         )
       end
-    end
 
-    def devise_reset_password_token
-      key = ActiveSupport::KeyGenerator.new(
-        SYNC_SECRET_KEY_BASE
-      ).generate_key("Devise reset_password_token")
-      loop do
-        raw = SecureRandom.urlsafe_base64(15).tr("lIO0", "sxyz")
-        enc = OpenSSL::HMAC.hexdigest("SHA256", key, raw)
-        break enc if db[schema[:accounts]].where(reset_password_token: enc).limit(1).empty?
+      def devise_reset_password_token
+        key = ActiveSupport::KeyGenerator.new(
+          SYNC_SECRET_KEY_BASE
+        ).generate_key("Devise reset_password_token")
+        loop do
+          raw = SecureRandom.urlsafe_base64(15).tr("lIO0", "sxyz")
+          enc = OpenSSL::HMAC.hexdigest("SHA256", key, raw)
+          break enc if db[schema[:accounts]].where(reset_password_token: enc).limit(1).empty?
+        end
+      end
+
+      def define_legacy_models
+        const_set :Account, Class.new(
+                    Sequel::Model(db[schema[:accounts]])
+                  ) {
+                    many_to_one :user, class: "EmployerPortal::Sync::User"
+                    plugin :timestamps, update_on_create: true
+                  }
+        const_set :User, Class.new(
+                    Sequel::Model(db[schema[:ec_users]])
+                  ) {
+                    one_to_many :account, class: "EmployerPortal::Sync::Account"
+                    plugin :timestamps, update_on_create: true
+                  }
       end
     end
   end

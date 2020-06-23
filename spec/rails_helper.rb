@@ -72,6 +72,10 @@ RSpec.configure do |config|
     end
   end
 
+  config.before(:each, type: :sync) do
+    DatabaseCleaner.strategy = :deletion
+  end
+
   config.before(:each) do
     DatabaseCleaner.start
   end

@@ -10,9 +10,8 @@ class CreateAccountForEmployeeJob < ApplicationJob
     elsif employee.remote_id.present?
       log "employee #{uuid} is already linked to account #{employee.remote_id}"
     else
-      remote_id = ::EmployerPortal::Sync.create_account_for_employee(employee)
-      employee.update remote_id: remote_id
-      log "employee #{uuid} is now linked to account #{remote_id}"
+      ::EmployerPortal::Sync.create_account_for_employee(employee)
+      log "employee #{uuid} is now linked to account #{employee.remote_id}"
     end
   end
 

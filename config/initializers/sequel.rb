@@ -1,4 +1,5 @@
 Sequel.database_timezone = :utc
+Sequel::Model.db.extension(:null_dataset)
 
 def in_rake_task?
   cmd = File.basename($0)
@@ -8,5 +9,5 @@ def in_rake_task?
 end
 
 Rails.application.reloader.to_prepare do
-  ::EmployerPortal::Sync.init unless in_rake_task?
+  ::EmployerPortal::Sync.connect unless in_rake_task?
 end
