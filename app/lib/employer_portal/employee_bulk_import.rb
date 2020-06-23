@@ -24,7 +24,7 @@ module EmployerPortal
         if employee.valid?
           values << employee.values.values
         else
-          raise_error "Error(s) on row #{index+2}: #{employee.errors.full_messages.to_sentence}."
+          raise_error "Error(s) on row #{index + 2}: #{employee.errors.full_messages.to_sentence}."
         end
       end
       Employee.import employees.first.values.keys, values

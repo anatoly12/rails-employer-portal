@@ -24,7 +24,7 @@ module EmployerPortal
 
       def in_rake_task?
         cmd = File.basename($0)
-        return false if cmd=="puma" || cmd=="delayed_job"
+        return false if cmd == "puma" || cmd == "delayed_job"
 
         !Rails.const_defined?("Server") && !Rails.const_defined?("Console")
       end
@@ -60,29 +60,53 @@ module EmployerPortal
             .select(
               Sequel.lit("SQL_CACHE ?", schema[:accounts][:id]).as(:id),
               schema[:accounts][:email].as(:email),
-              any_value(schema[:account_demographics][:full_legal_name]).as(:full_name),
-              any_value(schema[:account_demographics][:state_of_residence]).as(:state),
-              any_value(schema[:identities][:selfie_s3_key]).as(:selfie_s3_key),
-              (db[schema[:identities]].columns.include?(:identity_verified) ?
-                any_value(schema[:identities][:identity_verified]) :
-                Sequel.lit("FALSE")).as(:identity_verified),
-              any_value(schema[:partner_access_codes][:partner_id]).as(:partner_id),
-              Sequel.function(:coalesce, any_value(schema[:covid19_daily_checkup_statuses][:daily_checkup_status]), "Did Not Submit").as(:daily_checkup_status),
-              (db[schema[:covid19_daily_checkups]].columns.include?(:checkup_date) ?
-                any_value(schema[:covid19_daily_checkups][:checkup_date]) :
-                any_value(Sequel.function(:date, schema[:covid19_daily_checkups][:updated_at]))).as(:daily_checkup_updated_at),
-              any_value(Sequel.case([
-                [{ schema[:covid19_daily_checkups][:daily_checkup_status_code] => 1 }, "Cleared"],
-                [{ schema[:covid19_daily_checkups][:daily_checkup_status_code] => 2 }, "Contact"],
-              ], "Send Reminder")).as(:daily_checkup_action),
-              any_value(Sequel.case([
-                [{ schema[:covid19_evaluations][:status] => [1, 4] }, "Cleared"],
-                [{ schema[:covid19_evaluations][:status] => 5 }, "Inconclusive"],
-                [{ schema[:covid19_evaluations][:lab_review_approved] => true }, "Submitted Results"],
-                [{ schema[:covid19_evaluations][:identity_approved] => true }, "Intake"],
-                [Sequel.negate(schema[:covid19_evaluations][:status] => nil), "Registered"],
-              ], "Not Registered")).as(:testing_status),
-              any_value(Sequel.function(:date, schema[:covid19_evaluations][:updated_at])).as(:testing_updated_at)
+              any_value(
+                schema[:account_demographics][:full_legal_name]
+              ).as(:full_name),
+              any_value(
+                schema[:account_demographics][:state_of_residence]
+              ).as(:state),
+              any_value(
+                schema[:identities][:selfie_s3_key]
+              ).as(:selfie_s3_key),
+              any_value(
+                schema[:identities][:identity_verified]
+              ).as(:identity_verified),
+              any_value(
+                schema[:partner_access_codes][:partner_id]
+              ).as(:partner_id),
+              Sequel.function(
+                :coalesce,
+                any_value(schema[:covid19_daily_checkup_statuses][:daily_checkup_status]),
+                "Did Not Submit"
+              ).as(:daily_checkup_status),
+              any_value(
+                schema[:covid19_daily_checkups][:checkup_date]
+              ).as(:daily_checkup_updated_at),
+              any_value(
+                Sequel.case(
+                  [
+                    [{ schema[:covid19_daily_checkups][:daily_checkup_status_code] => 1 }, "Cleared"],
+                    [{ schema[:covid19_daily_checkups][:daily_checkup_status_code] => 2 }, "Contact"],
+                  ],
+                  "Send Reminder"
+                )
+              ).as(:daily_checkup_action),
+              any_value(
+                Sequel.case(
+                  [
+                    [{ schema[:covid19_evaluations][:status] => [1, 4] }, "Cleared"],
+                    [{ schema[:covid19_evaluations][:status] => 5 }, "Inconclusive"],
+                    [{ schema[:covid19_evaluations][:lab_review_approved] => true }, "Submitted Results"],
+                    [{ schema[:covid19_evaluations][:identity_approved] => true }, "Intake"],
+                    [Sequel.negate(schema[:covid19_evaluations][:status] => nil), "Registered"],
+                  ],
+                  "Not Registered"
+                )
+              ).as(:testing_status),
+              any_value(
+                Sequel.function(:date, schema[:covid19_evaluations][:updated_at])
+              ).as(:testing_updated_at)
             )
         )
         db.create_or_replace_view(
@@ -98,17 +122,38 @@ module EmployerPortal
             .exclude(schema[:accounts][:id] => nil)
             .select(
               Sequel.lit("SQL_CACHE ?", schema[:accounts][:id]).as(:account_id),
-              Sequel.function(:date, schema[:ec_questions][:updated_at]).as(:log_date),
-              Sequel.function(:max, { schema[:ec_kits][:flagged_status] => "FLAGGED" }).as(:flagged),
-              Sequel.function(:max, Sequel.case([
-                [{ schema[:ec_questions][:question] => "Temperature" }, schema[:ec_questions][:response]],
-              ], nil)).as(:temperature),
-              Sequel.function(:max, Sequel.case([
-                [{
-                  schema[:ec_questions][:sub_group] => "Symptoms",
-                  schema[:ec_questions][:response] => "Yes",
-                }, true],
-              ], false)).as(:symptoms)
+              Sequel.function(
+                :date,
+                schema[:ec_questions][:updated_at]
+              ).as(:log_date),
+              Sequel.function(
+                :max,
+                schema[:ec_kits][:flagged_status] => "FLAGGED",
+              ).as(:flagged),
+              Sequel.function(
+                :max,
+                Sequel.case(
+                  [
+                    [{ schema[:ec_questions][:question] => "Temperature" }, schema[:ec_questions][:response]],
+                  ],
+                  nil
+                )
+              ).as(:temperature),
+              Sequel.function(
+                :max,
+                Sequel.case(
+                  [
+                    [
+                      {
+                        schema[:ec_questions][:sub_group] => "Symptoms",
+                        schema[:ec_questions][:response] => "Yes",
+                      },
+                      true,
+                    ],
+                  ],
+                  false
+                )
+              ).as(:symptoms)
             )
         )
         db.create_or_replace_view(
@@ -126,12 +171,20 @@ module EmployerPortal
             )
             .select(
               Sequel.lit("SQL_CACHE ?", schema[:ec_questions][:question_id]).as(:id),
-              any_value(schema[:accounts][:id]).as(:account_id),
-              Sequel.function(:date, schema[:ec_questions][:updated_at]).as(:log_date),
+              any_value(
+                schema[:accounts][:id]
+              ).as(:account_id),
+              Sequel.function(
+                :date,
+                schema[:ec_questions][:updated_at]
+              ).as(:log_date),
               schema[:ec_questions][:question].as(:question),
               schema[:ec_questions][:response].as(:response),
               schema[:ec_data_types][:type_of].as(:question_type),
-              Sequel.function(:json_arrayagg, schema[:ec_list_items][:item]).as(:options)
+              Sequel.function(
+                :json_arrayagg,
+                schema[:ec_list_items][:item]
+              ).as(:options)
             )
         )
       end
