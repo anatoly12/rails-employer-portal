@@ -79,6 +79,8 @@ In addition, you need to define the following environment variables:
 - `RAILS_ENV="production"`
 - `DATABASE_URL="mysql2://username:password@host:port/dbname?charset=utf8mb4&collation=utf8mb4_unicode_ci"`
 - `SYNC_DATABASE_URL="mysql2://username:password@host:port/ecp-prod?charset=utf8&collation=utf8_general_ci"`
+- `SECRET_KEY_BASE="XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX"`
+- `SYNC_SECRET_KEY_BASE="XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX"`
 - `AWS_ACCESS_KEY_ID="XXXXXXXXXXXXXXXXXXXX"`
 - `AWS_SECRET_ACCESS_KEY="XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX"`
 - `S3_PREFIX="prod"`
@@ -92,6 +94,8 @@ As displayed in these examples, notice the difference in charset and collation:
 - the old database (shared with the other portals) uses `utf8` and `utf8_general_ci`
 
 Due to the way the sync works at the moment, the app requires the user for the new database/schema to also have access to the old database/schema, allowing to reuse the same connection for faster performance.
+
+Moreover, the sync is also required to generate reset_password_token compatible with the old platform, as a consequence it's necessary to define `SYNC_SECRET_KEY_BASE` with the value of `SECRET_KEY_BASE` from the Essential Connect Portal otherwise the tokens we generate won't work on the other side.
 
 It's possible to tweak the number of web server threads and the size of the DB connection pool with the following environment variable:
 
