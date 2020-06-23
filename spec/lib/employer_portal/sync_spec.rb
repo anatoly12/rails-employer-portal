@@ -93,14 +93,24 @@ RSpec.describe ::EmployerPortal::Sync, type: :sync, order: :defined do
           end.to change { described_class::Account.count }.by(1)
           account = described_class::Account.order(:id).last
           expect(account.email).to eql employee.email
+          expect(account.is_active).to be_truthy
+          expect(account.reset_password_token).not_to be_nil
         end
 
         it "creates a legacy user too" do
           subject
           user = described_class::Account.order(:id).last.user
+          expect(user.email).to eql employee.email
           expect(user.first_name).to eql employee.first_name
           expect(user.last_name).to eql employee.last_name
-          expect(user.email).to eql employee.email
+        end
+
+        it "creates a row in account demographics" do
+          subject
+          demographic = described_class::Account.order(:id).last.demographic
+          expect(demographic.full_legal_name).to eql employee.full_name
+          expect(demographic.state_of_residence).to eql employee.state
+          expect(demographic.phone_number).to eql employee.phone
         end
 
         it "links the employee to the new account" do
@@ -127,6 +137,34 @@ RSpec.describe ::EmployerPortal::Sync, type: :sync, order: :defined do
         it "links the employee to the existing account" do
           subject
           expect(employee.remote_id).to eql account.id
+        end
+
+        context "with an existing demographic" do
+          let!(:demographic) { create :sync_demographic, account: account }
+
+          it "doesn't create any demographic" do
+            expect do
+              subject
+            end.not_to change { described_class::AccountDemographic.count }
+          end
+
+          it "doesn't update the existing demographic" do
+            expect do
+              subject
+            end.not_to change { demographic.reload }
+          end
+        end
+
+        context "without demographic" do
+          it "creates a new demographic for the existing account" do
+            expect do
+              subject
+            end.to change { described_class::AccountDemographic.count }.by(1)
+            demographic = account.demographic
+            expect(demographic.full_legal_name).to eql employee.full_name
+            expect(demographic.state_of_residence).to eql employee.state
+            expect(demographic.phone_number).to eql employee.phone
+          end
         end
       end
 

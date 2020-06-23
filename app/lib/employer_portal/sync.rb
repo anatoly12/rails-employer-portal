@@ -42,15 +42,19 @@ module EmployerPortal
             updated_at: now,
           )
           account = Account[account_id]
-          unless account.user_id
-            account.update user_id: User.insert(
-              email: employee.email,
-              first_name: employee.first_name,
-              last_name: employee.last_name,
-              created_at: now,
-              updated_at: now,
-            )
-          end
+          account.update user_id: User.insert(
+            email: employee.email,
+            first_name: employee.first_name,
+            last_name: employee.last_name,
+            created_at: now,
+            updated_at: now,
+          ) unless account.user_id
+          AccountDemographic.create(
+            account_id: account_id,
+            full_legal_name: employee.full_name,
+            state_of_residence: employee.state,
+            phone_number: employee.phone,
+          ) unless account.demographic
           employee.update remote_id: account_id
           # - `Partner` - pre-exists in the db created by EHS technical staff
           # - `PartnerAccessCode` - 0..N pre-exist in the db created by EHS technical staff
@@ -244,12 +248,19 @@ module EmployerPortal
                     Sequel::Model(db[schema[:accounts]])
                   ) {
                     many_to_one :user, class: "EmployerPortal::Sync::User"
+                    one_to_one :demographic, class: "EmployerPortal::Sync::AccountDemographic", key: :account_id
+                    plugin :timestamps, update_on_create: true
+                  }
+        const_set :AccountDemographic, Class.new(
+                    Sequel::Model(db[schema[:account_demographics]])
+                  ) {
+                    many_to_one :account, class: "EmployerPortal::Sync::Account"
                     plugin :timestamps, update_on_create: true
                   }
         const_set :User, Class.new(
                     Sequel::Model(db[schema[:ec_users]])
                   ) {
-                    one_to_many :account, class: "EmployerPortal::Sync::Account"
+                    one_to_one :account, class: "EmployerPortal::Sync::Account", key: :account_id
                     plugin :timestamps, update_on_create: true
                   }
       end
