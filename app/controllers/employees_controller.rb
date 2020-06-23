@@ -26,7 +26,7 @@ class EmployeesController < ApplicationController
         bulk.save!
         flash.notice = "#{bulk.count} employees were imported successfully."
         redirect_to action: :index
-      rescue ::EmployerPortal::Error::EmployeeBulkImport::Invalid => e
+      rescue ::EmployerPortal::Error::EmployeeBulkImport::Base => e
         flash.now.alert = e.message
         render :bulk_import
       end

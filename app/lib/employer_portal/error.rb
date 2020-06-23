@@ -12,7 +12,13 @@ module EmployerPortal
     end
 
     module EmployeeBulkImport
-      class Invalid < ::EmployerPortal::Error::Base; end
+      class Base < ::EmployerPortal::Error::Base; end
+      class Invalid < Base; end
+    end
+
+    module Sync
+      class Base < ::EmployerPortal::Error::Base; end
+      class CantCreateAccount < Base; end
     end
   end
 end

@@ -18,6 +18,45 @@ module EmployerPortal
         schema.present?
       end
 
+      def create_account_for_employee(employee)
+        now = Time.now
+        db.transaction do
+          account = db[schema[:accounts]].on_duplicate_key_update(
+            :is_active,
+            :reset_password_token,
+            :reset_password_sent_at,
+            :updated_at
+          ).insert(
+            email: employee.email,
+            is_active: true,
+            reset_password_token: devise_reset_password_token,
+            reset_password_sent_at: now,
+            created_at: now,
+            updated_at: now
+          )
+          unless account.user_id
+            account.update user_id: db[schema[:ec_users]].insert(
+              email: employee.email,
+              first_name: employee.first_name,
+              last_name: employee.last_name,
+              phone: employee.phone,
+              state: employee.state,
+              zipcode: employee.zipcode,
+              created_at: now,
+              updated_at: now
+            ).id
+          end
+        end
+        # raise ::EmployerPortal::Error::Sync::CantCreateAccount, "not implemented"
+        # - `Partner` - pre-exists in the db created by EHS technical staff
+        # - `PartnerAccessCode` - 0..N pre-exist in the db created by EHS technical staff
+        # - User provides a valid access code
+        #   - `TKit` - found in the db, created by EHS technical staff
+        #   - `Kit` - created for the `TKit` and `Partner`
+        #   - `Requisition` - created for the `Kit` and `Account`
+        #   - `AccountAccessGrant` - created for the `Account` tying them to the `Partner`
+      end
+
       private
 
       attr_reader :schema
@@ -187,6 +226,17 @@ module EmployerPortal
               ).as(:options)
             )
         )
+      end
+    end
+
+    def devise_reset_password_token
+      key = ActiveSupport::KeyGenerator.new(
+        ENV.fetch "SYNC_SECRET_KEY_BASE"
+      ).generate_key("Devise reset_password_token")
+      loop do
+        raw = SecureRandom.urlsafe_base64(15).tr("lIO0", "sxyz")
+        enc = OpenSSL::HMAC.hexdigest("SHA256", key, raw)
+        break enc if db[schema[:accounts]].where(reset_password_token: enc).limit(1).empty?
       end
     end
   end

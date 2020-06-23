@@ -7,6 +7,7 @@ module EmployerPortal
     def initialize(context, file)
       @context = context
       @file = file
+      @errors = []
     end
 
     def has_file?
@@ -19,22 +20,17 @@ module EmployerPortal
 
     def save!
       raise_error "Error: can't find any employee in given file." if employees.empty?
-      values = []
-      employees.each_with_index do |employee, index|
-        if employee.valid?
-          values << employee.values.values
-        else
-          raise_error "Error(s) on row #{index + 2}: #{employee.errors.full_messages.to_sentence}."
-        end
-      end
-      Employee.import employees.first.values.keys, values
+      validate
+      raise_error errors.first if errors.any?
+      persist!
+      enqueue_background_jobs
     rescue CSV::MalformedCSVError => e
       raise_error "Error: invalid file format."
     end
 
     private
 
-    attr_reader :context, :file
+    attr_reader :context, :file, :errors
 
     def original_ext
       File.extname(file.original_filename).downcase
@@ -76,6 +72,28 @@ module EmployerPortal
           phone: row[3],
           zipcode: row[4],
         )
+      end
+    end
+
+    def validate
+      errors.clear
+      employees.each_with_index do |employee, index|
+        unless employee.valid?
+          errors << "Error(s) on row #{index + 2}: #{employee.errors.full_messages.to_sentence}."
+        end
+      end
+    end
+
+    def persist!
+      Employee.import(
+        employees.first.values.keys,
+        employees.map { |employee| employee.values.values }
+      )
+    end
+
+    def enqueue_background_jobs
+      employees.each do |employee|
+        CreateAccountForEmployeeJob.perform_later employee.uuid
       end
     end
 
