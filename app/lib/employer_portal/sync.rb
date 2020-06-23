@@ -69,7 +69,7 @@ module EmployerPortal
               any_value(schema[:partner_access_codes][:partner_id]).as(:partner_id),
               Sequel.function(:coalesce, any_value(schema[:covid19_daily_checkup_statuses][:daily_checkup_status]), "Did Not Submit").as(:daily_checkup_status),
               (db[schema[:covid19_daily_checkups]].columns.include?(:checkup_date) ?
-                any_value(schema[:covid19_daily_checkups][:checkup_date]).as(:daily_checkup_updated_at) :
+                any_value(schema[:covid19_daily_checkups][:checkup_date]) :
                 any_value(Sequel.function(:date, schema[:covid19_daily_checkups][:updated_at]))).as(:daily_checkup_updated_at),
               any_value(Sequel.case([
                 [{ schema[:covid19_daily_checkups][:daily_checkup_status_code] => 1 }, "Cleared"],
