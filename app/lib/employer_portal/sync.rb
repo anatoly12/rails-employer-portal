@@ -1,5 +1,5 @@
 module EmployerPortal
-  class Sync
+  module Sync
     SYNC_DATABASE_URL = ENV["SYNC_DATABASE_URL"]
     SYNC_SECRET_KEY_BASE = ENV["SYNC_SECRET_KEY_BASE"]
 

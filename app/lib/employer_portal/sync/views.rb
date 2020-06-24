@@ -1,5 +1,5 @@
 module EmployerPortal
-  class Sync
+  module Sync
     class Views
       def initialize(schema)
         @schema = schema

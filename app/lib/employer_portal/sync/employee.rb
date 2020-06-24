@@ -1,9 +1,9 @@
 module EmployerPortal
-  class Sync
+  module Sync
     class Employee
       SYNC_SECRET_KEY_BASE = ENV["SYNC_SECRET_KEY_BASE"]
 
-      def initialize(schema, secret_key_base, employee, now=Time.now)
+      def initialize(schema, secret_key_base, employee, now = Time.now)
         @schema = schema
         @secret_key_base = secret_key_base
         @employee = employee
@@ -79,7 +79,7 @@ module EmployerPortal
           state_of_residence: employee.state,
           phone_number: employee.phone,
           created_at: now,
-          updated_at: now
+          updated_at: now,
         )
       end
 
@@ -104,14 +104,14 @@ module EmployerPortal
         #   - `Requisition` - created for the `Kit` and `Account`
         #   - `AccountAccessGrant` - created for the `Account` tying them to the `Partner`
         partner_access_code_id = PartnerAccessCode.where(
-          partner_id: partner_id
+          partner_id: partner_id,
         ).get(:id)
         AccountAccessGrant.create(
           account_id: account_id,
           partner_access_code_id: partner_access_code_id,
           created_at: now,
-          updated_at: now
-        ) if partner_access_code_id && account.access_grants.none?{|g| g.partner_id==partner_id}
+          updated_at: now,
+        ) if partner_access_code_id && account.access_grants.none? { |g| g.partner_id == partner_id }
       end
     end
   end

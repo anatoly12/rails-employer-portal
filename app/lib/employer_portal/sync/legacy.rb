@@ -1,5 +1,5 @@
 module EmployerPortal
-  class Sync
+  module Sync
     class Legacy
       def initialize(schema, klass)
         @schema = schema
@@ -14,7 +14,7 @@ module EmployerPortal
         klass.const_set :User, user_class
       end
 
-    private
+      private
 
       attr_reader :schema, :klass
 
