@@ -43,7 +43,7 @@ module EmployerPortal
       ).where(
         company_id: context.account.company_id
       ).select(
-        Sequel.qualify(:employees, :email),
+        Sequel.qualify(:employees, :uuid),
         Sequel.function(:coalesce,
           Sequel.qualify(:dashboard_employees, :full_name),
           Sequel.function(:concat, Sequel.qualify(:employees, :first_name), " ", Sequel.qualify(:employees, :last_name))

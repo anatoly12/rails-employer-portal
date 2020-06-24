@@ -18,6 +18,6 @@ class CreateAccountForEmployeeJob < ApplicationJob
   private
 
   def log(message)
-    Rails.Logger.log message
+    Delayed::Worker.logger.info message
   end
 end

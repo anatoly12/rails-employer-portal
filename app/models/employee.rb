@@ -28,7 +28,7 @@ class Employee < Sequel::Model
 
   # ~~~ public instance methods ~~~
   def to_param
-    URI.encode_www_form_component(email)
+    uuid
   end
 
   def full_name
