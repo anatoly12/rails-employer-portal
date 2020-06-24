@@ -201,6 +201,7 @@ RSpec.describe ::EmployerPortal::Sync, type: :sync, order: :defined do
         it "links the employee to the new account" do
           subject
           expect(employee.remote_id).not_to be_nil
+          expect(employee.remote_sync_at).not_to be_nil
         end
       end
 
@@ -222,6 +223,7 @@ RSpec.describe ::EmployerPortal::Sync, type: :sync, order: :defined do
         it "links the employee to the existing account" do
           subject
           expect(employee.remote_id).to eql account.id
+          expect(employee.remote_sync_at).not_to be_nil
         end
 
         context "with an existing demographic" do

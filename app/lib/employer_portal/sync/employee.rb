@@ -17,7 +17,7 @@ module EmployerPortal
           create_demographic_if_needed(account)
           create_requisition(account)
           create_access_grant(account)
-          employee.update remote_id: account.id
+          employee.update remote_id: account.id, remote_sync_at: now
         end
       rescue Sequel::Error => e
         raise ::EmployerPortal::Error::Sync::CantCreateAccount, e.message
