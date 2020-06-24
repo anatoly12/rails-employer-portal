@@ -22,6 +22,7 @@ module EmployerPortal
     def update_attributes(params)
       edited.set params
       edited.save raise_on_failure: false
+      CreateAccountForEmployeeJob.perform_later edited.uuid
     end
 
     private
