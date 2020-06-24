@@ -7,10 +7,11 @@ module EmployerPortal
       end
 
       def define_models
+        klass.const_set :AccessCode, access_code_class
+        klass.const_set :AccessGrant, access_grant_class
         klass.const_set :Account, account_class
-        klass.const_set :AccountAccessGrant, account_access_grant_class
-        klass.const_set :AccountDemographic, account_demographic_class
-        klass.const_set :PartnerAccessCode, partner_access_code_class
+        klass.const_set :Demographic, demographic_class
+        klass.const_set :Partner, partner_class
         klass.const_set :User, user_class
       end
 
@@ -22,30 +23,40 @@ module EmployerPortal
         Sequel::Model.db
       end
 
+      def access_code_class
+        prefix = klass.to_s
+        Class.new(
+          Sequel::Model(db[schema[:partner_access_codes]])
+        ) {
+          many_to_one :partner, class: "#{prefix}::Partner"
+          plugin :timestamps, update_on_create: true
+        }
+      end
+
+      def access_grant_class
+        prefix = klass.to_s
+        Class.new(
+          Sequel::Model(db[schema[:account_access_grants]])
+        ) {
+          many_to_one :account, class: "#{prefix}::Account"
+          many_to_one :access_code, class: "#{prefix}::AccessCode", key: :partner_access_code_id
+          plugin :timestamps, update_on_create: true
+        }
+      end
+
       def account_class
         prefix = klass.to_s
         Class.new(
           Sequel::Model(db[schema[:accounts]])
         ) {
           many_to_one :user, class: "#{prefix}::User"
-          one_to_one :demographic, class: "#{prefix}::AccountDemographic", key: :account_id
-          one_to_many :access_grants, class: "#{prefix}::AccountAccessGrant", key: :account_id
+          one_to_one :demographic, class: "#{prefix}::Demographic", key: :account_id
+          one_to_many :access_grants, class: "#{prefix}::AccessGrant", key: :account_id
           plugin :timestamps, update_on_create: true
         }
       end
 
-      def account_access_grant_class
-        prefix = klass.to_s
-        Class.new(
-          Sequel::Model(db[schema[:account_access_grants]])
-        ) {
-          many_to_one :account, class: "#{prefix}::Account"
-          many_to_one :partner_access_code, class: "#{prefix}::PartnerAccessCode"
-          plugin :timestamps, update_on_create: true
-        }
-      end
-
-      def account_demographic_class
+      def demographic_class
         prefix = klass.to_s
         Class.new(
           Sequel::Model(db[schema[:account_demographics]])
@@ -55,10 +66,14 @@ module EmployerPortal
         }
       end
 
-      def partner_access_code_class
+      def partner_class
+        prefix = klass.to_s
         Class.new(
-          Sequel::Model(db[schema[:partner_access_codes]])
-        )
+          Sequel::Model(db[schema[:ec_partners]])
+        ) {
+          one_to_many :access_codes, class: "#{prefix}::AccessCode"
+          plugin :timestamps, update_on_create: true
+        }
       end
 
       def user_class

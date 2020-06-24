@@ -1,5 +1,5 @@
 FactoryBot.define do
-  factory :sync_demographic, class: "EmployerPortal::Sync::AccountDemographic" do
+  factory :sync_demographic, class: "EmployerPortal::Sync::Demographic" do
     account { create :account }
     full_legal_name { Faker::Name.name }
     state_of_residence { Faker::Address.state_abbr }

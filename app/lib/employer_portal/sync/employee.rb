@@ -15,7 +15,8 @@ module EmployerPortal
           account = create_or_update_account
           create_user_if_needed(account)
           create_demographic_if_needed(account)
-          link_to_partner(account)
+          create_requisition(account)
+          create_access_grant(account)
           employee.update remote_id: account.id
         end
       rescue Sequel::Error => e
@@ -73,7 +74,7 @@ module EmployerPortal
       def create_demographic_if_needed(account)
         return if account.demographic
 
-        AccountDemographic.create(
+        Demographic.create(
           account_id: account.id,
           full_legal_name: employee.full_name,
           state_of_residence: employee.state,
@@ -87,8 +88,9 @@ module EmployerPortal
         employee.company.remote_id
       end
 
-      def link_to_partner(account)
+      def create_requisition(account)
         return unless partner_id
+
         # Requisition.create(
         #   requisition_id: Kit.where(
         #   ) schema[:ec_kits][:requisition_id]
@@ -102,16 +104,21 @@ module EmployerPortal
         #   - `TKit` - found in the db, created by EHS technical staff
         #   - `Kit` - created for the `TKit` and `Partner`
         #   - `Requisition` - created for the `Kit` and `Account`
-        #   - `AccountAccessGrant` - created for the `Account` tying them to the `Partner`
-        partner_access_code_id = PartnerAccessCode.where(
-          partner_id: partner_id,
-        ).get(:id)
-        AccountAccessGrant.create(
-          account_id: account_id,
-          partner_access_code_id: partner_access_code_id,
+      end
+
+      def create_access_grant(account)
+        return unless partner_id
+        return if account.access_grants.any? { |g| g.access_code.partner_id == partner_id }
+
+        access_code_id = AccessCode.where(partner_id: partner_id).get(:id)
+        return unless access_code_id
+
+        AccessGrant.create(
+          account_id: account.id,
+          partner_access_code_id: access_code_id,
           created_at: now,
           updated_at: now,
-        ) if partner_access_code_id && account.access_grants.none? { |g| g.partner_id == partner_id }
+        )
       end
     end
   end

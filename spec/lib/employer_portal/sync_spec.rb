@@ -72,6 +72,14 @@ RSpec.describe ::EmployerPortal::Sync, type: :sync, order: :defined do
   describe ".create_account_for_employee!" do
     let(:company) { create :company }
     let(:employee) { create :employee, company: company }
+    before do
+      stub_const(
+        "#{described_class}::SYNC_DATABASE_URL",
+        "mysql2://@localhost:3306/ecp-test?charset=utf8&collation=utf8_general_ci"
+      )
+      expect { described_class.connect }.to output.to_stdout
+    end
+
     before { described_class::Account.dataset.delete }
     subject { described_class.create_account_for_employee! employee }
 
@@ -113,12 +121,35 @@ RSpec.describe ::EmployerPortal::Sync, type: :sync, order: :defined do
           expect(demographic.phone_number).to eql employee.phone
         end
 
-        it "creates an access grant" do
-          subject
-          account = described_class::Account.order(:id).last
-          expect(account.access_grants.size).to eql 1
-          access_grant = account.access_grants.first
-          expect(access_grant.partner_access_code_id).not_to be_nil
+        context "when company.remote_id isn't filled in" do
+          it "doesn't create any access grant" do
+            expect { subject }.not_to change { described_class::AccessGrant.count }
+          end
+        end
+
+        context "when company.remote_id doesn't match any access code" do
+          let(:partner) { create :sync_partner }
+          let(:company) { create :company, remote_id: partner.partner_id }
+
+          it "doesn't create any access grant" do
+            expect { subject }.not_to change { described_class::AccessGrant.count }
+          end
+        end
+
+        context "when company.remote_id matches an access code" do
+          let(:partner) { create :sync_partner }
+          let(:company) { create :company, remote_id: partner.partner_id }
+          let!(:access_code) { create :sync_access_code, partner: partner }
+
+          it "creates an access grant" do
+            expect do
+              subject
+            end.to change { described_class::AccessGrant.count }.by(1)
+            account = described_class::Account.order(:id).last
+            expect(account.access_grants.size).to eql 1
+            access_grant = account.access_grants.first
+            expect(access_grant.partner_access_code_id).to eql access_code.id
+          end
         end
 
         it "links the employee to the new account" do
@@ -153,7 +184,7 @@ RSpec.describe ::EmployerPortal::Sync, type: :sync, order: :defined do
           it "doesn't create any demographic" do
             expect do
               subject
-            end.not_to change { described_class::AccountDemographic.count }
+            end.not_to change { described_class::Demographic.count }
           end
 
           it "doesn't update the existing demographic" do
@@ -167,7 +198,7 @@ RSpec.describe ::EmployerPortal::Sync, type: :sync, order: :defined do
           it "creates a new demographic for the existing account" do
             expect do
               subject
-            end.to change { described_class::AccountDemographic.count }.by(1)
+            end.to change { described_class::Demographic.count }.by(1)
             demographic = account.demographic
             expect(demographic.full_legal_name).to eql employee.full_name
             expect(demographic.state_of_residence).to eql employee.state
@@ -175,31 +206,54 @@ RSpec.describe ::EmployerPortal::Sync, type: :sync, order: :defined do
           end
         end
 
-        # context "with an existing access grant" do
-        #   let!(:demographic) { create :sync_demographic, account: account }
+        context "with an existing access grant with this partner" do
+          let(:partner) { create :sync_partner }
+          let(:company) { create :company, remote_id: partner.partner_id }
+          let(:access_code) { create :sync_access_code, partner: partner }
+          let!(:access_grant) { create :sync_access_grant, account: account, access_code: access_code }
 
-        #   it "doesn't create any demographic" do
-        #     expect do
-        #       subject
-        #     end.not_to change { described_class::AccountDemographic.count }
-        #   end
+          it "doesn't create any access grant" do
+            expect do
+              subject
+            end.not_to change { described_class::AccessGrant.count }
+          end
 
-        #   it "doesn't update the existing demographic" do
-        #     expect do
-        #       subject
-        #     end.not_to change { demographic.reload }
-        #   end
-        # end
+          it "doesn't update the existing access grant" do
+            expect do
+              subject
+            end.not_to change { access_grant.reload }
+          end
+        end
 
-        # context "without access grant" do
-        #   it "creates a new access grants for the existing account" do
-        #     expect do
-        #       subject
-        #     end.to change { described_class::AccountAccessGrant.count }.by(1)
-        #     access_grant = account.access_grants.first
-        #     expect(access_grant.partner_access_code_id).not_to be_nil
-        #   end
-        # end
+        context "with an existing access grant but with another partner" do
+          let(:partner) { create :sync_partner }
+          let(:company) { create :company, remote_id: partner.partner_id }
+          let!(:access_code) { create :sync_access_code, partner: partner }
+          let(:another_access_code) { create :sync_access_code, partner: create(:sync_partner) }
+          let!(:access_grant) { create :sync_access_grant, account: account, access_code: another_access_code }
+
+          it "creates an access grant for the existing account" do
+            expect do
+              subject
+            end.to change { account.reload.access_grants.size }.from(1).to(2)
+            access_grant = account.access_grants.last
+            expect(access_grant.partner_access_code_id).to eql access_code.id
+          end
+        end
+
+        context "without existing access grant" do
+          let(:partner) { create :sync_partner }
+          let(:company) { create :company, remote_id: partner.partner_id }
+          let!(:access_code) { create :sync_access_code, partner: partner }
+
+          it "creates an access grant for the existing account" do
+            expect do
+              subject
+            end.to change { account.reload.access_grants.size }.by(1)
+            access_grant = account.access_grants.first
+            expect(access_grant.partner_access_code_id).to eql access_code.id
+          end
+        end
       end
 
       context "when account creation fails" do
