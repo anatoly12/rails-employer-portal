@@ -40,7 +40,6 @@ module EmployerPortal
             .exclude(schema[:partner_access_codes][:partner_id] => nil)
             .select(
               Sequel.lit("SQL_CACHE ?", schema[:accounts][:id]).as(:id),
-              schema[:accounts][:email].as(:email),
               any_value(
                 schema[:account_demographics][:full_legal_name]
               ).as(:full_name),

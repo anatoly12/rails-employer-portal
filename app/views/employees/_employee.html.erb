@@ -15,10 +15,10 @@
     <%= employee.state %>
   </td>
   <td class="px-2 hidden md:table-cell"><%= employee.daily_checkup_status %></td>
-  <td class="px-2 py-4 hidden lg:table-cell"><%= employee.daily_checkup_updated_at %></td>
+  <td class="px-2 py-4 hidden lg:table-cell"><%= employee.daily_checkup_updated_at.strftime("%F") %></td>
   <td class="px-2 py-4 hidden xl:table-cell"><%= employee.daily_checkup_action %></td>
   <td class="px-2 hidden md:table-cell"><%= employee.testing_status %></td>
-  <td class="px-2 py-4 hidden lg:table-cell"><%= employee.testing_updated_at %></td>
+  <td class="px-2 py-4 hidden lg:table-cell"><%= employee.testing_updated_at.strftime("%F") %></td>
   <td class="px-2 py-4 hidden xl:table-cell"></td>
   <td>
     <%= link_to({ action: :edit, id: employee }, class: "block text-gray-300 ml-auto mr-2 h-8 w-8 p-2 hover:text-blue-500") do %>
