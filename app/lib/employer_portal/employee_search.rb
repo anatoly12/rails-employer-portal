@@ -2,6 +2,9 @@ module EmployerPortal
   class EmployeeSearch
     include Pagy::Backend
 
+    # ~~ constants ~~
+    DEFAULT_PAGE_SIZE = 50
+
     # ~~ accessors ~~
     attr_reader :results, :pagination
 
@@ -12,7 +15,7 @@ module EmployerPortal
     def initialize(context, params)
       @context = context
       @params = params
-      @pagination, @results = pagy(dataset)
+      @pagination, @results = pagy(sorted(dataset))
     end
 
     def sort_order
@@ -28,7 +31,7 @@ module EmployerPortal
       {
         count: collection.count,
         page: params["page"],
-        items: vars[:items] || 2,
+        items: vars[:items] || DEFAULT_PAGE_SIZE,
       }
     end
 
@@ -71,6 +74,25 @@ module EmployerPortal
           Sequel.qualify(:employees, :created_at)
         ).as(:testing_updated_at)
       )
+    end
+
+    def sorted(ds)
+      column, direction = sort_order.split(":")
+      ds = case sort_order
+      when "state"
+        ds.order(:state)
+      when "checkup"
+        ds.order(:daily_checkup_status)
+      when "checkup_updated_at"
+        ds.order(:daily_checkup_updated_at)
+      when "testing"
+        ds.order(:testing_status)
+      when "testing_updated_at"
+        ds.order(:testing_updated_at)
+      else # fullname"
+        ds.order(:full_name)
+      end
+      direction=="desc" ? ds.reverse : ds
     end
   end
 end
