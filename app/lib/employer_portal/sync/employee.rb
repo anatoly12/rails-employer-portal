@@ -91,24 +91,34 @@ module EmployerPortal
       def create_requisition(account)
         return unless partner_id
 
-        # Requisition.create(
-        #   requisition_id: Kit.where(
-        #   ) schema[:ec_kits][:requisition_id]
-        #   user_id: account.user_id,
-        # )
-        # .left_join(schema[:ec_requisitions], requisition_id: schema[:ec_kits][:requisition_id])
-        # .left_join(schema[:accounts], user_id: schema[:ec_requisitions][:user_id])
-        # - `Partner` - pre-exists in the db created by EHS technical staff
-        # - `PartnerAccessCode` - 0..N pre-exist in the db created by EHS technical staff
-        # - User provides a valid access code
-        #   - `TKit` - found in the db, created by EHS technical staff
-        #   - `Kit` - created for the `TKit` and `Partner`
-        #   - `Requisition` - created for the `Kit` and `Account`
+        t_kit_id = Partner[partner_id]&.passport_product&.t_kit_id
+        return unless t_kit_id
+
+        requisition_needed = Kit.eager_graph(:requisition).where(
+          schema[:ec_kits][:t_kit_id] => t_kit_id,
+          schema[:ec_kits][:partner_id] => partner_id,
+          Sequel.qualify(:requisition, :user_id) => account.user_id
+        ).limit(1).empty?
+        return unless requisition_needed
+
+        kit_id = call_stored_procedure(
+          :ec_create_kit,
+          t_kit_id,
+          partner_id,
+          "''",
+          "@i_new_kit_id"
+        )[:i_new_kit_id]
+        call_stored_procedure(
+          :ec_create_requisition,
+          account.user_id,
+          "'#{Kit.where(kit_id: kit_id).get(:barcode)}'",
+          "@n_new_req_id"
+        )
       end
 
       def create_access_grant(account)
         return unless partner_id
-        return if account.access_grants.any? { |g| g.access_code.partner_id == partner_id }
+        return if account.access_grants.any? { |g| g.access_code&.partner_id == partner_id }
 
         access_code_id = AccessCode.where(partner_id: partner_id).get(:id)
         return unless access_code_id
@@ -119,6 +129,17 @@ module EmployerPortal
           created_at: now,
           updated_at: now,
         )
+      end
+
+      def call_stored_procedure(procedure, *args)
+        res = nil
+        db.synchronize do |conn|
+          res = conn.query("CALL `#{schema.value}`.#{procedure}(#{args.join(",")})")
+          while conn.next_result
+            conn.store_result
+          end
+        end
+        res.first
       end
     end
   end

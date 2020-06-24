@@ -122,6 +122,14 @@ RSpec.describe ::EmployerPortal::Sync, type: :sync, order: :defined do
         end
 
         context "when company.remote_id isn't filled in" do
+          it "doesn't create any kit" do
+            expect { subject }.not_to change { described_class::Kit.count }
+          end
+
+          it "doesn't create any requisition" do
+            expect { subject }.not_to change { described_class::Requisition.count }
+          end
+
           it "doesn't create any access grant" do
             expect { subject }.not_to change { described_class::AccessGrant.count }
           end
@@ -130,6 +138,14 @@ RSpec.describe ::EmployerPortal::Sync, type: :sync, order: :defined do
         context "when company.remote_id doesn't match any access code" do
           let(:partner) { create :sync_partner }
           let(:company) { create :company, remote_id: partner.partner_id }
+
+          it "doesn't create any kit" do
+            expect { subject }.not_to change { described_class::Kit.count }
+          end
+
+          it "doesn't create any requisition" do
+            expect { subject }.not_to change { described_class::Requisition.count }
+          end
 
           it "doesn't create any access grant" do
             expect { subject }.not_to change { described_class::AccessGrant.count }
@@ -141,6 +157,14 @@ RSpec.describe ::EmployerPortal::Sync, type: :sync, order: :defined do
           let(:company) { create :company, remote_id: partner.partner_id }
           let!(:access_code) { create :sync_access_code, partner: partner }
 
+          it "doesn't create any kit" do
+            expect { subject }.not_to change { described_class::Kit.count }
+          end
+
+          it "doesn't create any requisition" do
+            expect { subject }.not_to change { described_class::Requisition.count }
+          end
+
           it "creates an access grant" do
             expect do
               subject
@@ -149,6 +173,28 @@ RSpec.describe ::EmployerPortal::Sync, type: :sync, order: :defined do
             expect(account.access_grants.size).to eql 1
             access_grant = account.access_grants.first
             expect(access_grant.partner_access_code_id).to eql access_code.id
+          end
+        end
+
+        context "when company.remote_id matches a passport product" do
+          let(:passport_product) { create :sync_passport_product }
+          let(:partner) { create :sync_partner, passport_product: passport_product }
+          let(:company) { create :company, remote_id: partner.partner_id }
+
+          it "creates a kit" do
+            expect do
+              subject
+            end.to change { described_class::Kit.count }.by(1)
+          end
+
+          it "creates a requisition" do
+            expect do
+              subject
+            end.to change { described_class::Requisition.count }.by(1)
+          end
+
+          it "doesn't create any access grant" do
+            expect { subject }.not_to change { described_class::AccessGrant.count }
           end
         end
 
@@ -252,6 +298,64 @@ RSpec.describe ::EmployerPortal::Sync, type: :sync, order: :defined do
             end.to change { account.reload.access_grants.size }.by(1)
             access_grant = account.access_grants.first
             expect(access_grant.partner_access_code_id).to eql access_code.id
+          end
+        end
+
+        context "with an existing kit with this partner" do
+          let(:passport_product) { create :sync_passport_product }
+          let(:partner) { create :sync_partner, passport_product: passport_product }
+          let(:company) { create :company, remote_id: partner.partner_id }
+          let(:requisition) { create :sync_requisition, user: account.user }
+          let!(:kit) { create :sync_kit, t_kit: passport_product.t_kit, requisition: requisition, partner: partner }
+
+          it "doesn't create any kit" do
+            expect do
+              subject
+            end.not_to change { described_class::Kit.count }
+          end
+
+          it "doesn't create any requisition" do
+            expect do
+              subject
+            end.not_to change { described_class::Requisition.count }
+          end
+        end
+
+        context "with an existing kit but with another partner" do
+          let(:passport_product) { create :sync_passport_product }
+          let(:partner) { create :sync_partner, passport_product: passport_product }
+          let(:company) { create :company, remote_id: partner.partner_id }
+          let(:requisition) { create :sync_requisition, user: account.user }
+          let!(:kit) { create :sync_kit, t_kit: passport_product.t_kit, requisition: requisition, partner: create(:sync_partner) }
+
+          it "creates a kit" do
+            expect do
+              subject
+            end.to change { described_class::Kit.count }.by(1)
+          end
+
+          it "creates a requisition" do
+            expect do
+              subject
+            end.to change { described_class::Requisition.count }.by(1)
+          end
+        end
+
+        context "without existing kit" do
+          let(:passport_product) { create :sync_passport_product }
+          let(:partner) { create :sync_partner, passport_product: passport_product }
+          let(:company) { create :company, remote_id: partner.partner_id }
+
+          it "creates a kit" do
+            expect do
+              subject
+            end.to change { described_class::Kit.count }.by(1)
+          end
+
+          it "creates a requisition" do
+            expect do
+              subject
+            end.to change { described_class::Requisition.count }.by(1)
           end
         end
       end
