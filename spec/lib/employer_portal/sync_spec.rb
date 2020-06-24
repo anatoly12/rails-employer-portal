@@ -69,11 +69,11 @@ RSpec.describe ::EmployerPortal::Sync, type: :sync, order: :defined do
     end
   end
 
-  describe ".create_account_for_employee" do
+  describe ".create_account_for_employee!" do
     let(:company) { create :company }
     let(:employee) { create :employee, company: company }
     before { described_class::Account.dataset.delete }
-    subject { described_class.create_account_for_employee employee }
+    subject { described_class.create_account_for_employee! employee }
 
     context "when SYNC_SECRET_KEY_BASE isn't defined" do
       before { stub_const("#{described_class}::SYNC_SECRET_KEY_BASE", "") }
@@ -111,6 +111,14 @@ RSpec.describe ::EmployerPortal::Sync, type: :sync, order: :defined do
           expect(demographic.full_legal_name).to eql employee.full_name
           expect(demographic.state_of_residence).to eql employee.state
           expect(demographic.phone_number).to eql employee.phone
+        end
+
+        it "creates an access grant" do
+          subject
+          account = described_class::Account.order(:id).last
+          expect(account.access_grants.size).to eql 1
+          access_grant = account.access_grants.first
+          expect(access_grant.partner_access_code_id).not_to be_nil
         end
 
         it "links the employee to the new account" do
@@ -166,6 +174,32 @@ RSpec.describe ::EmployerPortal::Sync, type: :sync, order: :defined do
             expect(demographic.phone_number).to eql employee.phone
           end
         end
+
+        # context "with an existing access grant" do
+        #   let!(:demographic) { create :sync_demographic, account: account }
+
+        #   it "doesn't create any demographic" do
+        #     expect do
+        #       subject
+        #     end.not_to change { described_class::AccountDemographic.count }
+        #   end
+
+        #   it "doesn't update the existing demographic" do
+        #     expect do
+        #       subject
+        #     end.not_to change { demographic.reload }
+        #   end
+        # end
+
+        # context "without access grant" do
+        #   it "creates a new access grants for the existing account" do
+        #     expect do
+        #       subject
+        #     end.to change { described_class::AccountAccessGrant.count }.by(1)
+        #     access_grant = account.access_grants.first
+        #     expect(access_grant.partner_access_code_id).not_to be_nil
+        #   end
+        # end
       end
 
       context "when account creation fails" do
