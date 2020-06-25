@@ -14,10 +14,14 @@
   <td class="px-2 py-4 hidden lg:table-cell">
     <%= employee.state %>
   </td>
-  <td class="px-2 hidden md:table-cell"><%= employee.daily_checkup_status %></td>
+  <td class="px-2 hidden md:table-cell <%= daily_checkup_color(employee) %>">
+    <%= employee.daily_checkup_status %>
+  </td>
   <td class="px-2 py-4 hidden lg:table-cell"><%= employee.daily_checkup_updated_at.strftime("%F") %></td>
   <td class="px-2 py-4 hidden xl:table-cell"><%= employee.daily_checkup_action %></td>
-  <td class="px-2 hidden md:table-cell"><%= employee.testing_status %></td>
+  <td class="px-2 hidden md:table-cell <%= testing_color(employee) %>">
+    <%= employee.testing_status %>
+  </td>
   <td class="px-2 py-4 hidden lg:table-cell"><%= employee.testing_updated_at.strftime("%F") %></td>
   <td class="px-2 py-4 hidden xl:table-cell"></td>
   <td>

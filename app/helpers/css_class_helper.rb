@@ -1,4 +1,5 @@
 module CssClassHelper
+  # ~~ public methods ~~
   def text_field_class(has_error = false)
     res = "appearance-none border-b w-full py-1 focus:outline-none"
     if has_error
@@ -35,6 +36,7 @@ module CssClassHelper
 
   private
 
+  # ~~ private methods ~~
   def link_class(primary)
     res = "text-xs font-bold underline focus:outline-none"
     if primary
