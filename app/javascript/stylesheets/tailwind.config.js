@@ -8,6 +8,8 @@ module.exports = {
   theme: {
     extend: {},
   },
-  variants: {},
+  variants: {
+    borderColor: ['responsive', 'hover', 'focus', 'last'],
+  },
   plugins: [],
 }

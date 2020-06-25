@@ -1,0 +1,14 @@
+<li class="flex py-2 items-center border-l border-black last:border-transparent">
+  <% if editor.testing_status == label %>
+    <div class="-mt-6 mb-6 -ml-4 flex items-center justify-center border border-black bg-white rounded-full w-8 h-8">
+      <div class="bg-blue-400 rounded-full w-6 h-6 box-content">
+      </div>
+    </div>
+  <% else %>
+    <div class="-mt-6 mb-6 -ml-2 mr-2 flex items-center justify-center border border-black bg-white rounded-full w-4 h-4">
+      <div class="border border-black bg-black rounded-full w-2 h-2 box-content">
+      </div>
+    </div>
+  <% end %>
+  <div class="-mt-6 mb-6 label pl-3"><%= label %></div>
+</li>

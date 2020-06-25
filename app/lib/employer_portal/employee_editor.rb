@@ -4,6 +4,7 @@ module EmployerPortal
     # ~~ delegates ~~
     delegate :first_name, :last_name, :email, :phone, :state, :to_key,
       :to_model, to: :edited
+    delegate :daily_checkup_status, :testing_status, to: :dashboard_employee
 
     # ~~ public instance methods ~~
     def initialize(context, id)
@@ -42,6 +43,26 @@ module EmployerPortal
             employer_id: context.account_id,
           )
         end
+    end
+
+    def dashboard_employee
+      return edited unless persisted? && ::EmployerPortal::Sync.connected?
+
+      @dashboard_employee ||= Employee.left_join(
+        :dashboard_employees,
+        id: Sequel.qualify(:employees, :remote_id)
+      ).where(
+        Sequel.qualify(:employees, :id) => edited.id
+      ).select(
+        Sequel.qualify(:dashboard_employees, :full_name),
+        Sequel.qualify(:dashboard_employees, :selfie_s3_key),
+        Sequel.qualify(:dashboard_employees, :state),
+        Sequel.qualify(:dashboard_employees, :daily_checkup_status),
+        Sequel.qualify(:dashboard_employees, :daily_checkup_updated_at),
+        Sequel.qualify(:dashboard_employees, :daily_checkup_action),
+        Sequel.qualify(:dashboard_employees, :testing_status),
+        Sequel.qualify(:dashboard_employees, :testing_updated_at),
+      ).limit(1).first
     end
   end
 end

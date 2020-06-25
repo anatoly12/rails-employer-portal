@@ -1,0 +1,13 @@
+<div class="mb-4">
+  <h3 class="text-2xl font-medium mb-4">Testing Progress</h3>
+  <ul class="p-4">
+    <%= render "employees/testing_progress_step", label: "Not Registered" %>
+    <%= render "employees/testing_progress_step", label: "Registered" %>
+    <%= render "employees/testing_progress_step", label: "Intake" %>
+    <%= render "employees/testing_progress_step", label: "Received Lab Order" %>
+    <%= render "employees/testing_progress_step", label: "Submitted Results" %>
+    <%= render "employees/testing_progress_step", label: "Physician Reviewing" %>
+    <%= render "employees/testing_progress_step", label: "Passport Complete" %>
+  </ul>
+  <div class="-mt-6 mb-8">Status: <span class="<%= testing_color(editor) %>"><%= editor.testing_status %></span></div>
+</div>
