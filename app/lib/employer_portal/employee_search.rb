@@ -78,7 +78,7 @@ module EmployerPortal
 
     def sorted(ds)
       column, direction = sort_order.split(":")
-      ds = case sort_order
+      ds = case column
       when "state"
         ds.order(:state)
       when "checkup"
