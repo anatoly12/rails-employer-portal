@@ -1,6 +1,6 @@
-<div class="md:h-48 md:overflow-hidden lg:h-48">
+<div class="md:h-48">
   <h3 class="text-2xl font-medium mb-4">Testing Progress</h3>
-  <ul class="p-4 text-xs md:flex md:justify-center md:px-0">
+  <ul class="-mb-10 p-4 text-xs md:flex md:justify-center md:px-0 lg:ml-10 lg:-mr-10">
     <%= render "employees/testing_progress_step", label: "Not Registered", voted: (editor.testing_status=="Not Registered") %>
     <%= render "employees/testing_progress_step", label: "Registered", voted: (editor.testing_status=="Registered") %>
     <%= render "employees/testing_progress_step", label: "Intake", voted: (editor.testing_status=="Intake") %>
