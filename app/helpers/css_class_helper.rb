@@ -10,7 +10,7 @@ module CssClassHelper
   end
 
   def select_field_class(has_error = false)
-    res = "border-b w-full py-1 focus:outline-none"
+    res = "bg-white border-b w-full py-1 focus:outline-none"
     if has_error
       res + " text-red-500 border-red-300 focus:text-red-800 focus:border-red-800 placeholder-red-300"
     else

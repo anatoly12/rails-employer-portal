@@ -5,16 +5,18 @@
   <div class="container mx-auto px-4">
     <div class="-mx-4 mb-4 md:mb-8 xl:my-4 xl:flex">
       <div class="p-4 border-b border-blue-500 xl:border-none xl:flex-1 xl:mr-2 xl:shadow">
-        <%= render "employees/testing_progress" %>
+        <%= render "employees/symptom_tracker" %>
       </div>
       <div class="p-4 border-b border-blue-500 xl:border-none xl:flex-1 xl:ml-2 xl:shadow">
         <%= render "employees/testing_progress" %>
       </div>
     </div>
-    <h2 class="text-3xl font-thin mt-4">
-      Review, edit or deactivate an employee's account
-    </h2>
-    <p class="text-sm font-medium mb-10">A deactivated employee will still be saved in the system for reference or available if you need to reactivate the account.</p>
-    <%= render "employees/form" %>
+    <div id="employee-edit" data-turbolinks-permanent>
+      <h2 class="text-3xl font-thin mt-4">
+        Review, edit or deactivate an employee's account
+      </h2>
+      <p class="text-sm font-medium mb-10">A deactivated employee will still be saved in the system for reference or available if you need to reactivate the account.</p>
+      <%= render "employees/form" %>
+    </div>
   </div>
 <% end %>
