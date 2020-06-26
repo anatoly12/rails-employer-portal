@@ -11,7 +11,8 @@ module EmployerPortal
         ::EmployerPortal::Sync::Views.new(schema).create_or_replace
         ::EmployerPortal::Sync::Legacy.new(schema, self).define_models
         log("connected to #{schema.value}")
-      rescue URI::InvalidURIError #, Sequel::Error
+      rescue URI::InvalidURIError, Sequel::Error => e
+        Rails.logger.error(e.message)
         abort("Sync: can't connect to #{SYNC_DATABASE_URL}")
       end
 
