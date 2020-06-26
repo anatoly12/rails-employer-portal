@@ -4,7 +4,7 @@
   </td>
   <td class="w-10 hidden md:table-cell">
     <% if employee.with_selfie? %>
-      <img src="<%= employee.selfie_url %>" class="rounded-full h-10 w-10"/>
+      <img src="<%= employee.selfie_url %>" class="rounded-full h-10 w-10 object-cover"/>
     <% else %>
       <div class="bg-gray-300 rounded-full h-10 w-10 flex items-center justify-center">
         <%= employee.initials %>

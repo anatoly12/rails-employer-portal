@@ -28,6 +28,10 @@ module EmployerPortal
       end
     end
 
+    def stats
+      @stats ||= ::EmployerPortal::EmployeeStats.new dataset
+    end
+
     private
 
     attr_reader :context, :params

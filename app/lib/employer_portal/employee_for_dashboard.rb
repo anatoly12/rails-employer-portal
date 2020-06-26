@@ -54,6 +54,7 @@ module EmployerPortal
     end
 
     def selfie_url
+      # TODO: needs to be cached!
       ::EmployerPortal::Aws.bucket.object(
         selfie_s3_key
       ).presigned_url :get, expires_in: 3600
