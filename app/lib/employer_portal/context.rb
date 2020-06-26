@@ -1,11 +1,12 @@
 module EmployerPortal
   class Context
     class NoAccount
-      attr_reader :id
+      attr_reader :id, :company
     end
 
     delegate :id, to: :account, prefix: :account
-    delegate :first_name, :company_id, to: :account
+    delegate :first_name, :company, :company_id, to: :account
+    delegate :plan, to: :company, allow_nil: true, prefix: :company
 
     def initialize(hash = {})
       @hash = hash
@@ -24,6 +25,10 @@ module EmployerPortal
 
     def ensure_access!
       raise Error::Account::NotFound unless signed_in?
+    end
+
+    def testing_status_enabled?
+      company_plan.present? && !company_plan.include?("Lite")
     end
 
     private

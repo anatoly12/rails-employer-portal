@@ -16,10 +16,10 @@
         <%= render "employees/sort_header", column: "checkup_updated_at", label: "Last Updated" %>
       </th>
       <th class="w-32 px-2 hidden xl:table-cell"></th>
-      <th class="px-2 font-medium hidden md:table-cell">
+      <th class="px-2 font-medium hidden md:table-cell <%= "text-gray-600" unless current_context.testing_status_enabled? %>">
         <%= render "employees/sort_header", column: "testing", label: "Testing Status" %>
       </th>
-      <th class="w-1 px-2 font-medium hidden lg:table-cell">
+      <th class="w-1 px-2 font-medium hidden lg:table-cell <%= "text-gray-600" unless current_context.testing_status_enabled? %>">
         <%= render "employees/sort_header", column: "testing_updated_at", label: "Last Updated" %>
       </th>
       <th class="w-32 px-2 hidden xl:table-cell"></th>
