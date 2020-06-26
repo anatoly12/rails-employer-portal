@@ -1,14 +1,32 @@
-<div id="testing-progress" data-turbolinks-permanent>
-  <div class="md:w-full md:h-48 md:overflow-hidden">
-    <h3 class="text-2xl font-medium mb-5">Testing Progress</h3>
-    <ul class="-mb-10 p-4 text-xs md:flex md:justify-center md:px-0 lg:ml-10 lg:-mr-10">
-      <%= render "testing_progress/step", status: status, label: "Not Registered", voted: (status=="Not Registered") %>
-      <%= render "testing_progress/step", status: status, label: "Registered", voted: (status=="Registered") %>
-      <%= render "testing_progress/step", status: status, label: "Intake", voted: (status=="Intake") %>
-      <%= render "testing_progress/step", status: status, label: "Received Lab Order", voted: false %>
-      <%= render "testing_progress/step", status: status, label: "Submitted Results", voted: (status=="Submitted Results") %>
-      <%= render "testing_progress/step", status: status, label: "Physician Reviewing", voted: false %>
-      <%= render "testing_progress/step", status: status, label: "Passport Complete", voted: (status=="Cleared" || status=="Inconclusive") %>
-    </ul>
+<% if current_context.testing_status_enabled? %>
+  <div id="testing-progress" class="p-4 border-b border-blue-500 xl:border-none xl:flex-1 xl:ml-2 xl:shadow" data-turbolinks-permanent>
+    <div class="md:w-full md:h-48 md:overflow-hidden">
+      <h3 class="text-2xl font-medium mb-5">Testing Progress</h3>
+      <ul class="-mb-10 p-4 text-xs md:flex md:justify-center md:px-0 lg:ml-10 lg:-mr-10">
+        <%= render "testing_progress/step", status: status, label: "Not Registered", voted: (status=="Not Registered") %>
+        <%= render "testing_progress/step", status: status, label: "Registered", voted: (status=="Registered") %>
+        <%= render "testing_progress/step", status: status, label: "Intake", voted: (status=="Intake") %>
+        <%= render "testing_progress/step", status: status, label: "Received Lab Order", voted: false %>
+        <%= render "testing_progress/step", status: status, label: "Submitted Results", voted: (status=="Submitted Results") %>
+        <%= render "testing_progress/step", status: status, label: "Physician Reviewing", voted: false %>
+        <%= render "testing_progress/step", status: status, label: "Passport Complete", voted: (status=="Cleared" || status=="Inconclusive") %>
+      </ul>
+    </div>
   </div>
-</div>
+<% else %>
+  <div id="testing-progress" class="bg-gray-100 text-gray-600 p-4 border-b border-blue-500 xl:border-none xl:flex-1 xl:ml-2 xl:shadow pointer-events-none select-none" data-turbolinks-permanent>
+    <div class="md:w-full md:h-48 md:overflow-hidden">
+      <h3 class="text-2xl font-medium">Testing Progress</h3>
+      <div class="italic mb-3">Feature not included in your current plan</div>
+      <ul class="-mb-10 p-4 text-xs md:flex md:justify-center md:px-0 lg:ml-10 lg:-mr-10">
+        <%= render "testing_progress/disabled_step", label: "Not Registered" %>
+        <%= render "testing_progress/disabled_step", label: "Registered" %>
+        <%= render "testing_progress/disabled_step", label: "Intake" %>
+        <%= render "testing_progress/disabled_step", label: "Received Lab Order" %>
+        <%= render "testing_progress/disabled_step", label: "Submitted Results" %>
+        <%= render "testing_progress/disabled_step", label: "Physician Reviewing" %>
+        <%= render "testing_progress/disabled_step", label: "Passport Complete" %>
+      </ul>
+    </div>
+  </div>
+<% end %>

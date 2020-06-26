@@ -16,12 +16,21 @@
         <%= render "employees/sort_header", column: "checkup_updated_at", label: "Last Updated" %>
       </th>
       <th class="w-32 px-2 hidden xl:table-cell"></th>
-      <th class="px-2 font-medium hidden md:table-cell <%= "text-gray-600" unless current_context.testing_status_enabled? %>">
-        <%= render "employees/sort_header", column: "testing", label: "Testing Status" %>
-      </th>
-      <th class="w-1 px-2 font-medium hidden lg:table-cell <%= "text-gray-600" unless current_context.testing_status_enabled? %>">
-        <%= render "employees/sort_header", column: "testing_updated_at", label: "Last Updated" %>
-      </th>
+      <% if current_context.testing_status_enabled? %>
+        <th class="px-2 font-medium hidden md:table-cell">
+          <%= render "employees/sort_header", column: "testing", label: "Testing Status" %>
+        </th>
+        <th class="w-1 px-2 font-medium hidden lg:table-cell">
+          <%= render "employees/sort_header", column: "testing_updated_at", label: "Last Updated" %>
+        </th>
+      <% else %>
+        <th class="px-2 font-medium text-gray-600 whitespace-no-wrap pointer-events-none select-none hidden md:table-cell">
+          Testing Status
+        </th>
+        <th class="w-1 px-2 font-medium text-gray-600 whitespace-no-wrap pointer-events-none select-none hidden lg:table-cell">
+          Last Updated
+        </th>
+      <% end %>
       <th class="w-32 px-2 hidden xl:table-cell"></th>
       <th class="w-8 py-3 font-medium md:w-32">
         <%== render partial: "common/pagination", locals: { pagination: search.pagination } %>
