@@ -13,6 +13,10 @@ module EmployerPortal
       values[:uuid]
     end
 
+    def flagged?
+      daily_checkup_status=="Not Cleared" || testing_status=="Inconclusive"
+    end
+
     def full_name
       values[:full_name]
     end
