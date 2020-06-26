@@ -3,9 +3,13 @@
     <%= render "icon/exclamation_solid", icon_class: "h-4 w-4 text-orange-500 mx-auto" %>
   </td>
   <td class="w-10 hidden md:table-cell">
-    <div class="bg-gray-300 rounded-full h-10 w-10 flex items-center justify-center">
-      WS
-    </div>
+    <% if employee.with_selfie? %>
+      <img src="<%= employee.selfie_url %>" class="rounded-full h-10 w-10"/>
+    <% else %>
+      <div class="bg-gray-300 rounded-full h-10 w-10 flex items-center justify-center">
+        <%= employee.initials %>
+      </div>
+    <% end %>
   </td>
   <td class="px-2 py-4 truncate">
     <div class="lg:hidden"><%= employee.full_name %></div>

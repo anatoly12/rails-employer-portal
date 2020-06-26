@@ -16,8 +16,11 @@ gem "mysql2"
 gem "sequel-rails", "1.1.1"
 gem "sequel_secure_password", "0.2.15"
 gem "pagy", "~> 3.8", ">= 3.8.2"
+# Background jobs
 gem "talentbox-delayed_job_sequel"
 gem "daemons"
+# AWS
+gem "aws-sdk-s3", "~> 1.71", ">= 1.71.1"
 
 # Debug
 gem "pry", require: false

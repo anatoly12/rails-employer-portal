@@ -24,40 +24,7 @@ class Employee < Sequel::Model
   # ~~ associations ~~
   many_to_one :company, class: "Company"
   many_to_one :employer, class: "Employer"
-  one_to_many :employees, class: "Employee"
-
-  # ~~~ public instance methods ~~~
-  def to_param
-    uuid
-  end
-
-  def full_name
-    values.fetch(:full_name, "#{first_name} #{last_name}")
-  end
-
-  def profile_picture_url
-    # TODO: do something with values[:selfie_s3_key]
-  end
-
-  def daily_checkup_status
-    values.fetch(:daily_checkup_status, "Did Not Submit")
-  end
-
-  def daily_checkup_updated_at
-    values.fetch(:daily_checkup_updated_at, "Never")
-  end
-
-  def daily_checkup_action
-    values.fetch(:daily_checkup_action, "Send Reminder")
-  end
-
-  def testing_status
-    values.fetch(:testing_status, "Not Registered")
-  end
-
-  def testing_updated_at
-    values.fetch(:testing_updated_at, "Never")
-  end
+  many_to_one :dashboard_employee, class: "DashboardEmployee", key: :remote_id, primary_key: :id
 
   private
 
