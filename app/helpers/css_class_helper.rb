@@ -27,11 +27,15 @@ module CssClassHelper
   end
 
   def primary_button_class
-    "#{base_button_class("blue")} w-full py-3 font-bold text-lg uppercase tracking-widest"
+    "#{base_button_class("blue")} border-2 w-full py-3 font-bold text-lg uppercase tracking-widest"
   end
 
   def secondary_button_class(color)
-    "#{base_button_class(color)} px-3 leading-6 font-semibold"
+    "#{base_button_class(color)} border-2 px-3 leading-6 font-semibold"
+  end
+
+  def thin_button_class
+    "#{base_button_class(:blue)} border inline-block whitespace-no-wrap px-3 leading-tight"
   end
 
   private
@@ -47,6 +51,6 @@ module CssClassHelper
   end
 
   def base_button_class(color)
-    "appearance-none bg-white text-#{color}-400 border-#{color}-400 hover:border-#{color}-700 hover:text-#{color}-800 focus:outline-none focus:border-#{color}-700 border-2"
+    "appearance-none bg-white text-#{color}-400 border-#{color}-400 hover:border-#{color}-700 hover:text-#{color}-800 focus:outline-none focus:border-#{color}-700"
   end
 end

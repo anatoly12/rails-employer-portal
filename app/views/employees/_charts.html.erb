@@ -3,18 +3,18 @@
     <h3 class="font-semibold text-xl">Overview Symptoms</h3>
     <div><strong>Your Plan: 70 of 100</strong> available entries</div>
     <div class="md:flex">
-      <%= render "employees/chart", color: "#1dd678", percent: 20, label: "No Symptoms" %>
-      <%= render "employees/chart", color: "#f35200", percent: 50, label: "Symptoms" %>
-      <%= render "employees/chart", color: "#16a3e5", percent: 30, label: "Did Not Submit" %>
+      <%= render "chart/widget", color: "#1dd678", percent: 20, label: "No Symptoms" %>
+      <%= render "chart/widget", color: "#f35200", percent: 50, label: "Symptoms" %>
+      <%= render "chart/widget", color: "#16a3e5", percent: 30, label: "Did Not Submit" %>
     </div>
   </div>
   <div class="p-4 border-b border-blue-500 lg:border-none lg:shadow lg:p-2 lg:flex-1 lg:ml-2 xl:ml-4 xl:p-4">
     <h3 class="font-semibold text-xl">Overview Testing Status</h3>
     <div><strong>Your Plan: 70 of 100</strong> available entries</div>
     <div class="md:flex">
-      <%= render "employees/chart", color: "#1dd678", percent: 20, label: "Cleared" %>
-      <%= render "employees/chart", color: "#f35200", percent: 50, label: "Inconclusive" %>
-      <%= render "employees/chart", color: "#16a3e5", percent: 30, label: "In Progress" %>
+      <%= render "chart/widget", color: "#1dd678", percent: 20, label: "Cleared" %>
+      <%= render "chart/widget", color: "#f35200", percent: 50, label: "Inconclusive" %>
+      <%= render "chart/widget", color: "#16a3e5", percent: 30, label: "In Progress" %>
     </div>
   </div>
 </div>

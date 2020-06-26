@@ -1,0 +1,23 @@
+<div id="symptom-tracker">
+  <div class="md:w-full md:h-48 md:overflow-hidden">
+    <h3 class="text-2xl font-medium">Symptom Tracker <span class="whitespace-no-wrap">at-a-glance</span></h3>
+    <table class="table-auto w-full text-xs">
+      <thead>
+        <tr class="align-middle">
+          <th class="w-1 p-1 font-normal whitespace-no-wrap">Date Logged</th>
+          <th class="p-1 font-normal">Flagged</th>
+          <th class="p-1 font-normal hidden md:table-cell">Temperature</th>
+          <th class="p-1 font-normal hidden md:table-cell">Symptoms</th>
+          <th class="w-1 font-normal md:w-32">
+            <%== render partial: "common/pagination", locals: { pagination: search.pagination } %>
+          </th>
+        </tr>
+      </thead>
+      <tbody>
+        <% search.results.each do |symptom_log| %>
+          <%= render "symptom_tracker/symptom_log", symptom_log: symptom_log %>
+        <% end %>
+      </tbody>
+    </table>
+  </div>
+</div>

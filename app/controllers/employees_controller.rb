@@ -30,7 +30,7 @@ class EmployeesController < ApplicationController
         flash.now.alert = e.message
         render :bulk_import
       end
-    elsif editor.update_attributes editor_params
+    elsif editor.update_attributes params
       flash.notice = "Employee was created successfully."
       redirect_to action: :index
     else
@@ -47,7 +47,7 @@ class EmployeesController < ApplicationController
   end
 
   def update
-    if editor.update_attributes editor_params
+    if editor.update_attributes params
       flash.notice = "Employee was updated successfully."
       redirect_to action: :index
     else
@@ -59,22 +59,14 @@ class EmployeesController < ApplicationController
 
   private
 
-  def search_params
-    params.permit(:filters, :order, :page)
-  end
-
   def search
-    @search ||= ::EmployerPortal::EmployeeSearch.new current_context, search_params
+    @search ||= ::EmployerPortal::EmployeeSearch.new current_context, params
   end
 
   helper_method :search
 
-  def editor_params
-    params.fetch(:employee, {}).permit(:first_name, :last_name, :email, :phone, :state)
-  end
-
   def editor
-    @editor ||= ::EmployerPortal::EmployeeEditor.new current_context, params[:id]
+    @editor ||= ::EmployerPortal::EmployeeEditor.new current_context, params
   end
 
   helper_method :editor

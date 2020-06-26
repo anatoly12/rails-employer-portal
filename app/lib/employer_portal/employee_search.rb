@@ -14,7 +14,7 @@ module EmployerPortal
     # ~~ public instance methods ~~
     def initialize(context, params)
       @context = context
-      @params = params
+      @params = params.permit(:filters, :order, :page)
       @pagination, @results = pagy(sorted(dataset))
     end
 
@@ -36,8 +36,12 @@ module EmployerPortal
     end
 
     # ~~ private instance methods ~~
+    def connected?
+      ::EmployerPortal::Sync.connected?
+    end
+
     def dataset
-      if ::EmployerPortal::Sync.connected?
+      if connected?
         Employee.left_join(
           :dashboard_employees,
           id: Sequel.qualify(:employees, :remote_id)

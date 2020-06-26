@@ -3,13 +3,13 @@ module EmployerPortal
 
     # ~~ delegates ~~
     delegate :first_name, :last_name, :email, :phone, :state, :to_key,
-      :to_model, to: :edited
+      :to_model, :to_param, to: :edited
     delegate :daily_checkup_status, :testing_status, to: :dashboard_employee
 
     # ~~ public instance methods ~~
-    def initialize(context, id)
+    def initialize(context, params)
       @context = context
-      @given_id = id
+      @params = params
     end
 
     def persisted?
@@ -21,16 +21,24 @@ module EmployerPortal
     end
 
     def update_attributes(params)
-      edited.set params
+      edited.set params.fetch(:employee, {}).permit(:first_name, :last_name, :email, :phone, :state)
       edited.save raise_on_failure: false
       CreateAccountForEmployeeJob.perform_later edited.uuid
     end
 
+    def symptom_log_search
+      @symptom_log_search ||= ::EmployerPortal::SymptomLogSearch.new context, edited, params
+    end
+
     private
 
-    attr_reader :context, :given_id
+    attr_reader :context, :params, :symptom_log_params
 
     # ~~ private instance methods ~~
+    def given_id
+      params[:id]
+    end
+
     def edited
       @edited ||= if given_id.present?
           Employee.where(
@@ -45,8 +53,12 @@ module EmployerPortal
         end
     end
 
+    def connected?
+      ::EmployerPortal::Sync.connected?
+    end
+
     def dashboard_employee
-      return edited unless persisted? && ::EmployerPortal::Sync.connected?
+      return edited unless persisted? && connected?
 
       @dashboard_employee ||= Employee.left_join(
         :dashboard_employees,
