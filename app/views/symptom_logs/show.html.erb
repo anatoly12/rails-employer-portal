@@ -1,6 +1,16 @@
 <%= render "common/main" do %>
   <%= render "employees/edit", editor: viewer.employee_editor %>
-  <%= render "common/backdrop" do %>
-    backdrop
+  <%= render "common/backdrop", container_class: "h-full" do %>
+    <div class="bg-white text-black shadow-2xl p-4 md:max-w-xl md:mx-auto md:p-8 lg:max-w-2xl lg:p-12 h-full overflow-y-scroll">
+      <h2 class="text-3xl font-medium mb-8">
+        <%= render "common/link_to_back", default_url: employee_path(viewer.employee) %>
+        symptom log <span class="font-light">from <%= viewer.date %></span>
+      </h2>
+      <ul class="text-xl font-thin">
+        <% viewer.entries.each_with_index do |entry, index| %>
+          <%= render "symptom_logs/entry", entry: entry, index: index %>
+        <% end %>
+      </ul>
+    </div>
   <% end %>
 <% end %>

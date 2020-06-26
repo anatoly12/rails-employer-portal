@@ -9,7 +9,7 @@ module EmployerPortal
     def self.from_params(context, params)
       edited = if params[:id].present?
         Employee.where(
-          employer_id: context.account_id,
+          company_id: context.company_id,
           uuid: params[:id],
         ).limit(1).first || raise(::EmployerPortal::Error::Employee::NotFound)
       else

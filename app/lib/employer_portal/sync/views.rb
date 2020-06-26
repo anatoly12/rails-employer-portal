@@ -164,12 +164,15 @@ module EmployerPortal
                 :date,
                 schema[:ec_questions][:updated_at]
               ).as(:log_date),
-              schema[:ec_questions][:question].as(:question),
-              schema[:ec_questions][:response].as(:response),
+              schema[:ec_questions][:question],
+              schema[:ec_questions][:response],
+              schema[:ec_questions][:required],
               schema[:ec_data_types][:type_of].as(:question_type),
-              Sequel.function(
-                :json_arrayagg,
-                schema[:ec_list_items][:item]
+              Sequel.lit(
+                "GROUP_CONCAT(? ORDER BY ? ASC SEPARATOR ?)",
+                schema[:ec_list_items][:item],
+                schema[:ec_list_items][:list_item_id],
+                "||"
               ).as(:options)
             )
         )

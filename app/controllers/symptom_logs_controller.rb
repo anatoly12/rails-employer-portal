@@ -13,7 +13,7 @@ class SymptomLogsController < ApplicationController
   end
 
   def viewer
-    @viewer ||= ::EmployerPortal::SymptomLogViewer.new current_context, params
+    @viewer ||= ::EmployerPortal::SymptomLogViewer.from_params current_context, params
   end
 
   helper_method :viewer
