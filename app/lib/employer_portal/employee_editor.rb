@@ -5,10 +5,27 @@ module EmployerPortal
     delegate :first_name, :last_name, :email, :phone, :state, :to_key,
       :to_model, :to_param, to: :edited
 
+    # ~~ public class methods ~~
+    def self.from_params(context, params)
+      edited = if params[:id].present?
+        Employee.where(
+          employer_id: context.account_id,
+          uuid: params[:id],
+        ).limit(1).first || raise(::EmployerPortal::Error::Employee::NotFound)
+      else
+        Employee.new(
+          company_id: context.company_id,
+          employer_id: context.account_id,
+        )
+      end
+      new context, edited, params.permit(:filters, :order, :page)
+    end
+
     # ~~ public instance methods ~~
-    def initialize(context, params)
+    def initialize(context, edited, symptom_log_params={})
       @context = context
-      @params = params
+      @edited = edited
+      @symptom_log_params = symptom_log_params
     end
 
     def persisted?
@@ -26,7 +43,7 @@ module EmployerPortal
     end
 
     def symptom_log_search
-      @symptom_log_search ||= ::EmployerPortal::SymptomLogSearch.new context, edited, params
+      @symptom_log_search ||= ::EmployerPortal::SymptomLogSearch.new context, edited, symptom_log_params
     end
 
     def testing_status
@@ -35,27 +52,9 @@ module EmployerPortal
 
     private
 
-    attr_reader :context, :params, :symptom_log_params
+    attr_reader :context, :edited, :symptom_log_params
 
     # ~~ private instance methods ~~
-    def given_id
-      params[:id]
-    end
-
-    def edited
-      @edited ||= if given_id.present?
-          Employee.where(
-            employer_id: context.account_id,
-            uuid: given_id,
-          ).limit(1).first || raise(::EmployerPortal::Error::Employee::NotFound)
-        else
-          Employee.new(
-            company_id: context.company_id,
-            employer_id: context.account_id,
-          )
-        end
-    end
-
     def connected?
       ::EmployerPortal::Sync.connected?
     end

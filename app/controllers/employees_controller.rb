@@ -1,4 +1,6 @@
 class EmployeesController < ApplicationController
+  rescue_from ::EmployerPortal::Error::Employee::NotFound, with: :employee_not_found
+
   # ~~ collection actions ~~
   def index
   end
@@ -59,6 +61,11 @@ class EmployeesController < ApplicationController
 
   private
 
+  def employee_not_found
+    flash.alert = "Employee not found."
+    redirect_to action: :index
+  end
+
   def search
     @search ||= ::EmployerPortal::EmployeeSearch.new current_context, params
   end
@@ -66,7 +73,7 @@ class EmployeesController < ApplicationController
   helper_method :search
 
   def editor
-    @editor ||= ::EmployerPortal::EmployeeEditor.new current_context, params
+    @editor ||= ::EmployerPortal::EmployeeEditor.from_params current_context, params
   end
 
   helper_method :editor

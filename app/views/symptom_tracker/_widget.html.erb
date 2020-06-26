@@ -15,7 +15,7 @@
       </thead>
       <tbody>
         <% search.results.each do |symptom_log| %>
-          <%= render "symptom_tracker/symptom_log", symptom_log: symptom_log %>
+          <%= render "symptom_tracker/symptom_log", employee: search.employee, symptom_log: symptom_log %>
         <% end %>
       </tbody>
     </table>

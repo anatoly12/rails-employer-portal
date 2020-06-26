@@ -6,7 +6,7 @@ module EmployerPortal
     DEFAULT_PAGE_SIZE = 5
 
     # ~~ accessors ~~
-    attr_reader :results, :pagination
+    attr_reader :employee, :results, :pagination
 
     # ~~ delegates ~~
     delegate :count, to: :pagination
@@ -15,7 +15,7 @@ module EmployerPortal
     def initialize(context, employee, params)
       @context = context
       @employee = employee
-      @params = params.permit(:filters, :order, :page)
+      @params = params
       if connected?
         @pagination, @results = pagy(sorted(dataset))
       else
@@ -29,7 +29,7 @@ module EmployerPortal
 
     private
 
-    attr_reader :context, :employee, :params
+    attr_reader :context, :params
 
     # ~~ overrides for Pagy ~~
     def pagy_get_vars(collection, vars)

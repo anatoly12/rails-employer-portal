@@ -26,6 +26,11 @@ class Employee < Sequel::Model
   many_to_one :employer, class: "Employer"
   many_to_one :dashboard_employee, class: "DashboardEmployee", key: :remote_id, primary_key: :id
 
+  # ~~ public instance methods ~~
+  def to_param
+    uuid
+  end
+
   private
 
   # ~~ private instance methods ~~
