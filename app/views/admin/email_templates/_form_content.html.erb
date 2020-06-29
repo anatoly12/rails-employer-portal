@@ -10,7 +10,7 @@
     <div class="flex justify-between mb-4">
       <div>
         <div id="toggle-format" class="inline-flex">
-          <a class="bg-gray-300 hover:bg-gray-400 text-gray-800 font-bold py-2 px-4 rounded-l cursor-pointer">
+          <a class="bg-gray-500 hover:bg-gray-400 text-gray-800 font-bold py-2 px-4 rounded-l cursor-pointer">
             HTML
           </a>
           <a class="bg-gray-300 hover:bg-gray-400 text-gray-800 font-bold py-2 px-4 rounded-r cursor-pointer">
@@ -23,7 +23,7 @@
           <%= render "icon/question", icon_class: "w-3 h-3" %>
         </a>
         <div id="toggle-preview" class="inline-flex">
-          <a class="bg-gray-300 hover:bg-gray-400 text-gray-800 font-bold py-2 px-4 rounded-l cursor-pointer">
+          <a class="bg-gray-500 hover:bg-gray-400 text-gray-800 font-bold py-2 px-4 rounded-l cursor-pointer">
             Code
           </a>
           <a class="bg-gray-300 hover:bg-gray-400 text-gray-800 font-bold py-2 px-4 rounded-r cursor-pointer">
@@ -34,6 +34,6 @@
     </div>
     <%= render "form/textarea", form: form, column: :html, label: false, codemirror: "htmlmixed" %>
     <%= render "form/textarea", form: form, column: :text, label: false, codemirror: "null" %>
-    <div id="html-preview" class="border bg-white overflow-scroll" style="height:302px"></div>
+    <div id="html-preview" class="border bg-white overflow-scroll hidden" style="height:302px"></div>
   </div>
 </div>
