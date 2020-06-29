@@ -53,7 +53,7 @@ class EmployeesController < ApplicationController
       flash.notice = "Employee was updated successfully."
       redirect_to action: :index
     else
-      render :new
+      render :edit
     end
   end
 
@@ -67,7 +67,7 @@ class EmployeesController < ApplicationController
   end
 
   def search
-    @search ||= ::EmployerPortal::EmployeeSearch.new current_context, params
+    @search ||= ::EmployerPortal::EmployeeSearch.from_params current_context, params
   end
 
   helper_method :search

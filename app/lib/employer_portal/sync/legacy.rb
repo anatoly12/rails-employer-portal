@@ -10,6 +10,7 @@ module EmployerPortal
         klass.const_set :AccessCode, access_code_class
         klass.const_set :AccessGrant, access_grant_class
         klass.const_set :Account, account_class
+        klass.const_set :Covid19MessageCode, covid19_message_code_class
         klass.const_set :Demographic, demographic_class
         klass.const_set :Kit, kit_class
         klass.const_set :Partner, partner_class
@@ -58,6 +59,12 @@ module EmployerPortal
           one_to_many :access_grants, class: "#{prefix}::AccessGrant", key: :account_id
           plugin :timestamps, update_on_create: true
         }
+      end
+
+      def covid19_message_code_class
+        Class.new(
+          Sequel::Model(db[schema[:covid19_message_codes]])
+        )
       end
 
       def demographic_class

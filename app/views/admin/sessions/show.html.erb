@@ -1,0 +1,22 @@
+<% invalid = editor.errors.any? %>
+<div class="pt-20">
+  <div class="mx-auto max-w-xs">
+    <%= form_for editor, as: :session, url: { action: :create }, html: { class: "bg-white shadow-md rounded p-8", autocomplete: "off" } do |f| %>
+      <div class="mb-4">
+        <%= f.label :email, class: "block text-gray-700 text-sm font-bold mb-2" %>
+        <%= f.text_field :username, class: text_field_class(invalid) %>
+      </div>
+      <div class="mb-6">
+        <%= f.label :password, class: "block text-gray-700 text-sm font-bold mb-2" %>
+        <%= f.password_field :password, class: text_field_class(invalid) %>
+        <% if invalid %>
+          <p class="text-red-500 text-xs italic">Wrong email or password.</p>
+        <% end %>
+      </div>
+      <%= button_tag "Sign in", type: "submit", class: "bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline" %>
+    <% end %>
+    <p class="mt-4 text-center text-gray-500 text-xs">
+      &copy;2020 Essential Health Solutions. All rights reserved.
+    </p>
+  </div>
+</div>

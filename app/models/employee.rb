@@ -24,7 +24,11 @@ class Employee < Sequel::Model
   # ~~ associations ~~
   many_to_one :company, class: "Company"
   many_to_one :employer, class: "Employer"
-  many_to_one :dashboard_employee, class: "DashboardEmployee", key: :remote_id, primary_key: :id
+
+  # ~~ public class methods ~~
+  def self.add_connected_associations
+    many_to_one :dashboard_employee, class: "DashboardEmployee", key: :remote_id, primary_key: :id
+  end
 
   # ~~ public instance methods ~~
   def to_param

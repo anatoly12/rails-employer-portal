@@ -7,6 +7,14 @@ module EmployerPortal
       class NotFound < ::EmployerPortal::Error::NotFound; end
     end
 
+    module Company
+      class NotFound < ::EmployerPortal::Error::NotFound; end
+    end
+
+    module Employer
+      class NotFound < ::EmployerPortal::Error::NotFound; end
+    end
+
     module Employee
       class NotFound < ::EmployerPortal::Error::NotFound; end
     end
@@ -19,6 +27,10 @@ module EmployerPortal
     module Sync
       class Base < ::EmployerPortal::Error::Base; end
       class CantCreateAccount < Base; end
+    end
+
+    module EmailTemplate
+      class NotFound < ::EmployerPortal::Error::NotFound; end
     end
   end
 end

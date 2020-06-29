@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html class="<%= "overflow-hidden h-full" if current_context.signed_in? %>">
+  <head>
+    <meta charset="utf-8"/>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+    <title>Employer Portal Admin</title>
+    <%= csrf_meta_tags %>
+    <%= csp_meta_tag %>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, minimal-ui" />
+    <%= stylesheet_pack_tag "admin", media: "all" %>
+    <%= javascript_pack_tag "admin" %>
+  </head>
+  <% if current_context.signed_in? %>
+    <body class="bg-gray-900 font-sans leading-normal tracking-normal h-full overflow-y-auto">
+      <%= render "common/flash_messages" %>
+      <%= render "admin/common/top_nav" %>
+      <div class="flex flex-row min-h-full">
+        <%= render "admin/common/left_nav" %>
+        <div class="flex-1 bg-gray-100 mt-6 pl-48 pb-5">
+          <%= yield %>
+        </div>
+      </div>
+    </body>
+  <% else %>
+    <body class="bg-gray-100 h-screen font-sans">
+      <%= yield %>
+    </body>
+  <% end %>
+</html>

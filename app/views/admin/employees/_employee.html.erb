@@ -1,0 +1,14 @@
+<tr class="hover:text-blue-700">
+  <td class="py-4 px-6 border-b border-gray-200 whitespace-no-wrap">
+    <%= employee.company_name %>
+  </td>
+  <td class="py-4 px-6 border-b border-gray-200 whitespace-no-wrap">
+    <%= employee.created_at.strftime("%F") %>
+  </td>
+  <td class="py-4 px-6 border-b border-gray-200"><%= employee.full_name %></td>
+  <td class="py-4 px-6 border-b border-gray-200"><%= employee.email %></td>
+  <% if current_context.sync_connected? %>
+    <td class="py-4 px-6 border-b border-gray-200"><%= employee.daily_checkup_status %></td>
+    <td class="py-4 px-6 border-b border-gray-200"><%= employee.testing_status %></td>
+  <% end %>
+</tr>

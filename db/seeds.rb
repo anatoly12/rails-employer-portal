@@ -7,7 +7,7 @@ ZipCode.create(
 
 company = Company.create(
   name: Faker::Company.name,
-  plan: "billed_by_invoice",
+  plan: "Passport Complete",
   remote_id: 21,
 )
 
@@ -20,5 +20,11 @@ employer = Employer.create(
   role: "super_admin",
 )
 
+admin_user = AdminUser.create(
+  email: ENV.fetch("ADMIN_EMAIL", Faker::Internet.safe_email),
+  password: ENV.fetch("ADMIN_PASSWORD", Faker::Internet.password),
+)
+
 puts
 puts "Use \"#{employer.email}\" / \"#{employer.password}\" to sign in as an employer."
+puts "Use \"#{admin_user.email}\" / \"#{admin_user.password}\" to sign in as an admin user."

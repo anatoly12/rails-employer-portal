@@ -37,9 +37,16 @@ module EmployerPortal
     end
 
     def update_attributes(params)
-      edited.set params.fetch(:employee, {}).permit(:first_name, :last_name, :email, :phone, :state)
-      edited.save raise_on_failure: false
-      CreateAccountForEmployeeJob.perform_later edited.uuid
+      edited.set params.fetch(:employee, {}).permit(
+        :first_name,
+        :last_name,
+        :email,
+        :phone,
+        :state
+      )
+      success = edited.save raise_on_failure: false
+      CreateAccountForEmployeeJob.perform_later edited.uuid if success
+      success
     end
 
     def symptom_log_search
@@ -55,12 +62,8 @@ module EmployerPortal
     attr_reader :context, :edited, :symptom_log_params
 
     # ~~ private instance methods ~~
-    def connected?
-      ::EmployerPortal::Sync.connected?
-    end
-
     def dashboard_employee
-      edited.dashboard_employee if persisted? && connected?
+      edited.dashboard_employee if persisted? && context.sync_connected?
     end
   end
 end

@@ -5,18 +5,16 @@ module EmployerPortal
     end
 
     delegate :id, to: :account, prefix: :account
-    delegate :first_name, :company, :company_id, to: :account
+    delegate :first_name, :email, :company, :company_id, to: :account
     delegate :plan, to: :company, allow_nil: true, prefix: :company
 
-    def initialize(hash = {})
-      @hash = hash
+    def initialize(account_id:, section:)
+      @given_account_id = account_id
+      @section = section
     end
 
     def account
-      @account ||= begin
-          given_account_id = hash[:account_id]
-          (find_account_by_id given_account_id if given_account_id) || no_account
-        end
+      @account ||= find_account_by_id || no_account
     end
 
     def signed_in?
@@ -31,12 +29,30 @@ module EmployerPortal
       company_plan.present? && !company_plan.include?("Lite")
     end
 
+    def sync_connected?
+      ::EmployerPortal::Sync.connected?
+    end
+
+    def aws_connected?
+      ::EmployerPortal::Aws.connected?
+    end
+
     private
 
-    attr_reader :hash
+    attr_reader :given_account_id, :section
 
-    def find_account_by_id(id)
-      Employer.where(id: id).limit(1).first
+    def section_admin?
+      section==:admin
+    end
+
+    def find_account_by_id
+      return unless given_account_id
+
+      if section_admin?
+        AdminUser.where(id: given_account_id).limit(1).first
+      else
+        Employer.where(id: given_account_id).limit(1).first
+      end
     end
 
     def no_account

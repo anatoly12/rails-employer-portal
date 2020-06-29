@@ -1,0 +1,18 @@
+<%= render "admin/common/top_nav_container" do %>
+  <%= render "admin/common/top_nav_item", title: "Employees", path: {action: :index} %>
+<% end %>
+<div class="mt-10 p-5 pb-0">
+  <%= render "admin/employees/filters", filters: search.filters %>
+  <%= render "admin/employees/employees", employees: search.results %>
+  <div class="flex justify-between py-5 select-none">
+    <div>
+      <p class="text-gray-400 font-bold text-xs rounded-lg inline-flex items-center pt-1 cursor-not-allowed">
+        <%= render "icon/close_outline", icon_class: "w-4 h-4 mr-2" %>
+        Employees should only be edited by employers on application side
+      </p>
+    </div>
+    <div>
+      <%== render partial: "common/pagination", locals: { pagination: search.pagination } %>
+    </div>
+  </div>
+</div>

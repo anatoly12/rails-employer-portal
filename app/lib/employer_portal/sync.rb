@@ -10,6 +10,7 @@ module EmployerPortal
         @schema = Sequel[schema_name.to_sym]
         ::EmployerPortal::Sync::Views.new(schema).create_or_replace
         ::EmployerPortal::Sync::Legacy.new(schema, self).define_models
+        ::Employee.add_connected_associations
         log("connected to #{schema.value}")
       rescue URI::InvalidURIError, Sequel::Error => e
         Rails.logger.error(e.message)

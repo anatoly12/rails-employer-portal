@@ -1,5 +1,4 @@
 Sequel.database_timezone = :utc
-Sequel::Model.db.extension(:null_dataset)
 
 def in_rake_task?
   cmd = File.basename($0)

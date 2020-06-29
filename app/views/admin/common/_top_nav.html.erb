@@ -1,0 +1,26 @@
+<nav id="top-nav" class="fixed z-20 top-0 right-0 select-none" data-turbolinks-permanent>
+  <ul class="h-16 flex items-center justify-end">
+    <li class="mr-4">
+      <div class="relative inline-block">
+        <button onclick="toggleDD('myDropdown')" class="drop-button text-white focus:outline-none">
+          <span class="pr-2">
+            <img src="<%= gravatar %>" class="inline-block w-6 h-6">
+          </span>
+          Hi, <%= current_context.email %>
+          <%= render "icon/cheveron_down", icon_class: "h-4 w-4 inline" %>
+        </button>
+        <div id="myDropdown" class="dropdownlist absolute bg-gray-900 text-white right-0 mt-3 p-3 overflow-auto z-30 w-full rounded-lg invisible">
+          <%= link_to "#", class: "p-2 hover:bg-gray-800 text-white text-sm block" do %>
+            <%= render "icon/user", icon_class: "h-3 w-3 mr-2 text-white inline-block" %>
+            My Profile
+          <% end %>
+          <div class="border border-gray-800"></div>
+          <%= link_to admin_sessions_path, method: :delete, class: "p-2 hover:bg-gray-800 text-white text-sm block" do %>
+            <%= render "icon/close_outline", icon_class: "h-3 w-3 mr-2 text-white inline-block" %>
+            Sign out
+          <% end %>
+        </div>
+      </div>
+    </li>
+  </ul>
+</nav>

@@ -1,0 +1,38 @@
+<div class="mb-5">
+  <%= form_for filters, as: :filters, url: {action: :index}, method: :get, html: { class: "bg-white shadow-md rounded select-none", autocomplete: "off" } do |f| %>
+    <%= hidden_field_tag :page, nil %>
+    <% if filters.empty? %>
+      <%= link_to({action: :index, filters: {opened: "1"}, page: nil}, class: "block bg-gray-300 font-bold uppercase text-sm text-gray-500 py-4 px-8 cursor-pointer") do %>
+        <%= render "icon/cheveron_down", icon_class: "h-5 w-5 mr-2 inline-block" %>
+        Filters
+      <% end %>
+    <% else %>
+      <%= link_to({action: :index, filters: nil, page: nil}, class: "block bg-blue-500 font-bold uppercase text-sm text-gray-100 py-4 px-8 cursor-pointer") do %>
+        <%= render "icon/cheveron_up", icon_class: "h-5 w-5 mr-2 inline-block" %>
+        Filters
+      <% end %>
+      <div class="p-6">
+        <div class="grid grid-cols-3 gap-20 mb-10">
+          <%= render "form/select", form: f, column: :company_id_equals, label: "Company", options: f.object.companies_for_select %>
+          <%= render "form/text_field", form: f, column: :full_name_contains %>
+          <%= render "form/text_field", form: f, column: :email_contains %>
+          <% if current_context.sync_connected? %>
+            <%= render "form/select", form: f, column: :daily_checkup_status_equals, label: "Daily checkup status", options: f.object.daily_checkup_statuses_for_select %>
+            <%= render "form/select", form: f, column: :testing_status_equals, label: "Testing status", options: f.object.testing_statuses_for_select %>
+          <% end %>
+        </div>
+        <div class="flex justify-between">
+          <div></div>
+          <div>
+            <% if filters.clearable? %>
+              <%= link_to "Clear", {action: :index, filters: {opened: 1}, page: nil}, class: "text-gray-600 hover:text-gray-900 hover:underline mr-6" %>
+            <% end %>
+            <button type="submit" name="opened" value="1" class="bg-blue-400 hover:bg-blue-500 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline">
+              Search
+            </button>
+          </div>
+        </div>
+      </div>
+    <% end %>
+  <% end %>
+</div>

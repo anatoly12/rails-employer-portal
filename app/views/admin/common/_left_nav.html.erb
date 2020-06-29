@@ -1,0 +1,20 @@
+<nav class="bg-gray-900 shadow-lg fixed bottom-0 fixed top-0 h-screen z-10 w-48 px-4 py-8 select-none">
+  <div id="logo" data-turbolinks-permanent>
+    <%= image_pack_tag "lockup-white.svg", alt: "Essential Health Passport", class: "w-full" %>
+  </div>
+  <ul class="mt-4">
+    <%= render "admin/common/left_nav_item", icon: "dashboard", title: "Dashboard", path: admin_root_path %>
+  </ul>
+  <ul class="mt-4">
+    <%= render "admin/common/left_nav_item", icon: "factory", title: "Companies", path: admin_companies_path %>
+  </ul>
+  <ul class="mt-4">
+    <%= render "admin/common/left_nav_item", icon: "shield", title: "Employers", path: admin_employers_path %>
+  </ul>
+  <ul class="mt-4">
+    <%= render "admin/common/left_nav_item", icon: "user", title: "Employees", path: admin_employees_path %>
+  </ul>
+  <ul class="mt-4">
+    <%= render "admin/common/left_nav_item", icon: "news_paper", title: "Email templates", path: admin_email_templates_path %>
+  </ul>
+</nav>

@@ -50,7 +50,7 @@ module EmployerPortal
     end
 
     def with_selfie?
-      selfie_s3_key.present? && ::EmployerPortal::Aws.connected?
+      selfie_s3_key.present? && context.aws_connected?
     end
 
     def selfie_s3_key

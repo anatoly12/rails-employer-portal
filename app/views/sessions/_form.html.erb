@@ -1,4 +1,4 @@
-<%= form_for editor, as: :session, url: { action: :create }, html: { class: "max-w-lg mx-auto my-4 md:my-20" } do |f| %>
+<%= form_for editor, as: :session, url: { action: :create }, html: { class: "max-w-lg mx-auto my-4 md:my-20", autocomplete: "off" } do |f| %>
   <h2 class="text-3xl font-thin">Sign into your account<h2>
   <div class="mb-4">
     <%= link_to "I need to create an account", "#", class: primary_link_class %>
@@ -8,11 +8,11 @@
   <% end %>
   <%= f.hidden_field :return_path %>
   <div class="mb-4">
-    <%= f.text_field :username, placeholder: "Email", class: text_field_class(editor.errors_on(:username)), autocomplete: "off" %>
+    <%= f.text_field :username, placeholder: "Email", class: text_field_class(editor.errors_on(:username)) %>
     <%= render "common/errors", errors: editor.errors_on(:username) %>
   </div>
   <div class="mb-4">
-    <%= f.password_field :password, placeholder: "Password", class: text_field_class(editor.errors_on(:password)), autocomplete: "off" %>
+    <%= f.password_field :password, placeholder: "Password", class: text_field_class(editor.errors_on(:password)) %>
     <%= render "common/errors", errors: editor.errors_on(:password) %>
   </div>
   <div class="-mt-2 mb-4">

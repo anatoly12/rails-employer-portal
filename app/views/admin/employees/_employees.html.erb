@@ -1,0 +1,21 @@
+<div class="bg-white shadow-md rounded overflow-hidden">
+  <table class="w-full border-collapse text-gray-900">
+    <thead class="select-none">
+      <tr class="bg-blue-500 font-bold uppercase text-sm text-gray-100">
+        <th class="py-4 px-6 border-b border-gray-200 w-1 whitespace-no-wrap">Company</th>
+        <th class="py-4 px-6 border-b border-gray-200 w-1 whitespace-no-wrap">Created at</th>
+        <th class="py-4 px-6 border-b border-gray-200 text-left whitespace-no-wrap">Full Name</th>
+        <th class="py-4 px-6 border-b border-gray-200 text-left whitespace-no-wrap">Email</th>
+        <% if current_context.sync_connected? %>
+          <th class="py-4 px-6 border-b border-gray-200 text-left">Daily Checkup Status</th>
+          <th class="py-4 px-6 border-b border-gray-200 text-left">Testing Status</th>
+        <% end %>
+      </tr>
+    </thead>
+    <tbody>
+      <% employees.each do |employee| %>
+        <%= render "admin/employees/employee", employee: employee %>
+      <% end %>
+    </tbody>
+  </table>
+</div>

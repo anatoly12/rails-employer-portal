@@ -6,7 +6,7 @@ module EmployerPortal
     DEFAULT_PAGE_SIZE = 5
 
     # ~~ accessors ~~
-    attr_reader :employee, :results, :pagination
+    attr_reader :employee, :pagination
 
     # ~~ delegates ~~
     delegate :count, to: :pagination
@@ -16,15 +16,19 @@ module EmployerPortal
       @context = context
       @employee = employee
       @params = params
-      if connected?
-        @pagination, @results = pagy(sorted(dataset))
+      @pagination, @results = if context.sync_connected?
+        pagy(sorted(dataset))
       else
-        @pagination, @results = pagy_array([])
+        pagy_array([])
       end
     end
 
     def sort_order
       params[:order] || "log_date:desc"
+    end
+
+    def results
+      context.sync_connected? ? @results.all : @results
     end
 
     private
@@ -41,10 +45,6 @@ module EmployerPortal
     end
 
     # ~~ private instance methods ~~
-    def connected?
-      ::EmployerPortal::Sync.connected?
-    end
-
     def dataset
       SymptomLog.where(account_id: employee.remote_id)
     end

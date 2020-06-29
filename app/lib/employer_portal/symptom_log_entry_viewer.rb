@@ -39,7 +39,7 @@ module EmployerPortal
     attr_reader :context, :entry
 
     def required?
-      entry.required=="1"
+      entry.required
     end
   end
 end

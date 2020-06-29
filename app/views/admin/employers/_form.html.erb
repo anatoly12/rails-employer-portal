@@ -1,0 +1,7 @@
+<div class="grid grid-cols-2 gap-20 mb-10">
+  <%= render "form/select", form: form, column: :company_id, options: form.object.companies_for_select %>
+  <%= render "form/select", form: form, column: :role, options: form.object.roles_for_select %>
+  <%= render "form/text_field", form: form, column: :first_name %>
+  <%= render "form/text_field", form: form, column: :last_name %>
+  <%= render "form/text_field", form: form, column: :email %>
+</div>

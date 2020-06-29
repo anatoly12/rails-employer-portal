@@ -25,7 +25,7 @@ module EmployerPortal
     end
 
     def entries
-      return [] unless connected?
+      return [] unless context.sync_connected?
 
       @entries ||= SymptomLogEntry.where(
         account_id: employee.remote_id,
@@ -38,10 +38,5 @@ module EmployerPortal
     private
 
     attr_reader :context
-
-    # ~~ private instance methods ~~
-    def connected?
-      ::EmployerPortal::Sync.connected?
-    end
   end
 end

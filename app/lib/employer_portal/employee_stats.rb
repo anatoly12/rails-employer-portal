@@ -2,18 +2,19 @@ module EmployerPortal
   class EmployeeStats
 
     # ~~ public instance methods ~~
-    def initialize(dataset)
+    def initialize(context, dataset)
+      @context = context
       @dataset = dataset
     end
 
     def no_symptoms_percent
-      return 0 unless connected?
+      return 0 unless context.sync_connected? && total>0
 
       count_by_daily_checkup_status.fetch("Cleared", 0) * 100 / total
     end
 
     def symptoms_percent
-      return 0 unless connected?
+      return 0 unless context.sync_connected? && total>0
 
       count_by_daily_checkup_status.fetch("Not Cleared", 0) * 100 / total
     end
@@ -23,13 +24,13 @@ module EmployerPortal
     end
 
     def cleared_percent
-      return 0 unless connected?
+      return 0 unless context.sync_connected? && total>0
 
       count_by_testing_status.fetch("Cleared", 0) * 100 / total
     end
 
     def inconclusive_percent
-      return 0 unless connected?
+      return 0 unless context.sync_connected? && total>0
 
       count_by_testing_status.fetch("Inconclusive", 0) * 100 / total
     end
@@ -40,13 +41,9 @@ module EmployerPortal
 
     private
 
-    attr_reader :dataset
+    attr_reader :context, :dataset
 
     # ~~ private instance methods ~~
-    def connected?
-      ::EmployerPortal::Sync.connected?
-    end
-
     def total
       @total ||= count_by_daily_checkup_status.values.sum
     end

@@ -11,10 +11,15 @@ module EmployerPortal
     # ~~ delegates ~~
     delegate :count, to: :pagination
 
+    # ~~ public class methods ~~
+    def self.from_params(context, params)
+      new context, params.permit(:filters, :order, :page)
+    end
+
     # ~~ public instance methods ~~
     def initialize(context, params)
       @context = context
-      @params = params.permit(:filters, :order, :page)
+      @params = params
       @pagination, @results = pagy(sorted(dataset))
     end
 
@@ -29,7 +34,7 @@ module EmployerPortal
     end
 
     def stats
-      @stats ||= ::EmployerPortal::EmployeeStats.new dataset
+      @stats ||= ::EmployerPortal::EmployeeStats.new context, dataset
     end
 
     private
@@ -46,15 +51,11 @@ module EmployerPortal
     end
 
     # ~~ private instance methods ~~
-    def connected?
-      ::EmployerPortal::Sync.connected?
-    end
-
     def dataset
       ds = Employee.where(
         company_id: context.account.company_id
       ).qualify
-      if connected?
+      if context.sync_connected?
         ds.eager_graph(:dashboard_employee).select(
           Sequel.qualify(:employees, :uuid),
           Sequel.function(:coalesce,

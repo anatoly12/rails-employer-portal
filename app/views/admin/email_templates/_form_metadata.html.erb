@@ -1,0 +1,14 @@
+<div class="mb-10">
+  <%= render "form/text_field", form: form, column: :name, label: "Name (admin only)" %>
+</div>
+<div class="grid grid-cols-2 gap-10 mb-10">
+  <%= render "form/select", form: form, column: :trigger_key, options: form.object.trigger_keys_for_select, label: "Trigger" %>
+  <div>
+    <% if current_context.sync_connected? %>
+      <%= render "form/select", form: form, column: :covid19_message_code, options: form.object.covid19_message_codes_for_select, label: "App notification" %>
+      <p class="text-xs text-gray-500 -mb-8">Select a subject to add a row in `covid19_messages` table, or select none to skip in-app notification.</p>
+    <% end %>
+  </div>
+  <%= render "form/text_field", form: form, column: :from, placeholder: "Customer Support <support@example.com>" %>
+  <%= render "form/text_field", form: form, column: :subject %>
+</div>

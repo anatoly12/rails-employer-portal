@@ -8,25 +8,28 @@ class ApplicationController < ActionController::Base
     head :ok
   end
 
-  private
+  protected
 
   def current_context
     @current_context ||= ::EmployerPortal::Context.new(
       account_id: session[:account_id],
+      section: :application,
     )
   end
 
   helper_method :current_context
-
-  def ensure_access!
-    current_context.ensure_access!
-  end
 
   def account_not_found
     return_path = (request.fullpath unless controller_path == "sessions")
     return_path = nil if return_path == "/"
     session_params = { return_path: return_path } if return_path
     redirect_to_without_cache sessions_path(session: session_params)
+  end
+
+  private
+
+  def ensure_access!
+    current_context.ensure_access!
   end
 
   def redirect_to_without_cache(to)

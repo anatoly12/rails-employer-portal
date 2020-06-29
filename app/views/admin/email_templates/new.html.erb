@@ -1,0 +1,18 @@
+<%= render "admin/common/top_nav_container" do %>
+  <%= render "admin/common/top_nav_item", title: "Email templates", path: {action: :index} %>
+  <%= render "admin/common/top_nav_item", title: "New email template", path: {action: :new} %>
+<% end %>
+<div class="mt-10 p-5 pb-0">
+  <%= form_for editor, url: {action: :create}, html: { autocomplete: "off" } do |f| %>
+    <div class="bg-white shadow-md rounded p-8 mb-4">
+      <%= render "form_metadata", form: f %>
+      <div class="flex justify-between">
+        <div>
+          <%= link_to "Cancel", {action: :index}, class: "text-gray-600 hover:text-gray-900 hover:underline mr-6" %>
+          <%= submit_tag "Create", class: "bg-blue-400 hover:bg-blue-500 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline" %>
+        </div>
+      </div>
+    </div>
+    <%= render "form_content", form: f %>
+  <% end %>
+</div>
