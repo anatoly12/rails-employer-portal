@@ -7,7 +7,7 @@ document.addEventListener('turbolinks:render', () => {
   }
 })
 document.addEventListener('turbolinks:load', () => {
-  document.querySelectorAll(`[data-persist-scroll]`).forEach((link) => {
+  document.querySelectorAll('[data-persist-scroll]').forEach((link) => {
     link.addEventListener('click', () => {
       document.addEventListener(
         'turbolinks:before-render',
