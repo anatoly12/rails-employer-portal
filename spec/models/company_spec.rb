@@ -20,5 +20,17 @@ RSpec.describe Company, type: :model do
       expect(subject).not_to be_valid
       expect(subject.errors).to eql plan: ["is not present"]
     end
+
+    it "requires remote_id" do
+      subject.remote_id = nil
+      expect(subject).not_to be_valid
+      expect(subject.errors).to eql remote_id: ["is not present"]
+    end
+
+    it "checks that remote_id is a number" do
+      subject.remote_id = "A"
+      expect(subject).not_to be_valid
+      expect(subject.errors).to eql remote_id: ["is not a number"]
+    end
   end
 end

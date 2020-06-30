@@ -116,7 +116,7 @@ RSpec.describe ::EmployerPortal::Sync, type: :sync, order: :defined do
         it "creates a row in account demographics" do
           subject
           demographic = described_class::Account.order(:id).last.demographic
-          expect(demographic.full_legal_name).to eql employee.full_name
+          expect(demographic.full_legal_name).to eql "#{employee.first_name} #{employee.last_name}"
           expect(demographic.state_of_residence).to eql employee.state
           expect(demographic.phone_number).to eql employee.phone
         end
@@ -248,7 +248,7 @@ RSpec.describe ::EmployerPortal::Sync, type: :sync, order: :defined do
               subject
             end.to change { described_class::Demographic.count }.by(1)
             demographic = account.demographic
-            expect(demographic.full_legal_name).to eql employee.full_name
+            expect(demographic.full_legal_name).to eql "#{employee.first_name} #{employee.last_name}"
             expect(demographic.state_of_residence).to eql employee.state
             expect(demographic.phone_number).to eql employee.phone
           end

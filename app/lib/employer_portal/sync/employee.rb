@@ -76,7 +76,7 @@ module EmployerPortal
 
         Demographic.create(
           account_id: account.id,
-          full_legal_name: employee.full_name,
+          full_legal_name: "#{employee.first_name} #{employee.last_name}",
           state_of_residence: employee.state,
           phone_number: employee.phone,
           created_at: now,
