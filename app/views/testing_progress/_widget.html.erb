@@ -3,13 +3,13 @@
     <div class="md:w-full md:h-48 md:overflow-hidden">
       <h3 class="text-2xl font-medium mb-5">Testing Progress</h3>
       <ul class="-mb-10 p-4 text-xs md:flex md:justify-center md:px-0 lg:ml-10 lg:-mr-10">
-        <%= render "testing_progress/step", status: status, label: "Not Registered", voted: (status=="Not Registered") %>
-        <%= render "testing_progress/step", status: status, label: "Registered", voted: (status=="Registered") %>
-        <%= render "testing_progress/step", status: status, label: "Intake", voted: (status=="Intake") %>
+        <%= render "testing_progress/step", status: status, label: "Not Registered", voted: (status == "Not Registered") %>
+        <%= render "testing_progress/step", status: status, label: "Registered", voted: (status == "Registered") %>
+        <%= render "testing_progress/step", status: status, label: "Intake", voted: (status == "Intake") %>
         <%= render "testing_progress/step", status: status, label: "Received Lab Order", voted: false %>
-        <%= render "testing_progress/step", status: status, label: "Submitted Results", voted: (status=="Submitted Results") %>
+        <%= render "testing_progress/step", status: status, label: "Submitted Results", voted: (status == "Submitted Results") %>
         <%= render "testing_progress/step", status: status, label: "Physician Reviewing", voted: false %>
-        <%= render "testing_progress/step", status: status, label: "Passport Complete", voted: (status=="Cleared" || status=="Inconclusive") %>
+        <%= render "testing_progress/step", status: status, label: "Passport Complete", voted: (status == "Cleared" || status == "Inconclusive") %>
       </ul>
     </div>
   </div>

@@ -58,5 +58,4 @@ class Admin::CompaniesController < Admin::BaseController
   end
 
   helper_method :editor
-
 end

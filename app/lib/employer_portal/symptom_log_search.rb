@@ -17,10 +17,10 @@ module EmployerPortal
       @employee = employee
       @params = params
       @pagination, @results = if context.sync_connected?
-        pagy(sorted(dataset))
-      else
-        pagy_array([])
-      end
+          pagy(sorted(dataset))
+        else
+          pagy_array([])
+        end
     end
 
     def sort_order
@@ -52,7 +52,7 @@ module EmployerPortal
     def sorted(ds)
       column, direction = sort_order.split(":")
       ds = ds.order(:log_date)
-      direction=="desc" ? ds.reverse : ds
+      direction == "desc" ? ds.reverse : ds
     end
   end
 end

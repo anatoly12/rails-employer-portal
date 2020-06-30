@@ -23,7 +23,7 @@ class EmployerPortal::Admin::CompanyEditor < ::EmployerPortal::Admin::Editor
 
   def remote_ids_for_select
     ::EmployerPortal::Sync::Partner.where(
-      type_of: "CONSUMER"
+      type_of: "CONSUMER",
     ).order(:name).all.map do |partner|
       [partner.name, partner.partner_id]
     end

@@ -14,7 +14,7 @@ module EmployerPortal
     end
 
     def flagged?
-      daily_checkup_status=="Not Cleared" || testing_status=="Inconclusive"
+      daily_checkup_status == "Not Cleared" || testing_status == "Inconclusive"
     end
 
     def full_name

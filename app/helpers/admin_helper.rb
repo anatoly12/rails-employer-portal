@@ -15,5 +15,4 @@ module AdminHelper
     params = Rails.application.routes.recognize_path(url_string, :method => :get)
     params[:controller] == controller_path
   end
-
 end

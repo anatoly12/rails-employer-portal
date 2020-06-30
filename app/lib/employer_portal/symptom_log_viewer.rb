@@ -29,7 +29,7 @@ module EmployerPortal
 
       @entries ||= SymptomLogEntry.where(
         account_id: employee.remote_id,
-        log_date: date
+        log_date: date,
       ).order(:id).all.map do |entry|
         ::EmployerPortal::SymptomLogEntryViewer.new context, entry
       end.select(&:visible?)

@@ -5,10 +5,10 @@ class EmployerPortal::Admin::Editor
   # ~~ public class methods ~~
   def self.from_params(context, params)
     edited = if params[:id].present?
-      find_by_id!(params[:id])
-    else
-      new_model
-    end
+        find_by_id!(params[:id])
+      else
+        new_model
+      end
     new context, edited
   end
 

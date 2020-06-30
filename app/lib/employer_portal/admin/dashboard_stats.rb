@@ -73,13 +73,12 @@ class EmployerPortal::Admin::DashboardStats
   def count_by_testing_status
     @count_by_testing_status ||= dataset.where(
       Sequel.qualify(:employees, :company_id) => Company.exclude(
-        plan: "Lite"
-      ).select(:id)
+        plan: "Lite",
+      ).select(:id),
     ).group_and_count(
       :testing_status
     ).to_a.each_with_object({}) do |raw, hash|
       hash[raw[:testing_status]] = raw[:count]
     end
   end
-
 end

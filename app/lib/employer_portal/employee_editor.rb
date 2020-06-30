@@ -8,21 +8,21 @@ module EmployerPortal
     # ~~ public class methods ~~
     def self.from_params(context, params)
       edited = if params[:id].present?
-        Employee.where(
-          company_id: context.company_id,
-          uuid: params[:id],
-        ).limit(1).first || raise(::EmployerPortal::Error::Employee::NotFound)
-      else
-        Employee.new(
-          company_id: context.company_id,
-          employer_id: context.account_id,
-        )
-      end
+          Employee.where(
+            company_id: context.company_id,
+            uuid: params[:id],
+          ).limit(1).first || raise(::EmployerPortal::Error::Employee::NotFound)
+        else
+          Employee.new(
+            company_id: context.company_id,
+            employer_id: context.account_id,
+          )
+        end
       new context, edited, params.permit(:filters, :order, :page)
     end
 
     # ~~ public instance methods ~~
-    def initialize(context, edited, symptom_log_params={})
+    def initialize(context, edited, symptom_log_params = {})
       @context = context
       @edited = edited
       @symptom_log_params = symptom_log_params

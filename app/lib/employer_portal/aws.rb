@@ -12,7 +12,7 @@ module EmployerPortal
         log("AWS_SECRET_ACCESS_KEY not configured, skip") and return if AWS_SECRET_ACCESS_KEY.blank?
         ::Aws.config.update({
           region: "us-east-1",
-          credentials: ::Aws::Credentials.new(AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY)
+          credentials: ::Aws::Credentials.new(AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY),
         })
         log("connected")
         @connected = true

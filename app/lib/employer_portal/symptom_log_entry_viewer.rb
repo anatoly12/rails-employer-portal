@@ -15,15 +15,15 @@ module EmployerPortal
     end
 
     def type_date?
-      entry.question_type==TYPE_DATE
+      entry.question_type == TYPE_DATE
     end
 
     def type_text?
-      entry.question_type==TYPE_TEXT
+      entry.question_type == TYPE_TEXT
     end
 
     def type_list?
-      entry.question_type==TYPE_LIST
+      entry.question_type == TYPE_LIST
     end
 
     def options

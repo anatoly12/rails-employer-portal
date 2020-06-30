@@ -46,7 +46,7 @@ class EmployerPortal::Admin::Filters
   end
 
   def clearable?
-    filters.to_unsafe_h.any?{|key, _| key!="opened" }
+    filters.to_unsafe_h.any? { |key, _| key != "opened" }
   end
 
   def method_missing(name, *args, &block)
@@ -59,7 +59,7 @@ class EmployerPortal::Admin::Filters
   end
 
   def respond_to_missing?(name, include_private = false)
-    name.to_s=~DELEGATE_TO_SEARCH_PATTERN || super
+    name.to_s =~ DELEGATE_TO_SEARCH_PATTERN || super
   end
 
   private

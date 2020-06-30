@@ -33,10 +33,10 @@ module EmployeesHelper
   def temperature_color(symptom_log)
     temperature = symptom_log.temperature.to_s.upcase
     fahrenheit = if temperature.include? "C"
-      temperature.to_f * 9 / 5 + 32
-    else
-      temperature.to_f
-    end
-    TEXT_COLOR_RED if (fahrenheit*10).floor>=1004
+        temperature.to_f * 9 / 5 + 32
+      else
+        temperature.to_f
+      end
+    TEXT_COLOR_RED if (fahrenheit * 10).floor >= 1004
   end
 end

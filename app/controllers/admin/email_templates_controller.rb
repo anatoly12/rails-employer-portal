@@ -58,5 +58,4 @@ class Admin::EmailTemplatesController < Admin::BaseController
   end
 
   helper_method :editor
-
 end

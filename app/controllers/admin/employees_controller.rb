@@ -11,5 +11,4 @@ class Admin::EmployeesController < Admin::BaseController
   end
 
   helper_method :search
-
 end

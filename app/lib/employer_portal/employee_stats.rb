@@ -8,35 +8,35 @@ module EmployerPortal
     end
 
     def no_symptoms_percent
-      return 0 unless context.sync_connected? && total>0
+      return 0 unless context.sync_connected? && total > 0
 
       count_by_daily_checkup_status.fetch("Cleared", 0) * 100 / total
     end
 
     def symptoms_percent
-      return 0 unless context.sync_connected? && total>0
+      return 0 unless context.sync_connected? && total > 0
 
       count_by_daily_checkup_status.fetch("Not Cleared", 0) * 100 / total
     end
 
     def did_not_submit_percent
-      100-no_symptoms_percent-symptoms_percent
+      100 - no_symptoms_percent - symptoms_percent
     end
 
     def cleared_percent
-      return 0 unless context.sync_connected? && total>0
+      return 0 unless context.sync_connected? && total > 0
 
       count_by_testing_status.fetch("Cleared", 0) * 100 / total
     end
 
     def inconclusive_percent
-      return 0 unless context.sync_connected? && total>0
+      return 0 unless context.sync_connected? && total > 0
 
       count_by_testing_status.fetch("Inconclusive", 0) * 100 / total
     end
 
     def in_progress_percent
-      100-cleared_percent-inconclusive_percent
+      100 - cleared_percent - inconclusive_percent
     end
 
     private

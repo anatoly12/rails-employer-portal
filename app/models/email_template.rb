@@ -4,7 +4,7 @@ class EmailTemplate < Sequel::Model
     "invite",
     "contact",
     "reminder",
-    "password_forgotten"
+    "password_forgotten",
   ].freeze
 
   # ~~ plugins ~~

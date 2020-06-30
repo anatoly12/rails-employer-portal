@@ -1,5 +1,4 @@
 class EmployerPortal::Admin::EmployeeSearch < ::EmployerPortal::Admin::Search
-
   private
 
   # ~~ overrides for EmployerPortal::Admin::Search ~~
@@ -27,7 +26,7 @@ class EmployerPortal::Admin::EmployeeSearch < ::EmployerPortal::Admin::Search
               :full_name,
               filters.value_for_ilike(value)
             )
-          ).select(:id)
+          ).select(:id),
         )
       else
         ds.where(
@@ -45,8 +44,8 @@ class EmployerPortal::Admin::EmployeeSearch < ::EmployerPortal::Admin::Search
       if context.sync_connected?
         ds.where(
           remote_id: DashboardEmployee.where(
-            daily_checkup_status: value
-          ).select(:id)
+            daily_checkup_status: value,
+          ).select(:id),
         )
       else
         ds
@@ -55,8 +54,8 @@ class EmployerPortal::Admin::EmployeeSearch < ::EmployerPortal::Admin::Search
       if context.sync_connected?
         ds = ds.where(
           remote_id: DashboardEmployee.where(
-            testing_status: value
-          ).select(:id)
+            testing_status: value,
+          ).select(:id),
         )
       else
         ds

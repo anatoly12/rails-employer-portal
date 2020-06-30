@@ -83,6 +83,6 @@ class EmployerPortal::Admin::Search
   def sorted(ds)
     column, direction = sort_order.split(":")
     ds = apply_order(ds, column)
-    direction=="desc" ? ds.reverse : ds
+    direction == "desc" ? ds.reverse : ds
   end
 end

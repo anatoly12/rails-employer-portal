@@ -42,7 +42,7 @@ module EmployerPortal
     attr_reader :given_account_id, :section
 
     def section_admin?
-      section==:admin
+      section == :admin
     end
 
     def find_account_by_id

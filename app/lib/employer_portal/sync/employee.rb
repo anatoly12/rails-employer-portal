@@ -97,7 +97,7 @@ module EmployerPortal
         requisition_needed = Kit.eager_graph(:requisition).where(
           schema[:ec_kits][:t_kit_id] => t_kit_id,
           schema[:ec_kits][:partner_id] => partner_id,
-          Sequel.qualify(:requisition, :user_id) => account.user_id
+          Sequel.qualify(:requisition, :user_id) => account.user_id,
         ).limit(1).empty?
         return unless requisition_needed
 

@@ -1,5 +1,4 @@
 class EmployerPortal::Admin::EmailTemplateSearch < ::EmployerPortal::Admin::Search
-
   private
 
   # ~~ overrides for EmployerPortal::Admin::Search ~~

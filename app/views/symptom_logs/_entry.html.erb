@@ -1,7 +1,7 @@
 <li class="mb-4">
   <div class="flex items-center">
     <div class="w-6 h-6 flex items-center justify-center rounded-full border border-black text-sm leading-none font-normal">
-      <%= index+1 %>
+      <%= index + 1 %>
     </div>
     <div class="ml-4"><%= entry.question %></div>
   </div>
@@ -9,9 +9,9 @@
     <% if entry.type_list? %>
       <ul class="md:flex md:align-center font-medium -mx-2">
         <% entry.options.each do |option| %>
-          <% if option==entry.response %>
+          <% if option == entry.response %>
             <li class="flex-1 text-center m-2 py-1 bg-orange-600 text-white"><%= option %></li>
-          <% elsif option=="Yes" %>
+          <% elsif option == "Yes" %>
             <li class="flex-1 text-center m-2 py-1 border border-blue-500 text-blue-500"><%= option %></li>
           <% else %>
             <li class="flex-1 text-center m-2 py-1 border text-gray-500"><%= option %></li>
