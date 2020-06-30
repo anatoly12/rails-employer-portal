@@ -4,7 +4,7 @@
       <div class="relative inline-block">
         <button onclick="toggleDD('myDropdown')" class="drop-button text-white focus:outline-none">
           <span class="pr-2">
-            <img src="<%= gravatar %>" class="inline-block w-6 h-6">
+            <img src="<%= gravatar(current_context) %>" class="inline-block w-6 h-6">
           </span>
           Hi, <%= current_context.email %>
           <%= render "icon/cheveron_down", icon_class: "h-4 w-4 inline" %>

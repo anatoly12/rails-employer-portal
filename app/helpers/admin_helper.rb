@@ -1,8 +1,8 @@
 module AdminHelper
 
   # ~~ public methods ~~
-  def gravatar
-    md5 = Digest::MD5.hexdigest(current_context.email.to_s.downcase)
+  def gravatar(context)
+    md5 = Digest::MD5.hexdigest(context.email.to_s.downcase)
     "https://www.gravatar.com/avatar/#{md5}?d=wavatar&r=pg"
   end
 
