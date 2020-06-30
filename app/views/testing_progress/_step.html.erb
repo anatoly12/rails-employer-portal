@@ -13,9 +13,14 @@
   <div class="-mt-6 mb-6 pl-3 flex-1 md:text-center md:pl-0 md:-ml-10 md:mr-10">
     <div class="md:px-2"><%= label %></div>
   </div>
-  <% if label == "Passport Complete" && voted %>
+  <% if local_assigns[:status] %>
     <div class="-mt-6 mb-6 pl-3 font-medium md:-mt-4 md:text-center md:pl-0 md:-ml-10 md:mr-10">
-      Status: <span class="<%= testing_color(editor) %>"><%= status %></span>
+      Status:
+      <% if status=="Cleared" %>
+        <a href="#" class="text-green-500 border-green-500 hover:border-b">Cleared</a>
+      <% else %>
+        <a href="#" class="text-red-600 border-red-600 whitespace-no-wrap hover:border-b">Not Cleared</a>
+      <% end %>
     </div>
   <% end %>
 </li>
