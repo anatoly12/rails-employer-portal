@@ -92,7 +92,6 @@ CREATE TABLE `email_templates` (
   `name` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `trigger_key` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `from` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `recipient` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `subject` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `html` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `text` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,

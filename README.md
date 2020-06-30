@@ -12,7 +12,7 @@ https://dev.mysql.com/downloads/mysql/
 
 Drop the development DB, create the development DB, run the migrations and the seeds then prepare the tests all-in-one:
 
-- `rake prepare`
+- `bin/rails prepare`
 
 ## Tests
 
@@ -69,7 +69,7 @@ With overmind:
 
 Use the provided `Dockerfile` and don't forget to run the migrations on each release with:
 
-- `./bin/rails db:migrate`
+- `bin/rails db:migrate`
 
 In addition, you need to define the following environment variables:
 
@@ -108,3 +108,9 @@ Allow background jobs to be processed by running the following process:
 To push logs toward STDOUT instead of `log/production.log` just add the `RAILS_LOG_TO_STDOUT` environment variable with any value, for example:
 
 - `RAILS_LOG_TO_STDOUT="1"`
+
+## Seeds
+
+Production environments require the following tasks to have run at least once to properly seed the database:
+
+- `bin/rails update_zipcodes`
