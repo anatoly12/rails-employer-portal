@@ -39,6 +39,22 @@ module EmployerPortal
       100 - cleared_percent - inconclusive_percent
     end
 
+    def daily_checkup_available_count
+      [daily_checkup_allowed_count-total, 0].max
+    end
+
+    def daily_checkup_allowed_count
+      100
+    end
+
+    def testing_available_count
+      [testing_allowed_count-total, 0].max
+    end
+
+    def testing_allowed_count
+      100
+    end
+
     private
 
     attr_reader :context, :dataset

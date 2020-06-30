@@ -16,5 +16,6 @@ Rails.application.routes.draw do
     delete "delete_all", on: :collection
     resources :symptom_logs, only: :show
   end
+  resources :plans, only: [:index]
   root to: "employees#index"
 end

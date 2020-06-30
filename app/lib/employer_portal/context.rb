@@ -29,6 +29,10 @@ module EmployerPortal
       company_plan.present? && !company_plan.include?("Lite")
     end
 
+    def billed_by_invoice?
+      company_plan.present? && company_plan!="Self-Service"
+    end
+
     def sync_connected?
       ::EmployerPortal::Sync.connected?
     end

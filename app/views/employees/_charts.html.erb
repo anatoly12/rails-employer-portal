@@ -1,7 +1,18 @@
 <div id="charts" class="-mx-4 text-xs lg:mx-0 lg:flex lg:my-4 xl:my-6 xl:text-sm" data-turbolinks-permanent>
   <div class="p-4 border-b border-blue-500 lg:border-none lg:shadow lg:p-2 lg:flex-1 lg:mr-2 xl:mr-4 xl:p-4">
     <h3 class="font-semibold text-xl">Overview Symptoms</h3>
-    <div><strong>Your Plan: 70 of 100</strong> available entries</div>
+    <div>
+      <% if current_context.billed_by_invoice? %>
+        <strong>Your Plan:</strong>
+        billed by invoice
+      <% else %>
+        <strong>Your Plan: <%= stats.daily_checkup_available_count %> of <%= stats.daily_checkup_allowed_count %></strong>
+        available entries
+        <%= link_to plans_path, title: "You have a limited number of employee entries. Deactivated employees still count towards available entries." do %>
+          <%= render "icon/information_solid", icon_class: "inline-block ml-1 text-blue-500 h-3 w-3" %>
+        <% end %>
+      <% end %>
+    </div>
     <div class="md:flex">
       <%= render "chart/widget", color: "#1dd678", percent: stats.no_symptoms_percent, label: "No Symptoms" %>
       <%= render "chart/widget", color: "#f35200", percent: stats.symptoms_percent, label: "Symptoms" %>
@@ -11,7 +22,18 @@
   <% if current_context.testing_status_enabled? %>
     <div class="p-4 border-b border-blue-500 lg:border-none lg:shadow lg:p-2 lg:flex-1 lg:ml-2 xl:ml-4 xl:p-4">
       <h3 class="font-semibold text-xl">Overview Testing Status</h3>
-      <div><strong>Your Plan: 70 of 100</strong> available entries</div>
+      <div>
+        <% if current_context.billed_by_invoice? %>
+          <strong>Your Plan:</strong>
+          billed by invoice
+        <% else %>
+          <strong>Your Plan: <%= stats.testing_available_count %> of <%= stats.testing_allowed_count %></strong>
+          available entries
+          <a title="You have a limited number of employee entries. Deactivated employees still count towards available entries.">
+            <%= render "icon/information_solid", icon_class: "inline-block ml-1 text-blue-500 h-3 w-3" %>
+          </a>
+        <% end %>
+      </div>
       <div class="md:flex">
         <%= render "chart/widget", color: "#1dd678", percent: stats.cleared_percent, label: "Cleared" %>
         <%= render "chart/widget", color: "#f35200", percent: stats.inconclusive_percent, label: "Inconclusive" %>

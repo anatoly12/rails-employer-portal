@@ -6,10 +6,8 @@
     <nav class="xl:text-lg xl:tracking-wide">
       <% if current_context.signed_in? %>
         <ul class="ml-auto flex items-center select-none">
-          <li class="hidden m-3 <%= controller_name == "employees" ? "text-blue-500 font-semibold" : "text-blue-400" %> lg:block">
-            <%= link_to "Dashboard", employees_path %>
-          </li>
-          <li class="hidden m-3 text-blue-400 lg:block"><a href="#">Your Plan</a></li>
+          <%= render "common/header_link", label: "Dashboard", path: employees_path, controller: "employees" %>
+          <%= render "common/header_link", label: "Your Plans", path: plans_path, controller: "plans" %>
           <li class="hidden m-3 text-blue-400 lg:block"><a href="#">COVID-19 Guidelines</a></li>
           <li class="hidden m-3 text-blue-400 lg:block"><a href="#">Support</a></li>
           <li id="signout" class="ml-3" data-turbolinks-permanent>
