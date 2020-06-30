@@ -1,30 +1,15 @@
 module CssClassHelper
   # ~~ public methods ~~
   def text_field_class(has_error = false)
-    res = "appearance-none border-b w-full py-1 focus:outline-none"
-    if has_error
-      res + " text-red-500 border-red-300 focus:text-red-800 focus:border-red-800 placeholder-red-300"
-    else
-      res + " text-blue-500 focus:text-blue-800 focus:border-blue-800"
-    end
+    base_input_class(has_error) << " appearance-none border-b"
   end
 
   def text_area_class(has_error = false)
-    res = "appearance-none border w-full py-1 focus:outline-none"
-    if has_error
-      res + " text-red-500 border-red-300 focus:text-red-800 focus:border-red-800 placeholder-red-300"
-    else
-      res + " text-blue-500 focus:text-blue-800 focus:border-blue-800"
-    end
+    base_input_class(has_error) << " appearance-none border"
   end
 
   def select_field_class(has_error = false)
-    res = "bg-white border-b w-full py-1 focus:outline-none"
-    if has_error
-      res + " text-red-500 border-red-300 focus:text-red-800 focus:border-red-800 placeholder-red-300"
-    else
-      res + " text-blue-500 focus:text-blue-800 focus:border-blue-800"
-    end
+    base_input_class(has_error) << " bg-white border-b"
   end
 
   def primary_link_class
@@ -50,12 +35,21 @@ module CssClassHelper
   private
 
   # ~~ private methods ~~
+  def base_input_class(has_error)
+    res = "w-full py-1 focus:outline-none"
+    if has_error
+      res << " text-red-500 border-red-300 focus:text-red-800 focus:border-red-800 placeholder-red-300"
+    else
+      res << " text-blue-500 focus:text-blue-800 focus:border-blue-800"
+    end
+  end
+
   def link_class(primary)
     res = "text-xs font-bold underline focus:outline-none"
     if primary
-      res + " text-blue-400 hover:text-blue-600 focus:text-blue-600"
+      res << " text-blue-400 hover:text-blue-600 focus:text-blue-600"
     else
-      res + " text-blue-300 hover:text-blue-500 focus:text-blue-500"
+      res << " text-blue-300 hover:text-blue-500 focus:text-blue-500"
     end
   end
 
