@@ -48,4 +48,44 @@ describe CssClassHelper do
       it { is_expected.to contain_exactly "bg-white", "border-b", "w-full", "py-1", "focus:outline-none", "text-red-500", "border-red-300", "focus:text-red-800", "focus:border-red-800", "placeholder-red-300" }
     end
   end
+
+  describe "#primary_link_class" do
+    subject { helper.primary_link_class.split " " }
+
+    it { is_expected.to contain_exactly "text-xs", "font-bold", "underline", "focus:outline-none", "text-blue-400", "hover:text-blue-600", "focus:text-blue-600" }
+  end
+
+  describe "#secondary_link_class" do
+    subject { helper.secondary_link_class.split " " }
+
+    it { is_expected.to contain_exactly "text-xs", "font-bold", "underline", "focus:outline-none", "text-blue-300", "hover:text-blue-500", "focus:text-blue-500" }
+  end
+
+  describe "#primary_button_class" do
+    subject { helper.primary_button_class.split " " }
+
+    it { is_expected.to contain_exactly "appearance-none", "bg-white", "text-blue-400", "border-blue-400", "hover:border-blue-700", "hover:text-blue-800", "focus:outline-none", "focus:border-blue-700", "border-2", "w-full", "py-3", "font-bold", "text-lg", "uppercase", "tracking-widest" }
+  end
+
+  describe "#secondary_button_class" do
+    subject { helper.secondary_button_class(color).split " " }
+
+    context "when color is blue" do
+      let(:color) { :blue }
+
+      it { is_expected.to contain_exactly "appearance-none", "bg-white", "text-blue-400", "border-blue-400", "hover:border-blue-700", "hover:text-blue-800", "focus:outline-none", "focus:border-blue-700", "border-2", "px-3", "leading-6", "font-semibold" }
+    end
+
+    context "when color is red" do
+      let(:color) { :red }
+
+      it { is_expected.to contain_exactly "appearance-none", "bg-white", "text-red-400", "border-red-400", "hover:border-red-700", "hover:text-red-800", "focus:outline-none", "focus:border-red-700", "border-2", "px-3", "leading-6", "font-semibold" }
+    end
+  end
+
+  describe "#thin_button_class" do
+    subject { helper.thin_button_class.split " " }
+
+    it { is_expected.to contain_exactly "appearance-none", "bg-white", "text-blue-400", "border-blue-400", "hover:border-blue-700", "hover:text-blue-800", "focus:outline-none", "focus:border-blue-700", "border", "inline-block", "whitespace-no-wrap", "px-3", "leading-tight" }
+  end
 end

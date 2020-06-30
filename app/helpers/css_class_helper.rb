@@ -13,15 +13,15 @@ module CssClassHelper
   end
 
   def primary_link_class
-    link_class(true)
+    base_link_class << " text-blue-400 hover:text-blue-600 focus:text-blue-600"
   end
 
   def secondary_link_class
-    link_class(false)
+    base_link_class << " text-blue-300 hover:text-blue-500 focus:text-blue-500"
   end
 
   def primary_button_class
-    "#{base_button_class("blue")} border-2 w-full py-3 font-bold text-lg uppercase tracking-widest"
+    "#{base_button_class(:blue)} border-2 w-full py-3 font-bold text-lg uppercase tracking-widest"
   end
 
   def secondary_button_class(color)
@@ -44,13 +44,8 @@ module CssClassHelper
     end
   end
 
-  def link_class(primary)
-    res = "text-xs font-bold underline focus:outline-none"
-    if primary
-      res << " text-blue-400 hover:text-blue-600 focus:text-blue-600"
-    else
-      res << " text-blue-300 hover:text-blue-500 focus:text-blue-500"
-    end
+  def base_link_class
+    "text-xs font-bold underline focus:outline-none"
   end
 
   def base_button_class(color)
