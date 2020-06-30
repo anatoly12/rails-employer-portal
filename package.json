@@ -3,7 +3,7 @@
   "private": true,
   "version": "0.1.0",
   "scripts": {
-    "format": "prettier --config app/javascript/src/prettier.config.js --write \"app/javascript/**/*.js\" --write"
+    "format": "prettier --config app/javascript/prettier.config.js --write \"app/javascript/**/*.js\" --write"
   },
   "dependencies": {
     "@rails/ujs": "^6.0.0",
