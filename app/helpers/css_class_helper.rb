@@ -36,7 +36,7 @@ module CssClassHelper
 
   # ~~ private methods ~~
   def base_input_class(has_error)
-    res = "w-full py-1 focus:outline-none"
+    res = "w-full py-1 select-none focus:outline-none"
     if has_error
       res << " text-red-500 border-red-300 focus:text-red-800 focus:border-red-800 placeholder-red-300"
     else
