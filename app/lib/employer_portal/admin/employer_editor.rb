@@ -14,7 +14,8 @@ class EmployerPortal::Admin::EmployerEditor < ::EmployerPortal::Admin::Editor
       :role,
       :first_name,
       :last_name,
-      :email
+      :email,
+      :password
     )
   end
 
