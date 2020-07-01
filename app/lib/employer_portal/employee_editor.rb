@@ -53,8 +53,17 @@ module EmployerPortal
       @symptom_log_search ||= ::EmployerPortal::SymptomLogSearch.new context, edited, symptom_log_params
     end
 
-    def testing_status
-      dashboard_employee&.testing_status || "Not Registered"
+    def health_passport
+      @health_passport ||= ::EmployerPortal::HealthPassport.new context, edited, dashboard_employee
+    end
+
+    def testing_status_for_widget
+      case testing_status
+      when "Cleared", "Inconclusive"
+        "Passport Complete"
+      else
+        testing_status
+      end
     end
 
     private
@@ -64,6 +73,10 @@ module EmployerPortal
     # ~~ private instance methods ~~
     def dashboard_employee
       edited.dashboard_employee if persisted? && context.sync_connected?
+    end
+
+    def testing_status
+      dashboard_employee&.testing_status || "Not Registered"
     end
   end
 end

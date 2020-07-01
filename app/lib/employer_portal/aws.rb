@@ -2,9 +2,11 @@ require "aws-sdk-s3"
 
 module EmployerPortal
   module Aws
+    # ~~ constants ~~
     AWS_ACCESS_KEY_ID = ENV["AWS_ACCESS_KEY_ID"]
     AWS_SECRET_ACCESS_KEY = ENV["AWS_SECRET_ACCESS_KEY"]
     S3_PREFIX = ENV["S3_PREFIX"]
+    CACHE = ::ActiveSupport::Cache::MemoryStore.new size: 1.megabyte, expires_in: 30.minutes
 
     class << self
       def init
@@ -23,8 +25,12 @@ module EmployerPortal
         !!@connected
       end
 
-      def bucket
-        @bucket ||= ::Aws::S3::Resource.new.bucket("ehs-portal")
+      def presigned_url(key)
+        return if !connected? || key.blank?
+
+        CACHE.fetch(key) do
+          bucket.object(key).presigned_url :get, expires_in: 1.hour.to_i
+        end
       end
 
       private
@@ -32,6 +38,10 @@ module EmployerPortal
       def log(message)
         puts "AWS: #{message}"
         true
+      end
+
+      def bucket
+        @bucket ||= ::Aws::S3::Resource.new.bucket("ehs-portal")
       end
     end
   end

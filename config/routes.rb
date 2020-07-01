@@ -16,6 +16,7 @@ Rails.application.routes.draw do
   resources :employees do
     get "bulk_import", on: :collection
     delete "delete_all", on: :collection
+    get "health_passport", on: :member
     resources :symptom_logs, only: :show
   end
   resources :plans, only: [:index]

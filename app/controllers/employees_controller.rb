@@ -57,6 +57,9 @@ class EmployeesController < ApplicationController
     end
   end
 
+  def health_passport
+  end
+
   # delete
 
   private

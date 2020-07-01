@@ -25,10 +25,6 @@ module EmployerPortal
       values[:state]
     end
 
-    def profile_picture_url
-      # TODO: do something with values[:selfie_s3_key]
-    end
-
     def daily_checkup_status
       values[:daily_checkup_status]
     end
@@ -49,19 +45,8 @@ module EmployerPortal
       values[:testing_updated_at]
     end
 
-    def with_selfie?
-      selfie_s3_key.present? && context.aws_connected?
-    end
-
-    def selfie_s3_key
-      values[:selfie_s3_key]
-    end
-
     def selfie_url
-      # TODO: needs to be cached!
-      ::EmployerPortal::Aws.bucket.object(
-        selfie_s3_key
-      ).presigned_url :get, expires_in: 3600
+      ::EmployerPortal::Aws.presigned_url values[:selfie_s3_key]
     end
 
     def initials
