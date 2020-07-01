@@ -57,15 +57,6 @@ module EmployerPortal
       @health_passport ||= ::EmployerPortal::HealthPassport.new context, edited, dashboard_employee
     end
 
-    def testing_status_for_widget
-      case testing_status
-      when "Cleared", "Inconclusive"
-        "Passport Complete"
-      else
-        testing_status
-      end
-    end
-
     private
 
     attr_reader :context, :edited, :symptom_log_params

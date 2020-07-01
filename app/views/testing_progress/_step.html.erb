@@ -1,5 +1,5 @@
 <li class="flex py-2 items-center border-l border-black last:border-transparent md:flex-col md:border-l-0 md:border-t md:w-20">
-  <% if editor.testing_status_for_widget == label %>
+  <% if health_passport.in_step?(label) %>
     <div class="-mt-6 mb-6 -ml-4 flex items-center justify-center border border-black bg-white rounded-full w-8 h-8 md:-ml-10 md:mr-10 md:mb-8">
       <div class="bg-blue-400 rounded-full w-6 h-6 box-content">
       </div>
@@ -13,14 +13,10 @@
   <div class="-mt-6 mb-6 pl-3 flex-1 md:text-center md:pl-0 md:-ml-10 md:mr-10">
     <div class="md:px-2"><%= label %></div>
   </div>
-  <% if local_assigns[:status] %>
+  <% if label == "Passport Complete" %>
     <div class="-mt-6 mb-6 pl-3 font-medium md:-mt-4 md:text-center md:pl-0 md:-ml-10 md:mr-10">
       Status:
-      <% if editor.health_passport.cleared? %>
-        <%= link_to "Cleared", health_passport_employee_path(editor.health_passport), class: "text-green-500 border-green-500 hover:border-b" %>
-      <% else %>
-        <%= link_to "Not Cleared", health_passport_employee_path(editor.health_passport), class: "text-red-600 border-red-600 whitespace-no-wrap hover:border-b" %>
-      <% end %>
+      <%= link_to health_passport.status, health_passport_employee_path(editor.health_passport), class: "hover:border-b whitespace-no-wrap #{testing_status_color(health_passport)}" %>
     </div>
   <% end %>
 </li>

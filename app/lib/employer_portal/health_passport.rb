@@ -37,17 +37,29 @@ module EmployerPortal
       !!dashboard_employee&.identity_verified
     end
 
-    def cleared?
-      daily_checkup_status == "Cleared" && testing_status == "Cleared"
+    def in_step?(label)
+      if label == "Passport Complete"
+        status_cleared? || status_not_cleared?
+      else
+        testing_status == label
+      end
+    end
+
+    def status
+      status_not_cleared? ? "Not Cleared" : testing_status
+    end
+
+    def status_cleared?
+      testing_status == "Cleared"
+    end
+
+    def status_not_cleared?
+      testing_status == "Inconclusive"
     end
 
     private
 
     attr_reader :context, :employee, :dashboard_employee
-
-    def daily_checkup_status
-      dashboard_employee&.daily_checkup_status || "Did Not Submit"
-    end
 
     def testing_status
       dashboard_employee&.testing_status || "Not Registered"

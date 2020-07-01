@@ -39,4 +39,25 @@ module EmployeesHelper
       end
     TEXT_COLOR_RED if (fahrenheit * 10).floor >= 1004
   end
+
+  def testing_status_color(health_passport)
+    case health_passport.status
+    when "Cleared"
+      "text-green-500 border-green-500"
+    when "Not Cleared"
+      "text-red-600 border-red-600"
+    else
+      "text-blue-600 border-blue-600"
+    end
+  end
+
+  def health_passport_color(health_passport)
+    if health_passport.status_cleared?
+      "bg-green-500"
+    elsif health_passport.status_not_cleared?
+      "bg-red-600"
+    else
+      "bg-blue-600"
+    end
+  end
 end

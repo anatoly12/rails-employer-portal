@@ -24,11 +24,7 @@
           <p class="text-xs">Daily symptoms</p>
           <p class="text-xs mb-4">Last Checked: <%= health_passport.daily_checkup_updated_at %></p>
           <p class="text-xs mb-4">Last Tested: <%= health_passport.testing_updated_at %></p>
-          <% if health_passport.cleared? %>
-            <div class="uppercase p-4 text-center font-bold tracking-widest bg-green-500">Cleared</div>
-          <% else %>
-            <div class="uppercase p-4 text-center font-bold tracking-widest bg-red-500">Not Cleared</div>
-          <% end %>
+          <div class="uppercase p-4 text-center font-bold tracking-widest <%= health_passport_color(health_passport) %>"><%= health_passport.status %></div>
         </div>
       </div>
       <div class="absolute top-0 left-0 bottom-0 right-0 bg-fingerprints"></div>
@@ -36,7 +32,7 @@
     <div class="lg:m-8">
       <h3 class="text-blue-500 text-2xl font-medium tracking-wide m-6">Summary</h3>
       <div class="flex items-center border-t border-b border-blue-500 py-6 lg:px-6">
-        <% if health_passport.identity_verified? %>
+        <% if health_passport.status_cleared? %>
           <div>
             <%= render "icon/document_add", icon_class: "text-green-500 h-6 w-6" %>
           </div>
@@ -46,15 +42,25 @@
           <div>
             <%= render "icon/checkmark", icon_class: "text-green-500 h-6 w-6" %>
           </div>
-        <% else %>
+        <% elsif health_passport.status_not_cleared? %>
           <div>
-            <%= render "icon/document_add", icon_class: "text-red-500 h-6 w-6" %>
+            <%= render "icon/document_add", icon_class: "text-red-600 h-6 w-6" %>
           </div>
           <div class="flex-1 text-xs font-light px-2 lg:px-6">
             This person is NOT immune and DOES require monitoring
           </div>
           <div>
-            <%= render "icon/close_outline", icon_class: "text-red-500 h-6 w-6" %>
+            <%= render "icon/close_outline", icon_class: "text-red-600 h-6 w-6" %>
+          </div>
+        <% else %>
+          <div>
+            <%= render "icon/document_add", icon_class: "text-blue-600 h-6 w-6" %>
+          </div>
+          <div class="flex-1 text-xs font-light px-2 lg:px-6">
+            Health Passport is still in progress
+          </div>
+          <div>
+            <%= render "icon/close_outline", icon_class: "text-blue-600 h-6 w-6" %>
           </div>
         <% end %>
       </div>

@@ -88,4 +88,50 @@ describe EmployeesHelper do
       end
     end
   end
+
+  describe "#testing_status_color" do
+    let(:employer) { create :employer }
+    let(:employee) { create :employee, employer: employer }
+    let(:context) { ::EmployerPortal::Context.new(account_id: employer.id, section: :application) }
+    let(:health_passport) { ::EmployerPortal::HealthPassport.new(context, employee, dashboard_employee) }
+    subject { helper.testing_status_color(health_passport) }
+
+    {
+      "Cleared" => "text-green-500 border-green-500",
+      "Inconclusive" => "text-red-600 border-red-600",
+      "Submitted Results" => "text-blue-600 border-blue-600",
+      "Intake" => "text-blue-600 border-blue-600",
+      "Registered" => "text-blue-600 border-blue-600",
+      "Not Registered" => "text-blue-600 border-blue-600",
+    }.each do |testing_status, expected|
+      context "when testing_status is #{testing_status}" do
+        let(:dashboard_employee) { double :dashboard_employee, testing_status: testing_status }
+
+        it { is_expected.to eql expected }
+      end
+    end
+  end
+
+  describe "#health_passport_color" do
+    let(:employer) { create :employer }
+    let(:employee) { create :employee, employer: employer }
+    let(:context) { ::EmployerPortal::Context.new(account_id: employer.id, section: :application) }
+    let(:health_passport) { ::EmployerPortal::HealthPassport.new(context, employee, dashboard_employee) }
+    subject { helper.health_passport_color(health_passport) }
+
+    {
+      "Cleared" => "bg-green-500",
+      "Inconclusive" => "bg-red-600",
+      "Submitted Results" => "bg-blue-600",
+      "Intake" => "bg-blue-600",
+      "Registered" => "bg-blue-600",
+      "Not Registered" => "bg-blue-600",
+    }.each do |testing_status, expected|
+      context "when testing_status is #{testing_status}" do
+        let(:dashboard_employee) { double :dashboard_employee, testing_status: testing_status }
+
+        it { is_expected.to eql expected }
+      end
+    end
+  end
 end
