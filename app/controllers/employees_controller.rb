@@ -1,5 +1,6 @@
 class EmployeesController < ApplicationController
   rescue_from ::EmployerPortal::Error::Employee::NotFound, with: :employee_not_found
+  before_action :ensure_testing_status_enabled, only: :health_passport
 
   # ~~ collection actions ~~
   def index
@@ -67,6 +68,13 @@ class EmployeesController < ApplicationController
   def employee_not_found
     flash.alert = "Employee not found."
     redirect_to action: :index
+  end
+
+  def ensure_testing_status_enabled
+    unless current_context.testing_status_enabled?
+      flash.alert = "Feature not included in your current plan."
+      redirect_to action: :edit
+    end
   end
 
   def search
