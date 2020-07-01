@@ -18,11 +18,7 @@ module EmployerPortal
     end
 
     def signed_in?
-      if section_admin?
-        account.kind_of? AdminUser
-      else
-        account.kind_of?(Employer) && account.deleted_at.nil?
-      end
+      !account.kind_of?(NoAccount)
     end
 
     def ensure_access!
@@ -59,7 +55,11 @@ module EmployerPortal
       if section_admin?
         AdminUser.where(id: given_account_id).limit(1).first
       else
-        Employer.where(id: given_account_id).limit(1).first
+        Employer.eager_graph(:company).where(
+          Sequel.qualify(:employers, :id) => given_account_id,
+          Sequel.qualify(:employers, :deleted_at) => nil,
+          Sequel.qualify(:company, :deleted_at) => nil,
+        ).limit(1).all.first
       end
     end
 

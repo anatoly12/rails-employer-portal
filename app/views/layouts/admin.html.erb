@@ -23,6 +23,7 @@
     </body>
   <% else %>
     <body class="bg-gray-100 h-screen font-sans">
+      <%= render "common/flash_messages" %>
       <%= yield %>
     </body>
   <% end %>
