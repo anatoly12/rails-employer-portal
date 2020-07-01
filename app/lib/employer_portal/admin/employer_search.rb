@@ -22,12 +22,8 @@ class EmployerPortal::Admin::EmployerSearch < ::EmployerPortal::Admin::Search
         )
       )
     when "email_contains"
-      ds.where(
-        Sequel.ilike(:email, filters.value_for_ilike(value))
-      )
-    else
-      ds
-    end
+      ds.where Sequel.ilike(:email, filters.value_for_ilike(value))
+    end || ds
   end
 
   def apply_order(ds, column)

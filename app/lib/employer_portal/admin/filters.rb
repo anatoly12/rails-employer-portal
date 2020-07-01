@@ -22,6 +22,13 @@ class EmployerPortal::Admin::Filters
     end
   end
 
+  def sync_statuses_for_select
+    [
+      ["Synced", "1"],
+      ["Not synced", "0"],
+    ]
+  end
+
   def daily_checkup_statuses_for_select
     [
       "Cleared",

@@ -8,7 +8,7 @@ describe AdminHelper do
       let(:context) { ::EmployerPortal::Context.new(account_id: nil, section: :application) }
 
       it "raises an error" do
-        expect{ subject }.to raise_error NoMethodError, /undefined method `email'/
+        expect { subject }.to raise_error NoMethodError, /undefined method `email'/
       end
     end
 
@@ -17,7 +17,7 @@ describe AdminHelper do
       let(:context) { ::EmployerPortal::Context.new(account_id: employer.id, section: :application) }
 
       it "raises an error" do
-        expect( subject ).to eql "https://www.gravatar.com/avatar/4b9bb80620f03eb3719e0a061c14283d?d=wavatar&r=pg"
+        expect(subject).to eql "https://www.gravatar.com/avatar/4b9bb80620f03eb3719e0a061c14283d?d=wavatar&r=pg"
       end
     end
   end

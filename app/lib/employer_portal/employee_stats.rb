@@ -40,7 +40,7 @@ module EmployerPortal
     end
 
     def daily_checkup_available_count
-      [daily_checkup_allowed_count-total, 0].max
+      [daily_checkup_allowed_count - total, 0].max
     end
 
     def daily_checkup_allowed_count
@@ -48,7 +48,7 @@ module EmployerPortal
     end
 
     def testing_available_count
-      [testing_allowed_count-total, 0].max
+      [testing_allowed_count - total, 0].max
     end
 
     def testing_allowed_count

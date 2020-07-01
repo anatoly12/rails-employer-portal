@@ -20,13 +20,13 @@ document.addEventListener('turbolinks:load', () => {
         </div>
       </div>
     `
-    tooltip.style.left = `${link.offsetLeft-18+link.offsetWidth/2}px`
-    tooltip.style.top = `${link.offsetTop-4}px`
+    tooltip.style.left = `${link.offsetLeft - 18 + link.offsetWidth / 2}px`
+    tooltip.style.top = `${link.offsetTop - 4}px`
     link.parentNode.appendChild(tooltip)
   }
   document.querySelectorAll('a[title]').forEach((link) => {
     var title = link.getAttribute('title')
-    if(!link.dataset.tooltip){
+    if (!link.dataset.tooltip) {
       link.title = ''
       link.dataset.tooltip = title
     }

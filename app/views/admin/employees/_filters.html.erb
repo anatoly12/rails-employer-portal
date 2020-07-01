@@ -16,6 +16,7 @@
           <%= render "form/select", form: f, column: :company_id_equals, label: "Company", options: f.object.companies_for_select %>
           <%= render "form/text_field", form: f, column: :full_name_contains %>
           <%= render "form/text_field", form: f, column: :email_contains %>
+          <%= render "form/select", form: f, column: :sync_status_equals, label: "Sync status", options: f.object.sync_statuses_for_select %>
           <% if current_context.sync_connected? %>
             <%= render "form/select", form: f, column: :daily_checkup_status_equals, label: "Daily checkup status", options: f.object.daily_checkup_statuses_for_select %>
             <%= render "form/select", form: f, column: :testing_status_equals, label: "Testing status", options: f.object.testing_statuses_for_select %>

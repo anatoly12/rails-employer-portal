@@ -30,7 +30,7 @@ module EmployerPortal
     end
 
     def billed_by_invoice?
-      company_plan.present? && company_plan!="Self-Service"
+      company_plan.present? && company_plan != "Self-Service"
     end
 
     def sync_connected?

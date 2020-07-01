@@ -6,7 +6,9 @@ Rails.application.routes.draw do
     resource :sessions, path: "/sign-in", only: [:show, :create, :destroy]
     resources :companies
     resources :employers
-    resources :employees, only: [:index]
+    resources :employees, only: [:index] do
+      patch "retry", on: :member
+    end
     resources :email_templates
     root to: "dashboard#index"
   end

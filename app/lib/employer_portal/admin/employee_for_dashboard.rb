@@ -1,6 +1,6 @@
 class EmployerPortal::Admin::EmployeeForDashboard < ::EmployerPortal::Admin::Viewer
   # ~~ delegates ~~
-  delegate :first_name, :last_name, :email, to: :decorated
+  delegate :first_name, :last_name, :email, :remote_id, to: :decorated
 
   # ~~ public instance methods ~~
   def company_name

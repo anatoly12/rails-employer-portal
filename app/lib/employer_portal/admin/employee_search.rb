@@ -17,7 +17,7 @@ class EmployerPortal::Admin::EmployeeSearch < ::EmployerPortal::Admin::Search
   def apply_filter(ds, key, value)
     case key
     when "company_id_equals"
-      ds.where(company_id: value.to_s)
+      ds.where company_id: value.to_s
     when "full_name_contains"
       if context.sync_connected?
         ds.where(
@@ -37,32 +37,25 @@ class EmployerPortal::Admin::EmployeeSearch < ::EmployerPortal::Admin::Search
         )
       end
     when "email_contains"
-      ds.where(
-        Sequel.ilike(:email, filters.value_for_ilike(value))
-      )
+      ds.where Sequel.ilike(:email, filters.value_for_ilike(value))
+    when "sync_status_equals"
+      case value
+      when "1" then ds.exclude(remote_id: nil)
+      when "0" then ds.where(remote_id: nil)
+      end
     when "daily_checkup_status_equals"
-      if context.sync_connected?
-        ds.where(
-          remote_id: DashboardEmployee.where(
-            daily_checkup_status: value,
-          ).select(:id),
-        )
-      else
-        ds
-      end
+      ds.where(
+        remote_id: DashboardEmployee.where(
+          daily_checkup_status: value,
+        ).select(:id),
+      ) if context.sync_connected?
     when "testing_status_equals"
-      if context.sync_connected?
-        ds = ds.where(
-          remote_id: DashboardEmployee.where(
-            testing_status: value,
-          ).select(:id),
-        )
-      else
-        ds
-      end
-    else
-      ds
-    end
+      ds.where(
+        remote_id: DashboardEmployee.where(
+          testing_status: value,
+        ).select(:id),
+      ) if context.sync_connected?
+    end || ds
   end
 
   def apply_order(ds, column)

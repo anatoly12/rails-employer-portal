@@ -77,7 +77,7 @@ RSpec.describe ::EmployerPortal::Sync, type: :sync, order: :defined do
         "#{described_class}::SYNC_DATABASE_URL",
         "mysql2://@localhost:3306/ecp-test?charset=utf8&collation=utf8_general_ci"
       )
-      expect { described_class.connect }.to output.to_stdout
+      expect { described_class.connect }.not_to output.to_stdout # already connected
     end
 
     before { described_class::Account.dataset.delete }

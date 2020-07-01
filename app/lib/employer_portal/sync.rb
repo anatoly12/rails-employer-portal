@@ -5,7 +5,7 @@ module EmployerPortal
 
     class << self
       def connect
-        log("already connected") and return if connected?
+        return if connected?
         log("SYNC_DATABASE_URL not configured, skip") and return if SYNC_DATABASE_URL.blank?
         @schema = Sequel[schema_name.to_sym]
         ::EmployerPortal::Sync::Views.new(schema).create_or_replace

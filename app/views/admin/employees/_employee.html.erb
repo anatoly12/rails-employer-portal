@@ -7,6 +7,17 @@
   </td>
   <td class="py-4 px-6 border-b border-gray-200"><%= employee.full_name %></td>
   <td class="py-4 px-6 border-b border-gray-200"><%= employee.email %></td>
+  <td class="py-4 px-6 border-b border-gray-200 relative">
+    <% if employee.remote_id.present? %>
+      <a title="Linked to account #<%= employee.remote_id %>" class="flex justify-center text-green-500">
+        <%= render "icon/checkmark", icon_class: " h-5 w-5" %>
+      </a>
+    <% else %>
+      <%= link_to retry_admin_employee_path(employee), method: :patch, class: "flex justify-center text-red-500", title: "Sync failed, click to retry" do %>
+        <%= render "icon/reload", icon_class: "h-5 w-5" %>
+      <% end %>
+    <% end %>
+  </td>
   <% if current_context.sync_connected? %>
     <td class="py-4 px-6 border-b border-gray-200"><%= employee.daily_checkup_status %></td>
     <td class="py-4 px-6 border-b border-gray-200"><%= employee.testing_status %></td>

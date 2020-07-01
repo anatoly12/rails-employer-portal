@@ -8,6 +8,7 @@ module EmployerPortal
 
     class << self
       def init
+        return if connected?
         log("AWS_ACCESS_KEY_ID not configured, skip") and return if AWS_ACCESS_KEY_ID.blank?
         log("AWS_SECRET_ACCESS_KEY not configured, skip") and return if AWS_SECRET_ACCESS_KEY.blank?
         ::Aws.config.update({
