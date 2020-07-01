@@ -82,6 +82,40 @@ CREATE TABLE `delayed_jobs` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
+-- Table structure for table `email_logs`
+--
+
+DROP TABLE IF EXISTS `email_logs`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `email_logs` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `email_template_id` int(11) DEFAULT NULL,
+  `company_id` int(11) DEFAULT NULL,
+  `employer_id` int(11) DEFAULT NULL,
+  `employee_id` int(11) DEFAULT NULL,
+  `trigger_key` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `from` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `recipient` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `subject` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `html` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `text` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `covid19_message_id` bigint(20) DEFAULT NULL,
+  `created_at` datetime DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  KEY `email_logs_email_template_id_index` (`email_template_id`),
+  KEY `email_logs_company_id_index` (`company_id`),
+  KEY `email_logs_employer_id_index` (`employer_id`),
+  KEY `email_logs_employee_id_index` (`employee_id`),
+  KEY `email_logs_trigger_key_index` (`trigger_key`),
+  CONSTRAINT `email_logs_ibfk_1` FOREIGN KEY (`email_template_id`) REFERENCES `email_templates` (`id`) ON DELETE SET NULL,
+  CONSTRAINT `email_logs_ibfk_2` FOREIGN KEY (`company_id`) REFERENCES `companies` (`id`) ON DELETE SET NULL,
+  CONSTRAINT `email_logs_ibfk_3` FOREIGN KEY (`employer_id`) REFERENCES `employers` (`id`) ON DELETE SET NULL,
+  CONSTRAINT `email_logs_ibfk_4` FOREIGN KEY (`employee_id`) REFERENCES `employees` (`id`) ON DELETE SET NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
 -- Table structure for table `email_templates`
 --
 
@@ -210,3 +244,4 @@ INSERT INTO `schema_migrations` (`filename`) VALUES ('20200617084221_create_dela
 INSERT INTO `schema_migrations` (`filename`) VALUES ('20200626210619_create_admin_users.rb');
 INSERT INTO `schema_migrations` (`filename`) VALUES ('20200628153016_create_email_templates.rb');
 INSERT INTO `schema_migrations` (`filename`) VALUES ('20200701075540_add_deleted_at_columns.rb');
+INSERT INTO `schema_migrations` (`filename`) VALUES ('20200701090753_create_email_logs.rb');
