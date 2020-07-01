@@ -9,7 +9,7 @@ class EmployerPortal::Admin::EmployerEditor < ::EmployerPortal::Admin::Editor
   end
 
   def update_attributes(params)
-    super params.fetch(:employer, {}).permit(
+    edited.set params.fetch(:employer, {}).permit(
       :company_id,
       :role,
       :first_name,
@@ -17,6 +17,7 @@ class EmployerPortal::Admin::EmployerEditor < ::EmployerPortal::Admin::Editor
       :email,
       :password
     )
+    insert_or_update
   end
 
   def companies_for_select
@@ -43,5 +44,28 @@ class EmployerPortal::Admin::EmployerEditor < ::EmployerPortal::Admin::Editor
 
   def self.new_model
     Employer.new
+  end
+
+  private
+
+  # ~~ private instance methods ~~
+  def insert_or_update
+    return false unless edited.valid?
+
+    existing = Employer.where(
+      company_id: company_id,
+      email: email,
+    ).exclude(deleted_at: nil).first
+    if existing
+      existing.set(
+        role: role,
+        first_name: first_name,
+        last_name: last_name,
+        password: edited.password,
+        deleted_at: nil,
+      )
+      edited = existing
+    end
+    edited.save validate: false
   end
 end

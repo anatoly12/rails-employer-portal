@@ -32,7 +32,7 @@ class EmployerPortal::Admin::Editor
   end
 
   def destroy
-    edited.delete
+    edited.update deleted_at: Time.now
   end
 
   protected

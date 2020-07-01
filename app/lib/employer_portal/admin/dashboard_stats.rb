@@ -6,11 +6,11 @@ class EmployerPortal::Admin::DashboardStats
   end
 
   def company_count
-    @company_count ||= Company.count
+    @company_count ||= Company.where(deleted_at: nil).count
   end
 
   def employer_count
-    @employer_count ||= Employer.count
+    @employer_count ||= Employer.where(deleted_at: nil).count
   end
 
   def employee_count

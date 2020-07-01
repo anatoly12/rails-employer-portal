@@ -18,7 +18,7 @@ module EmployerPortal
     end
 
     def signed_in?
-      !account.kind_of?(NoAccount)
+      !account.kind_of?(NoAccount) && account.deleted_at.nil?
     end
 
     def ensure_access!

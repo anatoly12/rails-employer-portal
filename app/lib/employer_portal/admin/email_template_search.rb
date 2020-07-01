@@ -7,7 +7,7 @@ class EmployerPortal::Admin::EmailTemplateSearch < ::EmployerPortal::Admin::Sear
   end
 
   def dataset
-    EmailTemplate
+    EmailTemplate.where(deleted_at: nil).qualify
   end
 
   def apply_order(ds, column)

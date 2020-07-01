@@ -22,7 +22,12 @@ module EmployerPortal
 
     # ~~ private instance methods ~~
     def account
-      @account ||= Employer.where(email: username).limit(1).first
+      @account ||= Employer.where(
+        email: username,
+        deleted_at: nil,
+      ).qualify.eager_graph(:company).where(
+        Sequel.qualify(:company, :deleted_at) => nil,
+      ).limit(1).all.first
     end
 
     def password_matches_username

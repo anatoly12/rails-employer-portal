@@ -7,7 +7,7 @@ class EmployerPortal::Admin::EmployerSearch < ::EmployerPortal::Admin::Search
   end
 
   def dataset
-    Employer.eager(:company)
+    Employer.where(deleted_at: nil).qualify.eager(:company)
   end
 
   def apply_filter(ds, key, value)

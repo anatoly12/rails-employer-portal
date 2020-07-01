@@ -1,6 +1,6 @@
 module ApplicationHelpers
   def sign_in_as_employer
-    @employer = create :employer, :with_password
+    @employer = create :employer
     visit "/"
     within("#new_session") do
       fill_in "Email", with: @employer.email

@@ -8,6 +8,8 @@ class EmployerPortal::Admin::CompanySearch < ::EmployerPortal::Admin::Search
 
   def dataset
     Company.
+      where(deleted_at: nil).
+      qualify.
       eager_graph(:employers, :employees).
       group_by(Sequel.qualify(:companies, :id)).
       set_graph_aliases(

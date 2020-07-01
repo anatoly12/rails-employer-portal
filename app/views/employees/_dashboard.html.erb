@@ -12,9 +12,11 @@
       <%= render "icon/add_outline", icon_class: "h-3 w-3 mr-2" %>
       <span>Bulk Upload</span>
     <% end %>
-    <%= link_to({ action: :delete_all }, method: :delete, class: "#{secondary_button_class(:red)} flex items-center mb-4 mx-2") do %>
-      <%= render "icon/close_outline", icon_class: "h-3 w-3 mr-2" %>
-      <span>Delete all</span>
+    <% if Rails.env.development? %>
+      <%= link_to({ action: :delete_all }, method: :delete, class: "#{secondary_button_class(:red)} flex items-center mb-4 mx-2") do %>
+        <%= render "icon/close_outline", icon_class: "h-3 w-3 mr-2" %>
+        <span>Delete all</span>
+      <% end %>
     <% end %>
   </div>
   <%= render "employees/employees", search: search %>

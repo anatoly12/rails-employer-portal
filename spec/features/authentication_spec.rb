@@ -1,7 +1,7 @@
 require "rails_helper"
 
 feature "Authentication" do
-  given(:employer) { create :employer, :with_password }
+  given(:employer) { create :employer }
 
   scenario "Signing in with correct credentials" do
     visit "/"
