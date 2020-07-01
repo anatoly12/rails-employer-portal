@@ -53,7 +53,7 @@ class EmployerPortal::Admin::Filters
   end
 
   def clearable?
-    filters.to_unsafe_h.any? { |key, _| key != "opened" }
+    filters.to_unsafe_h.any? { |key, value| key != "opened" && value.present? }
   end
 
   def method_missing(name, *args, &block)
