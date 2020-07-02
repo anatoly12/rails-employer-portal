@@ -1,8 +1,10 @@
 Sequel.database_timezone = :utc
 
 def skip_sync?
-  return true if File.basename($0) == "rspec" # bin/rspec
-  return false if File.basename($0) == "puma" # bin/puma -C config/puma.rb
+  basename = File.basename $0
+  return true if basename == "rspec" # bin/rspec
+  return false if basename == "puma" # bin/puma -C config/puma.rb
+  return false if basename == "delayed_job" # bin/delayed_job run
   return false if Rails.const_defined?("Server") # bin/rails s
   return false if Rails.const_defined?("Console") # bin/rails c
 

@@ -1,2 +1,2 @@
 web: bin/puma -C config/puma.rb
-worker: bin/rails jobs:work
+worker: bin/delayed_job run
