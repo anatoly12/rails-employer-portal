@@ -39,7 +39,7 @@ class EmployerPortal::Employee::Stats
   end
 
   def daily_checkup_available_count
-    [daily_checkup_allowed_count - total, 0].max
+    daily_checkup_allowed_count - total
   end
 
   def daily_checkup_limited?
@@ -51,7 +51,7 @@ class EmployerPortal::Employee::Stats
   end
 
   def testing_available_count
-    [testing_allowed_count - total, 0].max
+    testing_allowed_count - total
   end
 
   def testing_limited?
