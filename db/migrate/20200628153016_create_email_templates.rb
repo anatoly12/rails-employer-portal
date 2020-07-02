@@ -10,7 +10,7 @@ Sequel.migration do
       String :subject
       String :html
       String :text
-      Bignum :covid19_message_code
+      Bignum :covid19_message_code # link to covid19_message_codes.message_code
       DateTime :created_at
       DateTime :updated_at
       index :trigger_key

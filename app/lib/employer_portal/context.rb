@@ -6,7 +6,6 @@ module EmployerPortal
 
     delegate :id, to: :account, prefix: :account
     delegate :first_name, :email, :company, :company_id, to: :account
-    delegate :plan, to: :company, allow_nil: true, prefix: :company
 
     def initialize(account_id:, section:)
       @given_account_id = account_id
@@ -25,20 +24,30 @@ module EmployerPortal
       raise Error::Account::NotFound unless signed_in?
     end
 
-    def testing_status_enabled?
-      company_plan.present? && !company_plan.include?("Lite")
-    end
-
-    def billed_by_invoice?
-      company_plan.present? && company_plan != "Self-Service"
-    end
-
     def sync_connected?
       ::EmployerPortal::Sync.connected?
     end
 
     def aws_connected?
       ::EmployerPortal::Aws.connected?
+    end
+
+    def daily_checkup_enabled?
+      return false unless sync_connected?
+
+      !!company.plan&.daily_checkup_enabled
+    end
+
+    def testing_enabled?
+      return false unless sync_connected?
+
+      !!company.plan&.testing_enabled
+    end
+
+    def health_passport_enabled?
+      return false unless sync_connected?
+
+      !!company.plan&.health_passport_enabled
     end
 
     private
@@ -55,7 +64,7 @@ module EmployerPortal
       if section_admin?
         AdminUser.where(id: given_account_id).limit(1).first
       else
-        Employer.eager_graph(:company).where(
+        Employer.eager_graph(:company).eager(company: :plan).where(
           Sequel.qualify(:employers, :id) => given_account_id,
           Sequel.qualify(:employers, :deleted_at) => nil,
           Sequel.qualify(:company, :deleted_at) => nil,

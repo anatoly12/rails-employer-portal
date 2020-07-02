@@ -3,8 +3,16 @@
 <% end %>
 <div class="container mx-auto px-4">
   <div class="-mx-4 mb-4 md:mb-8 xl:my-4 xl:flex">
-    <%= render "symptom_tracker/widget", search: editor.symptom_log_search %>
-    <%= render "testing_progress/widget", health_passport: editor.health_passport %>
+    <% if current_context.daily_checkup_enabled? %>
+      <%= render "symptom_tracker/widget", search: editor.symptom_log_search %>
+    <% else %>
+      <%= render "symptom_tracker/widget_disabled" %>
+    <% end %>
+    <% if current_context.testing_enabled? %>
+      <%= render "testing_progress/widget", health_passport: editor.health_passport %>
+    <% else %>
+      <%= render "testing_progress/widget_disabled" %>
+    <% end %>
   </div>
   <div id="employee-edit" data-turbolinks-permanent>
     <h2 class="text-3xl font-thin mt-4">

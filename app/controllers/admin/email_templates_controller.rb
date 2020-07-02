@@ -48,13 +48,13 @@ class Admin::EmailTemplatesController < Admin::BaseController
   end
 
   def search
-    @search ||= ::EmployerPortal::Admin::EmailTemplateSearch.new(current_context, params)
+    @search ||= ::EmployerPortal::Admin::EmailTemplate::Search.new(current_context, params)
   end
 
   helper_method :search
 
   def editor
-    @editor ||= ::EmployerPortal::Admin::EmailTemplateEditor.from_params(current_context, params)
+    @editor ||= ::EmployerPortal::Admin::EmailTemplate::Editor.from_params(current_context, params)
   end
 
   helper_method :editor

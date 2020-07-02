@@ -75,7 +75,7 @@ module EmployerPortal
         return if account.demographic
 
         Demographic.create(
-          account_id: account.id,
+          account: account,
           full_legal_name: "#{employee.first_name} #{employee.last_name}",
           state_of_residence: employee.state,
           phone_number: employee.phone,
@@ -124,7 +124,7 @@ module EmployerPortal
         return unless access_code_id
 
         AccessGrant.create(
-          account_id: account.id,
+          account: account,
           partner_access_code_id: access_code_id,
           created_at: now,
           updated_at: now,

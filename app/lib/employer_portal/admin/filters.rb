@@ -16,8 +16,14 @@ class EmployerPortal::Admin::Filters
     filters.blank?
   end
 
+  def plans_for_select
+    Plan.where(deleted_at: nil).all.map do |plan|
+      [plan.name, plan.id]
+    end
+  end
+
   def companies_for_select
-    Company.all.map do |company|
+    Company.where(deleted_at: nil).all.map do |company|
       [company.name, company.id]
     end
   end

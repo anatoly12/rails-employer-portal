@@ -1,4 +1,13 @@
-<label class="bg-white border shadow-inner w-5 h-5 flex justify-center items-center cursor-pointer">
-  <%= check_box_tag name, value, false, class: "w-full hidden" %>
-  <%= render "icon/checkmark", icon_class: "hidden w-3 h-3 text-blue-500 pointer-events-none" %>
-</label>
+<% errors = form.object.errors_on column %>
+<div>
+  <label class="flex items-center cursor-pointer select-none">
+    <div class="bg-white border shadow-inner w-5 h-5 flex justify-center items-center">
+      <%= form.check_box column, class: "w-full hidden" %>
+      <%= render "icon/checkmark", icon_class: "hidden w-3 h-3 text-blue-500 pointer-events-none" %>
+    </div>
+    <div class="text-3xl font-thin pl-4">
+      <%= local_assigns[:label].presence || column.to_s.humanize %>
+    </div>
+  </label>
+  <%= render "common/errors", errors: errors %>
+</div>

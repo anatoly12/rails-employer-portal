@@ -1,0 +1,4 @@
+<%= render "admin/common/filters", filters: filters do |form| %>
+  <%= render "form/select", form: form, column: :plan_id_equals, label: "Plan", options: form.object.plans_for_select %>
+  <%= render "form/text_field", form: form, column: :name_contains %>
+<% end %>

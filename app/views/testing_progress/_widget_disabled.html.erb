@@ -1,0 +1,15 @@
+<div id="testing-progress" class="bg-gray-100 text-gray-600 p-4 border-b border-blue-500 xl:border-none xl:flex-1 xl:ml-2 xl:shadow pointer-events-none select-none" data-turbolinks-permanent>
+  <div class="md:w-full md:h-48 md:overflow-hidden">
+    <h3 class="text-2xl font-medium">Testing Progress</h3>
+    <div class="italic mb-3">Feature not included in your current plan</div>
+    <ul class="-mb-10 p-4 text-xs md:flex md:justify-center md:px-0 lg:ml-10 lg:-mr-10">
+      <%= render "testing_progress/step_disabled", label: "Not Registered" %>
+      <%= render "testing_progress/step_disabled", label: "Registered" %>
+      <%= render "testing_progress/step_disabled", label: "Intake" %>
+      <%= render "testing_progress/step_disabled", label: "Received Lab Order" %>
+      <%= render "testing_progress/step_disabled", label: "Submitted Results" %>
+      <%= render "testing_progress/step_disabled", label: "Physician Reviewing" %>
+      <%= render "testing_progress/step_disabled", label: "Passport Complete" %>
+    </ul>
+  </div>
+</div>

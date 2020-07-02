@@ -48,13 +48,13 @@ class Admin::CompaniesController < Admin::BaseController
   end
 
   def search
-    @search ||= ::EmployerPortal::Admin::CompanySearch.new(current_context, params)
+    @search ||= ::EmployerPortal::Admin::Company::Search.new(current_context, params)
   end
 
   helper_method :search
 
   def editor
-    @editor ||= ::EmployerPortal::Admin::CompanyEditor.from_params(current_context, params)
+    @editor ||= ::EmployerPortal::Admin::Company::Editor.from_params(current_context, params)
   end
 
   helper_method :editor

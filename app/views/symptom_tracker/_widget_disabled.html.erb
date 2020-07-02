@@ -1,0 +1,32 @@
+<div id="symptom-tracker" class="bg-gray-100 text-gray-600 p-4 border-b border-blue-500 xl:border-none xl:flex-1 xl:ml-2 xl:shadow pointer-events-none select-none" data-turbolinks-permanent>
+  <div class="md:w-full md:h-48 md:overflow-hidden">
+    <h3 class="text-2xl font-medium">Symptom Tracker <span class="whitespace-no-wrap">at-a-glance</span></h3>
+    <div class="italic mb-3">Feature not included in your current plan</div>
+    <table class="table-auto w-full text-xs">
+      <thead>
+        <tr class="align-middle">
+          <th class="w-1 p-1 font-normal whitespace-no-wrap">Date Logged</th>
+          <th class="p-1 font-normal">Flagged</th>
+          <th class="p-1 font-normal hidden md:table-cell">Temperature</th>
+          <th class="p-1 font-normal hidden md:table-cell">Symptoms</th>
+          <th class="w-1 font-normal md:w-32">
+            <nav class="flex justify-end items-center select-none">
+              <div class="mr-1 whitespace-no-wrap"><strong>1-3</strong>&nbsp;of 3</div>
+              <div class="page prev text-gray-300">
+                <%= render "icon/cheveron_left", icon_class: "h-6 w-6" %>
+              </div>
+              <div class="page next text-gray-300">
+                <%= render "icon/cheveron_right", icon_class: "h-6 w-6" %>
+              </div>
+            </nav>
+          </th>
+        </tr>
+      </thead>
+      <tbody>
+        <%= render "symptom_tracker/symptom_log_disabled", log_date: "2020-04-03", flagged: false, temperature: "100.2ºF", symptoms: false %>
+        <%= render "symptom_tracker/symptom_log_disabled", log_date: "2020-03-31", flagged: true, temperature: "100.4ºF", symptoms: true %>
+        <%= render "symptom_tracker/symptom_log_disabled", log_date: "2020-03-29", flagged: false, temperature: "99.7ºF", symptoms: false %>
+      </tbody>
+    </table>
+  </div>
+</div>

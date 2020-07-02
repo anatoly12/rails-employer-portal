@@ -1,0 +1,45 @@
+<tr class="hover:text-blue-700">
+  <td class="py-4 px-6 border-b border-gray-200 whitespace-no-wrap">
+    <%= plan.created_at.strftime("%F") %>
+  </td>
+  <td class="py-4 px-6 border-b border-gray-200"><%= plan.name %></td>
+  <td class="py-4 px-6 border-b border-gray-200">
+    <% if plan.daily_checkup_enabled %>
+      <%= render "icon/checkmark", icon_class: "text-green-500 h-6 w-6 mx-auto" %>
+    <% else %>
+      <%= render "icon/close", icon_class: "text-red-500 h-6 w-6 mx-auto" %>
+    <% end %>
+  </td>
+  <td class="py-4 px-6 border-b border-gray-200">
+    <% if plan.testing_enabled %>
+      <%= render "icon/checkmark", icon_class: "text-green-500 h-6 w-6 mx-auto" %>
+    <% else %>
+      <%= render "icon/close", icon_class: "text-red-500 h-6 w-6 mx-auto" %>
+    <% end %>
+  </td>
+  <td class="py-4 px-6 border-b border-gray-200">
+    <% if plan.health_passport_enabled %>
+      <%= render "icon/checkmark", icon_class: "text-green-500 h-6 w-6 mx-auto" %>
+    <% else %>
+      <%= render "icon/close", icon_class: "text-red-500 h-6 w-6 mx-auto" %>
+    <% end %>
+  </td>
+  <td class="py-4 px-6 border-b border-gray-200 text-center">
+    <%= plan.employer_limit %>
+  </td>
+  <td class="py-4 px-6 border-b border-gray-200 text-center">
+    <%= plan.employee_limit %>
+  </td>
+  <td class="py-4 px-6 border-b border-gray-200 whitespace-no-wrap text-center">
+    <%= link_to plan.company_count, admin_companies_path(filters: { plan_id_equals: plan }), class: "text-gray-100 font-bold text-xs bg-blue-400 hover:bg-blue-500 rounded-lg p-2 inline-block" %>
+  </td>
+  <td class="py-4 px-6 border-b border-gray-200 whitespace-no-wrap text-center">
+    <%= link_to plan.email_template_count, admin_email_templates_path(filters: { plan_id_equals: plan }), class: "text-gray-100 font-bold text-xs bg-blue-400 hover:bg-blue-500 rounded-lg p-2 inline-block" %>
+  </td>
+  <td class="py-4 px-6 border-b border-gray-200 whitespace-no-wrap">
+    <%= link_to({ action: :edit, id: plan }, class: "text-gray-100 font-bold text-xs bg-blue-400 hover:bg-blue-500 rounded-lg pl-4 pr-6 py-2 inline-flex items-center") do %>
+      <%= render "icon/edit_pencil", icon_class: "w-3 h-3 mr-2" %>
+      Edit
+    <% end %>
+  </td>
+</tr>

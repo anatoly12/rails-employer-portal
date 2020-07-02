@@ -14,7 +14,7 @@ Sequel.migration do
       String :subject
       String :html
       String :text
-      Bignum :covid19_message_id
+      Bignum :covid19_message_id # link to covid19_messages.covid19_message_id
       DateTime :created_at
       index :email_template_id
       index :company_id

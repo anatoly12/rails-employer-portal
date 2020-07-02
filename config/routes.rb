@@ -4,6 +4,7 @@ Rails.application.routes.draw do
   get "/check", to: "application#check"
   namespace :admin do
     resource :sessions, path: "/sign-in", only: [:show, :create, :destroy]
+    resources :plans
     resources :companies
     resources :employers
     resources :employees, only: [:index] do

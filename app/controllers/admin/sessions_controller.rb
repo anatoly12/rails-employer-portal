@@ -31,7 +31,7 @@ class Admin::SessionsController < Admin::BaseController
   end
 
   def editor
-    @editor ||= ::EmployerPortal::Admin::SessionEditor.new editor_params
+    @editor ||= ::EmployerPortal::Admin::Session::Editor.new editor_params
   end
 
   helper_method :editor

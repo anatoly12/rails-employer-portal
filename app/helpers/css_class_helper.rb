@@ -28,8 +28,8 @@ module CssClassHelper
     "#{base_button_class(color)} border-2 px-3 leading-6 font-semibold"
   end
 
-  def thin_button_class
-    "#{base_button_class(:blue)} border inline-block whitespace-no-wrap px-3 leading-tight"
+  def thin_button_class(color)
+    "#{base_button_class(color)} border inline-block whitespace-no-wrap px-3 leading-tight"
   end
 
   private

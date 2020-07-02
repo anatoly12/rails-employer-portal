@@ -25,7 +25,7 @@ Sequel.migration do
       # If we switch to PostgreSQL for both, we can use UUID as primary_key and
       # share a single UUID for both DB, then we wouldn't need the
       # remote_id column anymore.
-      Bignum :remote_id
+      Bignum :remote_id # link to accounts.id
       DateTime :remote_sync_at
     end
   end

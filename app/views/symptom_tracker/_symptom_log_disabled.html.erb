@@ -1,0 +1,21 @@
+<tr class="border-t align-middle text-center">
+  <td class="py-1 whitespace-no-wrap text-gray-400"><%= log_date %></td>
+  <td class="py-1">
+    <% if flagged %>
+      <%= render "icon/exclamation_solid", icon_class: "h-4 w-4 text-gray-500 mx-auto" %>
+    <% end %>
+  </td>
+  <% if temperature.to_f >= 100.4 %>
+    <td class="py-1 hidden md:table-cell"><%= temperature %></td>
+  <% else %>
+    <td class="py-1 hidden md:table-cell text-gray-400"><%= temperature %></td>
+  <% end %>
+  <% if symptoms %>
+    <td class="py-1 hidden md:table-cell">Yes</td>
+  <% else %>
+    <td class="py-1 hidden md:table-cell text-gray-400">No</td>
+  <% end %>
+  <td class="py-1 text-right">
+    <div class="<%= thin_button_class(:gray) %>">View Details</div>
+  </td>
+</tr>

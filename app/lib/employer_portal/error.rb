@@ -7,6 +7,10 @@ module EmployerPortal
       class NotFound < ::EmployerPortal::Error::NotFound; end
     end
 
+    module Plan
+      class NotFound < ::EmployerPortal::Error::NotFound; end
+    end
+
     module Company
       class NotFound < ::EmployerPortal::Error::NotFound; end
     end
@@ -17,11 +21,11 @@ module EmployerPortal
 
     module Employee
       class NotFound < ::EmployerPortal::Error::NotFound; end
-    end
 
-    module EmployeeBulkImport
-      class Base < ::EmployerPortal::Error::Base; end
-      class Invalid < Base; end
+      module BulkImport
+        class Base < ::EmployerPortal::Error::Base; end
+        class Invalid < Base; end
+      end
     end
 
     module Sync

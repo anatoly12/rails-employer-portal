@@ -16,7 +16,11 @@
   <% if label == "Passport Complete" %>
     <div class="-mt-6 mb-6 pl-3 font-medium md:-mt-4 md:text-center md:pl-0 md:-ml-10 md:mr-10">
       Status:
-      <%= link_to health_passport.status, health_passport_employee_path(editor.health_passport), class: "hover:border-b whitespace-no-wrap #{testing_status_color(health_passport)}" %>
+      <% if current_context.health_passport_enabled? %>
+        <%= link_to health_passport.status, health_passport_employee_path(health_passport), class: "hover:border-b whitespace-no-wrap #{testing_status_color(health_passport)}" %>
+      <% else %>
+        <span class="whitespace-no-wrap <%= testing_status_color(health_passport) %>"><%= health_passport.status %></span>
+      <% end %>
     </div>
   <% end %>
 </li>

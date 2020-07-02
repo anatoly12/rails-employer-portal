@@ -44,14 +44,16 @@ CREATE TABLE `companies` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `uuid` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
   `name` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `plan` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `created_at` datetime DEFAULT NULL,
   `updated_at` datetime DEFAULT NULL,
   `remote_id` bigint(20) DEFAULT NULL,
   `remote_sync_at` datetime DEFAULT NULL,
   `deleted_at` datetime DEFAULT NULL,
+  `plan_id` int(11) DEFAULT NULL,
   PRIMARY KEY (`id`),
-  UNIQUE KEY `uuid` (`uuid`)
+  UNIQUE KEY `uuid` (`uuid`),
+  KEY `companies_plan_id_index` (`plan_id`),
+  CONSTRAINT `companies_ibfk_1` FOREIGN KEY (`plan_id`) REFERENCES `plans` (`id`) ON DELETE NO ACTION
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -134,8 +136,11 @@ CREATE TABLE `email_templates` (
   `created_at` datetime DEFAULT NULL,
   `updated_at` datetime DEFAULT NULL,
   `deleted_at` datetime DEFAULT NULL,
+  `plan_id` int(11) DEFAULT NULL,
   PRIMARY KEY (`id`),
-  KEY `email_templates_trigger_key_index` (`trigger_key`)
+  KEY `email_templates_trigger_key_index` (`trigger_key`),
+  KEY `email_templates_plan_id_index` (`plan_id`),
+  CONSTRAINT `email_templates_ibfk_1` FOREIGN KEY (`plan_id`) REFERENCES `plans` (`id`) ON DELETE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -197,6 +202,32 @@ CREATE TABLE `employers` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
+-- Table structure for table `plans`
+--
+
+DROP TABLE IF EXISTS `plans`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `plans` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `uuid` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `name` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `billed_by` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `daily_checkup_enabled` tinyint(1) DEFAULT NULL,
+  `testing_enabled` tinyint(1) DEFAULT NULL,
+  `health_passport_enabled` tinyint(1) DEFAULT NULL,
+  `employer_limit` int(11) DEFAULT '0',
+  `employee_limit` int(11) DEFAULT '0',
+  `remote_id` bigint(20) DEFAULT NULL,
+  `created_at` datetime DEFAULT NULL,
+  `updated_at` datetime DEFAULT NULL,
+  `deleted_at` datetime DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `uuid` (`uuid`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
 -- Table structure for table `schema_migrations`
 --
 
@@ -245,3 +276,4 @@ INSERT INTO `schema_migrations` (`filename`) VALUES ('20200626210619_create_admi
 INSERT INTO `schema_migrations` (`filename`) VALUES ('20200628153016_create_email_templates.rb');
 INSERT INTO `schema_migrations` (`filename`) VALUES ('20200701075540_add_deleted_at_columns.rb');
 INSERT INTO `schema_migrations` (`filename`) VALUES ('20200701090753_create_email_logs.rb');
+INSERT INTO `schema_migrations` (`filename`) VALUES ('20200702094748_create_plans.rb');

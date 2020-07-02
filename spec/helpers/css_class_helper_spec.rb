@@ -84,8 +84,18 @@ describe CssClassHelper do
   end
 
   describe "#thin_button_class" do
-    subject { helper.thin_button_class.split " " }
+    subject { helper.thin_button_class(color).split " " }
 
-    it { is_expected.to contain_exactly "appearance-none", "bg-white", "text-blue-400", "border-blue-400", "hover:border-blue-700", "hover:text-blue-800", "focus:outline-none", "focus:border-blue-700", "border", "inline-block", "whitespace-no-wrap", "px-3", "leading-tight" }
+    context "when color is blue" do
+      let(:color) { :blue }
+
+      it { is_expected.to contain_exactly "appearance-none", "bg-white", "text-blue-400", "border-blue-400", "hover:border-blue-700", "hover:text-blue-800", "focus:outline-none", "focus:border-blue-700", "border", "inline-block", "whitespace-no-wrap", "px-3", "leading-tight" }
+    end
+
+    context "when color is gray" do
+      let(:color) { :gray }
+
+      it { is_expected.to contain_exactly "appearance-none", "bg-white", "text-gray-400", "border-gray-400", "hover:border-gray-700", "hover:text-gray-800", "focus:outline-none", "focus:border-gray-700", "border", "inline-block", "whitespace-no-wrap", "px-3", "leading-tight" }
+    end
   end
 end

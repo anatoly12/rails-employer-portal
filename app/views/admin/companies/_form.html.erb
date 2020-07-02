@@ -1,9 +1,9 @@
 <div class="grid grid-cols-2 gap-20 mb-10">
   <%= render "form/text_field", form: form, column: :name %>
-  <%= render "form/select", form: form, column: :plan, options: form.object.plans_for_select %>
+  <%= render "form/select", form: form, column: :plan_id, options: form.object.plans_for_select %>
   <% if current_context.sync_connected? %>
-    <%= render "form/select", form: form, column: :remote_id, options: form.object.remote_ids_for_select, label: "Partner" %>
+    <%= render "form/select", form: form, column: :remote_id, options: form.object.remote_ids_for_select, label: "Linked to partner" %>
   <% else %>
-    <%= render "form/text_field", form: form, column: :remote_id, label: "Partner ID" %>
+    <%= render "form/text_field", form: form, column: :remote_id, label: "Linked to partner ID" %>
   <% end %>
 </div>

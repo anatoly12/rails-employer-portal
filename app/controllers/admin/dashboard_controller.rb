@@ -7,7 +7,7 @@ class Admin::DashboardController < Admin::BaseController
   private
 
   def dashboard_stats
-    @dashboard_stats ||= ::EmployerPortal::Admin::DashboardStats.new(
+    @dashboard_stats ||= ::EmployerPortal::Admin::Dashboard::Stats.new(
       current_context
     )
   end

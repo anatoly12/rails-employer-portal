@@ -1,0 +1,23 @@
+<div class="bg-white shadow-md rounded overflow-hidden">
+  <table class="w-full border-collapse text-gray-900">
+    <thead class="select-none">
+      <tr class="bg-blue-500 font-bold uppercase text-sm text-gray-100">
+        <th class="py-4 px-6 border-b border-gray-200 w-1 whitespace-no-wrap">Created at</th>
+        <th class="py-4 px-6 border-b border-gray-200 text-left">Name</th>
+        <th class="py-4 px-6 border-b border-gray-200 w-1 whitespace-no-wrap">Daily checkup</th>
+        <th class="py-4 px-6 border-b border-gray-200 w-1">Testing</th>
+        <th class="py-4 px-6 border-b border-gray-200 w-1 whitespace-no-wrap">Health passport</th>
+        <th class="py-4 px-6 border-b border-gray-200 w-1 whitespace-no-wrap">Employer limit</th>
+        <th class="py-4 px-6 border-b border-gray-200 w-1 whitespace-no-wrap">Employee limit</th>
+        <th class="py-4 px-6 border-b border-gray-200 w-1 whitespace-no-wrap">Companies</th>
+        <th class="py-4 px-6 border-b border-gray-200 w-1 whitespace-no-wrap">Emails</th>
+        <th class="py-4 px-6 border-b border-gray-200 w-1">Actions</th>
+      </tr>
+    </thead>
+    <tbody>
+      <% plans.each do |plan| %>
+        <%= render "admin/plans/plan", plan: plan %>
+      <% end %>
+    </tbody>
+  </table>
+</div>

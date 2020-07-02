@@ -1,6 +1,5 @@
 class EmployeesController < ApplicationController
   rescue_from ::EmployerPortal::Error::Employee::NotFound, with: :employee_not_found
-  before_action :ensure_testing_status_enabled, only: :health_passport
 
   # ~~ collection actions ~~
   def index
@@ -20,7 +19,7 @@ class EmployeesController < ApplicationController
   end
 
   def create
-    bulk = ::EmployerPortal::EmployeeBulkImport.new(
+    bulk = ::EmployerPortal::Employee::BulkImport.new(
       current_context,
       params[:file]
     )
@@ -29,7 +28,7 @@ class EmployeesController < ApplicationController
         bulk.save!
         flash.notice = "#{bulk.count} employees were imported successfully."
         redirect_to action: :index
-      rescue ::EmployerPortal::Error::EmployeeBulkImport::Base => e
+      rescue ::EmployerPortal::Error::Employee::BulkImport::Base => e
         flash.now.alert = e.message
         render :bulk_import
       end
@@ -59,6 +58,10 @@ class EmployeesController < ApplicationController
   end
 
   def health_passport
+    unless current_context.health_passport_enabled?
+      flash.alert = "Feature not included in your current plan."
+      redirect_to action: :edit
+    end
   end
 
   # delete
@@ -70,21 +73,14 @@ class EmployeesController < ApplicationController
     redirect_to action: :index
   end
 
-  def ensure_testing_status_enabled
-    unless current_context.testing_status_enabled?
-      flash.alert = "Feature not included in your current plan."
-      redirect_to action: :edit
-    end
-  end
-
   def search
-    @search ||= ::EmployerPortal::EmployeeSearch.from_params current_context, params
+    @search ||= ::EmployerPortal::Employee::Search.from_params current_context, params
   end
 
   helper_method :search
 
   def editor
-    @editor ||= ::EmployerPortal::EmployeeEditor.from_params current_context, params
+    @editor ||= ::EmployerPortal::Employee::Editor.from_params current_context, params
   end
 
   helper_method :editor

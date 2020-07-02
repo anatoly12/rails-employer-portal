@@ -2,6 +2,7 @@
   <%= render "admin/common/top_nav_item", title: "Companies", path: { action: :index } %>
 <% end %>
 <div class="mt-10 p-5 pb-0">
+  <%= render "admin/email_templates/filters", filters: search.filters %>
   <%= render "admin/email_templates/email_templates", email_templates: search.results %>
   <div class="flex justify-between py-5 select-none">
     <div>

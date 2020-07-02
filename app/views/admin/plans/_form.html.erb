@@ -1,0 +1,29 @@
+<div class="grid grid-cols-2 gap-20 mb-10">
+  <%= render "form/text_field", form: form, column: :name %>
+  <% if current_context.sync_connected? %>
+    <%= render "form/select", form: form, column: :remote_id, options: form.object.remote_ids_for_select, label: "Linked to passport product" %>
+  <% else %>
+    <%= render "form/text_field", form: form, column: :remote_id, label: "Linked to passport product ID" %>
+  <% end %>
+  <div>
+    <div class="mb-10">
+      <%= render "form/check_box", form: form, column: :daily_checkup_enabled, value: true %>
+    </div>
+    <div class="mb-10">
+      <%= render "form/check_box", form: form, column: :testing_enabled, value: true %>
+    </div>
+    <div>
+      <%= render "form/check_box", form: form, column: :health_passport_enabled, value: true %>
+    </div>
+  </div>
+  <div>
+    <div class="mb-10">
+      <%= render "form/text_field", form: form, column: :employer_limit %>
+      <p class="text-xs text-gray-500">Enter 0 for unlimited / billed by invoice.</p>
+    </div>
+    <div>
+      <%= render "form/text_field", form: form, column: :employee_limit %>
+      <p class="text-xs text-gray-500 -mb-8">Enter 0 for unlimited / billed by invoice.</p>
+    </div>
+  </div>
+</div>
