@@ -64,7 +64,7 @@ class EmployerPortal::Admin::Employer::Editor < ::EmployerPortal::Admin::Base::E
         password: edited.password,
         deleted_at: nil,
       )
-      edited = existing
+      @edited = existing
     end
     edited.save validate: false
   end
