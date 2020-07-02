@@ -98,9 +98,9 @@ CREATE TABLE `email_logs` (
   `trigger_key` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `from` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `recipient` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `subject` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `html` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `text` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `subject` text COLLATE utf8mb4_unicode_ci,
+  `html` text COLLATE utf8mb4_unicode_ci,
+  `text` text COLLATE utf8mb4_unicode_ci,
   `covid19_message_id` bigint(20) DEFAULT NULL,
   `created_at` datetime DEFAULT NULL,
   PRIMARY KEY (`id`),
@@ -128,9 +128,9 @@ CREATE TABLE `email_templates` (
   `name` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `trigger_key` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `from` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `subject` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `html` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `text` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `subject` text COLLATE utf8mb4_unicode_ci,
+  `html` text COLLATE utf8mb4_unicode_ci,
+  `text` text COLLATE utf8mb4_unicode_ci,
   `covid19_message_code` bigint(20) DEFAULT NULL,
   `created_at` datetime DEFAULT NULL,
   `updated_at` datetime DEFAULT NULL,
@@ -277,3 +277,4 @@ INSERT INTO `schema_migrations` (`filename`) VALUES ('20200701075540_add_deleted
 INSERT INTO `schema_migrations` (`filename`) VALUES ('20200701090753_create_email_logs.rb');
 INSERT INTO `schema_migrations` (`filename`) VALUES ('20200702094748_create_plans.rb');
 INSERT INTO `schema_migrations` (`filename`) VALUES ('20200702141003_set_nullable_companies.rb');
+INSERT INTO `schema_migrations` (`filename`) VALUES ('20200702185754_set_email_template_columns_from_string_to_text.rb');

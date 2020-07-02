@@ -19,6 +19,11 @@ module EmployerPortal
           create_access_grant(account)
           employee.update remote_id: account.id, remote_sync_at: now
         end
+        EmailTriggerJob.perform_later(
+          "employee_new",
+          employee.id,
+          "reset_password_token" => reset_password_token_raw,
+        )
       rescue Sequel::Error => e
         raise ::EmployerPortal::Error::Sync::CantCreateAccount, e.message
       end
@@ -32,14 +37,24 @@ module EmployerPortal
       end
 
       def devise_reset_password_token
-        key = ActiveSupport::KeyGenerator.new(
-          secret_key_base
-        ).generate_key("Devise reset_password_token")
-        loop do
-          raw = SecureRandom.urlsafe_base64(15).tr("lIO0", "sxyz")
-          enc = OpenSSL::HMAC.hexdigest("SHA256", key, raw)
-          break enc if Account.where(reset_password_token: enc).limit(1).empty?
-        end
+        @devise_reset_password_token ||= begin
+            key = ActiveSupport::KeyGenerator.new(
+              secret_key_base
+            ).generate_key("Devise reset_password_token")
+            loop do
+              raw = SecureRandom.urlsafe_base64(15).tr("lIO0", "sxyz")
+              enc = OpenSSL::HMAC.hexdigest("SHA256", key, raw)
+              break [raw, enc] if Account.where(reset_password_token: enc).limit(1).empty?
+            end
+          end
+      end
+
+      def reset_password_token_raw
+        devise_reset_password_token[0]
+      end
+
+      def reset_password_token_digest
+        devise_reset_password_token[1]
       end
 
       def create_or_update_account
@@ -51,7 +66,7 @@ module EmployerPortal
         ).insert(
           email: employee.email,
           is_active: true,
-          reset_password_token: devise_reset_password_token,
+          reset_password_token: reset_password_token_digest,
           reset_password_sent_at: now,
           created_at: now,
           updated_at: now,

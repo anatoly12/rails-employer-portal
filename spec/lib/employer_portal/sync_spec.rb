@@ -203,6 +203,14 @@ RSpec.describe ::EmployerPortal::Sync, type: :sync, order: :defined do
           expect(employee.remote_id).not_to be_nil
           expect(employee.remote_sync_at).not_to be_nil
         end
+
+        it "spawns an email trigger job" do
+          expect { subject }.to have_enqueued_job(EmailTriggerJob).with(
+            "employee_new",
+            employee.id,
+            hash_including("reset_password_token")
+          )
+        end
       end
 
       context "when employee already has an account" do

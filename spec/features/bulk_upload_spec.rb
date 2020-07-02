@@ -16,41 +16,54 @@ feature "Bulk upload" do
 
   scenario "Upload a valid file in Unicode text format" do
     create :zip_code, :new_york
-    upload_file("sample_valid.txt")
+
+    expect do
+      upload_file("sample_valid.txt")
+    end.to have_enqueued_job(CreateAccountForEmployeeJob).exactly(5).times
     expect(page).to have_selector("[role=notice]", text: "5 employees were imported successfully.")
     expect(page).not_to have_selector("[role=alert]")
   end
 
   scenario "Upload a valid file in CSV format" do
     create :zip_code, :new_york
-    upload_file("sample_valid.csv")
+    expect do
+      upload_file("sample_valid.csv")
+    end.to have_enqueued_job(CreateAccountForEmployeeJob).exactly(5).times
     expect(page).to have_selector("[role=notice]", text: "5 employees were imported successfully.")
     expect(page).not_to have_selector("[role=alert]")
   end
 
   scenario "Upload a valid file in TSV format" do
     create :zip_code, :new_york
-    upload_file("sample_valid.tsv")
+    expect do
+      upload_file("sample_valid.tsv")
+    end.to have_enqueued_job(CreateAccountForEmployeeJob).exactly(5).times
     expect(page).to have_selector("[role=notice]", text: "5 employees were imported successfully.")
     expect(page).not_to have_selector("[role=alert]")
   end
 
   scenario "Upload valid file but ZIP code doesn't exist" do
-    upload_file("sample_valid.txt")
+    expect do
+      upload_file("sample_valid.txt")
+    end.not_to have_enqueued_job CreateAccountForEmployeeJob
     expect(page).not_to have_selector("[role=notice]")
     expect(page).to have_selector("[role=alert]", text: "Error(s) on row 2: zipcode must be a valid ZIP Code.")
   end
 
   scenario "Upload a file with invalid UTF-8 sequence" do
     create :zip_code, :new_york
-    upload_file("sample_invalid.csv")
+    expect do
+      upload_file("sample_invalid.csv")
+    end.not_to have_enqueued_job CreateAccountForEmployeeJob
     expect(page).not_to have_selector("[role=notice]")
     expect(page).to have_selector("[role=alert]", text: "Error: invalid file format.")
   end
 
   scenario "Upload a file without any employee" do
     create :zip_code, :new_york
-    upload_file("sample_empty.csv")
+    expect do
+      upload_file("sample_empty.csv")
+    end.not_to have_enqueued_job CreateAccountForEmployeeJob
     expect(page).not_to have_selector("[role=notice]")
     expect(page).to have_selector("[role=alert]", text: "Error: can't find any employee in given file.")
   end
