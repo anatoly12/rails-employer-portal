@@ -47,9 +47,8 @@ CREATE TABLE `companies` (
   `created_at` datetime DEFAULT NULL,
   `updated_at` datetime DEFAULT NULL,
   `remote_id` bigint(20) DEFAULT NULL,
-  `remote_sync_at` datetime DEFAULT NULL,
   `deleted_at` datetime DEFAULT NULL,
-  `plan_id` int(11) DEFAULT NULL,
+  `plan_id` int(11) NOT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `uuid` (`uuid`),
   KEY `companies_plan_id_index` (`plan_id`),
@@ -277,3 +276,4 @@ INSERT INTO `schema_migrations` (`filename`) VALUES ('20200628153016_create_emai
 INSERT INTO `schema_migrations` (`filename`) VALUES ('20200701075540_add_deleted_at_columns.rb');
 INSERT INTO `schema_migrations` (`filename`) VALUES ('20200701090753_create_email_logs.rb');
 INSERT INTO `schema_migrations` (`filename`) VALUES ('20200702094748_create_plans.rb');
+INSERT INTO `schema_migrations` (`filename`) VALUES ('20200702141003_set_nullable_companies.rb');

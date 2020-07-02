@@ -9,6 +9,8 @@ plan_lite = Plan.create(
   name: "Passport Lite",
   billed_by: "invoice",
   daily_checkup_enabled: true,
+  employer_limit: 0,
+  employee_limit: 0,
   remote_id: 1,
 )
 Plan.create(
@@ -16,6 +18,8 @@ Plan.create(
   billed_by: "invoice",
   testing_enabled: true,
   health_passport_enabled: true,
+  employer_limit: 0,
+  employee_limit: 0,
   remote_id: 2,
 )
 Plan.create(
@@ -24,6 +28,8 @@ Plan.create(
   daily_checkup_enabled: true,
   testing_enabled: true,
   health_passport_enabled: true,
+  employer_limit: 0,
+  employee_limit: 0,
   remote_id: 3,
 )
 
