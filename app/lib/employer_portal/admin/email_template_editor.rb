@@ -18,10 +18,11 @@ class EmployerPortal::Admin::EmailTemplateEditor < ::EmployerPortal::Admin::Edit
 
   def trigger_keys_for_select
     [
-      ["Contact (when employee is symptomatic)", "contact"],
-      ["Invite (for newly added employee)", "invite"],
-      ["Password forgotten (for employer accounts)", "password_forgotten"],
-      ["Reminder (tell employee to enter daily symptom checkup)", "reminder"],
+      ["Admin user invites a new employer", "employer_new"],
+      ["Employer password forgotten", "employer_password_forgotten"],
+      ["Employer invites a new employee", "employee_new"],
+      ["Contact employee when symptomatic", "employee_contact"],
+      ["Remind employee to enter daily symptom checkup", "employee_reminder"],
     ]
   end
 

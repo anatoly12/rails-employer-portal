@@ -1,7 +1,6 @@
-<div class="mb-10">
-  <%= render "form/text_field", form: form, column: :name, label: "Name (admin only)" %>
-</div>
 <div class="grid grid-cols-2 gap-10 mb-10">
+  <%= render "form/text_field", form: form, column: :name, label: "Name (admin only)" %>
+  <%= render "form/text_field", form: form, column: :subject %>
   <%= render "form/select", form: form, column: :trigger_key, options: form.object.trigger_keys_for_select, label: "Trigger" %>
   <div>
     <% if current_context.sync_connected? %>
@@ -10,5 +9,4 @@
     <% end %>
   </div>
   <%= render "form/text_field", form: form, column: :from, placeholder: "Customer Support <support@example.com>" %>
-  <%= render "form/text_field", form: form, column: :subject %>
 </div>
