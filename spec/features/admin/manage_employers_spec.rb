@@ -1,6 +1,6 @@
 require "rails_helper"
 
-feature "Manage employer" do
+feature "Manage employers" do
   include AdminHelpers
   include SyncHelpers
   given!(:company) { create :company }

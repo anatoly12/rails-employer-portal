@@ -13,7 +13,13 @@ module AdminHelpers
   def expect_form_errors(errors)
     expect(page).to have_css "p.text-red-400", count: errors.size
     errors.each do |input_id, message|
-      expect(page).to have_css "##{input_id} + p.text-red-400", text: message, exact_text: true
+      input = page.find_by_id input_id
+      error = if input["type"] == "checkbox"
+          input.ancestor("label").sibling "p.text-red-400"
+        else
+          input.sibling "p.text-red-400"
+        end
+      expect(error.text).to eql message
     end
   end
 end

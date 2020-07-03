@@ -1,6 +1,6 @@
 require "rails_helper"
 
-feature "Manage company" do
+feature "Manage companies" do
   include AdminHelpers
   include SyncHelpers
   given!(:plan) { create :plan }
@@ -166,7 +166,7 @@ feature "Manage company" do
       expect(page).not_to have_css("[role=alert]")
     end
 
-    scenario "I can't add a new company with errors" do
+    scenario "I can't add a new company without partner" do
       click_link "Companies"
       click_link "Add a new company"
       within "#new_company" do
