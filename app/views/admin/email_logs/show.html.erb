@@ -6,28 +6,28 @@
   <div class="bg-white shadow-md rounded p-8">
     <div class="flex items-center mb-10">
       <div class="w-32 text-3xl font-thin text-right pr-10">Sent at</div>
-      <div class="flex-1 py-1 text-blue-500 border-b"><%= viewer.created_at %></div>
+      <div id="email_log_sent_at" class="flex-1 py-1 text-blue-500 border-b"><%= viewer.created_at %></div>
     </div>
     <div class="flex items-center mb-10">
       <div class="w-32 text-3xl font-thin text-right pr-10">From</div>
-      <div class="flex-1 py-1 text-blue-500 border-b"><%= viewer.from %></div>
+      <div id="email_log_from" class="flex-1 py-1 text-blue-500 border-b"><%= viewer.from %></div>
     </div>
     <div class="flex items-center mb-10">
       <div class="w-32 text-3xl font-thin text-right pr-10">To</div>
-      <div class="flex-1 py-1 text-blue-500 border-b"><%= viewer.recipient %></div>
+      <div id="email_log_recipient" class="flex-1 py-1 text-blue-500 border-b"><%= viewer.recipient %></div>
     </div>
     <div class="flex items-center mb-10">
       <div class="w-32 text-3xl font-thin text-right pr-10">Subject</div>
-      <div class="flex-1 py-1 text-blue-500 border-b"><%= viewer.subject %></div>
+      <div id="email_log_subject" class="flex-1 py-1 text-blue-500 border-b"><%= viewer.subject %></div>
     </div>
     <div class="grid grid-cols-2 gap-20">
       <div>
         <div class="text-3xl font-thin">HTML</div>
-        <div class="p-5 text-blue-500 border h-64 overflow-y-scroll"><%= raw viewer.html %></div>
+        <div id="email_log_html" class="p-5 text-blue-500 border h-64 overflow-y-scroll"><%= raw viewer.html %></div>
       </div>
       <div>
         <div class="text-3xl font-thin">Text</div>
-        <div class="p-5 text-blue-500 border h-64 overflow-y-scroll"><%= viewer.text %></div>
+        <div id="email_log_text" class="p-5 text-blue-500 border h-64 overflow-y-scroll"><%= viewer.text %></div>
       </div>
     </div>
   </div>

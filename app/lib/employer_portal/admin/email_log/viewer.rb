@@ -11,6 +11,10 @@ class EmployerPortal::Admin::EmailLog::Viewer < ::EmployerPortal::Admin::Base::V
   end
 
   # ~~ public instance methods ~~
+  def created_at
+    decorated.created_at.strftime("%F %R UTC")
+  end
+
   def company_name
     decorated.company.name
   end

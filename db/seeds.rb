@@ -72,7 +72,7 @@ EmailTemplate.create(
     http://localhost:3000/changepw?reset_password_token={{employee_reset_password_token}}
 
     Thank you and have a nice day.
-  "
+  ",
 )
 
 puts
