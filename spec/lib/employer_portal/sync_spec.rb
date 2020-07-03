@@ -1,6 +1,6 @@
 require "rails_helper"
 
-RSpec.describe ::EmployerPortal::Sync, type: :sync, order: :defined do
+RSpec.describe ::EmployerPortal::Sync, type: :sync do
   describe ".connect" do
     before(:all) do
       Sequel::Model.db.drop_view(
@@ -66,21 +66,26 @@ RSpec.describe ::EmployerPortal::Sync, type: :sync, order: :defined do
         expect(db.table_exists?(:symptom_log_entries)).to be true
         expect(db[:symptom_log_entries].all).to be_empty
       end
+
+      it "doesn't output anything when already connected" do
+        expect do
+          expect { subject }.not_to raise_error
+        end.to output("Sync: connected to ecp-test\n").to_stdout
+        expect do
+          expect { subject }.not_to raise_error
+        end.not_to output.to_stdout
+      end
     end
   end
 
   describe ".create_account_for_employee!" do
+    include SyncHelpers
     let(:company) { create :company }
     let(:employee) { create :employee, company: company }
     before do
-      stub_const(
-        "#{described_class}::SYNC_DATABASE_URL",
-        "mysql2://@localhost:3306/ecp-test?charset=utf8&collation=utf8_general_ci"
-      )
-      expect { described_class.connect }.not_to output.to_stdout # already connected
+      with_sync_connected
+      described_class::Account.dataset.delete
     end
-
-    before { described_class::Account.dataset.delete }
     subject { described_class.create_account_for_employee! employee }
 
     context "when SYNC_SECRET_KEY_BASE isn't defined" do

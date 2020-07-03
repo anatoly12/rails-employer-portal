@@ -30,6 +30,10 @@ class Employee < Sequel::Model
     many_to_one :dashboard_employee, class: "DashboardEmployee", key: :remote_id, primary_key: :id
   end
 
+  def self.remove_connected_associations
+    association_module.remove_method :dashboard_employee
+  end
+
   # ~~ public instance methods ~~
   def to_param
     uuid

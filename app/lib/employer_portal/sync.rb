@@ -17,6 +17,14 @@ module EmployerPortal
         abort("Sync: can't connect to #{SYNC_DATABASE_URL}")
       end
 
+      def disconnect
+        return unless connected?
+
+        ::EmployerPortal::Sync::Legacy.new(schema, self).undefine_models
+        ::Employee.remove_connected_associations
+        @schema = nil
+      end
+
       def schema_name
         File.basename URI.parse(SYNC_DATABASE_URL).path
       end

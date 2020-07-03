@@ -55,14 +55,13 @@ RSpec.describe ::EmployerPortal::Email::Composer do
       end
     end
 
-    context "with daily_checkup_status" do
+    context "with sync connected", type: :sync do
+      include SyncHelpers
       let(:dashboard_employee) { double :dashboard_employee, full_name: "Another Fullname", daily_checkup_status: "Cleared" }
+      before { with_sync_connected }
 
       it "replaces merge tags" do
-        allow(::EmployerPortal::Sync).to receive(:connected?).and_return true
-        without_partial_double_verification do
-          allow(employee).to receive(:dashboard_employee).and_return dashboard_employee
-        end
+        allow(employee).to receive(:dashboard_employee).and_return dashboard_employee
         expect(subject.subject).to include('daily_checkup_status: "Cleared"')
         expect(subject.html).to include('daily_checkup_status: "Cleared"')
         expect(subject.text).to include('daily_checkup_status: "Cleared"')

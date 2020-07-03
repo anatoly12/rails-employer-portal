@@ -20,6 +20,20 @@ module EmployerPortal
         klass.const_set :User, user_class
       end
 
+      def undefine_models
+        klass.send :remove_const, :AccessCode
+        klass.send :remove_const, :AccessGrant
+        klass.send :remove_const, :Account
+        klass.send :remove_const, :Covid19MessageCode
+        klass.send :remove_const, :Demographic
+        klass.send :remove_const, :Kit
+        klass.send :remove_const, :Partner
+        klass.send :remove_const, :PassportProduct
+        klass.send :remove_const, :Requisition
+        klass.send :remove_const, :TKit
+        klass.send :remove_const, :User
+      end
+
       private
 
       attr_reader :schema, :klass

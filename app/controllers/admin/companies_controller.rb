@@ -13,6 +13,7 @@ class Admin::CompaniesController < Admin::BaseController
       flash.notice = "Company was created successfully."
       redirect_to action: :index
     else
+      flash.now.alert = "Please review errors and try submitting it again."
       render :new
     end
   end
@@ -30,6 +31,7 @@ class Admin::CompaniesController < Admin::BaseController
       flash.notice = "Company was updated successfully."
       redirect_to action: :index
     else
+      flash.now.alert = "Please review errors and try submitting it again."
       render :edit
     end
   end
