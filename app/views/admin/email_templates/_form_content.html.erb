@@ -36,7 +36,7 @@
       <%= render "admin/email_templates/placeholder", code: "employer_email", label: "Employer (who performed the action) email" %>
     </ul>
   </div>
-  <div class="flex-1 pl-10">
+  <div class="w-2/3 pl-10">
     <div class="flex justify-between mb-4">
       <div>
         <div id="toggle-format" class="inline-flex">
@@ -64,6 +64,6 @@
     </div>
     <%= render "form/textarea", form: form, column: :html, label: false, codemirror: "htmlmixed" %>
     <%= render "form/textarea", form: form, column: :text, label: false, codemirror: "null" %>
-    <div id="html-preview" class="border bg-white overflow-scroll hidden" style="height:302px"></div>
+    <iframe id="html-preview" class="w-full border overflow-y-scroll hidden" style="height:302px"></iframe>
   </div>
 </div>

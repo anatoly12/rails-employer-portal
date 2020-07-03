@@ -23,11 +23,11 @@
     <div class="grid grid-cols-2 gap-20">
       <div>
         <div class="text-3xl font-thin">HTML</div>
-        <div id="email_log_html" class="p-5 text-blue-500 border h-64 overflow-y-scroll"><%= raw viewer.html %></div>
+        <iframe id="email_log_html" class="w-full border h-64 overflow-y-scroll" srcdoc="<%= viewer.html %>"></iframe>
       </div>
       <div>
         <div class="text-3xl font-thin">Text</div>
-        <div id="email_log_text" class="p-5 text-blue-500 border h-64 overflow-y-scroll whitespace-pre"><%= viewer.text %></div>
+        <div id="email_log_text" class="p-5 text-blue-500 border h-64 overflow-y-scroll whitespace-pre-line"><%= viewer.text %></div>
       </div>
     </div>
   </div>

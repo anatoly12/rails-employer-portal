@@ -68,7 +68,7 @@ document.addEventListener('turbolinks:load', () => {
     if (preview) {
       textareas.forEach((textarea) => {
         if (textarea.id.endsWith('html')) {
-          htmlPreview.innerHTML = textarea.parentNode
+          htmlPreview.srcdoc = textarea.parentNode
             .querySelector('.CodeMirror')
             .CodeMirror.getValue()
         }
