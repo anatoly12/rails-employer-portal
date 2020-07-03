@@ -52,6 +52,7 @@ class EmployerPortal::Admin::Employer::Editor < ::EmployerPortal::Admin::Base::E
   def insert_or_update
     return false unless edited.valid?
 
+    was_new = edited.new?
     existing = Employer.where(
       company_id: company_id,
       email: email,
@@ -67,5 +68,11 @@ class EmployerPortal::Admin::Employer::Editor < ::EmployerPortal::Admin::Base::E
       @edited = existing
     end
     edited.save validate: false
+    EmailTriggerJob.perform_later(
+      "employer_new",
+      edited.id,
+      "password" => edited.password,
+    ) if was_new
+    true
   end
 end

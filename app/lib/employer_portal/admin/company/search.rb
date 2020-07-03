@@ -40,7 +40,7 @@ class EmployerPortal::Admin::Company::Search < ::EmployerPortal::Admin::Base::Se
       when "name"
         ds.order(:name)
       when "created_at"
-        ds.order(:created_at)
+        ds.order(:created_at, :id)
       else
         ds
       end

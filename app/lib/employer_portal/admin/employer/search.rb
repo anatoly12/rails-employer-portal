@@ -35,7 +35,7 @@ class EmployerPortal::Admin::Employer::Search < ::EmployerPortal::Admin::Base::S
     when "email"
       ds.order(:email)
     when "created_at"
-      ds.order(:created_at)
+      ds.order(:created_at, :id)
     else
       ds
     end

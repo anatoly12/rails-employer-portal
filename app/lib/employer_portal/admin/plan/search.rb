@@ -31,7 +31,7 @@ class EmployerPortal::Admin::Plan::Search < ::EmployerPortal::Admin::Base::Searc
       when "name"
         ds.order(:name)
       when "created_at"
-        ds.order(:created_at)
+        ds.order(:created_at, :id)
       else
         ds
       end

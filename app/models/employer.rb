@@ -11,7 +11,7 @@ class Employer < Sequel::Model
   # ~~ validations ~~
   def validate
     super
-    validates_presence [:company_id, :email, :role]
+    validates_presence [:company_id, :email, :role, :first_name, :last_name]
     validates_presence :password if new?
     validates_format ::EmployerPortal::Regexp::EMAIL_FORMAT, :email, allow_blank: true
     validates_unique(:email) { |ds| ds.where(company_id: company_id, deleted_at: nil) }
