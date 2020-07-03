@@ -54,6 +54,16 @@ class EmployerPortal::Admin::Filters
     ]
   end
 
+  def trigger_keys_for_select
+    [
+      ["Admin user invites a new employer", "employer_new"],
+      ["Employer password forgotten", "employer_password_forgotten"],
+      ["Employer invites a new employee", "employee_new"],
+      ["Contact employee when symptomatic", "employee_contact"],
+      ["Remind employee to enter daily symptom checkup", "employee_reminder"],
+    ]
+  end
+
   def value_for_ilike(string)
     "%#{escape_for_like(string)}%"
   end

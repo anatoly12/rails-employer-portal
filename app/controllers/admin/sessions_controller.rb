@@ -27,7 +27,7 @@ class Admin::SessionsController < Admin::BaseController
   end
 
   def editor_params
-    params.fetch(:session, {}).permit(:return_path, :username, :password)
+    params.fetch(:session, {}).permit :return_path, :username, :password
   end
 
   def editor

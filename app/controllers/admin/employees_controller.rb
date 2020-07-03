@@ -14,7 +14,7 @@ class Admin::EmployeesController < Admin::BaseController
   private
 
   def search
-    @search ||= ::EmployerPortal::Admin::Employee::Search.new(current_context, params)
+    @search ||= ::EmployerPortal::Admin::Employee::Search.new current_context, params
   end
 
   helper_method :search

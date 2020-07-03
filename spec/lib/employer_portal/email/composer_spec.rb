@@ -45,6 +45,16 @@ RSpec.describe ::EmployerPortal::Email::Composer do
       end
     end
 
+    context "when html and text are nil" do
+      let(:email_template) { create :email_template, subject: with_merge_keys, html: nil, text: nil }
+
+      it "replaces merge tags only in subject" do
+        expect(subject.subject).to include "employee_email: \"#{employee.email}\""
+        expect(subject.html).to be_nil
+        expect(subject.text).to be_nil
+      end
+    end
+
     context "with password reset token" do
       let(:opts) { { "reset_password_token" => "12345" } }
 

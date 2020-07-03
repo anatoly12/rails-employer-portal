@@ -53,6 +53,28 @@ admin_user = AdminUser.create(
   password: ENV.fetch("ADMIN_PASSWORD", Faker::Internet.password),
 )
 
+EmailTemplate.create(
+  name: "Employee new",
+  subject: "Welcome to Essential Health Passport",
+  trigger_key: "employee_new",
+  from: "support@example.com",
+  html: "
+    <p>Hello {{employee_email}}!</p>
+    <p>Someone invited you to the Employer Portal. Choose an email through the link below.</p>
+    <p><a href='http://localhost:3000/changepw?reset_password_token={{employee_reset_password_token}}'>Choose a password</a></p>
+    <p>Thank you and have a nice day.</p>
+  ",
+  text: "
+    Hello {{employee_email}}!
+
+    Someone invited you to the Employer Portal. Choose an email through the link below:
+
+    http://localhost:3000/changepw?reset_password_token={{employee_reset_password_token}}
+
+    Thank you and have a nice day.
+  "
+)
+
 puts
 puts "Use \"#{employer.email}\" / \"#{employer.password}\" to sign in as an employer."
 puts "Use \"#{admin_user.email}\" / \"#{admin_user.password}\" to sign in as an admin user."

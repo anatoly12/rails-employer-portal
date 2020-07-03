@@ -96,6 +96,8 @@ class EmployerPortal::Email::Composer
   end
 
   def apply_replacements(string)
+    return unless string.present?
+
     replacements.each do |key, value|
       string.gsub! "{{#{key}}}", value.to_s
     end

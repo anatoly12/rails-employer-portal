@@ -37,6 +37,10 @@ module EmployerPortal
       class NotFound < ::EmployerPortal::Error::NotFound; end
     end
 
+    module EmailLog
+      class NotFound < ::EmployerPortal::Error::NotFound; end
+    end
+
     module Email
       class Base < ::EmployerPortal::Error::Base; end
       class InvalidTrigger < Base; end

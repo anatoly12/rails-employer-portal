@@ -1,0 +1,14 @@
+<tr class="hover:text-blue-700">
+  <td class="py-4 px-6 border-b border-gray-200 whitespace-no-wrap">
+    <%= email_log.created_at.strftime("%F") %>
+  </td>
+  <td class="py-4 px-6 border-b border-gray-200"><%= email_log.company_name %></td>
+  <td class="py-4 px-6 border-b border-gray-200"><%= email_log.trigger_key.humanize %></td>
+  <td class="py-4 px-6 border-b border-gray-200"><%= email_log.recipient %></td>
+  <td class="py-4 px-6 border-b border-gray-200 whitespace-no-wrap">
+    <%= link_to({ action: :show, id: email_log }, class: "text-gray-100 font-bold text-xs bg-blue-400 hover:bg-blue-500 rounded-lg pl-4 pr-6 py-2 inline-flex items-center") do %>
+      <%= render "icon/view_show", icon_class: "w-3 h-3 mr-2" %>
+      Details
+    <% end %>
+  </td>
+</tr>

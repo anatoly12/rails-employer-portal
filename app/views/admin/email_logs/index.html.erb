@@ -1,0 +1,13 @@
+<%= render "admin/common/top_nav_container" do %>
+  <%= render "admin/common/top_nav_item", title: "Email logs", path: { action: :index } %>
+<% end %>
+<div class="mt-10 p-5 pb-0">
+  <%= render "admin/email_logs/filters", filters: search.filters %>
+  <%= render "admin/email_logs/email_logs", email_logs: search.results %>
+  <div class="flex justify-between py-5 select-none">
+    <div></div>
+    <div>
+      <%== render partial: "common/pagination", locals: { pagination: search.pagination } %>
+    </div>
+  </div>
+</div>

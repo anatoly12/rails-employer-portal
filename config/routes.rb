@@ -11,6 +11,7 @@ Rails.application.routes.draw do
       patch "retry", on: :member
     end
     resources :email_templates
+    resources :email_logs, only: [:index, :show]
     root to: "dashboard#index"
   end
   resource :sessions, path: "/sign-in", only: [:show, :create, :destroy]

@@ -1,0 +1,8 @@
+<%= render "admin/common/filters", filters: filters do |form| %>
+  <%= render "form/date_picker", form: form, column: :sent_at_gte, label: "Sent at ≥" %>
+  <%= render "form/date_picker", form: form, column: :sent_at_lte, label: "Sent at ≤" %>
+  <div></div>
+  <%= render "form/select", form: form, column: :company_id_equals, label: "Company", options: form.object.companies_for_select %>
+  <%= render "form/select", form: form, column: :trigger_key_equals, label: "Trigger", options: form.object.trigger_keys_for_select %>
+  <%= render "form/text_field", form: form, column: :recipient_contains %>
+<% end %>

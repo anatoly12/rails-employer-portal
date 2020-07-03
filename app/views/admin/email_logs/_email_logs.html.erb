@@ -1,0 +1,18 @@
+<div class="bg-white shadow-md rounded overflow-hidden">
+  <table class="w-full border-collapse text-gray-900">
+    <thead class="select-none">
+      <tr class="bg-blue-500 font-bold uppercase text-sm text-gray-100">
+        <th class="py-4 px-6 border-b border-gray-200 w-1 whitespace-no-wrap">Sent at</th>
+        <th class="py-4 px-6 border-b border-gray-200 text-left">Company</th>
+        <th class="py-4 px-6 border-b border-gray-200 text-left">Trigger</th>
+        <th class="py-4 px-6 border-b border-gray-200 text-left">Recipient</th>
+        <th class="py-4 px-6 border-b border-gray-200 w-1">Actions</th>
+      </tr>
+    </thead>
+    <tbody>
+      <% email_logs.each do |email_log| %>
+        <%= render "admin/email_logs/email_log", email_log: email_log %>
+      <% end %>
+    </tbody>
+  </table>
+</div>

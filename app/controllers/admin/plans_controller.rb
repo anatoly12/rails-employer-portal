@@ -50,13 +50,13 @@ class Admin::PlansController < Admin::BaseController
   end
 
   def search
-    @search ||= ::EmployerPortal::Admin::Plan::Search.new(current_context, params)
+    @search ||= ::EmployerPortal::Admin::Plan::Search.new current_context, params
   end
 
   helper_method :search
 
   def editor
-    @editor ||= ::EmployerPortal::Admin::Plan::Editor.from_params(current_context, params)
+    @editor ||= ::EmployerPortal::Admin::Plan::Editor.from_params current_context, params
   end
 
   helper_method :editor
