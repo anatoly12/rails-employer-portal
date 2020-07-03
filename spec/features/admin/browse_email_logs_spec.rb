@@ -96,7 +96,8 @@ feature "Browse email logs" do
     expect(page).to have_css "#email_log_from", text: email_log2.from
     expect(page).to have_css "#email_log_recipient", text: email_log2.recipient
     expect(page).to have_css "#email_log_subject", text: email_log2.subject
-    expect(page).to have_css "#email_log_html p"
+    iframe = page.find_by_id "email_log_html"
+    expect(iframe[:srcdoc]).to eql email_log2.html
     expect(page).to have_css "#email_log_text", text: email_log2.text
   end
 end

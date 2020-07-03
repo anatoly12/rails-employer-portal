@@ -14,7 +14,7 @@ module AdminHelpers
     expect(page).to have_css "p.text-red-400", count: errors.size
     errors.each do |input_id, message|
       input = page.find_by_id input_id
-      error = if input["type"] == "checkbox"
+      error = if input[:type] == "checkbox"
           input.ancestor("label").sibling "p.text-red-400"
         else
           input.sibling "p.text-red-400"
