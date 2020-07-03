@@ -165,5 +165,22 @@ feature "Manage company" do
       expect(page).to have_css("[role=notice]", text: "Company was created successfully.")
       expect(page).not_to have_css("[role=alert]")
     end
+
+    scenario "I can't add a new company with errors" do
+      click_link "Companies"
+      click_link "Add a new company"
+      within "#new_company" do
+        click_button "Create"
+      end
+      expect(page).not_to have_css "[role=notice]"
+      expect(page).to have_css "[role=alert]", text: "Please review errors and try submitting it again."
+      within "#new_company" do
+        expect_form_errors(
+          company_name: "is not present",
+          company_plan_id: "is not present",
+          company_remote_id: "is not present",
+        )
+      end
+    end
   end
 end
