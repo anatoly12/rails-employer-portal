@@ -10,6 +10,7 @@ module EmployerPortal
         klass.const_set :AccessCode, access_code_class
         klass.const_set :AccessGrant, access_grant_class
         klass.const_set :Account, account_class
+        klass.const_set :Covid19Message, covid19_message_class
         klass.const_set :Covid19MessageCode, covid19_message_code_class
         klass.const_set :Demographic, demographic_class
         klass.const_set :Kit, kit_class
@@ -24,6 +25,7 @@ module EmployerPortal
         klass.send :remove_const, :AccessCode
         klass.send :remove_const, :AccessGrant
         klass.send :remove_const, :Account
+        klass.send :remove_const, :Covid19Message
         klass.send :remove_const, :Covid19MessageCode
         klass.send :remove_const, :Demographic
         klass.send :remove_const, :Kit
@@ -71,14 +73,30 @@ module EmployerPortal
           many_to_one :user, class: "#{prefix}::User"
           one_to_one :demographic, class: "#{prefix}::Demographic", key: :account_id
           one_to_many :access_grants, class: "#{prefix}::AccessGrant", key: :account_id
+          one_to_many :covid19_messages, class: "#{prefix}::Covid19Message", key: :account_id
+          plugin :timestamps, update_on_create: true
+        }
+      end
+
+      def covid19_message_class
+        prefix = klass.to_s
+        Class.new(
+          Sequel::Model(db[schema[:covid19_messages]])
+        ) {
+          many_to_one :account, class: "#{prefix}::Account"
+          many_to_one :code, class: "#{prefix}::Covid19MessageCode", key: :message_code
           plugin :timestamps, update_on_create: true
         }
       end
 
       def covid19_message_code_class
+        prefix = klass.to_s
         Class.new(
           Sequel::Model(db[schema[:covid19_message_codes]])
-        )
+        ) {
+          one_to_many :messages, class: "#{prefix}::Covid19Message", key: :message_code
+          plugin :timestamps, update_on_create: true
+        }
       end
 
       def demographic_class

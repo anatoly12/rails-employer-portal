@@ -1,6 +1,7 @@
 class EmployerPortal::Email::Composer
   # ~~ public instance methods ~~
-  def initialize(email_template, recipient, opts)
+  def initialize(context, email_template, recipient, opts)
+    @context = context
     @email_template = email_template
     @recipient = recipient
     @opts = opts
@@ -29,7 +30,14 @@ class EmployerPortal::Email::Composer
   end
 
   def create_covid_message
-    # TODO
+    return unless email_template.covid19_message_code
+    return unless context.sync_connected?
+    return unless employee&.remote_id
+
+    ::EmployerPortal::Sync::Covid19Message.create(
+      account_id: employee.remote_id,
+      message_code: email_template.covid19_message_code,
+    )
   end
 
   def create_email_log
@@ -49,7 +57,7 @@ class EmployerPortal::Email::Composer
 
   private
 
-  attr_reader :email_template, :recipient, :opts
+  attr_reader :context, :email_template, :recipient, :opts
 
   def employer
     employee&.employer || recipient
@@ -60,7 +68,7 @@ class EmployerPortal::Email::Composer
   end
 
   def dashboard_employee
-    employee.dashboard_employee if employee && ::EmployerPortal::Sync.connected?
+    employee.dashboard_employee if employee && context.sync_connected?
   end
 
   def employee_full_name

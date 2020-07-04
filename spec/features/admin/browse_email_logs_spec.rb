@@ -2,7 +2,6 @@ require "rails_helper"
 
 feature "Browse email logs" do
   include AdminHelpers
-  include SyncHelpers
 
   let!(:email_log1) { create :email_log, created_at: Time.utc(2020, 6, 2, 10) }
   let!(:email_log2) { create :email_log, trigger_key: "employer_new", created_at: Time.utc(2020, 6, 3, 10) }

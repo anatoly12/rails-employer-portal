@@ -84,6 +84,7 @@ RSpec.describe ::EmployerPortal::Sync, type: :sync do
     let(:employee) { create :employee, company: company }
     before do
       with_sync_connected
+      described_class::Covid19Message.dataset.delete
       described_class::Account.dataset.delete
     end
     subject { described_class.create_account_for_employee! employee }

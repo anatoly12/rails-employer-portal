@@ -1,7 +1,8 @@
 class EmployerPortal::Email::Trigger
 
   # ~~ public instance methods ~~
-  def initialize(trigger_key, recipient_id, opts)
+  def initialize(context, trigger_key, recipient_id, opts)
+    @context = context
     @trigger_key = trigger_key
     @recipient_id = recipient_id
     @opts = opts
@@ -9,7 +10,7 @@ class EmployerPortal::Email::Trigger
 
   def send_all
     email_templates.flat_map do |email_template|
-      composer = ::EmployerPortal::Email::Composer.new email_template, recipient, opts
+      composer = ::EmployerPortal::Email::Composer.new context, email_template, recipient, opts
       composer.deliver_email
       composer.create_covid_message
       composer.create_email_log
@@ -18,7 +19,7 @@ class EmployerPortal::Email::Trigger
 
   private
 
-  attr_reader :trigger_key, :recipient_id, :opts
+  attr_reader :context, :trigger_key, :recipient_id, :opts
 
   # ~~ private instance methods ~~
   def recipient

@@ -50,20 +50,24 @@ module EmployerPortal
       !!company.plan&.health_passport_enabled
     end
 
-    private
-
-    attr_reader :given_account_id, :section
-
     def section_admin?
       section == :admin
     end
+
+    def section_application?
+      section == :application
+    end
+
+    private
+
+    attr_reader :given_account_id, :section
 
     def find_account_by_id
       return unless given_account_id
 
       if section_admin?
         AdminUser.where(id: given_account_id).limit(1).first
-      else
+      elsif section_application?
         Employer.eager_graph(:company).eager(company: :plan).where(
           Sequel.qualify(:employers, :id) => given_account_id,
           Sequel.qualify(:employers, :deleted_at) => nil,

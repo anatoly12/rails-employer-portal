@@ -1,6 +1,7 @@
 require "rails_helper"
 
 RSpec.describe ::EmployerPortal::Email::Composer do
+  let(:context) { ::EmployerPortal::Context.new account_id: nil, section: :background_job }
   let :with_merge_keys do
     <<-eos.squish
       daily_checkup_status: "{{daily_checkup_status}}"
@@ -18,7 +19,7 @@ RSpec.describe ::EmployerPortal::Email::Composer do
   let(:employer) { create :employer }
   let(:employee) { create :employee, company: employer.company, employer: employer }
   let(:opts) { {} }
-  subject { described_class.new email_template, recipient, opts }
+  subject { described_class.new context, email_template, recipient, opts }
 
   context "when recipient is employee" do
     let(:recipient) { employee }
