@@ -3,11 +3,16 @@ document.addEventListener('turbolinks:load', () => {
     document
       .querySelectorAll(`[data-linked-to-id='${select.id}']`)
       .forEach((div) => {
-        console.log(div)
         if (select.value && div.dataset.linkedToValue == select.value) {
+          div
+            .querySelectorAll('input,select')
+            .forEach((control) => control.removeAttribute('disabled'))
           div.classList.remove('hidden')
         } else {
           div.classList.add('hidden')
+          div
+            .querySelectorAll('input,select')
+            .forEach((control) => control.setAttribute('disabled', 'disabled'))
         }
       })
   }
