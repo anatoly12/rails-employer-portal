@@ -67,18 +67,14 @@ class EmployerPortal::Employee::Search
         Sequel.function(:coalesce,
                         Sequel.qualify(:dashboard_employee, :daily_checkup_status),
                         "Did Not Submit").as(:daily_checkup_status),
-        Sequel.function(:coalesce,
-                        Sequel.qualify(:dashboard_employee, :daily_checkup_updated_at),
-                        Sequel.qualify(:employees, :created_at)).as(:daily_checkup_updated_at),
+        Sequel.qualify(:dashboard_employee, :daily_checkup_updated_at),
         Sequel.function(:coalesce,
                         Sequel.qualify(:dashboard_employee, :daily_checkup_action),
                         "Send Reminder").as(:daily_checkup_action),
         Sequel.function(:coalesce,
                         Sequel.qualify(:dashboard_employee, :testing_status),
                         "Not Registered").as(:testing_status),
-        Sequel.function(:coalesce,
-                        Sequel.qualify(:dashboard_employee, :testing_updated_at),
-                        Sequel.qualify(:employees, :created_at)).as(:testing_updated_at)
+        Sequel.qualify(:dashboard_employee, :testing_updated_at)
       )
     else
       ds.select(
@@ -86,9 +82,9 @@ class EmployerPortal::Employee::Search
         Sequel.function(:concat, Sequel.qualify(:employees, :first_name), " ", Sequel.qualify(:employees, :last_name)).as(:full_name),
         Sequel.qualify(:employees, :state).as(:state),
         Sequel.as("Did Not Submit", :daily_checkup_status),
-        Sequel.qualify(:employees, :created_at).as(:daily_checkup_updated_at),
+        Sequel.as(nil, :daily_checkup_updated_at),
         Sequel.as("Not Registered", :testing_status),
-        Sequel.qualify(:employees, :created_at).as(:testing_updated_at)
+        Sequel.as(nil, :testing_updated_at)
       )
     end
   end

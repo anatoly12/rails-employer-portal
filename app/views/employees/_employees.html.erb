@@ -1,54 +1,47 @@
-<table class="table-fixed w-full mb-10 text-sm lg:table-auto">
-  <thead>
-    <tr class="text-left align-middle text-xs">
-      <th class="w-8"></th>
-      <th class="w-10 hidden md:table-cell"></th>
-      <th class="px-2 font-medium">
-        <%= render "employees/sort_header", column: "fullname", label: "Employee Name" %>
-      </th>
-      <th class="w-1 px-2 font-medium hidden lg:table-cell">
-        <%= render "employees/sort_header", column: "state", label: "State" %>
-      </th>
-      <% if current_context.daily_checkup_enabled? %>
-        <th class="px-2 font-medium hidden md:table-cell">
-          <%= render "employees/sort_header", column: "checkup", label: "Daily Checkup" %>
-        </th>
-        <th class="w-1 px-2 font-medium hidden lg:table-cell">
-          <%= render "employees/sort_header", column: "checkup_updated_at", label: "Last Updated" %>
-        </th>
-      <% else %>
-        <th class="px-2 font-medium text-gray-600 whitespace-no-wrap pointer-events-none select-none hidden md:table-cell">
-          Daily Checkup
-        </th>
-        <th class="w-1 px-2 font-medium text-gray-600 whitespace-no-wrap pointer-events-none select-none hidden lg:table-cell">
-          Last Updated
-        </th>
-      <% end %>
-      <th class="w-32 px-2 hidden xl:table-cell"></th>
-      <% if current_context.testing_enabled? %>
-        <th class="px-2 font-medium hidden md:table-cell">
-          <%= render "employees/sort_header", column: "testing", label: "Testing Status" %>
-        </th>
-        <th class="w-1 px-2 font-medium hidden lg:table-cell">
-          <%= render "employees/sort_header", column: "testing_updated_at", label: "Last Updated" %>
-        </th>
-      <% else %>
-        <th class="px-2 font-medium text-gray-600 whitespace-no-wrap pointer-events-none select-none hidden md:table-cell">
-          Testing Status
-        </th>
-        <th class="w-1 px-2 font-medium text-gray-600 whitespace-no-wrap pointer-events-none select-none hidden lg:table-cell">
-          Last Updated
-        </th>
-      <% end %>
-      <th class="w-32 px-2 hidden xl:table-cell"></th>
-      <th class="w-8 py-3 font-medium md:w-32">
-        <%== render partial: "common/pagination", locals: { pagination: search.pagination } %>
-      </th>
-    </tr>
-  </thead>
-  <tbody>
-    <% search.results.each do |employee| %>
-      <%= render "employees/employee", employee: employee %>
+<section class="mb-10">
+  <header class="flex items-center text-gray-500 text-xs font-medium">
+    <div class="w-14"></div>
+    <div class="flex-1 px-2">
+      <%= render "employees/sort_header", column: "fullname", label: "Employee Name" %>
+    </div>
+    <div class="w-12 px-2 hidden md:block xl:w-16">
+      <%= render "employees/sort_header", column: "state", label: "State" %>
+    </div>
+    <% if current_context.daily_checkup_enabled? %>
+      <div class="w-32 px-2 hidden md:block xl:w-36">
+        <%= render "employees/sort_header", column: "checkup", label: "Daily Checkup" %>
+      </div>
+      <div class="w-28 px-2 hidden lg:block xl:w-32">
+        <%= render "employees/sort_header", column: "checkup_updated_at", label: "Last Updated" %>
+      </div>
+    <% elsif current_context.sync_connected? %>
+      <div class="w-32 px-2 text-gray-600 whitespace-no-wrap pointer-events-none select-none hidden md:block xl:w-36">
+        Daily Checkup
+      </div>
+      <div class="w-28 px-2 text-gray-600 whitespace-no-wrap pointer-events-none select-none hidden lg:block xl:w-32">
+        Last Updated
+      </div>
     <% end %>
-  </tbody>
-</table>
+    <% if current_context.testing_enabled? %>
+      <div class="w-32 px-2 hidden md:block xl:w-36">
+        <%= render "employees/sort_header", column: "testing", label: "Testing Status" %>
+      </div>
+      <div class="w-28 px-2 hidden lg:block xl:w-24">
+        <%= render "employees/sort_header", column: "testing_updated_at", label: "Last Updated" %>
+      </div>
+    <% elsif current_context.sync_connected? %>
+      <div class="w-32 px-2 text-gray-600 whitespace-no-wrap pointer-events-none select-none hidden md:block xl:w-36">
+        Testing Status
+      </div>
+      <div class="w-28 px-2 text-gray-600 whitespace-no-wrap pointer-events-none select-none hidden lg:block xl:w-24">
+        Last Updated
+      </div>
+    <% end %>
+    <div class="md:w-28">
+      <%== render partial: "common/pagination", locals: { pagination: search.pagination } %>
+    </div>
+  </header>
+  <% search.results.each do |employee| %>
+    <%= render "employees/employee", employee: employee %>
+  <% end %>
+</section>

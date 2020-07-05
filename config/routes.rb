@@ -19,6 +19,8 @@ Rails.application.routes.draw do
     get "bulk_import", on: :collection
     delete "delete_all", on: :collection
     get "health_passport", on: :member
+    patch "contact", on: :member
+    patch "send_reminder", on: :member
     resources :symptom_logs, only: :show
   end
   resources :plans, only: [:index]

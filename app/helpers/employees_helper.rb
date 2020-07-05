@@ -3,7 +3,6 @@ module EmployeesHelper
   TEXT_COLOR_GREEN = "text-green-500"
   TEXT_COLOR_RED = "text-red-600"
   TEXT_COLOR_BLUE = "text-blue-600"
-  TEXT_COLOR_GRAY = "text-gray-400"
 
   # ~~ public methods ~~
   def daily_checkup_color(employee)
@@ -19,8 +18,6 @@ module EmployeesHelper
 
   def testing_color(employee)
     case employee.testing_status
-    when "Not Registered"
-      TEXT_COLOR_GRAY
     when "Cleared"
       TEXT_COLOR_GREEN
     when "Inconclusive"

@@ -1,54 +1,54 @@
-<tr class="border-t align-middle">
-  <td class="w-8 lg:px-2">
-    <% if employee.flagged? %>
-      <%= render "icon/exclamation_solid", icon_class: "h-4 w-4 text-orange-500 mx-auto" %>
-    <% end %>
-  </td>
-  <td class="w-10 hidden md:table-cell">
+<%= link_to({ action: :edit, id: employee }, class: "flex items-center border-t hover:bg-gray-100 #{employee.flagged? ? "text-red-300 hover:text-red-600" : "text-gray-600 hover:text-blue-600"}") do %>
+  <div class="w-14 px-2">
     <% if employee.selfie_url %>
       <img src="<%= employee.selfie_url %>" class="rounded-full h-10 w-10 object-cover"/>
     <% else %>
-      <div class="bg-gray-300 rounded-full h-10 w-10 flex items-center justify-center">
+      <div class="bg-gray-300 text-gray-500 rounded-full h-10 w-10 flex items-center justify-center">
         <%= employee.initials %>
       </div>
     <% end %>
-  </td>
-  <td class="px-2 py-4 truncate">
-    <div class="lg:hidden"><%= employee.full_name %></div>
-    <%= link_to employee.full_name, { action: :edit, id: employee }, class: "hidden underline hover:text-blue-500 lg:block" %>
-  </td>
-  <td class="px-2 py-4 hidden lg:table-cell">
+  </div>
+  <div class="flex-1 px-2 py-4 text-black truncate">
+    <%= employee.full_name %>
+  </div>
+  <div class="w-12 px-2 py-4 text-black hidden md:block xl:w-16">
     <%= employee.state %>
-  </td>
+  </div>
   <% if current_context.daily_checkup_enabled? %>
-    <td class="px-2 hidden md:table-cell <%= daily_checkup_color(employee) %>">
+    <div class="w-32 px-2 py-4 <%= daily_checkup_color(employee) %> hidden md:block xl:w-36">
       <%= employee.daily_checkup_status %>
-    </td>
-    <td class="px-2 py-4 hidden lg:table-cell"><%= employee.daily_checkup_updated_at.strftime("%F") %></td>
-    <td class="px-2 py-4 hidden xl:table-cell"><%= employee.daily_checkup_action %></td>
-  <% else %>
-    <td class="px-2 hidden text-gray-600 pointer-events-none select-none md:table-cell">
+    </div>
+    <div class="w-28 px-2 py-4 text-black hidden lg:block xl:w-32">
+      <%= employee.daily_checkup_updated_at %>
+    </div>
+  <% elsif current_context.sync_connected? %>
+    <div class="w-32 px-2 py-4 text-gray-600 hidden pointer-events-none select-none md:block xl:w-36">
       Did Not Submit
-    </td>
-    <td class="px-2 py-4 text-gray-600 pointer-events-none select-none hidden lg:table-cell">N/A</td>
-    <td class="px-2 py-4 text-gray-600 pointer-events-none select-none hidden xl:table-cell"></td>
+    </div>
+    <div class="w-28 px-2 py-4 text-gray-600 hidden pointer-events-none select-none lg:block xl:w-32">
+      N/A
+    </div>
   <% end %>
   <% if current_context.testing_enabled? %>
-    <td class="px-2 hidden md:table-cell <%= testing_color(employee) %>">
+    <div class="w-32 px-2 <%= testing_color(employee) %> hidden md:block xl:w-36">
       <%= employee.testing_status %>
-    </td>
-    <td class="px-2 py-4 hidden lg:table-cell"><%= employee.testing_updated_at.strftime("%F") %></td>
-    <td class="px-2 py-4 hidden xl:table-cell"></td>
-  <% else %>
-    <td class="px-2 hidden text-gray-600 pointer-events-none select-none md:table-cell">
+    </div>
+    <div class="w-28 px-2 py-4 text-black hidden lg:block xl:w-32">
+      <%= employee.testing_updated_at %>
+    </div>
+  <% elsif current_context.sync_connected? %>
+    <div class="w-32 px-2 text-gray-600 hidden pointer-events-none select-none md:block xl:w-36">
       Not Registered
-    </td>
-    <td class="px-2 py-4 text-gray-600 pointer-events-none select-none hidden lg:table-cell">N/A</td>
-    <td class="px-2 py-4 text-gray-600 pointer-events-none select-none hidden xl:table-cell"></td>
+    </div>
+    <div class="w-28 px-2 text-gray-600 hidden pointer-events-none select-none lg:block xl:w-32">
+      N/A
+    </div>
   <% end %>
-  <td>
-    <%= link_to({ action: :edit, id: employee }, class: "block text-gray-300 ml-auto mr-2 h-8 w-8 p-2 hover:text-blue-500") do %>
-      <%= render "icon/edit_pencil", icon_class: "pointer-events-none" %>
+  <div class="px-2 flex justify-end md:w-28 xl:w-20">
+    <% if employee.flagged? %>
+      <%= render "icon/exclamation_solid", icon_class: "h-4 w-4" %>
+    <% else %>
+      <%= render "icon/edit_pencil", icon_class: "h-4 w-4" %>
     <% end %>
-  </td>
-</tr>
+  </div>
+<% end %>

@@ -7,7 +7,13 @@ module.exports = {
     './app/javascript/styleshets/*.scss',
   ],
   theme: {
-    extend: {},
+    extend: {
+      spacing: {
+        '14': '3.5rem',
+        '28': '7rem',
+        '36': '9rem',
+      },
+    },
   },
   variants: {
     borderColor: ['responsive', 'hover', 'focus', 'last'],

@@ -34,12 +34,6 @@ describe EmployeesHelper do
     let(:employee) { double :employee, testing_status: testing_status }
     subject { helper.testing_color employee }
 
-    context "when testing_status is Not Registered" do
-      let(:testing_status) { "Not Registered" }
-
-      it { is_expected.to eql "text-gray-400" }
-    end
-
     context "when testing_status is Cleared" do
       let(:testing_status) { "Cleared" }
 
@@ -52,7 +46,7 @@ describe EmployeesHelper do
       it { is_expected.to eql "text-red-600" }
     end
 
-    ["Submitted Results", "Intake", "Registered"].each do |status|
+    ["Submitted Results", "Intake", "Registered", "Not Registered"].each do |status|
       context "when testing_status is #{status}" do
         let(:testing_status) { status }
 
