@@ -11,16 +11,18 @@
       <div class="w-32 px-2 hidden md:block xl:w-36">
         <%= render "employees/sort_header", column: "checkup", label: "Daily Checkup" %>
       </div>
-      <div class="w-28 px-2 hidden lg:block xl:w-32">
+      <div class="w-28 px-2 hidden lg:block">
         <%= render "employees/sort_header", column: "checkup_updated_at", label: "Last Updated" %>
       </div>
+      <div class="w-40 px-2 hidden xl:block"></div>
     <% elsif current_context.sync_connected? %>
       <div class="w-32 px-2 text-gray-600 whitespace-no-wrap pointer-events-none select-none hidden md:block xl:w-36">
         Daily Checkup
       </div>
-      <div class="w-28 px-2 text-gray-600 whitespace-no-wrap pointer-events-none select-none hidden lg:block xl:w-32">
+      <div class="w-28 px-2 text-gray-600 whitespace-no-wrap pointer-events-none select-none hidden lg:block">
         Last Updated
       </div>
+      <div class="w-40 px-2 hidden xl:block"></div>
     <% end %>
     <% if current_context.testing_enabled? %>
       <div class="w-32 px-2 hidden md:block xl:w-36">
@@ -37,7 +39,7 @@
         Last Updated
       </div>
     <% end %>
-    <div class="md:w-28">
+    <div class="md:w-28 xl:w-52">
       <%== render partial: "common/pagination", locals: { pagination: search.pagination } %>
     </div>
   </header>

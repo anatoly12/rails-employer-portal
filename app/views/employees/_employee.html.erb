@@ -18,33 +18,49 @@
     <div class="w-32 px-2 py-4 <%= daily_checkup_color(employee) %> hidden md:block xl:w-36">
       <%= employee.daily_checkup_status %>
     </div>
-    <div class="w-28 px-2 py-4 text-black hidden lg:block xl:w-32">
+    <div class="w-28 px-2 py-4 text-black hidden lg:block">
       <%= employee.daily_checkup_updated_at %>
+    </div>
+    <div class="w-40 px-2 hidden xl:block">
+      <% if employee.show_daily_checkup_contact? %>
+        <%= button_to contact_employee_path(employee), method: :patch, class: "#{secondary_button_class(:blue)} inline-flex items-center text-xs py-1 xl:px-2" do %>
+          <%= render "icon/envelope", icon_class: "h-5 w-5 mr-2" %>
+          Contact
+        <% end %>
+      <% elsif employee.show_daily_checkup_reminder? %>
+        <%= button_to send_reminder_employee_path(employee), method: :patch, class: "#{secondary_button_class(:blue)} inline-flex items-center text-xs py-1 xl:px-2" do %>
+          <%= render "icon/date_add", icon_class: "h-5 w-5 mr-2" %>
+          Send Reminder
+        <% end %>
+      <% end %>
     </div>
   <% elsif current_context.sync_connected? %>
     <div class="w-32 px-2 py-4 text-gray-600 hidden pointer-events-none select-none md:block xl:w-36">
       Did Not Submit
     </div>
-    <div class="w-28 px-2 py-4 text-gray-600 hidden pointer-events-none select-none lg:block xl:w-32">
+    <div class="w-28 px-2 py-4 text-gray-600 hidden pointer-events-none select-none lg:block">
       N/A
     </div>
+    <div class="w-40 px-2 hidden xl:block"></div>
   <% end %>
   <% if current_context.testing_enabled? %>
     <div class="w-32 px-2 <%= testing_color(employee) %> hidden md:block xl:w-36">
       <%= employee.testing_status %>
     </div>
-    <div class="w-28 px-2 py-4 text-black hidden lg:block xl:w-32">
+    <div class="w-28 px-2 py-4 text-black hidden lg:block">
       <%= employee.testing_updated_at %>
     </div>
+    <div class="w-40 px-2 hidden xl:block"></div>
   <% elsif current_context.sync_connected? %>
     <div class="w-32 px-2 text-gray-600 hidden pointer-events-none select-none md:block xl:w-36">
       Not Registered
     </div>
-    <div class="w-28 px-2 text-gray-600 hidden pointer-events-none select-none lg:block xl:w-32">
+    <div class="w-28 px-2 text-gray-600 hidden pointer-events-none select-none lg:block">
       N/A
     </div>
+    <div class="w-40 px-2 hidden xl:block"></div>
   <% end %>
-  <div class="px-2 flex justify-end md:w-28 xl:w-20">
+  <div class="pr-3 flex justify-end md:w-28 xl:w-8">
     <% if employee.flagged? %>
       <%= render "icon/exclamation_solid", icon_class: "h-4 w-4" %>
     <% else %>
