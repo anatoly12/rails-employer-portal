@@ -394,4 +394,47 @@ RSpec.describe ::EmployerPortal::Sync, type: :sync do
       end
     end
   end
+
+  describe ".create_partner_for_company!" do
+    include SyncHelpers
+    let(:company) { create :company }
+    before do
+      with_sync_connected
+      described_class::AccessCode.dataset.delete
+    end
+    subject { described_class.create_partner_for_company! company }
+
+    context "when plan isn't linked to a passport product" do
+      it "creates a new partner without passport product" do
+        expect do
+          subject
+        end.to change { described_class::Partner.count }.by(1)
+        partner = described_class::Partner.order(:partner_id).last
+        expect(partner.name).to eql company.name
+        expect(partner.type_of).to eql "CONSUMER"
+        expect(partner.passport_product_id).to be_nil
+      end
+    end
+
+    context "when plan is linked to a passport product" do
+      let(:passport_product) { create :sync_passport_product }
+      let(:plan) { create :plan, remote_id: passport_product.id }
+
+      it "creates a new partner with passport product" do
+        expect do
+          subject
+        end.to change { described_class::Partner.count }.by(1)
+        partner = described_class::Partner.order(:partner_id).last
+        expect(partner.name).to eql company.name
+        expect(partner.type_of).to eql "CONSUMER"
+        expect(partner.passport_product_id).to eql passport_product.id
+      end
+    end
+
+    it "links the company to the new partner" do
+      subject
+      expect(company.remote_id).not_to be_nil
+      expect(company.remote_sync_at).not_to be_nil
+    end
+  end
 end

@@ -9,7 +9,8 @@ class Company < Sequel::Model
   # ~~ validations ~~
   def validate
     super
-    validates_presence [:name, :plan_id, :remote_id]
+    validates_presence [:name, :plan_id]
+    validates_presence :remote_id unless new?
     validates_integer :remote_id, allow_blank: true
   end
 

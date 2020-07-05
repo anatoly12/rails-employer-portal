@@ -5,7 +5,9 @@ class EmployerPortal::Admin::Company::Editor < ::EmployerPortal::Admin::Base::Ed
 
   # ~~ public instance methods ~~
   def update_attributes(params)
-    super params.fetch(:company, {}).permit(:name, :plan_id, :remote_id)
+    success = super params.fetch(:company, {}).permit(:name, :plan_id, :remote_id)
+    CreatePartnerForCompanyJob.perform_later edited.uuid if success
+    success
   end
 
   def plans_for_select

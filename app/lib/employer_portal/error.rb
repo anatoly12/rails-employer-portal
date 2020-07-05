@@ -31,6 +31,7 @@ module EmployerPortal
     module Sync
       class Base < ::EmployerPortal::Error::Base; end
       class CantCreateAccount < Base; end
+      class CantCreatePartner < Base; end
     end
 
     module EmailTemplate

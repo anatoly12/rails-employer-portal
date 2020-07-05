@@ -1,8 +1,7 @@
 module EmployerPortal
   module Sync
     class Employee
-      SYNC_SECRET_KEY_BASE = ENV["SYNC_SECRET_KEY_BASE"]
-
+      # ~~ public instance methods ~~
       def initialize(schema, secret_key_base, employee, now = Time.now)
         @schema = schema
         @secret_key_base = secret_key_base
@@ -32,6 +31,7 @@ module EmployerPortal
 
       attr_reader :schema, :secret_key_base, :employee, :now
 
+      # ~~ private instance methods ~~
       def db
         Sequel::Model.db
       end

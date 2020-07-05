@@ -21,7 +21,23 @@ feature "Manage companies" do
         select plan.name, from: "Plan"
         select partner.name, from: "Linked to partner", exact: true
         expect(page).not_to have_field "Linked to partner ID", exact: true
-        click_button "Create"
+        expect {
+          click_button "Create"
+        }.to have_enqueued_job(CreatePartnerForCompanyJob).exactly(:once)
+      end
+      expect(page).to have_css("[role=notice]", text: "Company was created successfully.")
+      expect(page).not_to have_css("[role=alert]")
+    end
+
+    scenario "I can add a new company without partner" do
+      click_link "Companies"
+      click_link "Add a new company"
+      within "#new_company" do
+        fill_in "Name", with: Faker::Company.name
+        select plan.name, from: "Plan"
+        expect {
+          click_button "Create"
+        }.to have_enqueued_job(CreatePartnerForCompanyJob).exactly(:once)
       end
       expect(page).to have_css("[role=notice]", text: "Company was created successfully.")
       expect(page).not_to have_css("[role=alert]")
@@ -31,7 +47,9 @@ feature "Manage companies" do
       click_link "Companies"
       click_link "Add a new company"
       within "#new_company" do
-        click_button "Create"
+        expect {
+          click_button "Create"
+        }.not_to have_enqueued_job CreatePartnerForCompanyJob
       end
       expect(page).not_to have_css "[role=notice]"
       expect(page).to have_css "[role=alert]", text: "Please review errors and try submitting it again."
@@ -39,7 +57,6 @@ feature "Manage companies" do
         expect_form_errors(
           company_name: "is not present",
           company_plan_id: "is not present",
-          company_remote_id: "is not present",
         )
       end
     end
@@ -160,27 +177,26 @@ feature "Manage companies" do
         select plan.name, from: "Plan"
         fill_in "Linked to partner ID", with: 21, exact: true
         expect(page).not_to have_field "Linked to partner", exact: true
-        click_button "Create"
+        expect {
+          click_button "Create"
+        }.to have_enqueued_job(CreatePartnerForCompanyJob).exactly(:once)
       end
       expect(page).to have_css("[role=notice]", text: "Company was created successfully.")
       expect(page).not_to have_css("[role=alert]")
     end
 
-    scenario "I can't add a new company without partner" do
+    scenario "I can add a new company without partner" do
       click_link "Companies"
       click_link "Add a new company"
       within "#new_company" do
-        click_button "Create"
+        fill_in "Name", with: Faker::Company.name
+        select plan.name, from: "Plan"
+        expect {
+          click_button "Create"
+        }.to have_enqueued_job(CreatePartnerForCompanyJob).exactly(:once)
       end
-      expect(page).not_to have_css "[role=notice]"
-      expect(page).to have_css "[role=alert]", text: "Please review errors and try submitting it again."
-      within "#new_company" do
-        expect_form_errors(
-          company_name: "is not present",
-          company_plan_id: "is not present",
-          company_remote_id: "is not present",
-        )
-      end
+      expect(page).to have_css("[role=notice]", text: "Company was created successfully.")
+      expect(page).not_to have_css("[role=alert]")
     end
   end
 end

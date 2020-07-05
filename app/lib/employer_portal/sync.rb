@@ -43,6 +43,14 @@ module EmployerPortal
         ).create_account!
       end
 
+      def create_partner_for_company!(company)
+        raise ArgumentError, "sync isn't connected" unless connected?
+        ::EmployerPortal::Sync::Company.new(
+          schema,
+          company
+        ).create_partner!
+      end
+
       private
 
       attr_reader :schema
