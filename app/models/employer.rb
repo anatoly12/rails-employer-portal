@@ -19,4 +19,9 @@ class Employer < Sequel::Model
 
   # ~~ associations ~~
   many_to_one :company, class: "Company"
+
+  # ~~ public instance methods ~~
+  def to_param
+    uuid
+  end
 end

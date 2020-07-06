@@ -2,7 +2,21 @@
   <h1 class="text-xl font-semibold py-1 leading-none tracking-wide md:text-3xl">Employee Details</h1>
 <% end %>
 <div class="container mx-auto px-4">
-  <div class="-mx-4 mb-4 md:mb-8 xl:my-4 xl:flex">
+  <div id="employee-edit" data-turbolinks-permanent>
+    <% if editor.synced? && !editor.active? %>
+      <h2 class="text-3xl font-thin text-red-500 mt-10">
+        Employee's account is currently deactivated
+      </h2>
+      <p class="text-sm font-medium text-red-500 mb-10">You can still reactivate the account if you need.</p>
+    <% else %>
+      <h2 class="text-3xl font-thin mt-10">
+        Review, edit or deactivate an employee's account
+      </h2>
+      <p class="text-sm font-medium mb-10">A deactivated employee will still be saved in the system for reference or available if you need to reactivate the account.</p>
+    <% end %>
+    <%= render "employees/form", editor: editor %>
+  </div>
+  <div class="-mx-4 my-10 xl:mx-0 xl:flex">
     <% if current_context.daily_checkup_enabled? %>
       <%= render "symptom_tracker/widget", search: editor.symptom_log_search %>
     <% else %>
@@ -14,11 +28,7 @@
       <%= render "testing_progress/widget_disabled" %>
     <% end %>
   </div>
-  <div id="employee-edit" data-turbolinks-permanent>
-    <h2 class="text-3xl font-thin mt-4">
-      Review, edit or deactivate an employee's account
-    </h2>
-    <p class="text-sm font-medium mb-10">A deactivated employee will still be saved in the system for reference or available if you need to reactivate the account.</p>
-    <%= render "employees/form", editor: editor %>
-  </div>
+  <% if editor.synced? %>
+    <%= render "employees/action_buttons", editor: editor %>
+  <% end %>
 </div>

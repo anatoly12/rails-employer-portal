@@ -19,8 +19,8 @@ module EmployerPortal
           employee.update remote_id: account.id, remote_sync_at: now
         end
         EmailTriggerJob.perform_later(
-          "employee_new",
-          employee.id,
+          EmailTemplate::TRIGGER_EMPLOYEE_NEW,
+          employee.uuid,
           "reset_password_token" => reset_password_token_raw,
         )
       rescue Sequel::Error => e

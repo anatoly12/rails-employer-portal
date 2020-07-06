@@ -2,14 +2,18 @@
   <% if f.object.errors_on(:base) %>
     <p class="text-red-400 mb-4"><%= f.object.errors_on(:base).to_sentence %></p>
   <% end %>
-  <div class="grid gap-10 mb-20 md:grid-cols-2 lg:gap-20">
+  <div class="grid gap-10 mb-10 md:grid-cols-2">
     <%= render "form/text_field", form: f, column: :first_name, label: "First Name" %>
     <%= render "form/text_field", form: f, column: :last_name, label: "Last Name" %>
     <%= render "form/text_field", form: f, column: :email %>
     <%= render "form/text_field", form: f, column: :phone, label: "Phone Number", placeholder: "555-555-555" %>
     <%= render "form/select", form: f, column: :state, options: UsaState.for_select %>
-  </div>
-  <div class="mb-20">
-    <%= button_tag "Submit", type: "submit", class: primary_button_class %>
+    <div class="flex items-end">
+      <% if f.object.persisted? %>
+        <%= button_tag "Save changes", type: "submit", class: primary_button_class(:blue) %>
+      <% else %>
+        <%= button_tag "Submit", type: "submit", class: primary_button_class(:blue) %>
+      <% end %>
+    </div>
   </div>
 <% end %>

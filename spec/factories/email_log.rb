@@ -4,7 +4,7 @@ FactoryBot.define do
     company { create :company }
     employer { create :employer }
     employee { create :employee }
-    trigger_key { "employee_new" }
+    trigger_key { EmailTemplate::TRIGGER_EMPLOYEE_NEW }
     from { "Customer Support <#{Faker::Internet.safe_email}>" }
     recipient { Faker::Internet.safe_email }
     subject { Faker::Marketing.buzzwords }

@@ -22,15 +22,27 @@
       <%= employee.daily_checkup_updated_at %>
     </div>
     <div class="w-40 px-2 hidden xl:block">
-      <% if employee.show_daily_checkup_contact? %>
-        <%= button_to contact_employee_path(employee), method: :patch, class: "#{secondary_button_class(:blue)} inline-flex items-center text-xs py-1 xl:px-2" do %>
-          <%= render "icon/envelope", icon_class: "h-5 w-5 mr-2" %>
-          Contact
+      <% if employee.daily_checkup_need_contact? %>
+        <% if employee.already_contacted? %>
+          <div class="text-xs">
+            Contacted
+          </div>
+        <% else %>
+          <%= button_to contact_employee_path(employee), method: :patch, class: "#{secondary_button_class(:blue)} inline-flex items-center text-xs py-1 xl:px-2" do %>
+            <%= render "icon/envelope", icon_class: "h-5 w-5 mr-2" %>
+            Contact
+          <% end %>
         <% end %>
-      <% elsif employee.show_daily_checkup_reminder? %>
-        <%= button_to send_reminder_employee_path(employee), method: :patch, class: "#{secondary_button_class(:blue)} inline-flex items-center text-xs py-1 xl:px-2" do %>
-          <%= render "icon/date_add", icon_class: "h-5 w-5 mr-2" %>
-          Send Reminder
+      <% elsif employee.daily_checkup_need_reminder? %>
+        <% if employee.already_sent_reminder? %>
+          <div class="text-xs">
+            Reminder sent
+          </div>
+        <% else %>
+          <%= button_to send_reminder_employee_path(employee), method: :patch, class: "#{secondary_button_class(:blue)} inline-flex items-center text-xs py-1 xl:px-2" do %>
+            <%= render "icon/date_add", icon_class: "h-5 w-5 mr-2" %>
+            Send Reminder
+          <% end %>
         <% end %>
       <% end %>
     </div>

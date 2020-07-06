@@ -20,8 +20,8 @@ module CssClassHelper
     base_link_class << " text-blue-300 hover:text-blue-500 focus:text-blue-500"
   end
 
-  def primary_button_class
-    "#{base_button_class(:blue)} border-2 w-full py-3 font-bold text-lg uppercase tracking-widest"
+  def primary_button_class(color)
+    "#{base_button_class(color)} border-2 w-full py-3 font-bold text-lg uppercase tracking-widest"
   end
 
   def secondary_button_class(color)

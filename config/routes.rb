@@ -21,6 +21,7 @@ Rails.application.routes.draw do
     get "health_passport", on: :member
     patch "contact", on: :member
     patch "send_reminder", on: :member
+    patch "reactivate", on: :member
     resources :symptom_logs, only: :show
   end
   resources :plans, only: [:index]

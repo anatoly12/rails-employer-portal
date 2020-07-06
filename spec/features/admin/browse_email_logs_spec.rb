@@ -4,7 +4,7 @@ feature "Browse email logs" do
   include AdminHelpers
 
   let!(:email_log1) { create :email_log, created_at: Time.utc(2020, 6, 2, 10) }
-  let!(:email_log2) { create :email_log, trigger_key: "employer_new", created_at: Time.utc(2020, 6, 3, 10) }
+  let!(:email_log2) { create :email_log, trigger_key: EmailTemplate::TRIGGER_EMPLOYER_NEW, created_at: Time.utc(2020, 6, 3, 10) }
   before { sign_in_as_admin_user }
 
   scenario "I can list and filter email logs" do

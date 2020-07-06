@@ -20,8 +20,8 @@ feature "Manage employers" do
       expect {
         click_button "Create"
       }.to have_enqueued_job(EmailTriggerJob).with(
-        "employer_new",
-        instance_of(Integer),
+        EmailTemplate::TRIGGER_EMPLOYER_NEW,
+        instance_of(String),
         "password" => new_password,
       )
     end

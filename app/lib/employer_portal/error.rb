@@ -45,6 +45,7 @@ module EmployerPortal
     module Email
       class Base < ::EmployerPortal::Error::Base; end
       class InvalidTrigger < Base; end
+      class NoConfiguredTemplate < Base; end
     end
   end
 end

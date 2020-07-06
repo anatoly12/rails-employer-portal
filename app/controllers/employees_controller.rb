@@ -64,7 +64,45 @@ class EmployeesController < ApplicationController
     end
   end
 
-  # delete
+  def contact
+    if editor.already_contacted?
+      flash.alert = "Employee contact was already sent today."
+    else
+      editor.contact!
+      flash.notice = "Employee contact was successfully enqueued."
+    end
+    redirect_to action: :edit
+  end
+
+  def send_reminder
+    if editor.already_sent_reminder?
+      flash.alert = "Employee reminder was already sent today."
+    else
+      editor.send_reminder!
+      flash.notice = "Employee reminder was successfully enqueued."
+    end
+    redirect_to action: :edit
+  end
+
+  def destroy
+    if !editor.active?
+      flash.alert = "Employee was already inactive."
+    else
+      editor.deactivate!
+      flash.notice = "Employee was deactivated successfully."
+    end
+    redirect_to action: :edit
+  end
+
+  def reactivate
+    if editor.active?
+      flash.alert = "Employee was already active."
+    else
+      editor.reactivate!
+      flash.notice = "Employee was reactivated successfully."
+    end
+    redirect_to action: :edit
+  end
 
   private
 

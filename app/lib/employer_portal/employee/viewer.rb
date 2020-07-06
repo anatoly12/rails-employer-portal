@@ -3,9 +3,11 @@ class EmployerPortal::Employee::Viewer
   # ~~ delegates ~~
 
   # ~~ public instance methods ~~
-  def initialize(context, values)
+  def initialize(context, values, last_contacted_at, last_reminded_at)
     @context = context
     @values = values
+    @last_contacted_at = last_contacted_at
+    @last_reminded_at = last_reminded_at
   end
 
   def to_param
@@ -33,12 +35,24 @@ class EmployerPortal::Employee::Viewer
     updated_at ? updated_at.strftime("%F") : "Never"
   end
 
-  def show_daily_checkup_contact?
+  def daily_checkup_need_contact?
+    return false unless synced?
+
     daily_checkup_action == "Contact"
   end
 
-  def show_daily_checkup_reminder?
+  def already_contacted?
+    last_contacted_at && last_contacted_at > 1.day.ago
+  end
+
+  def daily_checkup_need_reminder?
+    return false unless synced?
+
     daily_checkup_action == "Send Reminder"
+  end
+
+  def already_sent_reminder?
+    last_reminded_at && last_reminded_at > 1.day.ago
   end
 
   def testing_status
@@ -60,7 +74,11 @@ class EmployerPortal::Employee::Viewer
 
   private
 
-  attr_reader :context, :values
+  attr_reader :context, :values, :last_contacted_at, :last_reminded_at
+
+  def synced?
+    values[:remote_id] && context.sync_connected?
+  end
 
   def daily_checkup_action
     values[:daily_checkup_action]

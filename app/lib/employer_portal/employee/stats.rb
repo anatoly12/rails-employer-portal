@@ -76,18 +76,16 @@ class EmployerPortal::Employee::Stats
   end
 
   def count_by_daily_checkup_status
-    @count_by_daily_checkup_status ||= dataset.group_and_count(
-      :daily_checkup_status
-    ).to_a.each_with_object({}) do |raw, hash|
-      hash[raw[:daily_checkup_status]] = raw[:count]
-    end
+    @count_by_daily_checkup_status ||= dataset.group_by(:daily_checkup_status).select(
+      :daily_checkup_status,
+      Sequel.function(:count, Sequel.qualify(:dashboard_employee, :id)).as(:count)
+    ).to_hash :daily_checkup_status, :count
   end
 
   def count_by_testing_status
-    @count_by_testing_status ||= dataset.group_and_count(
-      :testing_status
-    ).to_a.each_with_object({}) do |raw, hash|
-      hash[raw[:testing_status]] = raw[:count]
-    end
+    @count_by_testing_status ||= dataset.group_by(:testing_status).select(
+      :testing_status,
+      Sequel.function(:count, Sequel.qualify(:dashboard_employee, :id)).as(:count)
+    ).to_hash :testing_status, :count
   end
 end

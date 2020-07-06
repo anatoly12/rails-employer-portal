@@ -62,9 +62,19 @@ describe CssClassHelper do
   end
 
   describe "#primary_button_class" do
-    subject { helper.primary_button_class.split " " }
+    subject { helper.primary_button_class(color).split " " }
 
-    it { is_expected.to contain_exactly "appearance-none", "bg-white", "text-blue-400", "border-blue-400", "hover:border-blue-700", "hover:text-blue-800", "focus:outline-none", "focus:border-blue-700", "border-2", "w-full", "py-3", "font-bold", "text-lg", "uppercase", "tracking-widest" }
+    context "when color is blue" do
+      let(:color) { :blue }
+
+      it { is_expected.to contain_exactly "appearance-none", "bg-white", "text-blue-400", "border-blue-400", "hover:border-blue-700", "hover:text-blue-800", "focus:outline-none", "focus:border-blue-700", "border-2", "w-full", "py-3", "font-bold", "text-lg", "uppercase", "tracking-widest" }
+    end
+
+    context "when color is gray" do
+      let(:color) { :gray }
+
+      it { is_expected.to contain_exactly "appearance-none", "bg-white", "text-gray-400", "border-gray-400", "hover:border-gray-700", "hover:text-gray-800", "focus:outline-none", "focus:border-gray-700", "border-2", "w-full", "py-3", "font-bold", "text-lg", "uppercase", "tracking-widest" }
+    end
   end
 
   describe "#secondary_button_class" do

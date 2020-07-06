@@ -20,7 +20,7 @@ RSpec.describe ::EmployerPortal::Email::Trigger do
   end
 
   context "when recipient is employer" do
-    let(:trigger_key) { "employer_new" }
+    let(:trigger_key) { EmailTemplate::TRIGGER_EMPLOYER_NEW }
 
     context "when employer can't be found" do
       it "raises an error" do
@@ -159,7 +159,7 @@ RSpec.describe ::EmployerPortal::Email::Trigger do
   end
 
   context "when recipient is employee" do
-    let(:trigger_key) { "employee_new" }
+    let(:trigger_key) { EmailTemplate::TRIGGER_EMPLOYEE_NEW }
 
     context "when employee can't be found" do
       it "raises an error" do

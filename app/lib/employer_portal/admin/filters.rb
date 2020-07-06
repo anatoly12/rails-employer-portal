@@ -56,11 +56,11 @@ class EmployerPortal::Admin::Filters
 
   def trigger_keys_for_select
     [
-      ["Admin user invites a new employer", "employer_new"],
-      ["Employer password forgotten", "employer_password_forgotten"],
-      ["Employer invites a new employee", "employee_new"],
-      ["Contact employee when symptomatic", "employee_contact"],
-      ["Remind employee to enter daily symptom checkup", "employee_reminder"],
+      ["Admin user invites a new employer", EmailTemplate::TRIGGER_EMPLOYER_NEW],
+      ["Employer password forgotten", EmailTemplate::TRIGGER_EMPLOYER_PASSWORD_FORGOTTEN],
+      ["Employer invites a new employee", EmailTemplate::TRIGGER_EMPLOYEE_NEW],
+      ["Contact employee when symptomatic", EmailTemplate::TRIGGER_EMPLOYEE_CONTACT],
+      ["Remind employee to enter daily symptom checkup", EmailTemplate::TRIGGER_EMPLOYEE_REMINDER],
     ]
   end
 

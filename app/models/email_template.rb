@@ -1,11 +1,16 @@
 class EmailTemplate < Sequel::Model
   # ~~ constants ~~
+  TRIGGER_EMPLOYER_NEW = "employer_new"
+  TRIGGER_EMPLOYER_PASSWORD_FORGOTTEN = "employer_password_forgotten"
+  TRIGGER_EMPLOYEE_NEW = "employee_new"
+  TRIGGER_EMPLOYEE_CONTACT = "employee_contact"
+  TRIGGER_EMPLOYEE_REMINDER = "employee_reminder"
   TRIGGER_KEYS = [
-    "employer_new",
-    "employer_password_forgotten",
-    "employee_new",
-    "employee_contact",
-    "employee_reminder",
+    TRIGGER_EMPLOYER_NEW,
+    TRIGGER_EMPLOYER_PASSWORD_FORGOTTEN,
+    TRIGGER_EMPLOYEE_NEW,
+    TRIGGER_EMPLOYEE_CONTACT,
+    TRIGGER_EMPLOYEE_REMINDER,
   ].freeze
 
   # ~~ plugins ~~

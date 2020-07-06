@@ -69,28 +69,22 @@ class EmployerPortal::Admin::Dashboard::Stats
   def count_by_daily_checkup_status
     @count_by_daily_checkup_status ||= dataset.where(
       Sequel.qualify(:employees, :company_id) => Company.where(
-        plan_id: Plan.where(
-          daily_checkup_enabled: true,
-        ).select(:id),
+        deleted_at: nil
       ).select(:id),
-    ).group_and_count(
-      :daily_checkup_status
-    ).to_a.each_with_object({}) do |raw, hash|
-      hash[raw[:daily_checkup_status]] = raw[:count]
-    end
+    ).group_by(:daily_checkup_status).select(
+      :daily_checkup_status,
+      Sequel.function(:count, Sequel.qualify(:employees, :id)).as(:count)
+    ).to_hash :daily_checkup_status, :count
   end
 
   def count_by_testing_status
     @count_by_testing_status ||= dataset.where(
       Sequel.qualify(:employees, :company_id) => Company.where(
-        plan_id: Plan.where(
-          testing_enabled: true,
-        ).select(:id),
+        deleted_at: nil
       ).select(:id),
-    ).group_and_count(
-      :testing_status
-    ).to_a.each_with_object({}) do |raw, hash|
-      hash[raw[:testing_status]] = raw[:count]
-    end
+    ).group_by(:testing_status).select(
+      :testing_status,
+      Sequel.function(:count, Sequel.qualify(:employees, :id)).as(:count)
+    ).to_hash :testing_status, :count
   end
 end

@@ -56,7 +56,7 @@ admin_user = AdminUser.create(
 EmailTemplate.create(
   name: "Employee new",
   subject: "Welcome to Essential Health Passport",
-  trigger_key: "employee_new",
+  trigger_key: EmailTemplate::TRIGGER_EMPLOYEE_NEW,
   from: "support@example.com",
   html: "
     <p>Hello {{employee_email}}!</p>

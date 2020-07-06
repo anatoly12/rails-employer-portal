@@ -212,8 +212,8 @@ RSpec.describe ::EmployerPortal::Sync, type: :sync do
 
         it "spawns an email trigger job" do
           expect { subject }.to have_enqueued_job(EmailTriggerJob).with(
-            "employee_new",
-            employee.id,
+            EmailTemplate::TRIGGER_EMPLOYEE_NEW,
+            employee.uuid,
             hash_including("reset_password_token")
           )
         end

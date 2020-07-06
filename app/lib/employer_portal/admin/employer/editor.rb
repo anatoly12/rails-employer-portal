@@ -36,9 +36,9 @@ class EmployerPortal::Admin::Employer::Editor < ::EmployerPortal::Admin::Base::E
   protected
 
   # ~~ overrides for EmployerPortal::Admin::Base::Editor ~~
-  def self.find_by_id!(id)
+  def self.find_by_id!(uuid)
     Employer.where(
-      id: id,
+      uuid: uuid,
     ).limit(1).first || raise(::EmployerPortal::Error::Employer::NotFound)
   end
 
@@ -69,8 +69,8 @@ class EmployerPortal::Admin::Employer::Editor < ::EmployerPortal::Admin::Base::E
     end
     edited.save validate: false
     EmailTriggerJob.perform_later(
-      "employer_new",
-      edited.id,
+      EmailTemplate::TRIGGER_EMPLOYER_NEW,
+      edited.uuid,
       "password" => edited.password,
     ) if was_new
     true

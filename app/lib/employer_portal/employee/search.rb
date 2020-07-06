@@ -28,7 +28,12 @@ class EmployerPortal::Employee::Search
 
   def results
     @results.map do |employee|
-      ::EmployerPortal::Employee::Viewer.new context, employee
+      ::EmployerPortal::Employee::Viewer.new(
+        context,
+        employee,
+        last_contacted_at(employee),
+        last_reminded_at(employee)
+      )
     end
   end
 
@@ -56,14 +61,12 @@ class EmployerPortal::Employee::Search
     ).qualify
     if context.sync_connected?
       ds.eager_graph(:dashboard_employee).select(
+        Sequel.qualify(:employees, :id),
         Sequel.qualify(:employees, :uuid),
-        Sequel.function(:coalesce,
-                        Sequel.qualify(:dashboard_employee, :full_name),
-                        Sequel.function(:concat, Sequel.qualify(:employees, :first_name), " ", Sequel.qualify(:employees, :last_name))).as(:full_name),
+        Sequel.qualify(:employees, :remote_id),
+        Sequel.function(:concat, Sequel.qualify(:employees, :first_name), " ", Sequel.qualify(:employees, :last_name)).as(:full_name),
         Sequel.qualify(:dashboard_employee, :selfie_s3_key),
-        Sequel.function(:coalesce,
-                        Sequel.qualify(:dashboard_employee, :state),
-                        Sequel.qualify(:employees, :state)).as(:state),
+        Sequel.qualify(:employees, :state),
         Sequel.function(:coalesce,
                         Sequel.qualify(:dashboard_employee, :daily_checkup_status),
                         "Did Not Submit").as(:daily_checkup_status),
@@ -78,7 +81,9 @@ class EmployerPortal::Employee::Search
       )
     else
       ds.select(
+        Sequel.qualify(:employees, :id),
         Sequel.qualify(:employees, :uuid),
+        Sequel.qualify(:employees, :remote_id),
         Sequel.function(:concat, Sequel.qualify(:employees, :first_name), " ", Sequel.qualify(:employees, :last_name)).as(:full_name),
         Sequel.qualify(:employees, :state).as(:state),
         Sequel.as("Did Not Submit", :daily_checkup_status),
@@ -107,4 +112,36 @@ class EmployerPortal::Employee::Search
       end
     direction == "desc" ? ds.reverse : ds
   end
+
+  def last_trigger_by_employee_and_key
+    return {} if @results.empty?
+
+    @last_trigger_by_employee_and_key ||= EmailLog.where(
+      employee_id: @results.map{|result| result[:id]},
+      trigger_key: [
+        EmailTemplate::TRIGGER_EMPLOYEE_CONTACT,
+        EmailTemplate::TRIGGER_EMPLOYEE_REMINDER
+      ]
+    ).group_by(
+      :employee_id,
+      :trigger_key
+    ).select(
+      :employee_id,
+      :trigger_key,
+      Sequel.function(:max, :created_at).as(:max)
+    ).to_hash [:employee_id, :trigger_key], :max
+  end
+
+  def last_contacted_at(employee)
+    last_trigger_by_employee_and_key[
+      [employee[:id], EmailTemplate::TRIGGER_EMPLOYEE_CONTACT]
+    ]
+  end
+
+  def last_reminded_at(employee)
+    last_trigger_by_employee_and_key[
+      [employee[:id], EmailTemplate::TRIGGER_EMPLOYEE_REMINDER]
+    ]
+  end
+
 end

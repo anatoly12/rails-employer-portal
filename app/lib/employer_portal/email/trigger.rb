@@ -9,6 +9,8 @@ class EmployerPortal::Email::Trigger
   end
 
   def send_all
+    raise ::EmployerPortal::Error::Email::NoConfiguredTemplate if email_templates.empty?
+
     email_templates.flat_map do |email_template|
       composer = ::EmployerPortal::Email::Composer.new context, email_template, recipient, opts
       composer.deliver_email
@@ -24,22 +26,22 @@ class EmployerPortal::Email::Trigger
   # ~~ private instance methods ~~
   def recipient
     @recipient = if trigger_key.starts_with? "employer_"
-        find_employer_by_id!
+        find_employer_by_uuid!
       elsif trigger_key.starts_with? "employee_"
-        find_employee_by_id!
+        find_employee_by_uuid!
       else
         raise ::EmployerPortal::Error::Email::InvalidTrigger, "doesn't know how to find recipient for #{trigger_key}"
       end
   end
 
-  def find_employer_by_id!
-    Employer.where(id: recipient_id).eager(
+  def find_employer_by_uuid!
+    Employer.where(uuid: recipient_id).eager(
       :company
     ).first || raise(::EmployerPortal::Error::Employer::NotFound)
   end
 
-  def find_employee_by_id!
-    Employee.where(id: recipient_id).eager(
+  def find_employee_by_uuid!
+    Employee.where(uuid: recipient_id).eager(
       :company, :employer
     ).first || raise(::EmployerPortal::Error::Employee::NotFound)
   end

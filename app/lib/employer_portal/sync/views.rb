@@ -46,6 +46,7 @@ module EmployerPortal
               any_value(
                 schema[:account_demographics][:state_of_residence]
               ).as(:state),
+              schema[:accounts][:is_active],
               any_value(
                 schema[:identities][:selfie_s3_key]
               ).as(:selfie_s3_key),
