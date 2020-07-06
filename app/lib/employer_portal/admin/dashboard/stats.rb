@@ -14,11 +14,21 @@ class EmployerPortal::Admin::Dashboard::Stats
   end
 
   def employer_count
-    @employer_count ||= Employer.where(deleted_at: nil).count
+    @employer_count ||= Employer.where(
+      deleted_at: nil,
+    ).qualify.inner_join(
+      :companies,
+      id: :company_id,
+      deleted_at: nil,
+    ).count
   end
 
   def employee_count
-    @employee_count ||= Employee.count
+    @employee_count ||= Employee.inner_join(
+      :companies,
+      id: :company_id,
+      deleted_at: nil,
+    ).count
   end
 
   def no_symptoms_count

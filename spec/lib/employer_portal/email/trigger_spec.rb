@@ -29,19 +29,11 @@ RSpec.describe ::EmployerPortal::Email::Trigger do
     end
 
     context "when employer can be found" do
-      let(:recipient_id) { employer.id }
+      let(:recipient_id) { employer.uuid }
 
       context "without template" do
-        it "sends no email" do
-          expect { subject.send_all }.not_to change(ActionMailer::Base.deliveries, :count)
-        end
-
-        it "creates no log" do
-          expect { subject.send_all }.not_to change(EmailLog, :count)
-        end
-
-        it "is empty" do
-          expect(subject.send_all).to be_empty
+        it "raises an error" do
+          expect { subject.send_all }.to raise_error(::EmployerPortal::Error::Email::NoConfiguredTemplate).and change(ActionMailer::Base.deliveries, :count).by(0).and change(EmailLog, :count).by(0)
         end
       end
 
@@ -100,16 +92,8 @@ RSpec.describe ::EmployerPortal::Email::Trigger do
       context "with a template for another plan" do
         let!(:email_template) { create :email_template, trigger_key: trigger_key, plan: another_plan }
 
-        it "sends no email" do
-          expect { subject.send_all }.not_to change(ActionMailer::Base.deliveries, :count)
-        end
-
-        it "creates no log" do
-          expect { subject.send_all }.not_to change(EmailLog, :count)
-        end
-
-        it "is empty" do
-          expect(subject.send_all).to be_empty
+        it "raises an error" do
+          expect { subject.send_all }.to raise_error(::EmployerPortal::Error::Email::NoConfiguredTemplate).and change(ActionMailer::Base.deliveries, :count).by(0).and change(EmailLog, :count).by(0)
         end
       end
 
@@ -168,19 +152,11 @@ RSpec.describe ::EmployerPortal::Email::Trigger do
     end
 
     context "when employee can be found" do
-      let(:recipient_id) { employee.id }
+      let(:recipient_id) { employee.uuid }
 
       context "without template" do
-        it "sends no email" do
-          expect { subject.send_all }.not_to change(ActionMailer::Base.deliveries, :count)
-        end
-
-        it "creates no log" do
-          expect { subject.send_all }.not_to change(EmailLog, :count)
-        end
-
-        it "is empty" do
-          expect(subject.send_all).to be_empty
+        it "raises an error" do
+          expect { subject.send_all }.to raise_error(::EmployerPortal::Error::Email::NoConfiguredTemplate).and change(ActionMailer::Base.deliveries, :count).by(0).and change(EmailLog, :count).by(0)
         end
       end
 
@@ -239,16 +215,8 @@ RSpec.describe ::EmployerPortal::Email::Trigger do
       context "with a template for another plan" do
         let!(:email_template) { create :email_template, trigger_key: trigger_key, plan: another_plan }
 
-        it "sends no email" do
-          expect { subject.send_all }.not_to change(ActionMailer::Base.deliveries, :count)
-        end
-
-        it "creates no log" do
-          expect { subject.send_all }.not_to change(EmailLog, :count)
-        end
-
-        it "is empty" do
-          expect(subject.send_all).to be_empty
+        it "raises an error" do
+          expect { subject.send_all }.to raise_error(::EmployerPortal::Error::Email::NoConfiguredTemplate).and change(ActionMailer::Base.deliveries, :count).by(0).and change(EmailLog, :count).by(0)
         end
       end
 
