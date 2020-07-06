@@ -6,6 +6,7 @@ class EmployerPortal::Admin::Company::Search < ::EmployerPortal::Admin::Base::Se
     ::EmployerPortal::Admin::Company::Viewer
   end
 
+  # ~~ overrides for EmployerPortal::Search ~~
   def dataset
     Company.
       where(deleted_at: nil).

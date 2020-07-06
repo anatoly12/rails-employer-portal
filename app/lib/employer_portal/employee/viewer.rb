@@ -1,17 +1,14 @@
 class EmployerPortal::Employee::Viewer
 
   # ~~ delegates ~~
+  delegate :to_param, :first_name, :last_name, :state, :remote_id, to: :employee
 
   # ~~ public instance methods ~~
-  def initialize(context, values, last_contacted_at, last_reminded_at)
+  def initialize(context, employee, last_contacted_at, last_reminded_at)
     @context = context
-    @values = values
+    @employee = employee
     @last_contacted_at = last_contacted_at
     @last_reminded_at = last_reminded_at
-  end
-
-  def to_param
-    values[:uuid]
   end
 
   def flagged?
@@ -19,19 +16,17 @@ class EmployerPortal::Employee::Viewer
   end
 
   def full_name
-    values[:full_name]
-  end
-
-  def state
-    values[:state]
+    "#{first_name} #{last_name}"
   end
 
   def daily_checkup_status
-    values[:daily_checkup_status]
+    return unless context.sync_connected?
+
+    dashboard_employee&.daily_checkup_status
   end
 
   def daily_checkup_updated_at
-    updated_at = values[:daily_checkup_updated_at]
+    updated_at = dashboard_employee&.daily_checkup_updated_at
     updated_at ? updated_at.strftime("%F") : "Never"
   end
 
@@ -56,16 +51,16 @@ class EmployerPortal::Employee::Viewer
   end
 
   def testing_status
-    values[:testing_status]
+    dashboard_employee&.testing_status
   end
 
   def testing_updated_at
-    updated_at = values[:testing_updated_at]
+    updated_at = dashboard_employee&.testing_updated_at
     updated_at ? updated_at.strftime("%F") : "Never"
   end
 
   def selfie_url
-    ::EmployerPortal::Aws.presigned_url values[:selfie_s3_key]
+    ::EmployerPortal::Aws.presigned_url dashboard_employee&.selfie_s3_key
   end
 
   def initials
@@ -74,13 +69,18 @@ class EmployerPortal::Employee::Viewer
 
   private
 
-  attr_reader :context, :values, :last_contacted_at, :last_reminded_at
+  attr_reader :context, :employee, :last_contacted_at, :last_reminded_at
 
+  # ~~ private instance methods ~~
   def synced?
-    values[:remote_id] && context.sync_connected?
+    remote_id && context.sync_connected?
+  end
+
+  def dashboard_employee
+    employee.dashboard_employee if synced?
   end
 
   def daily_checkup_action
-    values[:daily_checkup_action]
+    dashboard_employee&.daily_checkup_action
   end
 end

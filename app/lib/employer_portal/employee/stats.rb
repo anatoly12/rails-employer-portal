@@ -1,9 +1,8 @@
 class EmployerPortal::Employee::Stats
 
   # ~~ public instance methods ~~
-  def initialize(context, dataset)
+  def initialize(context)
     @context = context
-    @dataset = dataset
   end
 
   def no_symptoms_percent
@@ -64,7 +63,7 @@ class EmployerPortal::Employee::Stats
 
   private
 
-  attr_reader :context, :dataset
+  attr_reader :context
 
   # ~~ private instance methods ~~
   def total
@@ -75,17 +74,15 @@ class EmployerPortal::Employee::Stats
     @employee_limit ||= context.company&.plan&.employee_limit || 0
   end
 
+  def query
+    ::EmployerPortal::Query::Employee.new context
+  end
+
   def count_by_daily_checkup_status
-    @count_by_daily_checkup_status ||= dataset.group_by(:daily_checkup_status).select(
-      :daily_checkup_status,
-      Sequel.function(:count, Sequel.qualify(:dashboard_employee, :id)).as(:count)
-    ).to_hash :daily_checkup_status, :count
+    @count_by_daily_checkup_status ||= query.count_by_daily_checkup_status
   end
 
   def count_by_testing_status
-    @count_by_testing_status ||= dataset.group_by(:testing_status).select(
-      :testing_status,
-      Sequel.function(:count, Sequel.qualify(:dashboard_employee, :id)).as(:count)
-    ).to_hash :testing_status, :count
+    @count_by_testing_status ||= query.count_by_daily_checkup_status
   end
 end

@@ -6,6 +6,7 @@ class EmployerPortal::Admin::Employer::Search < ::EmployerPortal::Admin::Base::S
     ::EmployerPortal::Admin::Employer::Viewer
   end
 
+  # ~~ overrides for EmployerPortal::Search ~~
   def dataset
     Employer.where(deleted_at: nil).qualify.eager(:company)
   end

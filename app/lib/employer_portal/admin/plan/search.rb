@@ -6,6 +6,7 @@ class EmployerPortal::Admin::Plan::Search < ::EmployerPortal::Admin::Base::Searc
     ::EmployerPortal::Admin::Plan::Viewer
   end
 
+  # ~~ overrides for EmployerPortal::Search ~~
   def dataset
     Plan.
       where(deleted_at: nil).

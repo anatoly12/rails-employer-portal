@@ -6,6 +6,7 @@ class EmployerPortal::Admin::EmailTemplate::Search < ::EmployerPortal::Admin::Ba
     ::EmployerPortal::Admin::EmailTemplate::Viewer
   end
 
+  # ~~ overrides for EmployerPortal::Search ~~
   def dataset
     EmailTemplate.where(deleted_at: nil).qualify.eager(:plan)
   end

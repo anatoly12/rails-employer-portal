@@ -1,4 +1,4 @@
-class EmployerPortal::Admin::Filters
+class EmployerPortal::Filters
   # ~~ constants ~~
   DELEGATE_TO_SEARCH_PATTERN = /(?:_equals|_contains|_gte|_lte|_does_not_equal)\z/
 
@@ -85,11 +85,11 @@ class EmployerPortal::Admin::Filters
     name.to_s =~ DELEGATE_TO_SEARCH_PATTERN || super
   end
 
+  def to_hash
+    filters.reject { |_, value| value.blank? }
+  end
+
   private
 
   attr_reader :context, :filters
-
-  def escape_for_like(string)
-    string.gsub /([%_\\])/, "\\\\\\1"
-  end
 end

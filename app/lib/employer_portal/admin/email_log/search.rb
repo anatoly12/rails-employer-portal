@@ -6,6 +6,7 @@ class EmployerPortal::Admin::EmailLog::Search < ::EmployerPortal::Admin::Base::S
     ::EmployerPortal::Admin::EmailLog::Viewer
   end
 
+  # ~~ overrides for EmployerPortal::Search ~~
   def dataset
     EmailLog.eager :company
   end
