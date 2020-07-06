@@ -103,18 +103,18 @@ class EmployerPortal::Employee::Editor
   end
 
   def active?
-    dashboard_employee&.is_active==1
+    dashboard_employee&.is_active == 1
   end
 
   def deactivate!
     ::EmployerPortal::Sync::Account.where(
-      id: edited.remote_id
+      id: edited.remote_id,
     ).update is_active: false
   end
 
   def reactivate!
     ::EmployerPortal::Sync::Account.where(
-      id: edited.remote_id
+      id: edited.remote_id,
     ).update is_active: true
   end
 

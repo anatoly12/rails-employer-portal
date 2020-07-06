@@ -1,6 +1,6 @@
 <% if !editor.active? %>
   <div class="my-10">
-    <%= link_to({action: :reactivate}, method: :patch, class: "#{primary_button_class(:red)} flex items-center justify-center") do %>
+    <%= link_to({ action: :reactivate }, method: :patch, class: "#{primary_button_class(:red)} flex items-center justify-center") do %>
       Reactivate
     <% end %>
   </div>
@@ -17,7 +17,7 @@
           Contact enqueued
         </div>
       <% else %>
-        <%= link_to({action: :contact}, method: :patch, class: "#{primary_button_class(:blue)} flex items-center justify-center") do %>
+        <%= link_to({ action: :contact }, method: :patch, class: "#{primary_button_class(:blue)} flex items-center justify-center") do %>
           <%= render "icon/envelope", icon_class: "h-5 w-5 mr-3" %>
           Contact
         <% end %>
@@ -38,7 +38,7 @@
           Reminder enqueued
         </div>
       <% else %>
-        <%= link_to({action: :send_reminder}, method: :patch, class: "#{primary_button_class(:blue)} flex items-center justify-center") do %>
+        <%= link_to({ action: :send_reminder }, method: :patch, class: "#{primary_button_class(:blue)} flex items-center justify-center") do %>
           <%= render "icon/date_add", icon_class: "h-5 w-5 mr-3" %>
           Send Reminder
         <% end %>
@@ -48,7 +48,7 @@
         Reminder not needed
       </div>
     <% end %>
-    <%= link_to({action: :destroy}, method: :delete, class: "#{primary_button_class(:gray)} flex items-center justify-center") do %>
+    <%= link_to({ action: :destroy }, method: :delete, class: "#{primary_button_class(:gray)} flex items-center justify-center") do %>
       Deactivate
     <% end %>
   </div>

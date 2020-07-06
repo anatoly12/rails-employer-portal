@@ -69,7 +69,7 @@ class EmployerPortal::Admin::Dashboard::Stats
   def count_by_daily_checkup_status
     @count_by_daily_checkup_status ||= dataset.where(
       Sequel.qualify(:employees, :company_id) => Company.where(
-        deleted_at: nil
+        deleted_at: nil,
       ).select(:id),
     ).group_by(:daily_checkup_status).select(
       :daily_checkup_status,
@@ -80,7 +80,7 @@ class EmployerPortal::Admin::Dashboard::Stats
   def count_by_testing_status
     @count_by_testing_status ||= dataset.where(
       Sequel.qualify(:employees, :company_id) => Company.where(
-        deleted_at: nil
+        deleted_at: nil,
       ).select(:id),
     ).group_by(:testing_status).select(
       :testing_status,

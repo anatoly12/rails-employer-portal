@@ -117,11 +117,11 @@ class EmployerPortal::Employee::Search
     return {} if @results.empty?
 
     @last_trigger_by_employee_and_key ||= EmailLog.where(
-      employee_id: @results.map{|result| result[:id]},
+      employee_id: @results.map { |result| result[:id] },
       trigger_key: [
         EmailTemplate::TRIGGER_EMPLOYEE_CONTACT,
-        EmailTemplate::TRIGGER_EMPLOYEE_REMINDER
-      ]
+        EmailTemplate::TRIGGER_EMPLOYEE_REMINDER,
+      ],
     ).group_by(
       :employee_id,
       :trigger_key
@@ -143,5 +143,4 @@ class EmployerPortal::Employee::Search
       [employee[:id], EmailTemplate::TRIGGER_EMPLOYEE_REMINDER]
     ]
   end
-
 end
