@@ -36,8 +36,8 @@ class EmployerPortal::Search
 
   protected
 
-  def dataset
-    raise NotImplementedError
+  def query_class
+    raise NotImplementedError, "#{self.class}#query_class"
   end
 
   private
@@ -52,4 +52,14 @@ class EmployerPortal::Search
       items: vars[:items] || DEFAULT_PAGE_SIZE,
     }
   end
+
+  # ~~ private instance methods ~~
+  def query
+    @query ||= query_class.new context
+  end
+
+  def dataset
+    query.search_dataset filters.to_hash, sort_order
+  end
+
 end

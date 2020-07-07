@@ -72,8 +72,12 @@ class EmployerPortal::Admin::Dashboard::Stats
   attr_reader :context
 
   # ~~ private instance methods ~~
+  def query_class
+    ::EmployerPortal::Query::Employee
+  end
+
   def query
-    ::EmployerPortal::Query::Employee.new context
+    @query ||= query_class.new context
   end
 
   def count_by_daily_checkup_status

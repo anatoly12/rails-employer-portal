@@ -1,7 +1,10 @@
 class EmployerPortal::Employee::Search < ::EmployerPortal::Search
+
   # ~~ overrides for EmployerPortal::Search ~~
   def sort_order
-    params[:order] || "fullname:asc"
+    order = params[:order]
+    order = "full_name:asc" if order.blank? || (order.match(/checkup|testing/) && !context.sync_connected?)
+    order
   end
 
   def results

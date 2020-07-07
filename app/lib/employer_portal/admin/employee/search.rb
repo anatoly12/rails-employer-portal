@@ -1,4 +1,12 @@
 class EmployerPortal::Admin::Employee::Search < ::EmployerPortal::Admin::Base::Search
+
+  # ~~ overrides for EmployerPortal::Search ~~
+  def sort_order
+    order = params[:order]
+    order = "created:desc" if order.blank? || (order.match(/checkup|testing/) && !context.sync_connected?)
+    order
+  end
+
   private
 
   # ~~ overrides for EmployerPortal::Admin::Base::Search ~~
@@ -7,9 +15,7 @@ class EmployerPortal::Admin::Employee::Search < ::EmployerPortal::Admin::Base::S
   end
 
   # ~~ overrides for EmployerPortal::Search ~~
-  def dataset
-    ::EmployerPortal::Query::Employee.new(
-      context
-    ).search_dataset filters.to_hash, sort_order
+  def query_class
+    ::EmployerPortal::Query::Employee
   end
 end

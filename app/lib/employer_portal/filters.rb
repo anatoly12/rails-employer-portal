@@ -64,10 +64,6 @@ class EmployerPortal::Filters
     ]
   end
 
-  def value_for_ilike(string)
-    "%#{escape_for_like(string)}%"
-  end
-
   def clearable?
     filters.to_unsafe_h.any? { |key, value| key != "opened" && value.present? }
   end

@@ -1,19 +1,6 @@
-class EmployerPortal::Query::Employee
-  def initialize(context)
-    @context = context
-  end
+class EmployerPortal::Query::Employee < EmployerPortal::Query::Base
 
-  def search_dataset(filters, sort_order)
-    ds = dataset
-    filters.reject do |_, value|
-      value.blank?
-    end.each do |key, value|
-      ds = apply_filter(ds, key, value)
-    end
-    ds = apply_order ds, sort_order
-    ds
-  end
-
+  # ~~ public instance methods ~~
   def count_by_daily_checkup_status
     dataset.group_by(
       :daily_checkup_status
@@ -34,50 +21,15 @@ class EmployerPortal::Query::Employee
 
   private
 
-  attr_reader :context
-
-  def graphs
-    res = [:company]
-    res << :dashboard_employee if context.sync_connected?
-    res
-  end
-
-  def graph_aliases
-    res = {
-      id: [:employees, :id],
-      uuid: [:employees, :uuid],
-      remote_id: [:employees, :remote_id],
-      first_name: [:employees, :first_name],
-      last_name: [:employees, :last_name],
-      state: [:employees, :state],
-      phone: [:employees, :phone],
-      created_at: [:employees, :created_at],
-      company_id: [:company, :id],
-      company_name: [:company, :name],
-    }
-    res.merge!(
-      account_id: [:dashboard_employee, :id],
-      daily_checkup_status: [:dashboard_employee, :daily_checkup_status, Sequel.function(:coalesce, Sequel.qualify(:dashboard_employee, :daily_checkup_status), "Did Not Submit")],
-      daily_checkup_updated_at: [:dashboard_employee, :daily_checkup_updated_at],
-      daily_checkup_action: [:dashboard_employee, :daily_checkup_action, Sequel.function(:coalesce, Sequel.qualify(:dashboard_employee, :daily_checkup_action), "Send Reminder")],
-      testing_status: [:dashboard_employee, :testing_status, Sequel.function(:coalesce, Sequel.qualify(:dashboard_employee, :testing_status), "Not Registered")],
-      testing_updated_at: [:dashboard_employee, :testing_updated_at],
-    ) if context.sync_connected?
-    res
-  end
-
+  # ~~ overrides for EmployerPortal::Query::Base ~~
   def dataset
     ds = Employee.eager_graph(*graphs).set_graph_aliases(graph_aliases)
     if context.section_application?
-      ds.where company_id: context.company_id
+      ds = ds.where Sequel.qualify(:employees, :company_id) => context.company_id
     else
-      ds.where Sequel.qualify(:company, :deleted_at) => nil
+      ds = ds.where Sequel.qualify(:company, :deleted_at) => nil
     end
     ds.from_self
-  end
-
-  def value_for_ilike(string)
-    "%#{string.gsub /([%_\\])/, "\\\\\\1"}%"
   end
 
   def apply_filter(ds, key, value)
@@ -101,9 +53,15 @@ class EmployerPortal::Query::Employee
   end
 
   def apply_order(ds, column)
-    column = "fullname" if column != "state" && !context.sync_connected?
-
     case column
+    when "first_name"
+      ds.order(:first_name)
+    when "last_name"
+      ds.order(:last_name)
+    when "fullname"
+      ds.order Sequel.function(:concat, :first_name, " ", :last_name)
+    when "email"
+      ds.order(:email)
     when "state"
       ds.order :state
     when "checkup"
@@ -114,8 +72,41 @@ class EmployerPortal::Query::Employee
       ds.order :testing_status
     when "testing_updated_at"
       ds.order :testing_updated_at
-    else # "fullname"
-      ds.order Sequel.function(:concat, :first_name, " ", :last_name)
+    else # "created_at"
+      ds.order(:created_at, :id)
     end
+  end
+
+  # ~~ private instance methods ~~
+  def graphs
+    res = [:company]
+    res << :dashboard_employee if context.sync_connected?
+    res
+  end
+
+  def graph_aliases
+    res = {
+      id: [:employees, :id],
+      uuid: [:employees, :uuid],
+      remote_id: [:employees, :remote_id],
+      first_name: [:employees, :first_name],
+      last_name: [:employees, :last_name],
+      state: [:employees, :state],
+      phone: [:employees, :phone],
+      created_at: [:employees, :created_at],
+    }
+    res.merge!(
+      company_id: [:company, :id],
+      company_name: [:company, :name],
+    ) unless context.section_application?
+    res.merge!(
+      account_id: [:dashboard_employee, :id],
+      daily_checkup_status: [:dashboard_employee, :daily_checkup_status, Sequel.function(:coalesce, Sequel.qualify(:dashboard_employee, :daily_checkup_status), "Did Not Submit")],
+      daily_checkup_updated_at: [:dashboard_employee, :daily_checkup_updated_at],
+      daily_checkup_action: [:dashboard_employee, :daily_checkup_action, Sequel.function(:coalesce, Sequel.qualify(:dashboard_employee, :daily_checkup_action), "Send Reminder")],
+      testing_status: [:dashboard_employee, :testing_status, Sequel.function(:coalesce, Sequel.qualify(:dashboard_employee, :testing_status), "Not Registered")],
+      testing_updated_at: [:dashboard_employee, :testing_updated_at],
+    ) if context.sync_connected?
+    res
   end
 end

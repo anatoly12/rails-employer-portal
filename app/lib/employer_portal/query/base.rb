@@ -1,4 +1,6 @@
 class EmployerPortal::Query::Base
+
+  # ~~ public instance methods ~~
   def initialize(context)
     @context = context
   end
@@ -17,11 +19,12 @@ class EmployerPortal::Query::Base
 
   attr_reader :context
 
+  # ~~ private instance methods ~~
   def dataset
     raise NotImplementedError, "#{self.class}#dataset"
   end
 
   def value_for_ilike(string)
-    "%#{escape_for_like(string)}%"
+    "%#{string.gsub /([%_\\])/, "\\\\\\1"}%"
   end
 end
