@@ -61,7 +61,7 @@ EmailTemplate.create(
   html: "
     <p>Hello {{employee_email}}!</p>
     <p>Someone invited you to the Employer Portal. Choose an email through the link below.</p>
-    <p><a href='http://localhost:3000/changepw?reset_password_token={{employee_reset_password_token}}'>Choose a password</a></p>
+    <p><a href='http://localhost:3000/health_modules/password/edit?reset_password_token={{employee_reset_password_token}}'>Choose a password</a></p>
     <p>Thank you and have a nice day.</p>
   ",
   text: "
@@ -69,7 +69,7 @@ EmailTemplate.create(
 
     Someone invited you to the Employer Portal. Choose an email through the link below:
 
-    http://localhost:3000/changepw?reset_password_token={{employee_reset_password_token}}
+    http://localhost:3000/health_modules/password/edit?reset_password_token={{employee_reset_password_token}}
 
     Thank you and have a nice day.
   ",
