@@ -59,7 +59,7 @@ class EmployeesController < ApplicationController
 
   def health_passport
     unless current_context.health_passport_enabled?
-      flash.alert = "Feature not included in your current plan."
+      flash.alert = current_context.disabled_feature_message + "."
       redirect_to action: :edit
     end
   end

@@ -10,7 +10,7 @@
           <%= render "icon/cheveron_down", icon_class: "h-4 w-4 inline" %>
         </button>
         <div id="myDropdown" class="dropdownlist absolute bg-gray-900 text-white right-0 mt-3 p-3 overflow-auto z-30 w-full rounded-lg invisible">
-          <%= link_to "#", class: "p-2 hover:bg-gray-800 text-white text-sm block" do %>
+          <%= link_to edit_admin_user_path(current_context.account), class: "p-2 hover:bg-gray-800 text-white text-sm block" do %>
             <%= render "icon/user", icon_class: "h-3 w-3 mr-2 text-white inline-block" %>
             My Profile
           <% end %>

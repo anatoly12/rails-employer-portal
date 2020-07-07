@@ -106,6 +106,7 @@ class EmployerPortal::Query::Employee < EmployerPortal::Query::Base
       )
     else
       res.merge!(
+        email: [:employees, :email],
         company_id: [:company, :id],
         company_name: [:company, :name],
       )

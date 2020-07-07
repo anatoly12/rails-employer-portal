@@ -28,6 +28,10 @@ module EmployerPortal
       end
     end
 
+    module AdminUser
+      class NotFound < ::EmployerPortal::Error::NotFound; end
+    end
+
     module Sync
       class Base < ::EmployerPortal::Error::Base; end
       class CantCreateAccount < Base; end

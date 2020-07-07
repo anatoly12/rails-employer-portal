@@ -15,6 +15,10 @@ module.exports = {
         '40': '10rem',
         '52': '13rem',
       },
+      screens: {
+        '2xl': '1860px',
+        '3xl': '2560px',
+      },
     },
   },
   variants: {

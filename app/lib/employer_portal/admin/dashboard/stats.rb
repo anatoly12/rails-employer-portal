@@ -18,9 +18,7 @@ class EmployerPortal::Admin::Dashboard::Stats
       :companies,
       id: :company_id,
       deleted_at: nil,
-    ).where(
-      deleted_at: nil,
-    ).qualify.count
+    ).where(deleted_at: nil).qualify.count
   end
 
   def employee_count
@@ -29,6 +27,22 @@ class EmployerPortal::Admin::Dashboard::Stats
       id: :company_id,
       deleted_at: nil,
     ).count
+  end
+
+  def email_template_count
+    @email_template_count ||= EmailTemplate.where(deleted_at: nil).count
+  end
+
+  def email_log_count
+    @email_log_count ||= EmailLog.inner_join(
+      :companies,
+      id: :company_id,
+      deleted_at: nil,
+    ).count
+  end
+
+  def admin_user_count
+    @admin_user_count ||= AdminUser.count
   end
 
   def no_symptoms_count

@@ -1,0 +1,17 @@
+<div class="bg-white shadow-md rounded overflow-hidden">
+  <table class="w-full border-collapse text-gray-900">
+    <thead class="select-none">
+      <tr class="bg-blue-500 font-bold uppercase text-sm text-gray-100">
+        <th class="py-4 px-6 border-b border-gray-200 w-1 whitespace-no-wrap">Created at</th>
+        <th class="py-4 px-6 border-b border-gray-200 text-left">Email</th>
+        <th class="py-4 px-6 border-b border-gray-200 w-1 whitespace-no-wrap">Myself</th>
+        <th class="py-4 px-6 border-b border-gray-200 w-1">Actions</th>
+      </tr>
+    </thead>
+    <tbody>
+      <% users.each do |user| %>
+        <%= render "admin/users/user", user: user %>
+      <% end %>
+    </tbody>
+  </table>
+</div>

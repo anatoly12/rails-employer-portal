@@ -1,6 +1,6 @@
 <%= render "admin/common/top_nav_container" do %>
-  <%= render "admin/common/top_nav_item", title: "Email logs", path: { action: :index } %>
-  <%= render "admin/common/top_nav_item", title: "Email log ##{viewer.id}", path: { action: :show, id: viewer } %>
+  <%= render "admin/common/top_nav_item", title: "Sent emails", path: { action: :index } %>
+  <%= render "admin/common/top_nav_item", title: "Details", path: { action: :show, id: viewer } %>
 <% end %>
 <div class="mt-10 p-5 pb-0">
   <div class="bg-white shadow-md rounded p-8">

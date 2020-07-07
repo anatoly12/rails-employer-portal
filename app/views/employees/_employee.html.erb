@@ -46,7 +46,7 @@
         <% end %>
       <% end %>
     </div>
-  <% elsif current_context.sync_connected? %>
+  <% else %>
     <div class="w-32 px-2 py-4 text-gray-600 hidden pointer-events-none select-none md:block xl:w-36">
       Did Not Submit
     </div>
@@ -63,7 +63,7 @@
       <%= employee.testing_updated_at %>
     </div>
     <div class="w-40 px-2 hidden xl:block"></div>
-  <% elsif current_context.sync_connected? %>
+  <% else %>
     <div class="w-32 px-2 text-gray-600 hidden pointer-events-none select-none md:block xl:w-36">
       Not Registered
     </div>

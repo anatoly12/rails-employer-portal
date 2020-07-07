@@ -1,14 +1,13 @@
 <%= render "admin/common/top_nav_container" do %>
-  <%= render "admin/common/top_nav_item", title: "Email templates", path: { action: :index } %>
+  <%= render "admin/common/top_nav_item", title: "Admin users", path: { action: :index } %>
 <% end %>
 <div class="mt-10 p-5 pb-0">
-  <%= render "admin/email_templates/filters", filters: search.filters %>
-  <%= render "admin/email_templates/email_templates", email_templates: search.results %>
+  <%= render "admin/users/users", users: search.results %>
   <div class="flex justify-between py-5 select-none">
     <div>
       <%= link_to({ action: :new }, class: "text-gray-400 hover:text-blue-500 font-bold text-xs rounded-lg inline-flex items-center pt-1") do %>
         <%= render "icon/add_outline", icon_class: "w-4 h-4 mr-2" %>
-        Add a new email template
+        Add a new admin user
       <% end %>
     </div>
     <div>

@@ -1,5 +1,5 @@
 <% if type == "alert" %>
-  <div class="bg-red-100 border-t-4 border-red-500 text-red-900 px-4 py-3 transition-opacity duration-700 md:shadow-md md:mb-4" role="alert">
+  <div class="bg-red-100 border-t-4 border-red-500 text-red-900 px-4 py-3 transition-opacity duration-700 select-none cursor-pointer md:shadow-md md:mb-4" role="alert">
     <div class="flex">
       <div class="py-1">
         <%= render "icon/close_outline", icon_class: "h-6 w-6 text-red-500 mr-4" %>
@@ -11,7 +11,7 @@
     </div>
   </div>
 <% else %>
-  <div class="bg-green-100 border-t-4 border-green-500 text-green-900 px-4 py-3 transition-opacity duration-700 md:shadow-md md:mb-4" role="notice">
+  <div class="bg-green-100 border-t-4 border-green-500 text-green-900 px-4 py-3 transition-opacity duration-700 select-none cursor-pointer md:shadow-md md:mb-4" role="notice">
     <div class="flex">
       <div class="py-1">
         <%= render "icon/checkmark_outline", icon_class: "h-6 w-6 text-green-500 mr-4" %>

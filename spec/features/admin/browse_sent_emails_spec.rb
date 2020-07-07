@@ -1,6 +1,6 @@
 require "rails_helper"
 
-feature "Browse email logs" do
+feature "Browse sent emails" do
   include AdminHelpers
 
   let!(:email_log1) { create :email_log, created_at: Time.utc(2020, 6, 2, 10) }
@@ -8,7 +8,7 @@ feature "Browse email logs" do
   before { sign_in_as_admin_user }
 
   scenario "I can list and filter email logs" do
-    click_link "Email logs"
+    click_link "Sent emails"
     within "table tbody" do
       expect(page).to have_css "tr", count: 2
       within "tr:nth-child(1)" do
@@ -87,7 +87,7 @@ feature "Browse email logs" do
   end
 
   scenario "I can view an email log details" do
-    click_link "Email logs"
+    click_link "Sent emails"
     within "table tbody tr:nth-child(1)" do
       click_link "Details"
     end

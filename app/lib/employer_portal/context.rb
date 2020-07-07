@@ -58,6 +58,14 @@ module EmployerPortal
       section == :application
     end
 
+    def disabled_feature_message
+      if sync_connected?
+        "Feature not included in your current plan"
+      else
+        "Temporarily unavailable, please come back later"
+      end
+    end
+
     private
 
     attr_reader :given_account_id, :section

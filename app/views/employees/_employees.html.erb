@@ -14,16 +14,15 @@
       <div class="w-28 px-2 hidden lg:block">
         <%= render "employees/sort_header", column: "checkup_updated_at", label: "Last Updated" %>
       </div>
-      <div class="w-40 px-2 hidden xl:block"></div>
-    <% elsif current_context.sync_connected? %>
+    <% else %>
       <div class="w-32 px-2 text-gray-600 whitespace-no-wrap pointer-events-none select-none hidden md:block xl:w-36">
         Daily Checkup
       </div>
       <div class="w-28 px-2 text-gray-600 whitespace-no-wrap pointer-events-none select-none hidden lg:block">
         Last Updated
       </div>
-      <div class="w-40 px-2 hidden xl:block"></div>
     <% end %>
+    <div class="w-40 px-2 hidden xl:block"></div>
     <% if current_context.testing_enabled? %>
       <div class="w-32 px-2 hidden md:block xl:w-36">
         <%= render "employees/sort_header", column: "testing", label: "Testing Status" %>
@@ -31,7 +30,7 @@
       <div class="w-28 px-2 hidden lg:block xl:w-24">
         <%= render "employees/sort_header", column: "testing_updated_at", label: "Last Updated" %>
       </div>
-    <% elsif current_context.sync_connected? %>
+    <% else %>
       <div class="w-32 px-2 text-gray-600 whitespace-no-wrap pointer-events-none select-none hidden md:block xl:w-36">
         Testing Status
       </div>

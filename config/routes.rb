@@ -12,6 +12,7 @@ Rails.application.routes.draw do
     end
     resources :email_templates
     resources :email_logs, only: [:index, :show]
+    resources :users
     root to: "dashboard#index"
   end
   resource :sessions, path: "/sign-in", only: [:show, :create, :destroy]
