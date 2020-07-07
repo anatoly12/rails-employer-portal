@@ -9,13 +9,12 @@ class EmployerPortal::Admin::Employee::Search < ::EmployerPortal::Admin::Base::S
 
   private
 
-  # ~~ overrides for EmployerPortal::Admin::Base::Search ~~
-  def decorator
-    ::EmployerPortal::Admin::Employee::Viewer
-  end
-
   # ~~ overrides for EmployerPortal::Search ~~
   def query_class
     ::EmployerPortal::Query::Employee
+  end
+
+  def decorator
+    ::EmployerPortal::Admin::Employee::Viewer
   end
 end

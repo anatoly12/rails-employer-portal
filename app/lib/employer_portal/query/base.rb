@@ -24,6 +24,14 @@ class EmployerPortal::Query::Base
     raise NotImplementedError, "#{self.class}#dataset"
   end
 
+  def apply_filter(_ds, _key, _value)
+    raise NotImplementedError, "#{self.class}#apply_filter"
+  end
+
+  def apply_order(_ds, _column)
+    raise NotImplementedError, "#{self.class}#apply_order"
+  end
+
   def value_for_ilike(string)
     "%#{string.gsub /([%_\\])/, "\\\\\\1"}%"
   end

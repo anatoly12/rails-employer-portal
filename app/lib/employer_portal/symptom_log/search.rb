@@ -1,52 +1,34 @@
-class EmployerPortal::SymptomLog::Search
-  include Pagy::Backend
-
-  # ~~ constants ~~
-  DEFAULT_PAGE_SIZE = 5
+class EmployerPortal::SymptomLog::Search < ::EmployerPortal::Search
 
   # ~~ accessors ~~
-  attr_reader :employee, :pagination
-
-  # ~~ delegates ~~
-  delegate :count, to: :pagination
+  attr_reader :employee
 
   # ~~ public instance methods ~~
   def initialize(context, employee, params)
-    @context = context
     @employee = employee
-    @params = params
-    @pagination, @results = pagy(sorted(dataset))
+    super context, params
   end
 
   def sort_order
     params[:order] || "log_date:desc"
   end
 
-  def results
-    @results.all
-  end
-
   private
 
-  attr_reader :context, :params
-
-  # ~~ overrides for Pagy ~~
-  def pagy_get_vars(collection, vars)
-    {
-      count: collection.count,
-      page: params["page"],
-      items: vars[:items] || DEFAULT_PAGE_SIZE,
-    }
+  # ~~ overrides for EmployerPortal::Search ~~
+  def default_page_size
+    5
   end
 
-  # ~~ private instance methods ~~
-  def dataset
-    SymptomLog.where(account_id: employee.remote_id)
+  def query_class
+    ::EmployerPortal::Query::SymptomLog
   end
 
-  def sorted(ds)
-    column, direction = sort_order.split(":")
-    ds = ds.order(:log_date)
-    direction == "desc" ? ds.reverse : ds
+  def query
+    @query ||= query_class.new context, employee
+  end
+
+  def decorator
+    ::EmployerPortal::SymptomLog::Viewer
   end
 end

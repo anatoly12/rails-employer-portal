@@ -4,11 +4,9 @@ class EmployerPortal::Employee::Viewer
   delegate :to_param, :first_name, :last_name, :state, :remote_id, to: :employee
 
   # ~~ public instance methods ~~
-  def initialize(context, employee, last_contacted_at, last_reminded_at)
+  def initialize(context, employee)
     @context = context
     @employee = employee
-    @last_contacted_at = last_contacted_at
-    @last_reminded_at = last_reminded_at
   end
 
   def flagged?
@@ -37,7 +35,7 @@ class EmployerPortal::Employee::Viewer
   end
 
   def already_contacted?
-    last_contacted_at && last_contacted_at > 1.day.ago
+    last_contacted_at && last_contacted_at.to_date == Date.today
   end
 
   def daily_checkup_need_reminder?
@@ -47,7 +45,7 @@ class EmployerPortal::Employee::Viewer
   end
 
   def already_sent_reminder?
-    last_reminded_at && last_reminded_at > 1.day.ago
+    last_reminded_at && last_reminded_at.to_date == Date.today
   end
 
   def testing_status
@@ -69,7 +67,7 @@ class EmployerPortal::Employee::Viewer
 
   private
 
-  attr_reader :context, :employee, :last_contacted_at, :last_reminded_at
+  attr_reader :context, :employee
 
   # ~~ private instance methods ~~
   def synced?
@@ -82,5 +80,13 @@ class EmployerPortal::Employee::Viewer
 
   def daily_checkup_action
     dashboard_employee&.daily_checkup_action
+  end
+
+  def last_contacted_at
+    employee.values[:last_contacted_at]
+  end
+
+  def last_reminded_at
+    employee.values[:last_reminded_at]
   end
 end

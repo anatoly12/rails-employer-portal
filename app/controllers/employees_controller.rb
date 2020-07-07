@@ -117,6 +117,12 @@ class EmployeesController < ApplicationController
 
   helper_method :search
 
+  def stats
+    @stats ||= ::EmployerPortal::Employee::Stats.new current_context
+  end
+
+  helper_method :stats
+
   def editor
     @editor ||= ::EmployerPortal::Employee::Editor.from_params current_context, params
   end

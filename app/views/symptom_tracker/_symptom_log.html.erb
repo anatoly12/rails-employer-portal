@@ -1,12 +1,12 @@
 <tr class="border-t align-middle text-center">
   <td class="py-1 whitespace-no-wrap"><%= symptom_log.log_date %></td>
   <td class="py-1">
-    <% if symptom_log.flagged == 1 %>
+    <% if symptom_log.flagged? %>
       <%= render "icon/exclamation_solid", icon_class: "h-4 w-4 text-orange-500 mx-auto" %>
     <% end %>
   </td>
   <td class="py-1 hidden md:table-cell <%= temperature_color(symptom_log) %>"><%= symptom_log.temperature %></td>
-  <% if symptom_log.symptoms == 1 %>
+  <% if symptom_log.symptoms? %>
     <td class="py-1 hidden md:table-cell text-red-600">Yes</td>
   <% else %>
     <td class="py-1 hidden md:table-cell">No</td>

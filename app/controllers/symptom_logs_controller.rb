@@ -12,9 +12,9 @@ class SymptomLogsController < ApplicationController
     redirect_to employees_path
   end
 
-  def viewer
-    @viewer ||= ::EmployerPortal::SymptomLog::Viewer.from_params current_context, params
+  def search
+    @search ||= ::EmployerPortal::SymptomLogEntry::Search.from_params current_context, params
   end
 
-  helper_method :viewer
+  helper_method :search
 end

@@ -62,7 +62,7 @@ class EmployerPortal::Employee::Editor
 
   def already_contacted?
     sent_at = last_trigger_by_key[EmailTemplate::TRIGGER_EMPLOYEE_CONTACT]
-    sent_at && sent_at > 1.day.ago
+    sent_at && sent_at.to_date == Date.today
   end
 
   def last_contacted_at
@@ -83,7 +83,7 @@ class EmployerPortal::Employee::Editor
 
   def already_sent_reminder?
     sent_at = last_trigger_by_key[EmailTemplate::TRIGGER_EMPLOYEE_REMINDER]
-    sent_at && sent_at > 1.day.ago
+    sent_at && sent_at.to_date == Date.today
   end
 
   def last_sent_reminder_at

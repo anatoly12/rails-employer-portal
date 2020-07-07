@@ -25,11 +25,11 @@ class EmployerPortal::Query::Employee < EmployerPortal::Query::Base
   def dataset
     ds = Employee.eager_graph(*graphs).set_graph_aliases(graph_aliases)
     if context.section_application?
-      ds = ds.where Sequel.qualify(:employees, :company_id) => context.company_id
+      ds = ds.where company_id: context.company_id
     else
       ds = ds.where Sequel.qualify(:company, :deleted_at) => nil
     end
-    ds.from_self
+    ds.group_by(:id).qualify.from_self
   end
 
   def apply_filter(ds, key, value)
@@ -81,6 +81,10 @@ class EmployerPortal::Query::Employee < EmployerPortal::Query::Base
   def graphs
     res = [:company]
     res << :dashboard_employee if context.sync_connected?
+    if context.section_application?
+      res << :contact_email_logs
+      res << :reminder_email_logs
+    end
     res
   end
 
@@ -95,10 +99,17 @@ class EmployerPortal::Query::Employee < EmployerPortal::Query::Base
       phone: [:employees, :phone],
       created_at: [:employees, :created_at],
     }
-    res.merge!(
-      company_id: [:company, :id],
-      company_name: [:company, :name],
-    ) unless context.section_application?
+    if context.section_application?
+      res.merge!(
+        last_contacted_at: [:employees, :last_contacted_at, Sequel.function(:max, Sequel.qualify(:contact_email_logs, :created_at))],
+        last_reminded_at: [:employees, :last_reminded_at, Sequel.function(:max, Sequel.qualify(:reminder_email_logs, :created_at))],
+      )
+    else
+      res.merge!(
+        company_id: [:company, :id],
+        company_name: [:company, :name],
+      )
+    end
     res.merge!(
       account_id: [:dashboard_employee, :id],
       daily_checkup_status: [:dashboard_employee, :daily_checkup_status, Sequel.function(:coalesce, Sequel.qualify(:dashboard_employee, :daily_checkup_status), "Did Not Submit")],

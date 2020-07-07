@@ -1,40 +1,23 @@
 class EmployerPortal::SymptomLog::Viewer
-  # ~~ public class methods ~~
-  def self.from_params(context, params)
-    employee = Employee.where(
-      company_id: context.company_id,
-      uuid: params[:employee_id],
-    ).limit(1).first || raise(::EmployerPortal::Error::Employee::NotFound)
-    date = params[:id]
-    new context, employee, date
-  end
 
-  # ~~ accessors ~~
-  attr_reader :employee, :date
+  # ~~ delegates ~~
+  delegate :to_param, :log_date, :temperature, to: :symptom_log
 
   # ~~ public instance methods ~~
-  def initialize(context, employee, date)
+  def initialize(context, symptom_log)
     @context = context
-    @employee = employee
-    @date = date
+    @symptom_log = symptom_log
   end
 
-  def employee_editor
-    @employee_editor ||= ::EmployerPortal::Employee::Editor.new context, employee
+  def flagged?
+    symptom_log.flagged == 1
   end
 
-  def entries
-    return [] unless context.sync_connected?
-
-    @entries ||= SymptomLogEntry.where(
-      account_id: employee.remote_id,
-      log_date: date,
-    ).order(:id).all.map do |entry|
-      ::EmployerPortal::SymptomLog::EntryViewer.new context, entry
-    end.select(&:visible?)
+  def symptoms?
+    symptom_log.flagged == 1
   end
 
   private
 
-  attr_reader :context
+  attr_reader :context, :symptom_log
 end

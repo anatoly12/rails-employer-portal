@@ -4,9 +4,9 @@ class EmployerPortal::Query::Employer < EmployerPortal::Query::Base
   # ~~ overrides for EmployerPortal::Query::Base ~~
   def dataset
     Employer.eager_graph(*graphs).set_graph_aliases(graph_aliases).where(
-      Sequel.qualify(:employers, :deleted_at) => nil,
+      deleted_at: nil,
       Sequel.qualify(:company, :deleted_at) => nil,
-    ).from_self
+    ).qualify.from_self
   end
 
   def apply_filter(ds, key, value)
@@ -38,7 +38,7 @@ class EmployerPortal::Query::Employer < EmployerPortal::Query::Base
   # ~~ private instance methods ~~
   def graphs
     if context.section_application?
-      [{company: :plan}]
+      [{ company: :plan }]
     else
       [:company]
     end
@@ -63,7 +63,7 @@ class EmployerPortal::Query::Employer < EmployerPortal::Query::Base
         testing_enabled: [:plan, :testing_enabled],
         health_passport_enabled: [:plan, :health_passport_enabled],
         employer_limit: [:plan, :employer_limit],
-        employee_limit: [:plan, :employee_limit]
+        employee_limit: [:plan, :employee_limit],
       )
     else
       res.merge!(

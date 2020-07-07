@@ -5,7 +5,7 @@ class EmployerPortal::Query::Company < EmployerPortal::Query::Base
   def dataset
     Company.eager_graph(*graphs).set_graph_aliases(graph_aliases).where(
       deleted_at: nil,
-    ).qualify.group_by(Sequel.qualify(:companies, :id)).from_self
+    ).group_by(:id).qualify.from_self
   end
 
   def apply_filter(ds, key, value)

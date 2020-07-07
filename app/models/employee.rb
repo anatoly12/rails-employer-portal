@@ -24,6 +24,13 @@ class Employee < Sequel::Model
   # ~~ associations ~~
   many_to_one :company, class: "Company"
   many_to_one :employer, class: "Employer"
+  many_to_one :email_logs, class: "EmailLog"
+  one_to_many :contact_email_logs, class: "EmailLog" do |ds|
+    email_logs_dataset.where trigger_key: EmailTemplate::TRIGGER_EMPLOYEE_CONTACT
+  end
+  one_to_many :reminder_email_logs, class: "EmailLog" do |ds|
+    email_logs_dataset.where trigger_key: EmailTemplate::TRIGGER_EMPLOYEE_REMINDER
+  end
 
   # ~~ public class methods ~~
   def self.add_connected_associations

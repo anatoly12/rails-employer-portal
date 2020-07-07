@@ -1,11 +1,8 @@
 class EmployerPortal::Search
   include Pagy::Backend
 
-  # ~~ constants ~~
-  DEFAULT_PAGE_SIZE = 50
-
   # ~~ accessors ~~
-  attr_reader :pagination, :results
+  attr_reader :pagination
 
   # ~~ delegates ~~
   delegate :count, to: :pagination
@@ -20,7 +17,13 @@ class EmployerPortal::Search
     @context = context
     @params = params
     @pagination, results = pagy(dataset)
-    @results = results.all
+    @raw_results = results.all
+  end
+
+  def results
+    @results ||= raw_results.map do |result|
+      decorator.new context, result
+    end
   end
 
   def filters
@@ -34,26 +37,32 @@ class EmployerPortal::Search
     params[:order]
   end
 
-  protected
-
-  def query_class
-    raise NotImplementedError, "#{self.class}#query_class"
-  end
-
   private
 
-  attr_reader :context, :params
+  attr_reader :context, :params, :raw_results
 
   # ~~ overrides for Pagy ~~
   def pagy_get_vars(collection, vars)
     {
       count: collection.count,
       page: params["page"],
-      items: vars[:items] || DEFAULT_PAGE_SIZE,
+      items: vars[:items] || default_page_size,
     }
   end
 
   # ~~ private instance methods ~~
+  def default_page_size
+    50
+  end
+
+  def query_class
+    raise NotImplementedError, "#{self.class}#query_class"
+  end
+
+  def decorator
+    raise NotImplementedError
+  end
+
   def query
     @query ||= query_class.new context
   end
@@ -61,5 +70,4 @@ class EmployerPortal::Search
   def dataset
     query.search_dataset filters.to_hash, sort_order
   end
-
 end
