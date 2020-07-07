@@ -16,11 +16,11 @@ class Plan < Sequel::Model
 
   # ~~ associations ~~
   one_to_many :companies, class: "Company"
-  one_to_many :undeleted_companies, class: "Company" do |ds|
-    companies_dataset.where deleted_at: nil
-  end
+  one_to_many :undeleted_companies, class: "Company", conditions: {
+    deleted_at: nil
+  }
   one_to_many :email_templates, class: "EmailTemplate"
-  one_to_many :undeleted_email_templates, class: "EmailTemplate" do |ds|
-    email_templates_dataset.where deleted_at: nil
-  end
+  one_to_many :undeleted_email_templates, class: "EmailTemplate", conditions: {
+    deleted_at: nil
+  }
 end
