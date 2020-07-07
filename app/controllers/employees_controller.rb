@@ -9,9 +9,10 @@ class EmployeesController < ApplicationController
   end
 
   def delete_all
-    dataset = Employee.where employer_id: current_context.account_id
-    flash.notice = "#{dataset.count} employees were deleted successfully."
-    dataset.delete
+    return head :not_found unless Rails.env.development?
+
+    count = search.delete_all
+    flash.notice = "#{count} employees were deleted successfully."
     redirect_to action: :index
   end
 

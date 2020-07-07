@@ -4,6 +4,7 @@ class Plan < Sequel::Model
   plugin :timestamps, update_on_create: true
   plugin :validation_helpers
   plugin :active_model
+  plugin :with_audits
 
   # ~~ validations ~~
   def validate
@@ -16,11 +17,7 @@ class Plan < Sequel::Model
 
   # ~~ associations ~~
   one_to_many :companies, class: "Company"
-  one_to_many :undeleted_companies, class: "Company", conditions: {
-    deleted_at: nil
-  }
+  one_to_many :undeleted_companies, class: "Company", conditions: { deleted_at: nil }
   one_to_many :email_templates, class: "EmailTemplate"
-  one_to_many :undeleted_email_templates, class: "EmailTemplate", conditions: {
-    deleted_at: nil
-  }
+  one_to_many :undeleted_email_templates, class: "EmailTemplate", conditions: { deleted_at: nil }
 end

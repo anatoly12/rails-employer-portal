@@ -17,6 +17,7 @@ class EmailTemplate < Sequel::Model
   plugin :timestamps, update_on_create: true
   plugin :validation_helpers
   plugin :active_model
+  plugin :with_audits
 
   # ~~ validations ~~
   def validate

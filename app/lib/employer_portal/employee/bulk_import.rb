@@ -84,10 +84,19 @@ class EmployerPortal::Employee::BulkImport
   end
 
   def persist!
-    Employee.import(
+    pks = Employee.import(
       employees.first.values.keys,
-      employees.map { |employee| employee.values.values }
+      employees.map { |employee| employee.values.values },
+      return: :primary_key,
     )
+    Audit.create(
+      item_type: Employee,
+      item_id: nil,
+      event: "import",
+      changes: pks.to_json,
+      created_by_type: Sequel::Plugins::WithAudits.created_by_type,
+      created_by_id: Sequel::Plugins::WithAudits.created_by_id,
+    ) if pks.any?
   end
 
   def enqueue_background_jobs

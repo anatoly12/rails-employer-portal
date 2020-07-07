@@ -34,6 +34,27 @@ CREATE TABLE `admin_users` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
+-- Table structure for table `audits`
+--
+
+DROP TABLE IF EXISTS `audits`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `audits` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `item_type` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `item_id` bigint(20) DEFAULT NULL,
+  `event` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `changes` json DEFAULT NULL,
+  `created_by_type` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `created_by_id` bigint(20) DEFAULT NULL,
+  `created_at` datetime(6) DEFAULT CURRENT_TIMESTAMP(6),
+  PRIMARY KEY (`id`),
+  KEY `audits_item_type_item_id_index` (`item_type`,`item_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
 -- Table structure for table `companies`
 --
 
@@ -280,3 +301,4 @@ INSERT INTO `schema_migrations` (`filename`) VALUES ('20200702094748_create_plan
 INSERT INTO `schema_migrations` (`filename`) VALUES ('20200702141003_set_nullable_companies.rb');
 INSERT INTO `schema_migrations` (`filename`) VALUES ('20200702185754_set_email_template_columns_from_string_to_text.rb');
 INSERT INTO `schema_migrations` (`filename`) VALUES ('20200705071934_add_remote_sync_at_to_companies.rb');
+INSERT INTO `schema_migrations` (`filename`) VALUES ('20200707174717_create_audits.rb');

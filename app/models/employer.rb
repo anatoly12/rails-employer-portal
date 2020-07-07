@@ -7,6 +7,7 @@ class Employer < Sequel::Model
   plugin :secure_password, include_validations: false
   plugin :validation_helpers
   plugin :active_model
+  plugin :with_audits
 
   # ~~ validations ~~
   def validate
