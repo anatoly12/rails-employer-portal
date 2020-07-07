@@ -1,4 +1,4 @@
-<%= link_to({ action: :edit, id: employee }, class: "flex items-center border-t hover:bg-gray-100 #{employee.flagged? ? "text-red-300 hover:text-red-600" : "text-gray-600 hover:text-blue-600"}") do %>
+<%= link_to({ action: :edit, id: employee }, class: "flex items-center border-t hover:bg-gray-100 #{employee.flagged? ? "text-gray-300 hover:text-red-600" : "text-gray-300 hover:text-blue-600"}") do %>
   <div class="w-14 px-2">
     <% if employee.selfie_url %>
       <img src="<%= employee.selfie_url %>" class="rounded-full h-10 w-10 object-cover"/>
@@ -24,7 +24,7 @@
     <div class="w-40 px-2 hidden xl:block">
       <% if employee.daily_checkup_need_contact? %>
         <% if employee.already_contacted? %>
-          <div class="text-xs">
+          <div class="text-xs text-gray-600">
             Contacted
           </div>
         <% else %>
@@ -35,7 +35,7 @@
         <% end %>
       <% elsif employee.daily_checkup_need_reminder? %>
         <% if employee.already_sent_reminder? %>
-          <div class="text-xs">
+          <div class="text-xs text-gray-600">
             Reminder sent
           </div>
         <% else %>
