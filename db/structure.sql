@@ -217,7 +217,8 @@ CREATE TABLE `employers` (
   `deleted_at` datetime DEFAULT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `uuid` (`uuid`),
-  UNIQUE KEY `employers_company_id_email_index` (`company_id`,`email`),
+  UNIQUE KEY `employers_email_index` (`email`),
+  KEY `employers_company_id_index` (`company_id`),
   CONSTRAINT `employers_ibfk_1` FOREIGN KEY (`company_id`) REFERENCES `companies` (`id`) ON DELETE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
@@ -302,3 +303,4 @@ INSERT INTO `schema_migrations` (`filename`) VALUES ('20200702141003_set_nullabl
 INSERT INTO `schema_migrations` (`filename`) VALUES ('20200702185754_set_email_template_columns_from_string_to_text.rb');
 INSERT INTO `schema_migrations` (`filename`) VALUES ('20200705071934_add_remote_sync_at_to_companies.rb');
 INSERT INTO `schema_migrations` (`filename`) VALUES ('20200707174717_create_audits.rb');
+INSERT INTO `schema_migrations` (`filename`) VALUES ('20200708075657_fix_employers_email_unicity.rb');
