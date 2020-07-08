@@ -1,0 +1,78 @@
+<div class="bg-white text-black shadow-2xl p-4 md:max-w-xl md:mx-auto md:p-8 lg:max-w-2xl lg:p-12">
+  <h2 class="font-semibold">
+    <%= render "common/link_to_back", default_url: { action: :index } %>
+    Please match your fields to the sample below.
+  </h2>
+  <div>
+    Upload type accepted:
+    <a href="/employee_bulk_import/sample.txt" class="hover:text-blue-500" target="_blank" rel="noopener noreferrer" download>Unicode Text (.txt)</a>,
+    <a href="/employee_bulk_import/sample.csv" class="hover:text-blue-500" target="_blank" rel="noopener noreferrer" download>Comma-separated values (.csv)</a> or
+    <a href="/employee_bulk_import/sample.tsv" class="hover:text-blue-500" target="_blank" rel="noopener noreferrer" download>Tab-separated values (.tsv)</a>
+  </div>
+  <%= form_tag employees_path, multipart: true, autocomplete: "off", class: "flex flex-col items-start mt-4 -mx-2 md:-mx-4 md:flex-row" do %>
+    <a href="/employee_bulk_import/sample.txt" class="<%= secondary_button_class(:blue) %> flex items-center mb-4 mx-2 md:mx-4" target="_blank" rel="noopener noreferrer" download>
+      <%= render "icon/arrow_outline_down", icon_class: "h-3 w-3 mr-2" %>
+      <span>Download Sample</span>
+    </a>
+    <label class="<%= secondary_button_class(:blue) %> flex items-center mb-4 mx-2 md:mx-4 overflow-hidden relative cursor-default select-none">
+      <%= render "icon/arrow_outline_up", icon_class: "h-3 w-3 mr-2" %>
+      <span>Upload File</span>
+      <%= file_field_tag :file, class: "cursor-pointer absolute block opacity-0 left-0 top-0 w-full h-full" %>
+    </label>
+  <% end %>
+  <p class="text-xs font-medium mb-4">
+    <%= render "icon/exclamation_solid", icon_class: "inline-block align-middle h-3 w-3 text-orange-500" %>
+    <span class="align-middle">Your file will not be uploaded if it does not include the required fields.</span>
+  </p>
+  <div class="relative -mx-4 -mb-4 md:m-0">
+    <table class="table-fixed w-full text-xs relative z-10 md:table-auto">
+      <thead>
+        <tr class="text-left align-middle bg-gray-700 text-white">
+          <th class="px-2 font-medium">First Name</th>
+          <th class="px-2 font-medium">Last Name</th>
+          <th class="px-2 font-medium">Email</th>
+          <th class="px-2 font-medium">Phone Number</th>
+          <th class="px-2 font-medium">Zipcode</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td class="px-2 border truncate">Lashunda</td>
+          <td class="px-2 border truncate">Kohler</td>
+          <td class="px-2 border truncate">lashunda@example.org</td>
+          <td class="px-2 border truncate">1-317-415-9130</td>
+          <td class="px-2 border truncate">60119</td>
+        </tr>
+        <tr>
+          <td class="px-2 border truncate">Valentin</td>
+          <td class="px-2 border truncate">Kulas</td>
+          <td class="px-2 border truncate">valentin@example.org</td>
+          <td class="px-2 border truncate">511-247-4640</td>
+          <td class="px-2 border truncate">73823</td>
+        </tr>
+        <tr>
+          <td class="px-2 border truncate">Breanna</td>
+          <td class="px-2 border truncate">Schmeler</td>
+          <td class="px-2 border truncate">breanna@example.org</td>
+          <td class="px-2 border truncate">386-134-8568</td>
+          <td class="px-2 border truncate">51301</td>
+        </tr>
+        <tr>
+          <td class="px-2 border truncate">Gerard</td>
+          <td class="px-2 border truncate">O'Reilly V</td>
+          <td class="px-2 border truncate">gerard@example.org</td>
+          <td class="px-2 border truncate">361-278-0764</td>
+          <td class="px-2 border truncate">35830</td>
+        </tr>
+        <tr>
+          <td class="px-2 border truncate">Kasey</td>
+          <td class="px-2 border truncate">Kozey</td>
+          <td class="px-2 border truncate">kasey@example.org</td>
+          <td class="px-2 border truncate">1-654-361-3824</td>
+          <td class="px-2 border truncate">55713</td>
+        </tr>
+      </tbody>
+    </table>
+    <div class="absolute bottom-0 left-0 w-full text-center text-6xl font-bold tracking-widest leading-tight text-gray-400 select-none">EXAMPLE</div>
+  </div>
+</div>
