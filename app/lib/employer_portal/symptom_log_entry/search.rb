@@ -1,4 +1,5 @@
 class EmployerPortal::SymptomLogEntry::Search
+
   # ~~ public class methods ~~
   def self.from_params(context, params)
     employee = Employee.where(

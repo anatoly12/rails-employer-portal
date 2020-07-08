@@ -1,4 +1,5 @@
 class EmployerPortal::Admin::Employee::Viewer < ::EmployerPortal::Admin::Base::Viewer
+
   # ~~ delegates ~~
   delegate :first_name, :last_name, :email, :remote_id, to: :decorated
 

@@ -1,4 +1,5 @@
 class EmployerPortal::Admin::Base::Editor
+
   # ~~ delegates ~~
   delegate :to_key, :to_model, :to_param, to: :edited
 
@@ -37,6 +38,7 @@ class EmployerPortal::Admin::Base::Editor
 
   protected
 
+  # ~~ protected class methods ~~
   def self.find_by_id!(_id)
     raise NotImplementedError
   end

@@ -1,4 +1,5 @@
 class EmployerPortal::Admin::Base::Viewer
+
   # ~~ delegates ~~
   delegate :created_at, :to_param, to: :decorated
 

@@ -1,4 +1,5 @@
 class EmailTemplate < Sequel::Model
+
   # ~~ constants ~~
   TRIGGER_EMPLOYER_NEW = "employer_new"
   TRIGGER_EMPLOYER_PASSWORD_FORGOTTEN = "employer_password_forgotten"

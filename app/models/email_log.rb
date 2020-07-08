@@ -1,4 +1,5 @@
 class EmailLog < Sequel::Model
+
   # ~~ plugins ~~
   plugin :timestamps, update: false
   plugin :active_model

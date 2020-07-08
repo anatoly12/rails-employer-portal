@@ -1,7 +1,9 @@
 class EmployerPortal::Admin::EmailTemplate::Viewer < ::EmployerPortal::Admin::Base::Viewer
+
   # ~~ delegates ~~
   delegate :name, to: :decorated
 
+  # ~~ public instance methods ~~
   def trigger
     decorated.trigger_key.humanize
   end

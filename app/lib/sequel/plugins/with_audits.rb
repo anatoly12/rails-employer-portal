@@ -1,8 +1,10 @@
 module Sequel::Plugins::WithAudits
+
   # ~~ constants ~~
   THREAD_CREATED_BY_TYPE = :sequel_plugins_with_audits_created_by_type
   THREAD_CREATED_BY_ID = :sequel_plugins_with_audits_created_by_id
 
+  # ~~ plugin interface ~~
   def self.apply(model, opts = {})
     model.instance_eval do
       plugin :polymorphic
@@ -21,6 +23,7 @@ module Sequel::Plugins::WithAudits
     end
   end
 
+  # ~~ public class methods ~~
   def self.audited_by(user)
     if user.kind_of? ::EmployerPortal::Context::NoAccount
       Thread.current[THREAD_CREATED_BY_TYPE] = nil

@@ -1,4 +1,5 @@
 class EmployerPortal::Admin::Plan::Viewer < ::EmployerPortal::Admin::Base::Viewer
+
   # ~~ delegates ~~
   delegate :name, :daily_checkup_enabled, :testing_enabled,
     :health_passport_enabled, to: :decorated

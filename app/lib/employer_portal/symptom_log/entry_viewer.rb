@@ -1,4 +1,5 @@
 class EmployerPortal::SymptomLog::EntryViewer
+
   # ~~ constants ~~
   TYPE_DATE = "DATE"
   TYPE_TEXT = "TEXT"

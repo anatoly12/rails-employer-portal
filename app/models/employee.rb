@@ -1,6 +1,7 @@
 require "uri"
 
 class Employee < Sequel::Model
+
   # ~~ plugins ~~
   plugin :uuid
   plugin :timestamps, update_on_create: true

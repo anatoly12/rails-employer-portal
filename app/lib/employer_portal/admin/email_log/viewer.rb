@@ -1,4 +1,5 @@
 class EmployerPortal::Admin::EmailLog::Viewer < ::EmployerPortal::Admin::Base::Viewer
+
   # ~~ delegates ~~
   delegate :trigger_key, :recipient, :id, :from, :subject, :html, :text, to: :decorated
 

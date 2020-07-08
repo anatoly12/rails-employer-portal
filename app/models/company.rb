@@ -1,4 +1,5 @@
 class Company < Sequel::Model
+
   # ~~ plugins ~~
   plugin :uuid
   plugin :timestamps, update_on_create: true

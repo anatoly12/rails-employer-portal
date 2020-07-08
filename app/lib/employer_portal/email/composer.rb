@@ -1,4 +1,5 @@
 class EmployerPortal::Email::Composer
+
   # ~~ public instance methods ~~
   def initialize(context, email_template, recipient, opts)
     @context = context

@@ -14,6 +14,6 @@ class AdminUser < Sequel::Model
     validates_presence :email
     validates_presence :password if new?
     validates_format ::EmployerPortal::Regexp::EMAIL_FORMAT, :email, allow_blank: true
-    validates_unique(:email)
+    validates_unique :email
   end
 end

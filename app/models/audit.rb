@@ -1,4 +1,5 @@
 class Audit < Sequel::Model
+
   # ~~ plugins ~~
   plugin :polymorphic
 

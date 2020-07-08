@@ -1,4 +1,5 @@
 class EmployerPortal::Admin::Company::Viewer < ::EmployerPortal::Admin::Base::Viewer
+
   # ~~ delegates ~~
   delegate :name, to: :decorated
 
