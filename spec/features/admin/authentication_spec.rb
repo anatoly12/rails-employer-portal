@@ -12,8 +12,8 @@ feature "Admin authentication" do
     end
     expect(page).to have_content "Dashboard"
     expect(page).to have_content "Hi, #{admin_user.email}"
-    expect(page).not_to have_selector("[role=notice]")
-    expect(page).not_to have_selector("[role=alert]")
+    expect(page).not_to have_css("[role=notice]")
+    expect(page).not_to have_css("[role=alert]")
   end
 
   scenario "Trying to sign in with incorrect credentials" do
@@ -25,7 +25,7 @@ feature "Admin authentication" do
     end
     expect(page).not_to have_content "Dashboard"
     expect(page).not_to have_content "Hi, #{admin_user.email}"
-    expect(page).not_to have_selector("[role=notice]")
-    expect(page).to have_selector("[role=alert]", text: "Please review errors and try submitting it again.")
+    expect(page).not_to have_css("[role=notice]")
+    expect(page).to have_css("[role=alert]", text: "Please review errors and try submitting it again.")
   end
 end

@@ -82,11 +82,7 @@ RSpec.describe ::EmployerPortal::Sync, type: :sync do
     include SyncHelpers
     let(:company) { create :company }
     let(:employee) { create :employee, company: company }
-    before do
-      with_sync_connected
-      described_class::Covid19Message.dataset.delete
-      described_class::Account.dataset.delete
-    end
+    before { with_sync_connected }
     subject { described_class.create_account_for_employee! employee }
 
     context "when SYNC_SECRET_KEY_BASE isn't defined" do

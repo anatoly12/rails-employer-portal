@@ -10,6 +10,9 @@ class EmployerPortal::Sync::Legacy
     klass.const_set :AccessCode, access_code_class
     klass.const_set :AccessGrant, access_grant_class
     klass.const_set :Account, account_class
+    klass.const_set :Covid19DailyCheckup, covid19_daily_checkup_class
+    klass.const_set :Covid19DailyCheckupStatus, covid19_daily_checkup_status_class
+    klass.const_set :Covid19Evaluation, covid19_evaluation_class
     klass.const_set :Covid19Message, covid19_message_class
     klass.const_set :Covid19MessageCode, covid19_message_code_class
     klass.const_set :Demographic, demographic_class
@@ -25,6 +28,9 @@ class EmployerPortal::Sync::Legacy
     klass.send :remove_const, :AccessCode
     klass.send :remove_const, :AccessGrant
     klass.send :remove_const, :Account
+    klass.send :remove_const, :Covid19DailyCheckup
+    klass.send :remove_const, :Covid19DailyCheckupStatus
+    klass.send :remove_const, :Covid19Evaluation
     klass.send :remove_const, :Covid19Message
     klass.send :remove_const, :Covid19MessageCode
     klass.send :remove_const, :Demographic
@@ -74,7 +80,41 @@ class EmployerPortal::Sync::Legacy
       many_to_one :user, class: "#{prefix}::User"
       one_to_one :demographic, class: "#{prefix}::Demographic", key: :account_id
       one_to_many :access_grants, class: "#{prefix}::AccessGrant", key: :account_id
+      one_to_many :covid19_daily_checkups, class: "#{prefix}::Covid19DailyCheckup", key: :account_id
+      one_to_many :covid19_evaluations, class: "#{prefix}::Covid19Evaluation", key: :account_id
       one_to_many :covid19_messages, class: "#{prefix}::Covid19Message", key: :account_id
+      plugin :timestamps, update_on_create: true
+    }
+  end
+
+  def covid19_daily_checkup_class
+    prefix = klass.to_s
+    Class.new(
+      Sequel::Model(db[schema[:covid19_daily_checkups]])
+    ) {
+      unrestrict_primary_key
+      many_to_one :account, class: "#{prefix}::Account"
+      many_to_one :status, class: "#{prefix}::Covid19DailyCheckupStatus", key: :covid19_daily_status_code
+      plugin :timestamps, update_on_create: true
+    }
+  end
+
+  def covid19_daily_checkup_status_class
+    prefix = klass.to_s
+    Class.new(
+      Sequel::Model(db[schema[:covid19_daily_checkup_statuses]])
+    ) {
+      unrestrict_primary_key
+      plugin :timestamps, update_on_create: true
+    }
+  end
+
+  def covid19_evaluation_class
+    prefix = klass.to_s
+    Class.new(
+      Sequel::Model(db[schema[:covid19_evaluations]])
+    ) {
+      many_to_one :account, class: "#{prefix}::Account"
       plugin :timestamps, update_on_create: true
     }
   end

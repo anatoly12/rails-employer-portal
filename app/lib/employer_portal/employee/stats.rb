@@ -83,6 +83,6 @@ class EmployerPortal::Employee::Stats
   end
 
   def count_by_testing_status
-    @count_by_testing_status ||= query.count_by_daily_checkup_status
+    @count_by_testing_status ||= query.count_by_testing_status
   end
 end

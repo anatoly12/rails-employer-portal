@@ -1,4 +1,4 @@
-<%= link_to({ action: :edit, id: employee }, class: "flex items-center border-t hover:bg-gray-100 #{employee.flagged? ? "text-gray-300 hover:text-red-600" : "text-gray-300 hover:text-blue-600"}") do %>
+<%= link_to({ action: :edit, id: employee }, class: "flex items-center border-t text-gray-300 hover:bg-gray-100 #{employee.flagged? ? "hover:text-red-600" : "hover:text-blue-600"}") do %>
   <div class="w-14 px-2">
     <% if employee.selfie_url %>
       <img src="<%= employee.selfie_url %>" class="rounded-full h-10 w-10 object-cover"/>
@@ -47,10 +47,10 @@
       <% end %>
     </div>
   <% else %>
-    <div class="w-32 px-2 py-4 text-gray-600 hidden pointer-events-none select-none md:block xl:w-36">
+    <div class="w-32 px-2 py-4 text-gray-600 hidden select-none md:block xl:w-36">
       Did Not Submit
     </div>
-    <div class="w-28 px-2 py-4 text-gray-600 hidden pointer-events-none select-none lg:block">
+    <div class="w-28 px-2 py-4 text-gray-600 hidden select-none lg:block">
       N/A
     </div>
     <div class="w-40 px-2 hidden xl:block"></div>
@@ -64,10 +64,10 @@
     </div>
     <div class="w-40 px-2 hidden xl:block"></div>
   <% else %>
-    <div class="w-32 px-2 text-gray-600 hidden pointer-events-none select-none md:block xl:w-36">
+    <div class="w-32 px-2 text-gray-600 hidden select-none md:block xl:w-36">
       Not Registered
     </div>
-    <div class="w-28 px-2 text-gray-600 hidden pointer-events-none select-none lg:block">
+    <div class="w-28 px-2 text-gray-600 hidden select-none lg:block">
       N/A
     </div>
     <div class="w-40 px-2 hidden xl:block"></div>

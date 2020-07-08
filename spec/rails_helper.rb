@@ -72,8 +72,12 @@ RSpec.configure do |config|
   end
 
   config.append_after(:each) do
+    if ::EmployerPortal::Sync.connected?
+      ::EmployerPortal::Sync::Covid19Message.dataset.delete
+      ::EmployerPortal::Sync::Account.dataset.delete
+      ::EmployerPortal::Sync.disconnect
+    end
     DatabaseCleaner.clean
     ZipCode::CACHE.clear
-    ::EmployerPortal::Sync.disconnect
   end
 end

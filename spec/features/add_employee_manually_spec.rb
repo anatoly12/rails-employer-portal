@@ -3,8 +3,9 @@ require "rails_helper"
 feature "Add employee manually" do
   include ApplicationHelpers
 
-  scenario "Add the first employee" do
-    sign_in_as_employer
+  before { sign_in_as_employer }
+
+  scenario "I add the first employee" do
     within(".blur-3 .container") do
       click_link "Add New"
     end
@@ -19,7 +20,7 @@ feature "Add employee manually" do
         click_button "Submit"
       end.to have_enqueued_job(CreateAccountForEmployeeJob).exactly(:once)
     end
-    expect(page).to have_selector("[role=notice]", text: "Employee was created successfully.")
-    expect(page).not_to have_selector("[role=alert]")
+    expect(page).to have_css("[role=notice]", text: "Employee was created successfully.")
+    expect(page).not_to have_css("[role=alert]")
   end
 end

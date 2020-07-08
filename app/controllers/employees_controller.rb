@@ -67,10 +67,10 @@ class EmployeesController < ApplicationController
 
   def contact
     if editor.contact_queued?
-      flash.alert = "Employee contact was already sent today."
+      flash.alert = "Employee was already contacted today."
     else
       editor.contact_queue!
-      flash.notice = "Employee contact was sent successfully."
+      flash.notice = "Employee was contacted successfully."
     end
     redirect_to action: :edit
   end

@@ -3,7 +3,7 @@ require "rails_helper"
 feature "Authentication" do
   given(:employer) { create :employer }
 
-  scenario "Signing in with correct credentials" do
+  scenario "I sign in with the correct credentials" do
     visit "/"
     within("#new_session") do
       fill_in "Email", with: employer.email
@@ -11,11 +11,11 @@ feature "Authentication" do
       click_button "Sign in"
     end
     expect(page).to have_content "Welcome #{employer.first_name}!"
-    expect(page).not_to have_selector("[role=notice]")
-    expect(page).not_to have_selector("[role=alert]")
+    expect(page).not_to have_css("[role=notice]")
+    expect(page).not_to have_css("[role=alert]")
   end
 
-  scenario "Trying to sign in with incorrect credentials" do
+  scenario "I try to sign in with the wrong credentials" do
     visit "/"
     within("#new_session") do
       fill_in "Email", with: employer.email
@@ -23,7 +23,7 @@ feature "Authentication" do
       click_button "Sign in"
     end
     expect(page).not_to have_content "Welcome #{employer.first_name}!"
-    expect(page).not_to have_selector("[role=notice]")
-    expect(page).to have_selector("[role=alert]", text: "Please review errors and try submitting it again.")
+    expect(page).not_to have_css("[role=notice]")
+    expect(page).to have_css("[role=alert]", text: "Please review errors and try submitting it again.")
   end
 end

@@ -20,7 +20,7 @@ class EmployerPortal::Employee::Viewer
   def daily_checkup_status
     return unless context.sync_connected?
 
-    dashboard_employee&.daily_checkup_status
+    dashboard_employee&.daily_checkup_status || "Did Not Submit"
   end
 
   def daily_checkup_updated_at
@@ -49,7 +49,7 @@ class EmployerPortal::Employee::Viewer
   end
 
   def testing_status
-    dashboard_employee&.testing_status
+    dashboard_employee&.testing_status || "Not Registered"
   end
 
   def testing_updated_at
@@ -79,6 +79,6 @@ class EmployerPortal::Employee::Viewer
   end
 
   def daily_checkup_action
-    dashboard_employee&.daily_checkup_action
+    dashboard_employee&.daily_checkup_action || "Send Reminder"
   end
 end
