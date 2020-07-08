@@ -56,46 +56,48 @@ class EmployerPortal::Employee::Editor
     @health_passport ||= ::EmployerPortal::HealthPassport.new context, edited, dashboard_employee
   end
 
-  def daily_checkup_need_contact?
+  def contact_needed?
     daily_checkup_action == "Contact"
   end
 
-  def already_contacted?
-    sent_at = last_trigger_by_key[EmailTemplate::TRIGGER_EMPLOYEE_CONTACT]
-    sent_at && sent_at.to_date == Date.today
+  def contact_queued?
+    edited.contact_queued_at && edited.contact_queued_at.to_date == Date.today
   end
 
-  def last_contacted_at
-    sent_at = last_trigger_by_key[EmailTemplate::TRIGGER_EMPLOYEE_CONTACT]
-    sent_at.strftime("%F %R UTC") if sent_at
+  def contact_queued_at
+    edited.contact_queued_at.strftime("%F %R UTC") if edited.contact_queued_at
   end
 
-  def contact!
-    EmailTriggerJob.perform_later(
-      EmailTemplate::TRIGGER_EMPLOYEE_CONTACT,
-      edited.uuid
-    )
+  def contact_queue!(now = Time.now)
+    Sequel::Model.db.transaction do
+      EmailTriggerJob.perform_later(
+        EmailTemplate::TRIGGER_EMPLOYEE_CONTACT,
+        edited.uuid
+      )
+      edited.update contact_queued_at: now
+    end
   end
 
-  def daily_checkup_need_reminder?
+  def reminder_needed?
     daily_checkup_action == "Send Reminder"
   end
 
-  def already_sent_reminder?
-    sent_at = last_trigger_by_key[EmailTemplate::TRIGGER_EMPLOYEE_REMINDER]
-    sent_at && sent_at.to_date == Date.today
+  def reminder_queued?
+    edited.reminder_queued_at && edited.reminder_queued_at.to_date == Date.today
   end
 
-  def last_sent_reminder_at
-    sent_at = last_trigger_by_key[EmailTemplate::TRIGGER_EMPLOYEE_REMINDER]
-    sent_at.strftime("%F %R UTC") if sent_at
+  def reminder_queued_at
+    edited.reminder_queued_at.strftime("%F %R UTC") if edited.reminder_queued_at
   end
 
-  def send_reminder!
-    EmailTriggerJob.perform_later(
-      EmailTemplate::TRIGGER_EMPLOYEE_REMINDER,
-      edited.uuid
-    )
+  def reminder_queue!(now = Time.now)
+    Sequel::Model.db.transaction do
+      EmailTriggerJob.perform_later(
+        EmailTemplate::TRIGGER_EMPLOYEE_REMINDER,
+        edited.uuid
+      )
+      edited.update reminder_queued_at: now
+    end
   end
 
   def synced?
@@ -133,16 +135,5 @@ class EmployerPortal::Employee::Editor
 
   def daily_checkup_action
     dashboard_employee&.daily_checkup_action || "Send Reminder"
-  end
-
-  def last_trigger_by_key
-    return {} unless persisted?
-
-    @last_trigger_by_key ||= EmailLog.where(
-      employee_id: edited.id,
-    ).group_by(:trigger_key).select(
-      :trigger_key,
-      Sequel.function(:max, :created_at).as(:max)
-    ).to_hash :trigger_key, :max
   end
 end

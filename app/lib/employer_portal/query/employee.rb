@@ -29,7 +29,7 @@ class EmployerPortal::Query::Employee < EmployerPortal::Query::Base
     else
       ds = ds.where Sequel.qualify(:company, :deleted_at) => nil
     end
-    ds.group_by(:id).qualify.from_self
+    ds.qualify.from_self
   end
 
   def apply_filter(ds, key, value)
@@ -81,10 +81,6 @@ class EmployerPortal::Query::Employee < EmployerPortal::Query::Base
   def graphs
     res = [:company]
     res << :dashboard_employee if context.sync_connected?
-    if context.section_application?
-      res << :contact_email_logs
-      res << :reminder_email_logs
-    end
     res
   end
 
@@ -101,8 +97,8 @@ class EmployerPortal::Query::Employee < EmployerPortal::Query::Base
     }
     if context.section_application?
       res.merge!(
-        last_contacted_at: [:employees, :last_contacted_at, Sequel.function(:max, Sequel.qualify(:contact_email_logs, :created_at))],
-        last_reminded_at: [:employees, :last_reminded_at, Sequel.function(:max, Sequel.qualify(:reminder_email_logs, :created_at))],
+        contact_queued_at: [:employees, :contact_queued_at],
+        reminder_queued_at: [:employees, :reminder_queued_at],
       )
     else
       res.merge!(

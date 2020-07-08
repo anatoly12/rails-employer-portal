@@ -66,21 +66,21 @@ class EmployeesController < ApplicationController
   end
 
   def contact
-    if editor.already_contacted?
+    if editor.contact_queued?
       flash.alert = "Employee contact was already sent today."
     else
-      editor.contact!
-      flash.notice = "Employee contact was successfully enqueued."
+      editor.contact_queue!
+      flash.notice = "Employee contact was sent successfully."
     end
     redirect_to action: :edit
   end
 
   def send_reminder
-    if editor.already_sent_reminder?
+    if editor.reminder_queued?
       flash.alert = "Employee reminder was already sent today."
     else
-      editor.send_reminder!
-      flash.notice = "Employee reminder was successfully enqueued."
+      editor.reminder_queue!
+      flash.notice = "Employee reminder was sent successfully."
     end
     redirect_to action: :edit
   end

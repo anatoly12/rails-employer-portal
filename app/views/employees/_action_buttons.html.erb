@@ -6,15 +6,11 @@
   </div>
 <% else %>
   <div class="grid gap-10 my-10 md:grid-cols-3">
-    <% if editor.daily_checkup_need_contact? %>
-      <% if editor.already_contacted? %>
+    <% if editor.contact_needed? %>
+      <% if editor.contact_queued? %>
         <div class="text-gray-400 flex items-center justify-center text-center font-medium">
           Contact sent on<br>
-          <%= editor.last_contacted_at %>
-        </div>
-      <% elsif request.referrer.include?("contact") %>
-        <div class="text-gray-400 flex items-center justify-center text-center font-medium">
-          Contact enqueued
+          <%= editor.contact_queued_at %>
         </div>
       <% else %>
         <%= link_to(contact_employee_path(editor), method: :patch, class: "#{primary_button_class(:blue)} flex items-center justify-center") do %>
@@ -27,15 +23,11 @@
         Contact not needed
       </div>
     <% end %>
-    <% if editor.daily_checkup_need_reminder? %>
-      <% if editor.already_sent_reminder? %>
+    <% if editor.reminder_needed? %>
+      <% if editor.reminder_queued? %>
         <div class="text-gray-400 flex items-center justify-center text-center font-medium">
           Reminder sent on<br>
-          <%= editor.last_sent_reminder_at %>
-        </div>
-      <% elsif request.referrer.include?("send_reminder") %>
-        <div class="text-gray-400 flex items-center justify-center text-center font-medium">
-          Reminder enqueued
+          <%= editor.reminder_queued_at %>
         </div>
       <% else %>
         <%= link_to(send_reminder_employee_path(editor), method: :patch, class: "#{primary_button_class(:blue)} flex items-center justify-center") do %>

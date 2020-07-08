@@ -1,6 +1,6 @@
 <% active = current_controller?(path) %>
 <li>
-  <%= link_to path, class: "block py-3 pl-1 align-middle no-underline border-b-2 #{active ? "text-gray-200 border-blue-500" : "text-gray-600 hover:text-gray-200 border-gray-800 hover:border-blue-500"}" do %>
+  <%= link_to path, class: "block py-4 pl-1 align-middle no-underline border-b-2 #{active ? "text-gray-200 border-blue-500" : "text-gray-600 hover:text-gray-200 border-gray-800 hover:border-blue-500"}" do %>
     <span class="<%= active ? "text-blue-400" : "text-gray-400" %>">
       <%= render "icon/#{icon}", icon_class: "h-5 w-5 inline-block" %>
     </span>

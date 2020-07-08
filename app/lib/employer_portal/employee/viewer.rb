@@ -1,12 +1,12 @@
 class EmployerPortal::Employee::Viewer
 
   # ~~ delegates ~~
-  delegate :to_param, :first_name, :last_name, :state, :remote_id, to: :employee
+  delegate :to_param, :first_name, :last_name, :state, :remote_id, to: :decorated
 
   # ~~ public instance methods ~~
-  def initialize(context, employee)
+  def initialize(context, decorated)
     @context = context
-    @employee = employee
+    @decorated = decorated
   end
 
   def flagged?
@@ -28,24 +28,24 @@ class EmployerPortal::Employee::Viewer
     updated_at ? updated_at.strftime("%F") : "Never"
   end
 
-  def daily_checkup_need_contact?
+  def contact_needed?
     return false unless synced?
 
     daily_checkup_action == "Contact"
   end
 
-  def already_contacted?
-    last_contacted_at && last_contacted_at.to_date == Date.today
+  def contact_queued?
+    decorated.contact_queued_at && decorated.contact_queued_at.to_date == Date.today
   end
 
-  def daily_checkup_need_reminder?
+  def reminder_needed?
     return false unless synced?
 
     daily_checkup_action == "Send Reminder"
   end
 
-  def already_sent_reminder?
-    last_reminded_at && last_reminded_at.to_date == Date.today
+  def reminder_queued?
+    decorated.reminder_queued_at && decorated.reminder_queued_at.to_date == Date.today
   end
 
   def testing_status
@@ -67,7 +67,7 @@ class EmployerPortal::Employee::Viewer
 
   private
 
-  attr_reader :context, :employee
+  attr_reader :context, :decorated
 
   # ~~ private instance methods ~~
   def synced?
@@ -75,18 +75,10 @@ class EmployerPortal::Employee::Viewer
   end
 
   def dashboard_employee
-    employee.dashboard_employee if synced?
+    decorated.dashboard_employee if synced?
   end
 
   def daily_checkup_action
     dashboard_employee&.daily_checkup_action
-  end
-
-  def last_contacted_at
-    employee.values[:last_contacted_at]
-  end
-
-  def last_reminded_at
-    employee.values[:last_reminded_at]
   end
 end

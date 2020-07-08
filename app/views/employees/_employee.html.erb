@@ -22,8 +22,8 @@
       <%= employee.daily_checkup_updated_at %>
     </div>
     <div class="w-40 px-2 hidden xl:block">
-      <% if employee.daily_checkup_need_contact? %>
-        <% if employee.already_contacted? %>
+      <% if employee.contact_needed? %>
+        <% if employee.contact_queued? %>
           <div class="text-xs text-gray-600">
             Contacted
           </div>
@@ -33,8 +33,8 @@
             Contact
           <% end %>
         <% end %>
-      <% elsif employee.daily_checkup_need_reminder? %>
-        <% if employee.already_sent_reminder? %>
+      <% elsif employee.reminder_needed? %>
+        <% if employee.reminder_queued? %>
           <div class="text-xs text-gray-600">
             Reminder sent
           </div>

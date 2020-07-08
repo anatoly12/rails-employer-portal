@@ -187,6 +187,8 @@ CREATE TABLE `employees` (
   `updated_at` datetime DEFAULT NULL,
   `remote_id` bigint(20) DEFAULT NULL,
   `remote_sync_at` datetime DEFAULT NULL,
+  `contact_queued_at` datetime DEFAULT NULL,
+  `reminder_queued_at` datetime DEFAULT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `uuid` (`uuid`),
   UNIQUE KEY `employees_company_id_email_index` (`company_id`,`email`),
@@ -304,3 +306,4 @@ INSERT INTO `schema_migrations` (`filename`) VALUES ('20200702185754_set_email_t
 INSERT INTO `schema_migrations` (`filename`) VALUES ('20200705071934_add_remote_sync_at_to_companies.rb');
 INSERT INTO `schema_migrations` (`filename`) VALUES ('20200707174717_create_audits.rb');
 INSERT INTO `schema_migrations` (`filename`) VALUES ('20200708075657_fix_employers_email_unicity.rb');
+INSERT INTO `schema_migrations` (`filename`) VALUES ('20200708100604_add_queued_at_on_employees.rb');
