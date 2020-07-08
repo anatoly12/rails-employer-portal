@@ -13,6 +13,7 @@ module Sequel::Plugins::WithAudits
   def self.configure(model, opts = {})
     model.instance_eval do
       @audit_ignored_columns = opts.fetch(:except, [])
+      @audit_ignored_columns << :id
       @audit_ignored_columns << :created_at
       @audit_ignored_columns << :updated_at
 
@@ -46,11 +47,13 @@ module Sequel::Plugins::WithAudits
 
   module InstanceMethods
     def changes_for_event(event)
-      res = if event == "update"
+      if event == "update"
         previous_changes
       else
         values
-      end.except(*self.class.audit_ignored_columns)
+      end.select do |key, value|
+        !self.class.audit_ignored_columns.include?(key) && !value.nil?
+      end
     end
 
     def add_audited(event)

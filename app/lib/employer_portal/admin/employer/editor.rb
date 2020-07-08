@@ -53,12 +53,10 @@ class EmployerPortal::Admin::Employer::Editor < ::EmployerPortal::Admin::Base::E
     return false unless edited.valid?
 
     was_new = edited.new?
-    existing = Employer.where(
-      company_id: company_id,
-      email: email,
-    ).exclude(deleted_at: nil).first
+    existing = Employer.where(email: email).exclude(deleted_at: nil).first
     if existing
       existing.set(
+        company_id: edited.company_id,
         role: role,
         first_name: first_name,
         last_name: last_name,
