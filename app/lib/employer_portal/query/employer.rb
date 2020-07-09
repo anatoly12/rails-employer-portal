@@ -26,7 +26,7 @@ class EmployerPortal::Query::Employer < EmployerPortal::Query::Base
       ds.order(:first_name)
     when "last_name"
       ds.order(:last_name)
-    when "fullname"
+    when "full_name"
       ds.order Sequel.function(:concat, :first_name, " ", :last_name)
     when "email"
       ds.order(:email)
