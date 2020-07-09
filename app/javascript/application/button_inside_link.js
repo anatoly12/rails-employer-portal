@@ -2,7 +2,7 @@ document.addEventListener('turbolinks:before-visit', () => {
   document.querySelectorAll('button').forEach((button) => {
     var a = button.closest('a')
     if (a && a.originalHref) {
-      a.classList.setAttribute('href', a.originalHref)
+      a.setAttribute('href', a.originalHref)
     }
   })
 })
