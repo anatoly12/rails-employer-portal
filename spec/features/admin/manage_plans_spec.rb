@@ -1,10 +1,7 @@
 require "rails_helper"
 
 feature "Manage plans" do
-  include AdminHelpers
-  include SyncHelpers
-
-  context "when sync is connected" do
+  context "when sync is connected", type: :sync do
     let(:passport_product) { @passport_product }
     before do
       with_sync_connected

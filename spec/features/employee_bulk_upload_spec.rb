@@ -1,8 +1,6 @@
 require "rails_helper"
 
 feature "Employee bulk upload" do
-  include ApplicationHelpers
-
   before { sign_in_as_employer }
 
   scenario "I upload a valid file but the ZIP code doesn't exist" do

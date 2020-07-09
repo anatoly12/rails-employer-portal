@@ -51,6 +51,10 @@ RSpec.configure do |config|
   # arbitrary gems may also be filtered via:
   # config.filter_gems_from_backtrace("gem name")
 
+  # ~~ Include helpers automatically ~~
+  config.include FeatureHelpers, type: :feature
+  config.include SyncHelpers, type: :sync
+
   # ~~ Database cleaner ~~
   config.before(:suite) do
     Sequel::Model.db.run("SET FOREIGN_KEY_CHECKS=0")

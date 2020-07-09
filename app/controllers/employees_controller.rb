@@ -37,6 +37,7 @@ class EmployeesController < ApplicationController
       flash.notice = "Employee was created successfully."
       redirect_to action: :index
     else
+      flash.now.alert = "Please review errors and try submitting it again."
       render :new
     end
   end
@@ -54,6 +55,7 @@ class EmployeesController < ApplicationController
       flash.notice = "Employee was updated successfully."
       redirect_to action: :index
     else
+      flash.now.alert = "Please review errors and try submitting it again."
       render :edit
     end
   end

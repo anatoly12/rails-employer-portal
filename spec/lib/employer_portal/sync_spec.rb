@@ -79,7 +79,6 @@ RSpec.describe ::EmployerPortal::Sync, type: :sync do
   end
 
   describe ".create_account_for_employee!" do
-    include SyncHelpers
     let(:company) { create :company }
     let(:employee) { create :employee, company: company }
     before { with_sync_connected }
@@ -392,7 +391,6 @@ RSpec.describe ::EmployerPortal::Sync, type: :sync do
   end
 
   describe ".create_partner_for_company!" do
-    include SyncHelpers
     let(:company) { create :company }
     before do
       with_sync_connected

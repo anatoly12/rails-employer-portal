@@ -1,9 +1,6 @@
 require "rails_helper"
 
 feature "Manage admin users" do
-  include AdminHelpers
-  include SyncHelpers
-
   before { sign_in_as_admin_user }
 
   scenario "I can add a new admin user" do

@@ -1,11 +1,9 @@
 require "rails_helper"
 
 feature "Manage companies" do
-  include AdminHelpers
-  include SyncHelpers
   given!(:plan) { create :plan }
 
-  context "when sync is connected" do
+  context "when sync is connected", type: :sync do
     let(:partner) { @partner }
     before do
       with_sync_connected

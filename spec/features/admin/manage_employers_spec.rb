@@ -1,8 +1,6 @@
 require "rails_helper"
 
 feature "Manage employers" do
-  include AdminHelpers
-  include SyncHelpers
   given!(:company) { create :company }
   before { sign_in_as_admin_user }
 

@@ -1,9 +1,6 @@
 require "rails_helper"
 
 feature "Employee edit" do
-  include ApplicationHelpers
-  include SyncHelpers
-
   given(:company) { create :company }
   given(:employer) { create :employer, company: company }
   given!(:employee) { create :employee, company: company }
@@ -412,7 +409,6 @@ feature "Employee edit" do
         expect(page).not_to have_css(".bg-blue-400")
         expect(page).not_to have_css("a[href$='/employees/#{employee.uuid}/health_passport']")
       end
-      expect(page).to have_css("form#edit_employee_#{employee.id}")
       within "form#edit_employee_#{employee.id}" do
         fill_in "First Name", with: "SpongeBob"
         fill_in "Last Name", with: "SquarePants"
@@ -435,6 +431,29 @@ feature "Employee edit" do
         expect(page).to have_field("Email", with: "spongebob@example.com")
         expect(page).to have_field("Phone Number", with: "123-456")
         expect(page).to have_select "State", selected: "New York"
+      end
+    end
+
+    scenario "I can't edit the employee with errors" do
+      visit_employee_edit
+      within "form#edit_employee_#{employee.id}" do
+        fill_in "First Name", with: ""
+        fill_in "Last Name", with: ""
+        fill_in "Email", with: ""
+        fill_in "Phone Number", with: ""
+        select "", from: "State"
+        click_button "Save changes"
+      end
+      expect(page).not_to have_css("[role=notice]")
+      expect(page).to have_css("[role=alert]", text: "Please review errors and try submitting it again.")
+      within "form#edit_employee_#{employee.id}" do
+        expect_form_errors(
+          employee_first_name: "is not present",
+          employee_last_name: "is not present",
+          employee_email: "is not present",
+          employee_phone: "is not present",
+          employee_state: "is not present",
+        )
       end
     end
   end

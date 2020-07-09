@@ -1,7 +1,6 @@
 require "rails_helper"
 
 RSpec.describe ::EmployerPortal::Email::Trigger do
-  include SyncHelpers
   let(:context) { ::EmployerPortal::Context.new account_id: nil, section: :background_job }
   let(:company) { create :company }
   let(:employer) { create :employer, company: company }

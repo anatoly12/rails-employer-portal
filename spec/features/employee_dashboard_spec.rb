@@ -1,9 +1,6 @@
 require "rails_helper"
 
 feature "Employee dashboard" do
-  include ApplicationHelpers
-  include SyncHelpers
-
   given(:company) { create :company }
   given(:employer) { create :employer, company: company }
   before { sign_in_as_employer employer }

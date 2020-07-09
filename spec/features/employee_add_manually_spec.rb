@@ -1,8 +1,6 @@
 require "rails_helper"
 
 feature "Employee add manually" do
-  include ApplicationHelpers
-
   before { sign_in_as_employer }
 
   scenario "I add the first employee" do
@@ -22,5 +20,28 @@ feature "Employee add manually" do
     end
     expect(page).to have_css("[role=notice]", text: "Employee was created successfully.")
     expect(page).not_to have_css("[role=alert]")
+  end
+
+  scenario "I can't add an employee with errors" do
+    within(".blur-3 .container") do
+      click_link "Add New"
+    end
+    expect(page).to have_content "Register an employee by filling out the form below"
+    within("#new_employee") do
+      expect do
+        click_button "Submit"
+      end.not_to have_enqueued_job(CreateAccountForEmployeeJob)
+    end
+    expect(page).not_to have_css("[role=notice]")
+    expect(page).to have_css("[role=alert]", text: "Please review errors and try submitting it again.")
+    within "form#new_employee" do
+      expect_form_errors(
+        employee_first_name: "is not present",
+        employee_last_name: "is not present",
+        employee_email: "is not present",
+        employee_phone: "is not present",
+        employee_state: "is not present",
+      )
+    end
   end
 end
