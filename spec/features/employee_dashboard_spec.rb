@@ -343,6 +343,60 @@ feature "Employee dashboard" do
           end
         end
       end
+
+      describe "when my company plan has Daily Checkup disabled" do
+        before { company.plan.update daily_checkup_enabled: false }
+
+        scenario "I don't see my employee Daily Checkup status" do
+          visit "/"
+          expect(page).not_to have_css ".blur-3 .container"
+          within "#charts > div:nth-child(1)" do
+            check_charts [["#718096", 20], ["#718096", 50], ["#718096", 30]]
+          end
+          within "#charts > div:nth-child(2)" do
+            check_charts [["#1dd678", 0], ["#f35200", 0], ["#16a3e5", 100]]
+          end
+          within "a[href$='/employees/#{employee.uuid}/edit']" do
+            expect(page).to have_css "div:nth-child(2)", text: "#{employee.first_name} #{employee.last_name}"
+            expect(page).to have_css "div:nth-child(3)", text: employee.state
+            expect(page).to have_css "div:nth-child(4).text-gray-600", text: "Did Not Submit"
+            expect(page).to have_css "div:nth-child(5)", text: "N/A"
+            expect(page).to have_css "div:nth-child(6)", text: /\A\z/
+            expect(page).not_to have_css "div:nth-child(6) button"
+            expect(page).to have_css "div:nth-child(7).text-blue-600", text: "Not Registered"
+            expect(page).to have_css "div:nth-child(8)", text: "Never"
+            expect(page).to have_css "div:nth-child(9)", text: /\A\z/
+            expect(page).to have_css "div:nth-child(10) svg"
+          end
+        end
+      end
+
+      describe "when my company plan has Testing disabled" do
+        before { company.plan.update testing_enabled: false, health_passport_enabled: false }
+
+        scenario "I don't see my employee Testing status" do
+          visit "/"
+          expect(page).not_to have_css ".blur-3 .container"
+          within "#charts > div:nth-child(1)" do
+            check_charts [["#1dd678", 0], ["#f35200", 0], ["#16a3e5", 100]]
+          end
+          within "#charts > div:nth-child(2)" do
+            check_charts [["#718096", 20], ["#718096", 50], ["#718096", 30]]
+          end
+          within "a[href$='/employees/#{employee.uuid}/edit']" do
+            expect(page).to have_css "div:nth-child(2)", text: "#{employee.first_name} #{employee.last_name}"
+            expect(page).to have_css "div:nth-child(3)", text: employee.state
+            expect(page).to have_css "div:nth-child(4).text-blue-600", text: "Did Not Submit"
+            expect(page).to have_css "div:nth-child(5)", text: "Never"
+            expect(page).to have_css "div:nth-child(6)", text: /\A\z/
+            expect(page).not_to have_css "div:nth-child(6) button"
+            expect(page).to have_css "div:nth-child(7).text-gray-600", text: "Not Registered"
+            expect(page).to have_css "div:nth-child(8)", text: "N/A"
+            expect(page).to have_css "div:nth-child(9)", text: /\A\z/
+            expect(page).to have_css "div:nth-child(10) svg"
+          end
+        end
+      end
     end
 
     describe "without sync" do
@@ -361,6 +415,7 @@ feature "Employee dashboard" do
           expect(page).to have_css "div:nth-child(4).text-gray-600", text: "Did Not Submit"
           expect(page).to have_css "div:nth-child(5)", text: "N/A"
           expect(page).to have_css "div:nth-child(6)", text: /\A\z/
+          expect(page).not_to have_css "div:nth-child(6) button"
           expect(page).to have_css "div:nth-child(7).text-gray-600", text: "Not Registered"
           expect(page).to have_css "div:nth-child(8)", text: "N/A"
           expect(page).to have_css "div:nth-child(9)", text: /\A\z/

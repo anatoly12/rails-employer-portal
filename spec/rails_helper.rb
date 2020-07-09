@@ -78,6 +78,7 @@ RSpec.configure do |config|
     if ::EmployerPortal::Sync.connected?
       ::EmployerPortal::Sync::Covid19Message.dataset.delete
       ::EmployerPortal::Sync::Account.dataset.delete
+      ::EmployerPortal::Sync::PassportProduct.dataset.delete
       ::EmployerPortal::Sync.disconnect
     end
     DatabaseCleaner.clean
