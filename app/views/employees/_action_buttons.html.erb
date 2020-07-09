@@ -1,15 +1,15 @@
 <% if !editor.active? %>
-  <div class="my-10">
+  <div id="action_buttons" class="my-10">
     <%= link_to(reactivate_employee_path(editor), method: :patch, class: "#{primary_button_class(:red)} flex items-center justify-center") do %>
       Reactivate
     <% end %>
   </div>
 <% else %>
-  <div class="grid gap-10 my-10 md:grid-cols-3">
+  <div id="action_buttons" class="grid gap-10 my-10 md:grid-cols-3">
     <% if editor.contact_needed? %>
       <% if editor.contact_queued? %>
         <div class="text-gray-400 flex items-center justify-center text-center font-medium">
-          Contact sent on<br>
+          Contacted on<br>
           <%= editor.contact_queued_at %>
         </div>
       <% else %>

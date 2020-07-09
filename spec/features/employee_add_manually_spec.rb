@@ -1,6 +1,6 @@
 require "rails_helper"
 
-feature "Add employee manually" do
+feature "Employee add manually" do
   include ApplicationHelpers
 
   before { sign_in_as_employer }

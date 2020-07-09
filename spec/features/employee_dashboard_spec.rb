@@ -4,20 +4,21 @@ feature "Employee dashboard" do
   include ApplicationHelpers
   include SyncHelpers
 
-  before { sign_in_as_employer }
+  given(:company) { create :company }
+  given(:employer) { create :employer, company: company }
+  before { sign_in_as_employer employer }
 
   describe "without any employee" do
     scenario "I see the welcome message but no employee" do
       visit "/"
       within ".blur-3 .container" do
-        expect(page).to have_content "Welcome #{@employer.first_name}!"
+        expect(page).to have_content "Welcome #{employer.first_name}!"
       end
       expect(page).not_to have_css "a[href$='/edit']"
     end
   end
 
   describe "with one employee" do
-    given(:company) { @employer.company }
     given!(:employee) { create :employee, company: company }
     given!(:from_another_company) { create :employee }
     given(:now) { Time.now }
@@ -83,26 +84,12 @@ feature "Employee dashboard" do
 
         scenario "I can't click on the Send Reminder button twice" do
           visit "/"
-          expect(page).not_to have_css ".blur-3 .container"
-          within "#charts > div:nth-child(1)" do
-            check_charts [["#1dd678", 0], ["#f35200", 0], ["#16a3e5", 100]]
-          end
-          within "#charts > div:nth-child(2)" do
-            check_charts [["#1dd678", 0], ["#f35200", 0], ["#16a3e5", 100]]
-          end
-          expect(page).to have_css "a[href$='/edit']", count: 1
-          within "a[href$='/employees/#{employee.uuid}/edit']" do
-            expect(page).to have_css "div:nth-child(2)", text: "#{employee.first_name} #{employee.last_name}"
-            expect(page).to have_css "div:nth-child(3)", text: employee.state
-            expect(page).to have_css "div:nth-child(4).text-blue-600", text: "Did Not Submit"
-            expect(page).to have_css "div:nth-child(5)", text: "Never"
-            expect(page).to have_css "div:nth-child(6) button", text: "Send Reminder"
-            expect(page).to have_css "div:nth-child(7).text-blue-600", text: "Not Registered"
-            expect(page).to have_css "div:nth-child(8)", text: "Never"
-            expect(page).to have_css "div:nth-child(9)", text: /\A\z/
-            expect(page).to have_css "div:nth-child(10) svg"
+          expect {
             click_button "Send Reminder"
-          end
+          }.to have_enqueued_job(EmailTriggerJob).with(
+            EmailTemplate::TRIGGER_EMPLOYEE_REMINDER,
+            employee.uuid,
+          )
           expect(page).to have_css("[role=notice]", text: "Employee reminder was sent successfully.")
           expect(page).not_to have_css("[role=alert]")
           visit "/"
@@ -169,26 +156,12 @@ feature "Employee dashboard" do
 
         scenario "I can't click on the Contact button twice" do
           visit "/"
-          expect(page).not_to have_css ".blur-3 .container"
-          within "#charts > div:nth-child(1)" do
-            check_charts [["#1dd678", 0], ["#f35200", 100], ["#16a3e5", 0]]
-          end
-          within "#charts > div:nth-child(2)" do
-            check_charts [["#1dd678", 0], ["#f35200", 0], ["#16a3e5", 100]]
-          end
-          expect(page).to have_css "a[href$='/edit']", count: 1
-          within "a[href$='/employees/#{employee.uuid}/edit']" do
-            expect(page).to have_css "div:nth-child(2)", text: "#{employee.first_name} #{employee.last_name}"
-            expect(page).to have_css "div:nth-child(3)", text: employee.state
-            expect(page).to have_css "div:nth-child(4).text-red-600", text: "Not Cleared"
-            expect(page).to have_css "div:nth-child(5)", text: today.to_s
-            expect(page).to have_css "div:nth-child(6) button", text: "Contact"
-            expect(page).to have_css "div:nth-child(7).text-blue-600", text: "Not Registered"
-            expect(page).to have_css "div:nth-child(8)", text: "Never"
-            expect(page).to have_css "div:nth-child(9)", text: /\A\z/
-            expect(page).to have_css "div:nth-child(10) svg"
+          expect {
             click_button "Contact"
-          end
+          }.to have_enqueued_job(EmailTriggerJob).with(
+            EmailTemplate::TRIGGER_EMPLOYEE_CONTACT,
+            employee.uuid,
+          )
           expect(page).to have_css("[role=notice]", text: "Employee was contacted successfully.")
           expect(page).not_to have_css("[role=alert]")
           visit "/"
@@ -440,7 +413,6 @@ feature "Employee dashboard" do
   end
 
   describe "with multiple employees", type: :sync do
-    given(:company) { @employer.company }
     given!(:alice) { create :employee, first_name: "Alice", company: company }
     given!(:bob) { create :employee, first_name: "Bob", company: company }
     before do

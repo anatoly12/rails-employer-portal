@@ -1,6 +1,6 @@
 require "rails_helper"
 
-feature "Browse sent emails" do
+feature "Manage sent emails" do
   include AdminHelpers
 
   let!(:email_log1) { create :email_log, created_at: Time.utc(2020, 6, 2, 10) }

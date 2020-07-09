@@ -1,6 +1,6 @@
 require "rails_helper"
 
-feature "Bulk upload" do
+feature "Employee bulk upload" do
   include ApplicationHelpers
 
   before { sign_in_as_employer }
