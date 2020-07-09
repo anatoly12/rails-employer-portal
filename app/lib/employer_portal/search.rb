@@ -9,7 +9,7 @@ class EmployerPortal::Search
 
   # ~~ public class methods ~~
   def self.from_params(context, params)
-    new context, params.permit(:filters, :order, :page)
+    new context, params.permit(:order, :page, filters: {})
   end
 
   # ~~ public instance methods ~~

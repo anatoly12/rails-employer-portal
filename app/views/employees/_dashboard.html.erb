@@ -18,6 +18,7 @@
         <span>Delete all</span>
       <% end %>
     <% end %>
+    <%= render "employees/filters", filters: search.filters %>
   </div>
   <%= render "employees/employees", search: search %>
 </div>
