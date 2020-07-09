@@ -4,7 +4,7 @@
       Reactivate
     <% end %>
   </div>
-<% else %>
+<% elsif current_context.daily_checkup_enabled? %>
   <div id="action_buttons" class="grid gap-10 my-10 md:grid-cols-3">
     <% if editor.contact_needed? %>
       <% if editor.contact_queued? %>
@@ -40,6 +40,12 @@
         Reminder not needed
       </div>
     <% end %>
+    <%= link_to(employee_path(editor), method: :delete, class: "#{primary_button_class(:gray)} flex items-center justify-center") do %>
+      Deactivate
+    <% end %>
+  </div>
+<% else %>
+  <div id="action_buttons" class="my-10">
     <%= link_to(employee_path(editor), method: :delete, class: "#{primary_button_class(:gray)} flex items-center justify-center") do %>
       Deactivate
     <% end %>

@@ -21,12 +21,10 @@ feature "Employee edit" do
     describe "when employee hasn't been synced yet" do
       scenario "I see no action button" do
         visit_employee_edit
-        expect(page.find_by_id("symptom-tracker")["class"]).not_to include "bg-gray-100"
-        within "#symptom-tracker tbody" do
-          expect(page).not_to have_css("tr")
+        within "#symptom-tracker:not(.bg-gray-100)" do
+          expect(page).not_to have_css("tbody tr")
         end
-        expect(page.find_by_id("testing-progress")["class"]).not_to include "bg-gray-100"
-        within "#testing-progress" do
+        within "#testing-progress:not(.bg-gray-100)" do
           expect(page).to have_css(".bg-blue-400", count: 1)
           within "li:nth-child(1)" do
             expect(page).to have_css ".bg-blue-400"
@@ -34,6 +32,7 @@ feature "Employee edit" do
           end
           expect(page).to have_css("a[href$='/employees/#{employee.uuid}/health_passport']", text: "Not Registered")
         end
+        expect(page).to have_css("form#edit_employee_#{employee.id}")
         expect(page).not_to have_css "#action_buttons"
       end
     end
@@ -43,12 +42,10 @@ feature "Employee edit" do
 
       scenario "I see the Send Reminder link" do
         visit_employee_edit
-        expect(page.find_by_id("symptom-tracker")["class"]).not_to include "bg-gray-100"
-        within "#symptom-tracker tbody" do
-          expect(page).not_to have_css("tr")
+        within "#symptom-tracker:not(.bg-gray-100)" do
+          expect(page).not_to have_css("tbody tr")
         end
-        expect(page.find_by_id("testing-progress")["class"]).not_to include "bg-gray-100"
-        within "#testing-progress" do
+        within "#testing-progress:not(.bg-gray-100)" do
           expect(page).to have_css(".bg-blue-400", count: 1)
           within "li:nth-child(1)" do
             expect(page).to have_css ".bg-blue-400"
@@ -56,9 +53,10 @@ feature "Employee edit" do
           end
           expect(page).to have_css("a[href$='/employees/#{employee.uuid}/health_passport']", text: "Not Registered")
         end
+        expect(page).to have_css("form#edit_employee_#{employee.id}")
         within "#action_buttons" do
+          expect(page).to have_css "a", count: 2
           expect(page).to have_content "Contact not needed"
-          expect(page).not_to have_link "Contact"
           expect(page).to have_link "Send Reminder"
           expect(page).to have_link "Deactivate"
         end
@@ -74,12 +72,10 @@ feature "Employee edit" do
         )
         expect(page).to have_css("[role=notice]", text: "Employee reminder was sent successfully.")
         expect(page).not_to have_css("[role=alert]")
-        expect(page.find_by_id("symptom-tracker")["class"]).not_to include "bg-gray-100"
-        within "#symptom-tracker tbody" do
-          expect(page).not_to have_css("tr")
+        within "#symptom-tracker:not(.bg-gray-100)" do
+          expect(page).not_to have_css("tbody tr")
         end
-        expect(page.find_by_id("testing-progress")["class"]).not_to include "bg-gray-100"
-        within "#testing-progress" do
+        within "#testing-progress:not(.bg-gray-100)" do
           expect(page).to have_css(".bg-blue-400", count: 1)
           within "li:nth-child(1)" do
             expect(page).to have_css ".bg-blue-400"
@@ -87,11 +83,11 @@ feature "Employee edit" do
           end
           expect(page).to have_css("a[href$='/employees/#{employee.uuid}/health_passport']", text: "Not Registered")
         end
+        expect(page).to have_css("form#edit_employee_#{employee.id}")
         within "#action_buttons" do
+          expect(page).to have_css "a", count: 1
           expect(page).to have_content "Contact not needed"
-          expect(page).not_to have_link "Contact"
           expect(page).to have_content "Reminder sent on"
-          expect(page).not_to have_link "Send Reminder"
           expect(page).to have_link "Deactivate"
         end
       end
@@ -103,17 +99,21 @@ feature "Employee edit" do
         expect(page).to have_css("[role=notice]", text: "Employee was deactivated successfully.")
         expect(page).not_to have_css("[role=alert]")
         expect(page).to have_css "h2", text: "Employee's account is currently deactivated"
+        expect(page).to have_css("form#edit_employee_#{employee.id}")
         within "#action_buttons" do
           expect(page).to have_css "a", count: 1
+          expect(page).not_to have_content "Contact"
+          expect(page).not_to have_content "Remind"
           expect(page).to have_link "Reactivate"
-          click_link "Reactivate"
         end
+        click_link "Reactivate"
         expect(page).to have_css("[role=notice]", text: "Employee was reactivated successfully.")
         expect(page).not_to have_css("[role=alert]")
         expect(page).to have_css "h2", text: "Review, edit or deactivate an employee's account"
+        expect(page).to have_css("form#edit_employee_#{employee.id}")
         within "#action_buttons" do
+          expect(page).to have_css "a", count: 2
           expect(page).to have_content "Contact not needed"
-          expect(page).not_to have_link "Contact"
           expect(page).to have_link "Send Reminder"
           expect(page).to have_link "Deactivate"
         end
@@ -137,12 +137,10 @@ feature "Employee edit" do
 
       scenario "I see the Contact link" do
         visit_employee_edit
-        expect(page.find_by_id("symptom-tracker")["class"]).not_to include "bg-gray-100"
-        within "#symptom-tracker tbody" do
-          expect(page).not_to have_css("tr")
+        within "#symptom-tracker:not(.bg-gray-100)" do
+          expect(page).not_to have_css("tbody tr")
         end
-        expect(page.find_by_id("testing-progress")["class"]).not_to include "bg-gray-100"
-        within "#testing-progress" do
+        within "#testing-progress:not(.bg-gray-100)" do
           expect(page).to have_css(".bg-blue-400", count: 1)
           within "li:nth-child(1)" do
             expect(page).to have_css ".bg-blue-400"
@@ -150,10 +148,11 @@ feature "Employee edit" do
           end
           expect(page).to have_css("a[href$='/employees/#{employee.uuid}/health_passport']", text: "Not Registered")
         end
+        expect(page).to have_css("form#edit_employee_#{employee.id}")
         within "#action_buttons" do
+          expect(page).to have_css "a", count: 2
           expect(page).to have_link "Contact"
           expect(page).to have_content "Reminder not needed"
-          expect(page).not_to have_link "Send Reminder"
           expect(page).to have_link "Deactivate"
         end
       end
@@ -168,12 +167,10 @@ feature "Employee edit" do
         )
         expect(page).to have_css("[role=notice]", text: "Employee was contacted successfully.")
         expect(page).not_to have_css("[role=alert]")
-        expect(page.find_by_id("symptom-tracker")["class"]).not_to include "bg-gray-100"
-        within "#symptom-tracker tbody" do
-          expect(page).not_to have_css("tr")
+        within "#symptom-tracker:not(.bg-gray-100)" do
+          expect(page).not_to have_css("tbody tr")
         end
-        expect(page.find_by_id("testing-progress")["class"]).not_to include "bg-gray-100"
-        within "#testing-progress" do
+        within "#testing-progress:not(.bg-gray-100)" do
           expect(page).to have_css(".bg-blue-400", count: 1)
           within "li:nth-child(1)" do
             expect(page).to have_css ".bg-blue-400"
@@ -181,11 +178,11 @@ feature "Employee edit" do
           end
           expect(page).to have_css("a[href$='/employees/#{employee.uuid}/health_passport']", text: "Not Registered")
         end
+        expect(page).to have_css("form#edit_employee_#{employee.id}")
         within "#action_buttons" do
+          expect(page).to have_css "a", count: 1
           expect(page).to have_content "Contacted on"
-          expect(page).not_to have_link "Contact"
           expect(page).to have_content "Reminder not needed"
-          expect(page).not_to have_link "Send Reminder"
           expect(page).to have_link "Deactivate"
         end
       end
@@ -208,12 +205,10 @@ feature "Employee edit" do
 
       scenario "I see only the Deactivate link" do
         visit_employee_edit
-        expect(page.find_by_id("symptom-tracker")["class"]).not_to include "bg-gray-100"
-        within "#symptom-tracker tbody" do
-          expect(page).not_to have_css("tr")
+        within "#symptom-tracker:not(.bg-gray-100)" do
+          expect(page).not_to have_css("tbody tr")
         end
-        expect(page.find_by_id("testing-progress")["class"]).not_to include "bg-gray-100"
-        within "#testing-progress" do
+        within "#testing-progress:not(.bg-gray-100)" do
           expect(page).to have_css(".bg-blue-400", count: 1)
           within "li:nth-child(1)" do
             expect(page).to have_css ".bg-blue-400"
@@ -221,11 +216,11 @@ feature "Employee edit" do
           end
           expect(page).to have_css("a[href$='/employees/#{employee.uuid}/health_passport']", text: "Not Registered")
         end
+        expect(page).to have_css("form#edit_employee_#{employee.id}")
         within "#action_buttons" do
+          expect(page).to have_css "a", count: 1
           expect(page).to have_content "Contact not needed"
-          expect(page).not_to have_link "Contact"
           expect(page).to have_content "Reminder not needed"
-          expect(page).not_to have_link "Send Reminder"
           expect(page).to have_link "Deactivate"
         end
       end
@@ -243,12 +238,10 @@ feature "Employee edit" do
 
       scenario "I see that Testing Progress status is Cleared" do
         visit_employee_edit
-        expect(page.find_by_id("symptom-tracker")["class"]).not_to include "bg-gray-100"
-        within "#symptom-tracker tbody" do
-          expect(page).not_to have_css("tr")
+        within "#symptom-tracker:not(.bg-gray-100)" do
+          expect(page).not_to have_css("tbody tr")
         end
-        expect(page.find_by_id("testing-progress")["class"]).not_to include "bg-gray-100"
-        within "#testing-progress" do
+        within "#testing-progress:not(.bg-gray-100)" do
           expect(page).to have_css(".bg-blue-400", count: 1)
           within "li:nth-child(7)" do
             expect(page).to have_css ".bg-blue-400"
@@ -256,9 +249,10 @@ feature "Employee edit" do
           end
           expect(page).to have_css("a[href$='/employees/#{employee.uuid}/health_passport']", text: "Cleared")
         end
+        expect(page).to have_css("form#edit_employee_#{employee.id}")
         within "#action_buttons" do
+          expect(page).to have_css "a", count: 2
           expect(page).to have_content "Contact not needed"
-          expect(page).not_to have_link "Contact"
           expect(page).to have_link "Send Reminder"
           expect(page).to have_link "Deactivate"
         end
@@ -277,12 +271,10 @@ feature "Employee edit" do
 
       scenario "I see that Testing Progress status is Not Cleared" do
         visit_employee_edit
-        expect(page.find_by_id("symptom-tracker")["class"]).not_to include "bg-gray-100"
-        within "#symptom-tracker tbody" do
-          expect(page).not_to have_css("tr")
+        within "#symptom-tracker:not(.bg-gray-100)" do
+          expect(page).not_to have_css("tbody tr")
         end
-        expect(page.find_by_id("testing-progress")["class"]).not_to include "bg-gray-100"
-        within "#testing-progress" do
+        within "#testing-progress:not(.bg-gray-100)" do
           expect(page).to have_css(".bg-blue-400", count: 1)
           within "li:nth-child(7)" do
             expect(page).to have_css ".bg-blue-400"
@@ -290,12 +282,159 @@ feature "Employee edit" do
           end
           expect(page).to have_css("a[href$='/employees/#{employee.uuid}/health_passport']", text: "Not Cleared")
         end
+        expect(page).to have_css("form#edit_employee_#{employee.id}")
         within "#action_buttons" do
+          expect(page).to have_css "a", count: 2
           expect(page).to have_content "Contact not needed"
-          expect(page).not_to have_link "Contact"
           expect(page).to have_link "Send Reminder"
           expect(page).to have_link "Deactivate"
         end
+      end
+    end
+
+    describe "when my company plan has Daily Checkup disabled" do
+      before do
+        company.plan.update daily_checkup_enabled: false
+        ::EmployerPortal::Sync.create_account_for_employee! employee
+      end
+
+      scenario "I don't see my employee Daily Checkup status" do
+        visit_employee_edit
+        within "#symptom-tracker.bg-gray-100" do
+          expect(page).to have_css(".italic", text: "Feature not included in your current plan")
+          within "tbody" do
+            expect(page).to have_css("tr", count: 3)
+            expect(page).to have_css("tr:nth-child(1) td:nth-child(1)", text: "2020-04-03")
+            expect(page).to have_css("tr:nth-child(1) td:nth-child(3)", text: "100.2ºF")
+            expect(page).to have_css("tr:nth-child(1) td:nth-child(4)", text: "No")
+            expect(page).to have_css("tr:nth-child(2) td:nth-child(1)", text: "2020-03-31")
+            expect(page).to have_css("tr:nth-child(2) td:nth-child(3)", text: "100.4ºF")
+            expect(page).to have_css("tr:nth-child(2) td:nth-child(4)", text: "Yes")
+            expect(page).to have_css("tr:nth-child(3) td:nth-child(1)", text: "2020-03-29")
+            expect(page).to have_css("tr:nth-child(3) td:nth-child(3)", text: "99.7ºF")
+            expect(page).to have_css("tr:nth-child(3) td:nth-child(4)", text: "No")
+          end
+        end
+        within "#testing-progress:not(.bg-gray-100)" do
+          expect(page).to have_css(".bg-blue-400", count: 1)
+          within "li:nth-child(1)" do
+            expect(page).to have_css ".bg-blue-400"
+            expect(page).to have_content "Not Registered"
+          end
+          expect(page).to have_css("a[href$='/employees/#{employee.uuid}/health_passport']", text: "Not Registered")
+        end
+        expect(page).to have_css("form#edit_employee_#{employee.id}")
+        within "#action_buttons" do
+          expect(page).to have_css "a", count: 1
+          expect(page).not_to have_content "Contact"
+          expect(page).not_to have_content "Remind"
+          expect(page).to have_link "Deactivate"
+        end
+      end
+    end
+
+    describe "when my company plan has Health Passport disabled" do
+      before do
+        company.plan.update health_passport_enabled: false
+        ::EmployerPortal::Sync.create_account_for_employee! employee
+      end
+
+      scenario "I don't see a link to the Health Passport" do
+        visit_employee_edit
+        within "#symptom-tracker:not(.bg-gray-100)" do
+          expect(page).not_to have_css("tbody tr")
+        end
+        within "#testing-progress:not(.bg-gray-100)" do
+          expect(page).to have_css(".bg-blue-400", count: 1)
+          within "li:nth-child(1)" do
+            expect(page).to have_css ".bg-blue-400"
+            expect(page).to have_content "Not Registered"
+          end
+          expect(page).not_to have_css("a[href$='/employees/#{employee.uuid}/health_passport']")
+        end
+        expect(page).to have_css("form#edit_employee_#{employee.id}")
+        within "#action_buttons" do
+          expect(page).to have_css "a", count: 2
+          expect(page).to have_content "Contact not needed"
+          expect(page).to have_link "Send Reminder"
+          expect(page).to have_link "Deactivate"
+        end
+      end
+    end
+
+    describe "when my company plan has Testing disabled" do
+      before do
+        company.plan.update testing_enabled: false, health_passport_enabled: false
+        ::EmployerPortal::Sync.create_account_for_employee! employee
+      end
+
+      scenario "I don't see my employee Testing status" do
+        visit_employee_edit
+        within "#symptom-tracker:not(.bg-gray-100)" do
+          expect(page).not_to have_css("tbody tr")
+        end
+        within "#testing-progress.bg-gray-100" do
+          expect(page).to have_css(".italic", text: "Feature not included in your current plan")
+          expect(page).not_to have_css(".bg-blue-400")
+          expect(page).not_to have_css("a[href$='/employees/#{employee.uuid}/health_passport']")
+        end
+        expect(page).to have_css("form#edit_employee_#{employee.id}")
+        within "#action_buttons" do
+          expect(page).to have_css "a", count: 2
+          expect(page).to have_content "Contact not needed"
+          expect(page).to have_link "Send Reminder"
+          expect(page).to have_link "Deactivate"
+        end
+      end
+    end
+  end
+
+  describe "without sync" do
+    scenario "I still edit my employee details" do
+      visit_employee_edit
+      within "#symptom-tracker.bg-gray-100" do
+        expect(page).to have_css(".italic", text: "Temporarily unavailable, please come back later")
+        within "tbody" do
+          expect(page).to have_css("tr", count: 3)
+          expect(page).to have_css("tr:nth-child(1) td:nth-child(1)", text: "2020-04-03")
+          expect(page).to have_css("tr:nth-child(1) td:nth-child(3)", text: "100.2ºF")
+          expect(page).to have_css("tr:nth-child(1) td:nth-child(4)", text: "No")
+          expect(page).to have_css("tr:nth-child(2) td:nth-child(1)", text: "2020-03-31")
+          expect(page).to have_css("tr:nth-child(2) td:nth-child(3)", text: "100.4ºF")
+          expect(page).to have_css("tr:nth-child(2) td:nth-child(4)", text: "Yes")
+          expect(page).to have_css("tr:nth-child(3) td:nth-child(1)", text: "2020-03-29")
+          expect(page).to have_css("tr:nth-child(3) td:nth-child(3)", text: "99.7ºF")
+          expect(page).to have_css("tr:nth-child(3) td:nth-child(4)", text: "No")
+        end
+      end
+      within "#testing-progress.bg-gray-100" do
+        expect(page).to have_css(".italic", text: "Temporarily unavailable, please come back later")
+        expect(page).not_to have_css(".bg-blue-400")
+        expect(page).not_to have_css("a[href$='/employees/#{employee.uuid}/health_passport']")
+      end
+      expect(page).to have_css("form#edit_employee_#{employee.id}")
+      within "form#edit_employee_#{employee.id}" do
+        fill_in "First Name", with: "SpongeBob"
+        fill_in "Last Name", with: "SquarePants"
+        fill_in "Email", with: "spongebob@example.com"
+        fill_in "Phone Number", with: "123-456"
+        select "New York", from: "State"
+        click_button "Save changes"
+      end
+      expect(page).to have_css("[role=notice]", text: "Employee was updated successfully.")
+      expect(page).not_to have_css("[role=alert]")
+      expect(page).to have_css "a[href$='/edit']", count: 1
+      within "a[href$='/employees/#{employee.uuid}/edit']" do
+        expect(page).to have_css "div:nth-child(2)", text: "SpongeBob SquarePants"
+        expect(page).to have_css "div:nth-child(3)", text: "NY"
+      end
+      visit_employee_edit
+      within "form#edit_employee_#{employee.id}" do
+        expect(page).to have_field("First Name", with: "SpongeBob")
+        expect(page).to have_field("Last Name", with: "SquarePants")
+        expect(page).to have_field("Email", with: "spongebob@example.com")
+        expect(page).to have_field("Phone Number", with: "123-456")
+        expect(page).to have_select "State", selected: "New York"
       end
     end
   end
