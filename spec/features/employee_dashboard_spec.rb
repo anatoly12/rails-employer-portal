@@ -2,6 +2,7 @@ require "rails_helper"
 
 feature "Employee dashboard" do
   include ApplicationHelpers
+  include SyncHelpers
 
   before { sign_in_as_employer }
 
@@ -23,7 +24,6 @@ feature "Employee dashboard" do
     given(:today) { now.to_date }
 
     context "with sync connected", type: :sync do
-      include SyncHelpers
       before do
         with_sync_connected
         ::EmployerPortal::Sync.create_partner_for_company! company
@@ -39,6 +39,7 @@ feature "Employee dashboard" do
           within "#charts > div:nth-child(2)" do
             check_charts [["#1dd678", 0], ["#f35200", 0], ["#16a3e5", 100]]
           end
+          expect(page).to have_css "a[href$='/edit']", count: 1
           within "a[href$='/employees/#{employee.uuid}/edit']" do
             expect(page).to have_css "div:nth-child(2)", text: "#{employee.first_name} #{employee.last_name}"
             expect(page).to have_css "div:nth-child(3)", text: employee.state
@@ -66,6 +67,7 @@ feature "Employee dashboard" do
           within "#charts > div:nth-child(2)" do
             check_charts [["#1dd678", 0], ["#f35200", 0], ["#16a3e5", 100]]
           end
+          expect(page).to have_css "a[href$='/edit']", count: 1
           within "a[href$='/employees/#{employee.uuid}/edit']" do
             expect(page).to have_css "div:nth-child(2)", text: "#{employee.first_name} #{employee.last_name}"
             expect(page).to have_css "div:nth-child(3)", text: employee.state
@@ -88,6 +90,7 @@ feature "Employee dashboard" do
           within "#charts > div:nth-child(2)" do
             check_charts [["#1dd678", 0], ["#f35200", 0], ["#16a3e5", 100]]
           end
+          expect(page).to have_css "a[href$='/edit']", count: 1
           within "a[href$='/employees/#{employee.uuid}/edit']" do
             expect(page).to have_css "div:nth-child(2)", text: "#{employee.first_name} #{employee.last_name}"
             expect(page).to have_css "div:nth-child(3)", text: employee.state
@@ -110,6 +113,7 @@ feature "Employee dashboard" do
           within "#charts > div:nth-child(2)" do
             check_charts [["#1dd678", 0], ["#f35200", 0], ["#16a3e5", 100]]
           end
+          expect(page).to have_css "a[href$='/edit']", count: 1
           within "a[href$='/employees/#{employee.uuid}/edit']" do
             expect(page).to have_css "div:nth-child(2)", text: "#{employee.first_name} #{employee.last_name}"
             expect(page).to have_css "div:nth-child(3)", text: employee.state
@@ -149,6 +153,7 @@ feature "Employee dashboard" do
           within "#charts > div:nth-child(2)" do
             check_charts [["#1dd678", 0], ["#f35200", 0], ["#16a3e5", 100]]
           end
+          expect(page).to have_css "a[href$='/edit']", count: 1
           within "a[href$='/employees/#{employee.uuid}/edit']" do
             expect(page).to have_css "div:nth-child(2)", text: "#{employee.first_name} #{employee.last_name}"
             expect(page).to have_css "div:nth-child(3)", text: employee.state
@@ -171,6 +176,7 @@ feature "Employee dashboard" do
           within "#charts > div:nth-child(2)" do
             check_charts [["#1dd678", 0], ["#f35200", 0], ["#16a3e5", 100]]
           end
+          expect(page).to have_css "a[href$='/edit']", count: 1
           within "a[href$='/employees/#{employee.uuid}/edit']" do
             expect(page).to have_css "div:nth-child(2)", text: "#{employee.first_name} #{employee.last_name}"
             expect(page).to have_css "div:nth-child(3)", text: employee.state
@@ -193,6 +199,7 @@ feature "Employee dashboard" do
           within "#charts > div:nth-child(2)" do
             check_charts [["#1dd678", 0], ["#f35200", 0], ["#16a3e5", 100]]
           end
+          expect(page).to have_css "a[href$='/edit']", count: 1
           within "a[href$='/employees/#{employee.uuid}/edit']" do
             expect(page).to have_css "div:nth-child(2)", text: "#{employee.first_name} #{employee.last_name}"
             expect(page).to have_css "div:nth-child(3)", text: employee.state
@@ -232,6 +239,7 @@ feature "Employee dashboard" do
           within "#charts > div:nth-child(2)" do
             check_charts [["#1dd678", 0], ["#f35200", 0], ["#16a3e5", 100]]
           end
+          expect(page).to have_css "a[href$='/edit']", count: 1
           within "a[href$='/employees/#{employee.uuid}/edit']" do
             expect(page).to have_css "div:nth-child(2)", text: "#{employee.first_name} #{employee.last_name}"
             expect(page).to have_css "div:nth-child(3)", text: employee.state
@@ -266,6 +274,7 @@ feature "Employee dashboard" do
           within "#charts > div:nth-child(2)" do
             check_charts [["#1dd678", 100], ["#f35200", 0], ["#16a3e5", 0]]
           end
+          expect(page).to have_css "a[href$='/edit']", count: 1
           within "a[href$='/employees/#{employee.uuid}/edit']" do
             expect(page).to have_css "div:nth-child(2)", text: "#{employee.first_name} #{employee.last_name}"
             expect(page).to have_css "div:nth-child(3)", text: employee.state
@@ -299,6 +308,7 @@ feature "Employee dashboard" do
           within "#charts > div:nth-child(2)" do
             check_charts [["#1dd678", 0], ["#f35200", 100], ["#16a3e5", 0]]
           end
+          expect(page).to have_css "a[href$='/edit']", count: 1
           within "a[href$='/employees/#{employee.uuid}/edit']" do
             expect(page).to have_css "div:nth-child(2)", text: "#{employee.first_name} #{employee.last_name}"
             expect(page).to have_css "div:nth-child(3)", text: employee.state
@@ -330,6 +340,7 @@ feature "Employee dashboard" do
           within "#charts > div:nth-child(2)" do
             check_charts [["#1dd678", 0], ["#f35200", 0], ["#16a3e5", 100]]
           end
+          expect(page).to have_css "a[href$='/edit']", count: 1
           within "a[href$='/employees/#{employee.uuid}/edit']" do
             expect(page).to have_css "div:nth-child(2)", text: "#{employee.first_name} #{employee.last_name}"
             expect(page).to have_css "div:nth-child(3)", text: employee.state
@@ -356,6 +367,7 @@ feature "Employee dashboard" do
           within "#charts > div:nth-child(2)" do
             check_charts [["#1dd678", 0], ["#f35200", 0], ["#16a3e5", 100]]
           end
+          expect(page).to have_css "a[href$='/edit']", count: 1
           within "a[href$='/employees/#{employee.uuid}/edit']" do
             expect(page).to have_css "div:nth-child(2)", text: "#{employee.first_name} #{employee.last_name}"
             expect(page).to have_css "div:nth-child(3)", text: employee.state
@@ -383,6 +395,7 @@ feature "Employee dashboard" do
           within "#charts > div:nth-child(2)" do
             check_charts [["#718096", 20], ["#718096", 50], ["#718096", 30]]
           end
+          expect(page).to have_css "a[href$='/edit']", count: 1
           within "a[href$='/employees/#{employee.uuid}/edit']" do
             expect(page).to have_css "div:nth-child(2)", text: "#{employee.first_name} #{employee.last_name}"
             expect(page).to have_css "div:nth-child(3)", text: employee.state
@@ -409,6 +422,7 @@ feature "Employee dashboard" do
         within "#charts > div:nth-child(2)" do
           check_charts [["#718096", 20], ["#718096", 50], ["#718096", 30]]
         end
+        expect(page).to have_css "a[href$='/edit']", count: 1
         within "a[href$='/employees/#{employee.uuid}/edit']" do
           expect(page).to have_css "div:nth-child(2)", text: "#{employee.first_name} #{employee.last_name}"
           expect(page).to have_css "div:nth-child(3)", text: employee.state
@@ -425,12 +439,57 @@ feature "Employee dashboard" do
     end
   end
 
-  def check_charts(array)
+  describe "with multiple employees", type: :sync do
+    given(:company) { @employer.company }
+    given!(:alice) { create :employee, first_name: "Alice", company: company }
+    given!(:bob) { create :employee, first_name: "Bob", company: company }
+    before do
+      with_sync_connected
+      ::EmployerPortal::Sync.create_partner_for_company! company
+      ::EmployerPortal::Sync.create_account_for_employee! alice
+      ::EmployerPortal::Sync.create_account_for_employee! bob
+    end
+
+    scenario "I can apply filters and change sorting order" do
+      visit "/"
+      expect(page).not_to have_css ".blur-3 .container"
+      within "#charts > div:nth-child(1)" do
+        check_charts [["#1dd678", 0], ["#f35200", 0], ["#16a3e5", 100]]
+      end
+      within "#charts > div:nth-child(2)" do
+        check_charts [["#1dd678", 0], ["#f35200", 0], ["#16a3e5", 100]]
+      end
+      check_employees [alice, bob]
+      click_link "Employee Name"
+      check_employees [bob, alice]
+      fill_in "filters_full_name_contains", with: "LIC"
+      click_button "filters_submit"
+      check_employees [alice]
+      fill_in "filters_full_name_contains", with: "BOB "
+      click_button "filters_submit"
+      check_employees [bob]
+    end
+  end
+
+  def check_charts(color_and_percents)
     charts = page.all ".chart"
-    array.each_with_index do |item, index|
+    color_and_percents.each_with_index do |(color, percent), index|
       chart = charts[index]
-      expect(chart["data-color"]).to eql item[0]
-      expect(chart["data-percent"]).to eql item[1].to_s
+      expect(chart["data-color"]).to eql color
+      expect(chart["data-percent"]).to eql percent.to_s
+    end
+  end
+
+  def check_employees(employees)
+    employee_links = page.all "a[href$='/edit']"
+    expect(employee_links.size).to eql employees.size
+    employees.each_with_index do |employee, index|
+      employee_link = employee_links[index]
+      expect(employee_link[:href]).to eql "/employees/#{employee.uuid}/edit"
+      within employee_link do
+        expect(page).to have_css "div:nth-child(2)", text: "#{employee.first_name} #{employee.last_name}"
+        expect(page).to have_css "div:nth-child(3)", text: employee.state
+      end
     end
   end
 end

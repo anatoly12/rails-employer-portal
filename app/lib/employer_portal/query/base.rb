@@ -33,6 +33,6 @@ class EmployerPortal::Query::Base
   end
 
   def value_for_ilike(string)
-    "%#{string.gsub /([%_\\])/, "\\\\\\1"}%"
+    "%#{string.to_s.strip.gsub /([%_\\])/, "\\\\\\1"}%"
   end
 end
