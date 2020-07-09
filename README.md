@@ -20,6 +20,10 @@ To run the test suite:
 
 - `bin/rspec`
 
+To generate code coverage:
+
+- `COVERAGE=1 bin/rspec`
+
 ## Development
 
 Install dependencies:

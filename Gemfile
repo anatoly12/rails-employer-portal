@@ -49,6 +49,7 @@ group :test do
   gem "capybara", "~> 3.33"
   gem "webdrivers", "~> 4.4", ">= 4.4.1"
   gem "database_cleaner-sequel", "~> 1.8"
+  gem "simplecov", require: false
 end
 
 # Windows does not include zoneinfo files, so bundle the tzinfo-data gem
