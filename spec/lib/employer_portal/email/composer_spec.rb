@@ -7,12 +7,13 @@ RSpec.describe ::EmployerPortal::Email::Composer do
       daily_checkup_status: "{{daily_checkup_status}}"
       employee_email: "{{employee_email}}"
       employee_full_name: "{{employee_full_name}}"
+      employee_password: "{{employee_password}}"
       employee_reset_password_token: "{{employee_reset_password_token}}"
       employer_email: "{{employer_email}}"
       employer_first_name: "{{employer_first_name}}"
       employer_last_name: "{{employer_last_name}}"
-      employer_reset_password_token: "{{employer_reset_password_token}}"
       employer_password: "{{employer_password}}"
+      employer_reset_password_token: "{{employer_reset_password_token}}"
     eos
   end
   let(:email_template) { create :email_template, subject: with_merge_keys, html: with_merge_keys, text: with_merge_keys }
@@ -30,12 +31,13 @@ RSpec.describe ::EmployerPortal::Email::Composer do
           daily_checkup_status: ""
           employee_email: "#{employee.email}"
           employee_full_name: "#{employee.first_name} #{employee.last_name}"
+          employee_password: ""
           employee_reset_password_token: ""
           employer_email: "#{employer.email}"
           employer_first_name: "#{employer.first_name}"
           employer_last_name: "#{employer.last_name}"
-          employer_reset_password_token: ""
           employer_password: ""
+          employer_reset_password_token: ""
         eos
       end
 
@@ -56,13 +58,35 @@ RSpec.describe ::EmployerPortal::Email::Composer do
       end
     end
 
+    context "with password" do
+      let(:opts) { { "password" => "12345" } }
+
+      it "replaces employee merge tags" do
+        expect(subject.subject).to include('employee_password: "12345"')
+        expect(subject.html).to include('employee_password: "12345"')
+        expect(subject.text).to include('employee_password: "12345"')
+      end
+
+      it "doesn't replace employer merge tags" do
+        expect(subject.subject).to include('employer_password: ""')
+        expect(subject.html).to include('employer_password: ""')
+        expect(subject.text).to include('employer_password: ""')
+      end
+    end
+
     context "with password reset token" do
       let(:opts) { { "reset_password_token" => "12345" } }
 
-      it "replaces merge tags" do
+      it "replaces employee merge tags" do
         expect(subject.subject).to include('employee_reset_password_token: "12345"')
         expect(subject.html).to include('employee_reset_password_token: "12345"')
         expect(subject.text).to include('employee_reset_password_token: "12345"')
+      end
+
+      it "doesn't replace employer merge tags" do
+        expect(subject.subject).to include('employer_reset_password_token: ""')
+        expect(subject.html).to include('employer_reset_password_token: ""')
+        expect(subject.text).to include('employer_reset_password_token: ""')
       end
     end
 
@@ -91,12 +115,13 @@ RSpec.describe ::EmployerPortal::Email::Composer do
           daily_checkup_status: ""
           employee_email: ""
           employee_full_name: ""
+          employee_password: ""
           employee_reset_password_token: ""
           employer_email: "#{employer.email}"
           employer_first_name: "#{employer.first_name}"
           employer_last_name: "#{employer.last_name}"
-          employer_reset_password_token: ""
           employer_password: ""
+          employer_reset_password_token: ""
         eos
       end
 
@@ -107,23 +132,35 @@ RSpec.describe ::EmployerPortal::Email::Composer do
       end
     end
 
-    context "with password reset token" do
-      let(:opts) { { "reset_password_token" => "12345" } }
-
-      it "replaces merge tags" do
-        expect(subject.subject).to include('employer_reset_password_token: "12345"')
-        expect(subject.html).to include('employer_reset_password_token: "12345"')
-        expect(subject.text).to include('employer_reset_password_token: "12345"')
-      end
-    end
-
     context "with password" do
       let(:opts) { { "password" => "12345" } }
 
-      it "replaces merge tags" do
+      it "doesn't replace employee merge tags" do
+        expect(subject.subject).to include('employee_password: ""')
+        expect(subject.html).to include('employee_password: ""')
+        expect(subject.text).to include('employee_password: ""')
+      end
+
+      it "replaces employer merge tags" do
         expect(subject.subject).to include('employer_password: "12345"')
         expect(subject.html).to include('employer_password: "12345"')
         expect(subject.text).to include('employer_password: "12345"')
+      end
+    end
+
+    context "with password reset token" do
+      let(:opts) { { "reset_password_token" => "12345" } }
+
+      it "doesn't replace employee merge tags" do
+        expect(subject.subject).to include('employee_reset_password_token: ""')
+        expect(subject.html).to include('employee_reset_password_token: ""')
+        expect(subject.text).to include('employee_reset_password_token: ""')
+      end
+
+      it "replaces employer merge tags" do
+        expect(subject.subject).to include('employer_reset_password_token: "12345"')
+        expect(subject.html).to include('employer_reset_password_token: "12345"')
+        expect(subject.text).to include('employer_reset_password_token: "12345"')
       end
     end
   end

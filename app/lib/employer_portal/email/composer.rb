@@ -78,6 +78,10 @@ class EmployerPortal::Email::Composer
     dashboard_employee&.full_name || "#{employee.first_name} #{employee.last_name}"
   end
 
+  def employee_password
+    opts["password"] if recipient.kind_of? Employee
+  end
+
   def employee_reset_password_token
     opts["reset_password_token"] if recipient.kind_of? Employee
   end
@@ -95,12 +99,13 @@ class EmployerPortal::Email::Composer
       "daily_checkup_status" => dashboard_employee&.daily_checkup_status,
       "employee_email" => employee&.email,
       "employee_full_name" => employee_full_name,
+      "employee_password" => employee_password,
       "employee_reset_password_token" => employee_reset_password_token,
       "employer_email" => employer&.email,
       "employer_first_name" => employer&.first_name,
       "employer_last_name" => employer&.last_name,
-      "employer_reset_password_token" => employer_reset_password_token,
       "employer_password" => employer_password,
+      "employer_reset_password_token" => employer_reset_password_token,
     }
   end
 

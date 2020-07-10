@@ -209,8 +209,18 @@ RSpec.describe ::EmployerPortal::Sync, type: :sync do
           expect { subject }.to have_enqueued_job(EmailTriggerJob).with(
             EmailTemplate::TRIGGER_EMPLOYEE_NEW,
             employee.uuid,
-            hash_including("reset_password_token")
+            hash_including("reset_password_token", "password")
           )
+          hash = ActiveJob::Base.queue_adapter.enqueued_jobs.last[:args].last
+          digest = OpenSSL::HMAC.hexdigest(
+            "SHA256",
+            ActiveSupport::KeyGenerator.new(described_class::SYNC_SECRET_KEY_BASE).generate_key("Devise reset_password_token"),
+            hash["reset_password_token"]
+          )
+          account = described_class::Account.order(:id).last
+          expect(digest).to eql account.reset_password_token
+          expect(hash["password"].length).to eql 20
+          expect(::BCrypt::Password.new(account.encrypted_password) == hash["password"]).to be true
         end
       end
 
@@ -221,6 +231,12 @@ RSpec.describe ::EmployerPortal::Sync, type: :sync do
           expect do
             subject
           end.not_to change { described_class::Account.count }
+        end
+
+        it "doesn't change the account password" do
+          expect do
+            subject
+          end.not_to change { account.reload.encrypted_password }
         end
 
         it "reactivates the account if needed" do
@@ -368,6 +384,24 @@ RSpec.describe ::EmployerPortal::Sync, type: :sync do
               subject
             end.to change { described_class::Requisition.count }.by(1)
           end
+        end
+
+        it "spawns an email trigger job" do
+          expect { subject }.to have_enqueued_job(EmailTriggerJob).with(
+            EmailTemplate::TRIGGER_EMPLOYEE_NEW,
+            employee.uuid,
+            hash_including("reset_password_token", "password" => "your existing password")
+          )
+          hash = ActiveJob::Base.queue_adapter.enqueued_jobs.last[:args].last
+          digest = OpenSSL::HMAC.hexdigest(
+            "SHA256",
+            ActiveSupport::KeyGenerator.new(
+              described_class::SYNC_SECRET_KEY_BASE
+            ).generate_key("Devise reset_password_token"),
+            hash["reset_password_token"]
+          )
+          account = described_class::Account.order(:id).last
+          expect(digest).to eql account.reset_password_token
         end
       end
 

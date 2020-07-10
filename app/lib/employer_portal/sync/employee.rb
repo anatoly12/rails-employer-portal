@@ -9,8 +9,10 @@ class EmployerPortal::Sync::Employee
   end
 
   def create_account!
+    password = "your existing password"
     db.transaction do
       account = create_or_update_account
+      password = raw_password if account.encrypted_password == encrypted_password
       create_user_if_needed(account)
       create_demographic_if_needed(account)
       create_requisition(account)
@@ -21,6 +23,7 @@ class EmployerPortal::Sync::Employee
       EmailTemplate::TRIGGER_EMPLOYEE_NEW,
       employee.uuid,
       "reset_password_token" => reset_password_token_raw,
+      "password" => password,
     )
   rescue Sequel::Error => e
     raise ::EmployerPortal::Error::Sync::CantCreateAccount, e.message
@@ -35,14 +38,26 @@ class EmployerPortal::Sync::Employee
     Sequel::Model.db
   end
 
+  def generate_random_string
+    SecureRandom.urlsafe_base64(15).tr "lIO0", "sxyz"
+  end
+
+  def raw_password
+    @raw_password ||= generate_random_string
+  end
+
+  def encrypted_password
+    @encrypted_password ||= ::BCrypt::Password.create(raw_password).to_s
+  end
+
   def devise_reset_password_token
     @devise_reset_password_token ||= begin
         key = ActiveSupport::KeyGenerator.new(
           secret_key_base
-        ).generate_key("Devise reset_password_token")
+        ).generate_key "Devise reset_password_token"
         loop do
-          raw = SecureRandom.urlsafe_base64(15).tr("lIO0", "sxyz")
-          enc = OpenSSL::HMAC.hexdigest("SHA256", key, raw)
+          raw = generate_random_string
+          enc = OpenSSL::HMAC.hexdigest "SHA256", key, raw
           break [raw, enc] if ::EmployerPortal::Sync::Account.where(reset_password_token: enc).limit(1).empty?
         end
       end
@@ -64,6 +79,7 @@ class EmployerPortal::Sync::Employee
       :updated_at
     ).insert(
       email: employee.email,
+      encrypted_password: encrypted_password,
       is_active: true,
       reset_password_token: reset_password_token_digest,
       reset_password_sent_at: now,
