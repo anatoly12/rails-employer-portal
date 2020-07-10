@@ -20,16 +20,9 @@ module FeatureHelpers
     expect(page).to have_content "Hi, #{@admin_user.email}"
   end
 
-  def expect_form_errors(errors)
-    expect(page).to have_css "p.text-red-400", count: errors.size
-    errors.each do |input_id, message|
-      input = page.find_by_id input_id
-      error = if input[:type] == "checkbox"
-          input.ancestor("label").sibling "p.text-red-400"
-        else
-          input.sibling "p.text-red-400"
-        end
-      expect(error.text).to eql message
-    end
+  def upload_file(field_name, filename)
+    input = find_field field_name
+    input.attach_file(Rails.root.join("spec", "fixtures", filename))
+    input.parent_form.submit
   end
 end

@@ -29,7 +29,19 @@ class ApplicationController < ActionController::Base
   private
 
   def ensure_access!
-    current_context.ensure_access!
+    raise ::EmployerPortal::Error::Account::NotFound unless current_context.signed_in?
+  end
+
+  def ensure_sync_connected!
+    raise ::EmployerPortal::Error::DisabledFeature unless current_context.sync_connected?
+  end
+
+  def ensure_daily_checkup_enabled!
+    raise ::EmployerPortal::Error::DisabledFeature unless current_context.daily_checkup_enabled?
+  end
+
+  def ensure_health_passport_enabled!
+    raise ::EmployerPortal::Error::DisabledFeature unless current_context.health_passport_enabled?
   end
 
   def redirect_to_without_cache(to)

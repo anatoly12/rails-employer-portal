@@ -24,7 +24,7 @@ feature "Manage admin users" do
     expect(page).not_to have_css "[role=notice]"
     expect(page).to have_css "[role=alert]", text: "Please review errors and try submitting it again."
     within "#new_admin_user" do
-      expect_form_errors(
+      is_expected.to have_form_errors(
         admin_user_email: "is not present",
         admin_user_password: "is not present",
       )
@@ -96,7 +96,7 @@ feature "Manage admin users" do
       expect(page).not_to have_css "[role=notice]"
       expect(page).to have_css "[role=alert]", text: "Please review errors and try submitting it again."
       within "#edit_admin_user_#{admin_user2.id}" do
-        expect_form_errors(
+        is_expected.to have_form_errors(
           admin_user_email: "is not present",
         )
       end

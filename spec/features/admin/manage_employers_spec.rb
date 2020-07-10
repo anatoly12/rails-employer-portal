@@ -36,7 +36,7 @@ feature "Manage employers" do
     expect(page).not_to have_css "[role=notice]"
     expect(page).to have_css "[role=alert]", text: "Please review errors and try submitting it again."
     within "#new_employer" do
-      expect_form_errors(
+      is_expected.to have_form_errors(
         employer_company_id: "is not present",
         employer_role: "is not present",
         employer_first_name: "is not present",
@@ -160,7 +160,7 @@ feature "Manage employers" do
       expect(page).not_to have_css "[role=notice]"
       expect(page).to have_css "[role=alert]", text: "Please review errors and try submitting it again."
       within "#edit_employer_#{employer2.id}" do
-        expect_form_errors(
+        is_expected.to have_form_errors(
           employer_first_name: "is not present",
           employer_last_name: "is not present",
           employer_email: "is not present",

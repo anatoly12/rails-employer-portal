@@ -53,6 +53,7 @@ RSpec.configure do |config|
 
   # ~~ Include helpers automatically ~~
   config.include FeatureHelpers, type: :feature
+  config.include RequestHelpers, type: :request
   config.include SyncHelpers, type: :sync
 
   # ~~ Database cleaner ~~
@@ -83,6 +84,8 @@ RSpec.configure do |config|
       ::EmployerPortal::Sync::Covid19Message.dataset.delete
       ::EmployerPortal::Sync::Account.dataset.delete
       ::EmployerPortal::Sync::PassportProduct.dataset.delete
+      ::EmployerPortal::Sync::Kit.dataset.delete
+      ::EmployerPortal::Sync::Partner.dataset.delete
       ::EmployerPortal::Sync.disconnect
     end
     DatabaseCleaner.clean

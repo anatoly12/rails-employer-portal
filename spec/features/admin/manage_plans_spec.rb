@@ -33,7 +33,7 @@ feature "Manage plans" do
       expect(page).not_to have_css "[role=notice]"
       expect(page).to have_css "[role=alert]", text: "Please review errors and try submitting it again."
       within "#new_plan" do
-        expect_form_errors(
+        is_expected.to have_form_errors(
           plan_name: "is not present",
           plan_employer_limit: "is not a number",
           plan_employee_limit: "is not a number",
@@ -119,7 +119,7 @@ feature "Manage plans" do
         expect(page).not_to have_css "[role=notice]"
         expect(page).to have_css "[role=alert]", text: "Please review errors and try submitting it again."
         within "#edit_plan_#{plan2.id}" do
-          expect_form_errors(
+          is_expected.to have_form_errors(
             plan_name: "is not present",
             plan_health_passport_enabled: "requires testing to be enabled",
             plan_employer_limit: "is not a number",

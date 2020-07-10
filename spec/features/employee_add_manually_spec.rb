@@ -35,7 +35,7 @@ feature "Employee add manually" do
     expect(page).not_to have_css("[role=notice]")
     expect(page).to have_css("[role=alert]", text: "Please review errors and try submitting it again.")
     within "form#new_employee" do
-      expect_form_errors(
+      is_expected.to have_form_errors(
         employee_first_name: "is not present",
         employee_last_name: "is not present",
         employee_email: "is not present",

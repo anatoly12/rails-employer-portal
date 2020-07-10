@@ -52,7 +52,7 @@ feature "Manage companies" do
       expect(page).not_to have_css "[role=notice]"
       expect(page).to have_css "[role=alert]", text: "Please review errors and try submitting it again."
       within "#new_company" do
-        expect_form_errors(
+        is_expected.to have_form_errors(
           company_name: "is not present",
           company_plan_id: "is not present",
         )
@@ -139,7 +139,7 @@ feature "Manage companies" do
         expect(page).not_to have_css "[role=notice]"
         expect(page).to have_css "[role=alert]", text: "Please review errors and try submitting it again."
         within "#edit_company_#{company2.id}" do
-          expect_form_errors(
+          is_expected.to have_form_errors(
             company_name: "is not present",
             company_plan_id: "is not present",
             company_remote_id: "is not present",

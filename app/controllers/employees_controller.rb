@@ -1,5 +1,9 @@
 class EmployeesController < ApplicationController
+  before_action :ensure_sync_connected!, only: [:destroy, :reactivate]
+  before_action :ensure_daily_checkup_enabled!, only: [:contact, :send_reminder]
+  before_action :ensure_health_passport_enabled!, only: :health_passport
   rescue_from ::EmployerPortal::Error::Employee::NotFound, with: :employee_not_found
+  rescue_from ::EmployerPortal::Error::DisabledFeature, with: :disabled_feature
 
   # ~~ collection actions ~~
   def index
@@ -60,13 +64,6 @@ class EmployeesController < ApplicationController
     end
   end
 
-  def health_passport
-    unless current_context.health_passport_enabled?
-      flash.alert = current_context.disabled_feature_message + "."
-      redirect_to action: :edit
-    end
-  end
-
   def contact
     if editor.contact_queued?
       flash.alert = "Employee was already contacted today."
@@ -111,6 +108,11 @@ class EmployeesController < ApplicationController
 
   def employee_not_found
     flash.alert = "Employee not found."
+    redirect_to action: :index
+  end
+
+  def disabled_feature
+    flash.alert = current_context.disabled_feature_message + "."
     redirect_to action: :index
   end
 

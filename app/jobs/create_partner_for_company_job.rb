@@ -10,7 +10,7 @@ class CreatePartnerForCompanyJob < ApplicationJob
     elsif company.remote_id.present?
       log "company #{uuid} is already linked to partner #{company.remote_id}"
     else
-      ::EmployerPortal::Sync.create_partner_for_company!(company)
+      ::EmployerPortal::Sync.create_partner_for_company! company
       log "company #{uuid} is now linked to partner #{company.remote_id}"
     end
   end

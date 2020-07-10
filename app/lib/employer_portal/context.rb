@@ -24,10 +24,6 @@ class EmployerPortal::Context
     !account.kind_of?(NoAccount)
   end
 
-  def ensure_access!
-    raise ::EmployerPortal::Error::Account::NotFound unless signed_in?
-  end
-
   def sync_connected?
     ::EmployerPortal::Sync.connected?
   end

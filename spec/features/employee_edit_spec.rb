@@ -15,7 +15,7 @@ feature "Employee edit" do
       ::EmployerPortal::Sync.create_partner_for_company! company
     end
 
-    describe "when employee hasn't been synced yet" do
+    context "when employee hasn't been synced yet" do
       scenario "I see no action button" do
         visit_employee_edit
         within "#symptom-tracker:not(.bg-gray-100)" do
@@ -34,7 +34,7 @@ feature "Employee edit" do
       end
     end
 
-    describe "when employee daily checkup is Did Not Submit" do
+    context "when employee daily checkup is Did Not Submit" do
       before { ::EmployerPortal::Sync.create_account_for_employee! employee }
 
       scenario "I see the Send Reminder link" do
@@ -117,7 +117,7 @@ feature "Employee edit" do
       end
     end
 
-    describe "when employee daily checkup is Not Cleared" do
+    context "when employee daily checkup is Not Cleared" do
       before do
         ::EmployerPortal::Sync.create_account_for_employee! employee
         ::EmployerPortal::Sync::Covid19DailyCheckupStatus.find_or_create(
@@ -185,7 +185,7 @@ feature "Employee edit" do
       end
     end
 
-    describe "when employee daily checkup is Cleared" do
+    context "when employee daily checkup is Cleared" do
       before do
         ::EmployerPortal::Sync.create_account_for_employee! employee
         ::EmployerPortal::Sync::Covid19DailyCheckupStatus.find_or_create(
@@ -223,7 +223,7 @@ feature "Employee edit" do
       end
     end
 
-    describe "when employee testing is Cleared" do
+    context "when employee testing is Cleared" do
       before do
         ::EmployerPortal::Sync.create_account_for_employee! employee
         ::EmployerPortal::Sync::Covid19Evaluation.create(
@@ -256,7 +256,7 @@ feature "Employee edit" do
       end
     end
 
-    describe "when employee testing is Inconclusive" do
+    context "when employee testing is Inconclusive" do
       before do
         ::EmployerPortal::Sync.create_account_for_employee! employee
         ::EmployerPortal::Sync::Covid19Evaluation.create(
@@ -289,7 +289,7 @@ feature "Employee edit" do
       end
     end
 
-    describe "when my company plan has Daily Checkup disabled" do
+    context "when my company plan has Daily Checkup disabled" do
       before do
         company.plan.update daily_checkup_enabled: false
         ::EmployerPortal::Sync.create_account_for_employee! employee
@@ -330,7 +330,7 @@ feature "Employee edit" do
       end
     end
 
-    describe "when my company plan has Health Passport disabled" do
+    context "when my company plan has Health Passport disabled" do
       before do
         company.plan.update health_passport_enabled: false
         ::EmployerPortal::Sync.create_account_for_employee! employee
@@ -359,7 +359,7 @@ feature "Employee edit" do
       end
     end
 
-    describe "when my company plan has Testing disabled" do
+    context "when my company plan has Testing disabled" do
       before do
         company.plan.update testing_enabled: false, health_passport_enabled: false
         ::EmployerPortal::Sync.create_account_for_employee! employee
@@ -386,7 +386,7 @@ feature "Employee edit" do
     end
   end
 
-  describe "without sync" do
+  context "without sync" do
     scenario "I still edit my employee details" do
       visit_employee_edit
       within "#symptom-tracker.bg-gray-100" do
@@ -447,7 +447,7 @@ feature "Employee edit" do
       expect(page).not_to have_css("[role=notice]")
       expect(page).to have_css("[role=alert]", text: "Please review errors and try submitting it again.")
       within "form#edit_employee_#{employee.id}" do
-        expect_form_errors(
+        is_expected.to have_form_errors(
           employee_first_name: "is not present",
           employee_last_name: "is not present",
           employee_email: "is not present",

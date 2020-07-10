@@ -32,13 +32,13 @@ describe AdminHelper do
     subject { helper.current_controller?(new_admin_company_path(page: 2)) }
     before { allow(helper).to receive(:controller_path).and_return controller_path }
 
-    describe "when controller path doesn't match" do
+    context "when controller path doesn't match" do
       let(:controller_path) { "admin/employees" }
 
       it { is_expected.to be false }
     end
 
-    describe "when controller path matches" do
+    context "when controller path matches" do
       let(:controller_path) { "admin/companies" }
 
       it { is_expected.to be true }
