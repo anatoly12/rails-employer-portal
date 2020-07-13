@@ -217,10 +217,10 @@ RSpec.describe "employees", type: :request do
         end
 
         context "without sync" do
-          it "redirects to index with an alert" do
+          it "redirects to edit with an alert" do
             sign_in_as_employer employer
             delete employee_path(employee)
-            expect(response).to redirect_to employees_path
+            expect(response).to redirect_to edit_employee_path(employee)
             expect(flash[:alert]).to eql "Temporarily unavailable, please come back later."
           end
         end
@@ -260,10 +260,10 @@ RSpec.describe "employees", type: :request do
         end
 
         context "without sync" do
-          it "redirects to index with an alert" do
+          it "redirects to edit with an alert" do
             sign_in_as_employer employer
             delete employee_path(employee)
-            expect(response).to redirect_to employees_path
+            expect(response).to redirect_to edit_employee_path(employee)
             expect(flash[:alert]).to eql "Temporarily unavailable, please come back later."
           end
         end
@@ -320,10 +320,10 @@ RSpec.describe "employees", type: :request do
         end
 
         context "without sync" do
-          it "redirects to index with an alert" do
+          it "redirects to edit with an alert" do
             sign_in_as_employer employer
             patch reactivate_employee_path(employee)
-            expect(response).to redirect_to employees_path
+            expect(response).to redirect_to edit_employee_path(employee)
             expect(flash[:alert]).to eql "Temporarily unavailable, please come back later."
           end
         end
@@ -363,10 +363,10 @@ RSpec.describe "employees", type: :request do
         end
 
         context "without sync" do
-          it "redirects to index with an alert" do
+          it "redirects to edit with an alert" do
             sign_in_as_employer employer
             patch reactivate_employee_path(employee)
-            expect(response).to redirect_to employees_path
+            expect(response).to redirect_to edit_employee_path(employee)
             expect(flash[:alert]).to eql "Temporarily unavailable, please come back later."
           end
         end
@@ -401,21 +401,21 @@ RSpec.describe "employees", type: :request do
             company.plan.update daily_checkup_enabled: false
           end
 
-          it "triggers no email and redirects to index with an alert" do
+          it "triggers no email and redirects to edit with an alert" do
             sign_in_as_employer employer
             expect do
               patch contact_employee_path(employee)
             end.not_to have_enqueued_job(EmailTriggerJob)
-            expect(response).to redirect_to employees_path
+            expect(response).to redirect_to edit_employee_path(employee)
             expect(flash[:alert]).to eql "Feature not included in your current plan."
           end
         end
 
         context "without sync" do
-          it "redirects to index with an alert" do
+          it "redirects to edit with an alert" do
             sign_in_as_employer employer
             patch contact_employee_path(employee)
-            expect(response).to redirect_to employees_path
+            expect(response).to redirect_to edit_employee_path(employee)
             expect(flash[:alert]).to eql "Temporarily unavailable, please come back later."
           end
         end
@@ -445,21 +445,21 @@ RSpec.describe "employees", type: :request do
             company.plan.update daily_checkup_enabled: false
           end
 
-          it "triggers no email and redirects to index with an alert" do
+          it "triggers no email and redirects to edit with an alert" do
             sign_in_as_employer employer
             expect do
               patch contact_employee_path(employee)
             end.not_to have_enqueued_job(EmailTriggerJob)
-            expect(response).to redirect_to employees_path
+            expect(response).to redirect_to edit_employee_path(employee)
             expect(flash[:alert]).to eql "Feature not included in your current plan."
           end
         end
 
         context "without sync" do
-          it "redirects to index with an alert" do
+          it "redirects to edit with an alert" do
             sign_in_as_employer employer
             patch contact_employee_path(employee)
-            expect(response).to redirect_to employees_path
+            expect(response).to redirect_to edit_employee_path(employee)
             expect(flash[:alert]).to eql "Temporarily unavailable, please come back later."
           end
         end
@@ -494,21 +494,21 @@ RSpec.describe "employees", type: :request do
             company.plan.update daily_checkup_enabled: false
           end
 
-          it "triggers no email and redirects to index with an alert" do
+          it "triggers no email and redirects to edit with an alert" do
             sign_in_as_employer employer
             expect do
               patch send_reminder_employee_path(employee)
             end.not_to have_enqueued_job(EmailTriggerJob)
-            expect(response).to redirect_to employees_path
+            expect(response).to redirect_to edit_employee_path(employee)
             expect(flash[:alert]).to eql "Feature not included in your current plan."
           end
         end
 
         context "without sync" do
-          it "redirects to index with an alert" do
+          it "redirects to edit with an alert" do
             sign_in_as_employer employer
             patch send_reminder_employee_path(employee)
-            expect(response).to redirect_to employees_path
+            expect(response).to redirect_to edit_employee_path(employee)
             expect(flash[:alert]).to eql "Temporarily unavailable, please come back later."
           end
         end
@@ -538,21 +538,21 @@ RSpec.describe "employees", type: :request do
             company.plan.update daily_checkup_enabled: false
           end
 
-          it "triggers no email and redirects to index with an alert" do
+          it "triggers no email and redirects to edit with an alert" do
             sign_in_as_employer employer
             expect do
               patch send_reminder_employee_path(employee)
             end.not_to have_enqueued_job(EmailTriggerJob)
-            expect(response).to redirect_to employees_path
+            expect(response).to redirect_to edit_employee_path(employee)
             expect(flash[:alert]).to eql "Feature not included in your current plan."
           end
         end
 
         context "without sync" do
-          it "redirects to index with an alert" do
+          it "redirects to edit with an alert" do
             sign_in_as_employer employer
             patch send_reminder_employee_path(employee)
-            expect(response).to redirect_to employees_path
+            expect(response).to redirect_to edit_employee_path(employee)
             expect(flash[:alert]).to eql "Temporarily unavailable, please come back later."
           end
         end
@@ -594,10 +594,10 @@ RSpec.describe "employees", type: :request do
         end
 
         context "without sync" do
-          it "redirects to index with an alert" do
+          it "redirects to edit with an alert" do
             sign_in_as_employer employer
             get health_passport_employee_path(employee)
-            expect(response).to redirect_to employees_path
+            expect(response).to redirect_to edit_employee_path(employee)
             expect(flash[:alert]).to eql "Temporarily unavailable, please come back later."
           end
         end
@@ -637,10 +637,10 @@ RSpec.describe "employees", type: :request do
         end
 
         context "without sync" do
-          it "redirects to index with an alert" do
+          it "redirects to edit with an alert" do
             sign_in_as_employer employer
             get health_passport_employee_path(employee)
-            expect(response).to redirect_to employees_path
+            expect(response).to redirect_to edit_employee_path(employee)
             expect(flash[:alert]).to eql "Temporarily unavailable, please come back later."
           end
         end

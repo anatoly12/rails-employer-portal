@@ -124,7 +124,7 @@ class EmployeesController < ApplicationController
 
   def disabled_feature
     flash.alert = current_context.disabled_feature_message + "."
-    redirect_to action: :index
+    redirect_to action: :edit
   end
 
   def search
