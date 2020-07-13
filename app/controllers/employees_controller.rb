@@ -1,8 +1,10 @@
 class EmployeesController < ApplicationController
   before_action :ensure_sync_connected!, only: [:destroy, :reactivate]
+  before_action :ensure_employee_synced!, only: [:destroy, :reactivate]
   before_action :ensure_daily_checkup_enabled!, only: [:contact, :send_reminder]
   before_action :ensure_health_passport_enabled!, only: :health_passport
   rescue_from ::EmployerPortal::Error::Employee::NotFound, with: :employee_not_found
+  rescue_from ::EmployerPortal::Error::Employee::NotSynced, with: :employee_not_synced
   rescue_from ::EmployerPortal::Error::DisabledFeature, with: :disabled_feature
 
   # ~~ collection actions ~~
@@ -64,26 +66,6 @@ class EmployeesController < ApplicationController
     end
   end
 
-  def contact
-    if editor.contact_queued?
-      flash.alert = "Employee was already contacted today."
-    else
-      editor.contact_queue!
-      flash.notice = "Employee was contacted successfully."
-    end
-    redirect_to action: :edit
-  end
-
-  def send_reminder
-    if editor.reminder_queued?
-      flash.alert = "Employee reminder was already sent today."
-    else
-      editor.reminder_queue!
-      flash.notice = "Employee reminder was sent successfully."
-    end
-    redirect_to action: :edit
-  end
-
   def destroy
     if !editor.active?
       flash.alert = "Employee was already inactive."
@@ -104,11 +86,40 @@ class EmployeesController < ApplicationController
     redirect_to action: :edit
   end
 
+  def contact
+    if editor.contact_queued?
+      flash.alert = "Employee was already contacted today."
+    else
+      editor.contact_queue!
+      flash.notice = "Employee was contacted successfully."
+    end
+    redirect_to action: :edit
+  end
+
+  def send_reminder
+    if editor.reminder_queued?
+      flash.alert = "Employee reminder was already sent today."
+    else
+      editor.reminder_queue!
+      flash.notice = "Employee reminder was sent successfully."
+    end
+    redirect_to action: :edit
+  end
+
   private
+
+  def ensure_employee_synced!
+    raise ::EmployerPortal::Error::Employee::NotSynced unless editor.synced?
+  end
 
   def employee_not_found
     flash.alert = "Employee not found."
     redirect_to action: :index
+  end
+
+  def employee_not_synced
+    flash.alert = "Employee has no account yet."
+    redirect_to action: :edit
   end
 
   def disabled_feature

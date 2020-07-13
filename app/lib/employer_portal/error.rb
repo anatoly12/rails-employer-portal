@@ -22,6 +22,7 @@ module EmployerPortal
 
     module Employee
       class NotFound < ::EmployerPortal::Error::NotFound; end
+      class NotSynced < ::EmployerPortal::Error::Base; end
 
       module BulkImport
         class Base < ::EmployerPortal::Error::Base; end

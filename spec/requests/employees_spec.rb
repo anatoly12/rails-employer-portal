@@ -87,7 +87,7 @@ RSpec.describe "employees", type: :request do
 
         it { is_expected.to require_authentication :get, employee_path(employee) }
 
-        it "redirects to edit" do
+        it "redirects to edit without message" do
           sign_in_as_employer employer
           get employee_path(employee)
           expect(response).to redirect_to edit_employee_path(employee)
@@ -100,7 +100,7 @@ RSpec.describe "employees", type: :request do
 
         it { is_expected.to require_authentication :get, employee_path(employee) }
 
-        it "redirects to edit" do
+        it "redirects to edit without message" do
           sign_in_as_employer employer
           get employee_path(employee)
           expect(response).to redirect_to edit_employee_path(employee)
@@ -126,7 +126,7 @@ RSpec.describe "employees", type: :request do
 
         it { is_expected.to require_authentication :get, edit_employee_path(employee) }
 
-        it "redirects to edit" do
+        it "redirects to edit with an alert" do
           sign_in_as_employer employer
           get edit_employee_path(employee)
           expect(response).to redirect_to employees_path
@@ -141,7 +141,7 @@ RSpec.describe "employees", type: :request do
 
         it { is_expected.to require_authentication :patch, employee_path(employee) }
 
-        it "redirects to index with an alert" do
+        it "redirects to index with a notice" do
           sign_in_as_employer employer
           expect do
             patch employee_path(employee), params: { employee: { first_name: "Bob" } }
@@ -176,11 +176,11 @@ RSpec.describe "employees", type: :request do
         context "with sync connected but employee has no account yet", type: :sync do
           before { with_sync_connected }
 
-          it "redirects to index with an alert" do
+          it "redirects to edit with an alert" do
             sign_in_as_employer employer
             delete employee_path(employee)
             expect(response).to redirect_to edit_employee_path(employee)
-            expect(flash[:alert]).to eql "Employee was already inactive."
+            expect(flash[:alert]).to eql "Employee has no account yet."
           end
         end
 
@@ -191,13 +191,28 @@ RSpec.describe "employees", type: :request do
             ::EmployerPortal::Sync.create_account_for_employee! employee
           end
 
-          it "redirects to index with an alert" do
-            sign_in_as_employer employer
-            expect do
-              delete employee_path(employee)
-            end.to change { ::EmployerPortal::Sync::Account[employee.remote_id].is_active }.from(1).to(0)
-            expect(response).to redirect_to edit_employee_path(employee)
-            expect(flash[:notice]).to eql "Employee was deactivated successfully."
+          context "when account is active" do
+            it "deactivates the employee and redirects to edit with a notice" do
+              sign_in_as_employer employer
+              expect do
+                delete employee_path(employee)
+              end.to change { ::EmployerPortal::Sync::Account[employee.remote_id].is_active }.from(1).to(0)
+              expect(response).to redirect_to edit_employee_path(employee)
+              expect(flash[:notice]).to eql "Employee was deactivated successfully."
+            end
+          end
+
+          context "when account is inactive" do
+            before { ::EmployerPortal::Sync::Account[employee.remote_id].update is_active: false }
+
+            it "doesn't change account and redirects to edit with an alert" do
+              sign_in_as_employer employer
+              expect do
+                delete employee_path(employee)
+              end.not_to change { ::EmployerPortal::Sync::Account[employee.remote_id].is_active }
+              expect(response).to redirect_to edit_employee_path(employee)
+              expect(flash[:alert]).to eql "Employee was already inactive."
+            end
           end
         end
 
@@ -248,6 +263,383 @@ RSpec.describe "employees", type: :request do
           it "redirects to index with an alert" do
             sign_in_as_employer employer
             delete employee_path(employee)
+            expect(response).to redirect_to employees_path
+            expect(flash[:alert]).to eql "Temporarily unavailable, please come back later."
+          end
+        end
+      end
+    end
+
+    describe "reactivate" do
+      context "with an employee of my company" do
+        let!(:employee) { create :employee, company: company }
+
+        it { is_expected.to require_authentication :patch, reactivate_employee_path(employee) }
+
+        context "with sync connected but employee has no account yet", type: :sync do
+          before { with_sync_connected }
+
+          it "redirects to edit with an alert" do
+            sign_in_as_employer employer
+            patch reactivate_employee_path(employee)
+            expect(response).to redirect_to edit_employee_path(employee)
+            expect(flash[:alert]).to eql "Employee has no account yet."
+          end
+        end
+
+        context "with sync connected and employee has an account", type: :sync do
+          before do
+            with_sync_connected
+            ::EmployerPortal::Sync.create_partner_for_company! company
+            ::EmployerPortal::Sync.create_account_for_employee! employee
+          end
+
+          context "when account is active" do
+            it "doesn't change account and redirects to edit with an alert" do
+              sign_in_as_employer employer
+              expect do
+                patch reactivate_employee_path(employee)
+              end.not_to change { ::EmployerPortal::Sync::Account[employee.remote_id].is_active }
+              expect(response).to redirect_to edit_employee_path(employee)
+              expect(flash[:alert]).to eql "Employee was already active."
+            end
+          end
+
+          context "when account is inactive" do
+            before { ::EmployerPortal::Sync::Account[employee.remote_id].update is_active: false }
+
+            it "reactivates the employee and redirects to edit with a notice" do
+              sign_in_as_employer employer
+              expect do
+                patch reactivate_employee_path(employee)
+              end.to change { ::EmployerPortal::Sync::Account[employee.remote_id].is_active }.from(0).to(1)
+              expect(response).to redirect_to edit_employee_path(employee)
+              expect(flash[:notice]).to eql "Employee was reactivated successfully."
+            end
+          end
+        end
+
+        context "without sync" do
+          it "redirects to index with an alert" do
+            sign_in_as_employer employer
+            patch reactivate_employee_path(employee)
+            expect(response).to redirect_to employees_path
+            expect(flash[:alert]).to eql "Temporarily unavailable, please come back later."
+          end
+        end
+      end
+
+      context "with an employee of another company" do
+        let!(:employee) { create :employee }
+
+        it { is_expected.to require_authentication :patch, reactivate_employee_path(employee) }
+
+        context "with sync connected but employee has no account yet", type: :sync do
+          before { with_sync_connected }
+
+          it "redirects to index with an alert" do
+            sign_in_as_employer employer
+            patch reactivate_employee_path(employee)
+            expect(response).to redirect_to employees_path
+            expect(flash[:alert]).to eql "Employee not found."
+          end
+        end
+
+        context "with sync connected and employee has an account", type: :sync do
+          before do
+            with_sync_connected
+            ::EmployerPortal::Sync.create_partner_for_company! company
+            ::EmployerPortal::Sync.create_account_for_employee! employee
+          end
+
+          it "redirects to index with an alert" do
+            sign_in_as_employer employer
+            expect do
+              patch reactivate_employee_path(employee)
+            end.not_to change { ::EmployerPortal::Sync::Account[employee.remote_id].is_active }
+            expect(response).to redirect_to employees_path
+            expect(flash[:alert]).to eql "Employee not found."
+          end
+        end
+
+        context "without sync" do
+          it "redirects to index with an alert" do
+            sign_in_as_employer employer
+            patch reactivate_employee_path(employee)
+            expect(response).to redirect_to employees_path
+            expect(flash[:alert]).to eql "Temporarily unavailable, please come back later."
+          end
+        end
+      end
+    end
+
+    describe "contact" do
+      context "with an employee of my company" do
+        let!(:employee) { create :employee, company: company }
+
+        it { is_expected.to require_authentication :patch, contact_employee_path(employee) }
+
+        context "with sync connected and company has daily checkup enabled", type: :sync do
+          before { with_sync_connected }
+
+          it "triggers email and redirects to edit with a notice" do
+            sign_in_as_employer employer
+            expect do
+              patch contact_employee_path(employee)
+            end.to have_enqueued_job(EmailTriggerJob).with(
+              EmailTemplate::TRIGGER_EMPLOYEE_CONTACT,
+              employee.uuid,
+            )
+            expect(response).to redirect_to edit_employee_path(employee)
+            expect(flash[:notice]).to eql "Employee was contacted successfully."
+          end
+        end
+
+        context "with sync connected but company has daily checkup disabled", type: :sync do
+          before do
+            with_sync_connected
+            company.plan.update daily_checkup_enabled: false
+          end
+
+          it "triggers no email and redirects to index with an alert" do
+            sign_in_as_employer employer
+            expect do
+              patch contact_employee_path(employee)
+            end.not_to have_enqueued_job(EmailTriggerJob)
+            expect(response).to redirect_to employees_path
+            expect(flash[:alert]).to eql "Feature not included in your current plan."
+          end
+        end
+
+        context "without sync" do
+          it "redirects to index with an alert" do
+            sign_in_as_employer employer
+            patch contact_employee_path(employee)
+            expect(response).to redirect_to employees_path
+            expect(flash[:alert]).to eql "Temporarily unavailable, please come back later."
+          end
+        end
+      end
+
+      context "with an employee of another company" do
+        let!(:employee) { create :employee }
+
+        it { is_expected.to require_authentication :patch, contact_employee_path(employee) }
+
+        context "with sync connected and company has daily checkup enabled", type: :sync do
+          before { with_sync_connected }
+
+          it "triggers no email and redirects to index with an alert" do
+            sign_in_as_employer employer
+            expect do
+              patch contact_employee_path(employee)
+            end.not_to have_enqueued_job(EmailTriggerJob)
+            expect(response).to redirect_to employees_path
+            expect(flash[:alert]).to eql "Employee not found."
+          end
+        end
+
+        context "with sync connected but company has daily checkup disabled", type: :sync do
+          before do
+            with_sync_connected
+            company.plan.update daily_checkup_enabled: false
+          end
+
+          it "triggers no email and redirects to index with an alert" do
+            sign_in_as_employer employer
+            expect do
+              patch contact_employee_path(employee)
+            end.not_to have_enqueued_job(EmailTriggerJob)
+            expect(response).to redirect_to employees_path
+            expect(flash[:alert]).to eql "Feature not included in your current plan."
+          end
+        end
+
+        context "without sync" do
+          it "redirects to index with an alert" do
+            sign_in_as_employer employer
+            patch contact_employee_path(employee)
+            expect(response).to redirect_to employees_path
+            expect(flash[:alert]).to eql "Temporarily unavailable, please come back later."
+          end
+        end
+      end
+    end
+
+    describe "send_reminder" do
+      context "with an employee of my company" do
+        let!(:employee) { create :employee, company: company }
+
+        it { is_expected.to require_authentication :patch, send_reminder_employee_path(employee) }
+
+        context "with sync connected and company has daily checkup enabled", type: :sync do
+          before { with_sync_connected }
+
+          it "triggers email and redirects to edit with a notice" do
+            sign_in_as_employer employer
+            expect do
+              patch send_reminder_employee_path(employee)
+            end.to have_enqueued_job(EmailTriggerJob).with(
+              EmailTemplate::TRIGGER_EMPLOYEE_REMINDER,
+              employee.uuid,
+            )
+            expect(response).to redirect_to edit_employee_path(employee)
+            expect(flash[:notice]).to eql "Employee reminder was sent successfully."
+          end
+        end
+
+        context "with sync connected but company has daily checkup disabled", type: :sync do
+          before do
+            with_sync_connected
+            company.plan.update daily_checkup_enabled: false
+          end
+
+          it "triggers no email and redirects to index with an alert" do
+            sign_in_as_employer employer
+            expect do
+              patch send_reminder_employee_path(employee)
+            end.not_to have_enqueued_job(EmailTriggerJob)
+            expect(response).to redirect_to employees_path
+            expect(flash[:alert]).to eql "Feature not included in your current plan."
+          end
+        end
+
+        context "without sync" do
+          it "redirects to index with an alert" do
+            sign_in_as_employer employer
+            patch send_reminder_employee_path(employee)
+            expect(response).to redirect_to employees_path
+            expect(flash[:alert]).to eql "Temporarily unavailable, please come back later."
+          end
+        end
+      end
+
+      context "with an employee of another company" do
+        let!(:employee) { create :employee }
+
+        it { is_expected.to require_authentication :patch, send_reminder_employee_path(employee) }
+
+        context "with sync connected and company has daily checkup enabled", type: :sync do
+          before { with_sync_connected }
+
+          it "triggers no email and redirects to index with an alert" do
+            sign_in_as_employer employer
+            expect do
+              patch send_reminder_employee_path(employee)
+            end.not_to have_enqueued_job(EmailTriggerJob)
+            expect(response).to redirect_to employees_path
+            expect(flash[:alert]).to eql "Employee not found."
+          end
+        end
+
+        context "with sync connected but company has daily checkup disabled", type: :sync do
+          before do
+            with_sync_connected
+            company.plan.update daily_checkup_enabled: false
+          end
+
+          it "triggers no email and redirects to index with an alert" do
+            sign_in_as_employer employer
+            expect do
+              patch send_reminder_employee_path(employee)
+            end.not_to have_enqueued_job(EmailTriggerJob)
+            expect(response).to redirect_to employees_path
+            expect(flash[:alert]).to eql "Feature not included in your current plan."
+          end
+        end
+
+        context "without sync" do
+          it "redirects to index with an alert" do
+            sign_in_as_employer employer
+            patch send_reminder_employee_path(employee)
+            expect(response).to redirect_to employees_path
+            expect(flash[:alert]).to eql "Temporarily unavailable, please come back later."
+          end
+        end
+      end
+    end
+
+    describe "health_passport" do
+      context "with an employee of my company" do
+        let!(:employee) { create :employee, company: company }
+
+        it { is_expected.to require_authentication :get, health_passport_employee_path(employee) }
+
+        context "with sync connected but employee has no account yet", type: :sync do
+          before { with_sync_connected }
+
+          it "renders successfully" do
+            sign_in_as_employer employer
+            get health_passport_employee_path(employee)
+            expect(response).to have_http_status :success
+            expect(flash).to be_empty
+            expect(response.body).to include("Health Passport is still in progress")
+          end
+        end
+
+        context "with sync connected and employee has an account", type: :sync do
+          before do
+            with_sync_connected
+            ::EmployerPortal::Sync.create_partner_for_company! company
+            ::EmployerPortal::Sync.create_account_for_employee! employee
+          end
+
+          it "renders successfully" do
+            sign_in_as_employer employer
+            get health_passport_employee_path(employee)
+            expect(response).to have_http_status :success
+            expect(flash).to be_empty
+            expect(response.body).to include("Health Passport is still in progress")
+          end
+        end
+
+        context "without sync" do
+          it "redirects to index with an alert" do
+            sign_in_as_employer employer
+            get health_passport_employee_path(employee)
+            expect(response).to redirect_to employees_path
+            expect(flash[:alert]).to eql "Temporarily unavailable, please come back later."
+          end
+        end
+      end
+
+      context "with an employee of another company" do
+        let!(:employee) { create :employee }
+
+        it { is_expected.to require_authentication :get, health_passport_employee_path(employee) }
+
+        context "with sync connected but employee has no account yet", type: :sync do
+          before { with_sync_connected }
+
+          it "redirects to index with an alert" do
+            sign_in_as_employer employer
+            get health_passport_employee_path(employee)
+            expect(response).to redirect_to employees_path
+            expect(flash[:alert]).to eql "Employee not found."
+          end
+        end
+
+        context "with sync connected and employee has an account", type: :sync do
+          before do
+            with_sync_connected
+            ::EmployerPortal::Sync.create_partner_for_company! company
+            ::EmployerPortal::Sync.create_account_for_employee! employee
+          end
+
+          it "redirects to index with an alert" do
+            sign_in_as_employer employer
+            expect do
+              get health_passport_employee_path(employee)
+            end.not_to change { ::EmployerPortal::Sync::Account[employee.remote_id].is_active }
+            expect(response).to redirect_to employees_path
+            expect(flash[:alert]).to eql "Employee not found."
+          end
+        end
+
+        context "without sync" do
+          it "redirects to index with an alert" do
+            sign_in_as_employer employer
+            get health_passport_employee_path(employee)
             expect(response).to redirect_to employees_path
             expect(flash[:alert]).to eql "Temporarily unavailable, please come back later."
           end
