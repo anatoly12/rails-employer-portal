@@ -15,12 +15,17 @@ class EmployerPortal::Sync::Legacy
     klass.const_set :Covid19Evaluation, covid19_evaluation_class
     klass.const_set :Covid19Message, covid19_message_class
     klass.const_set :Covid19MessageCode, covid19_message_code_class
+    klass.const_set :DataType, data_type_class
     klass.const_set :Demographic, demographic_class
     klass.const_set :Kit, kit_class
+    klass.const_set :List, list_class
+    klass.const_set :ListItem, list_item_class
     klass.const_set :Partner, partner_class
-    klass.const_set :PassportProduct, passport_product
+    klass.const_set :PassportProduct, passport_product_class
+    klass.const_set :Question, question_class
     klass.const_set :Requisition, requisition_class
     klass.const_set :TKit, t_kit_class
+    klass.const_set :TQuestion, t_question_class
     klass.const_set :User, user_class
   end
 
@@ -33,12 +38,17 @@ class EmployerPortal::Sync::Legacy
     klass.send :remove_const, :Covid19Evaluation
     klass.send :remove_const, :Covid19Message
     klass.send :remove_const, :Covid19MessageCode
+    klass.send :remove_const, :DataType
     klass.send :remove_const, :Demographic
     klass.send :remove_const, :Kit
+    klass.send :remove_const, :List
+    klass.send :remove_const, :ListItem
     klass.send :remove_const, :Partner
     klass.send :remove_const, :PassportProduct
+    klass.send :remove_const, :Question
     klass.send :remove_const, :Requisition
     klass.send :remove_const, :TKit
+    klass.send :remove_const, :TQuestion
     klass.send :remove_const, :User
   end
 
@@ -140,6 +150,16 @@ class EmployerPortal::Sync::Legacy
     }
   end
 
+  def data_type_class
+    prefix = klass.to_s
+    Class.new(
+      Sequel::Model(db[schema[:ec_data_types]])
+    ) {
+      many_to_one :list, class: "#{prefix}::List"
+      plugin :timestamps, update_on_create: true
+    }
+  end
+
   def demographic_class
     prefix = klass.to_s
     Class.new(
@@ -162,23 +182,56 @@ class EmployerPortal::Sync::Legacy
     }
   end
 
+  def list_class
+    prefix = klass.to_s
+    Class.new(
+      Sequel::Model(db[schema[:ec_lists]])
+    ) {
+      one_to_many :items, class: "#{prefix}::ListItem", key: :list_id
+      plugin :timestamps, update_on_create: true
+    }
+  end
+
+  def list_item_class
+    prefix = klass.to_s
+    Class.new(
+      Sequel::Model(db[schema[:ec_list_items]])
+    ) {
+      unrestrict_primary_key
+      many_to_one :list, class: "#{prefix}::List"
+      plugin :timestamps, update_on_create: true
+    }
+  end
+
   def partner_class
     prefix = klass.to_s
     Class.new(
       Sequel::Model(db[schema[:ec_partners]])
     ) {
       many_to_one :passport_product, class: "#{prefix}::PassportProduct"
-      one_to_many :access_codes, class: "#{prefix}::AccessCode"
+      one_to_many :access_codes, class: "#{prefix}::AccessCode", key: :partner_id
       plugin :timestamps, update_on_create: true
     }
   end
 
-  def passport_product
+  def passport_product_class
     prefix = klass.to_s
     Class.new(
       Sequel::Model(db[schema[:passport_products]])
     ) {
       many_to_one :t_kit, class: "#{prefix}::TKit"
+      plugin :timestamps, update_on_create: true
+    }
+  end
+
+  def question_class
+    prefix = klass.to_s
+    Class.new(
+      Sequel::Model(db[schema[:ec_questions]])
+    ) {
+      many_to_one :t_question, class: "#{prefix}::TQuestion"
+      many_to_one :kit, class: "#{prefix}::Kit"
+      many_to_one :data_type, class: "#{prefix}::DataType"
       plugin :timestamps, update_on_create: true
     }
   end
@@ -189,7 +242,7 @@ class EmployerPortal::Sync::Legacy
       Sequel::Model(db[schema[:ec_requisitions]])
     ) {
       many_to_one :user, class: "#{prefix}::User"
-      one_to_one :kit, class: "#{prefix}::Kit"
+      one_to_one :kit, class: "#{prefix}::Kit", key: :requisition_id
       plugin :timestamps, update_on_create: true
     }
   end
@@ -203,13 +256,23 @@ class EmployerPortal::Sync::Legacy
     }
   end
 
+  def t_question_class
+    prefix = klass.to_s
+    Class.new(
+      Sequel::Model(db[schema[:ec_t_questions]])
+    ) {
+      many_to_one :data_type, class: "#{prefix}::DataType"
+      plugin :timestamps, update_on_create: true
+    }
+  end
+
   def user_class
     prefix = klass.to_s
     Class.new(
       Sequel::Model(db[schema[:ec_users]])
     ) {
       one_to_one :account, class: "#{prefix}::Account", key: :account_id
-      one_to_many :requisitions, class: "#{prefix}::Requisition"
+      one_to_many :requisitions, class: "#{prefix}::Requisition", key: :user_id
       plugin :timestamps, update_on_create: true
     }
   end

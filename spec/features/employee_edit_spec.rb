@@ -185,6 +185,48 @@ feature "Employee edit" do
       end
     end
 
+    context "when employee has some symptom logs" do
+      include ActiveSupport::Testing::TimeHelpers
+      given(:passport_product) { create :sync_passport_product }
+      given(:partner) { ::EmployerPortal::Sync::Partner[company.remote_id] }
+      given(:account) { ::EmployerPortal::Sync::Account[employee.remote_id] }
+      given(:user) { ::EmployerPortal::Sync::User[account.user_id] }
+      given(:kit1) { create :sync_kit, requisition: user.requisitions.first, flagged_status: "FLAGGED" }
+      given(:kit2) { create :sync_kit, requisition: user.requisitions.first }
+      before do
+        partner.update passport_product: passport_product
+        ::EmployerPortal::Sync.create_account_for_employee! employee
+        travel_to now - 1.day do
+          create :sync_question, kit: kit1, sub_group: "Symptoms", response: "Yes"
+          create :sync_question, kit: kit1, question: "Temperature", response: "99.5ºF"
+        end
+        travel_to now do
+          create :sync_question, kit: kit2, question: "Temperature", response: "100.4ºF"
+        end
+      end
+
+      scenario "I see them in the Symptom Tracker widget" do
+        visit_employee_edit
+        within "#symptom-tracker:not(.bg-gray-100) tbody" do
+          expect(page).to have_css("tr", count: 2)
+          within "tr:nth-child(1)" do
+            expect(page).to have_css("td:nth-child(1)", text: today.to_s)
+            expect(page).not_to have_css("td:nth-child(2) svg")
+            expect(page).to have_css("td:nth-child(3).text-red-600", text: "100.4ºF")
+            expect(page).to have_css("td:nth-child(4)", text: "No")
+            expect(page).to have_css("td:nth-child(5) a[href$='/employees/#{employee.uuid}/symptom_logs/#{today}']")
+          end
+          within "tr:nth-child(2)" do
+            expect(page).to have_css("td:nth-child(1)", text: (today - 1).to_s)
+            expect(page).to have_css("td:nth-child(2) svg")
+            expect(page).to have_css("td:nth-child(3):not(.text-red-600)", text: "99.5ºF")
+            expect(page).to have_css("td:nth-child(4)", text: "Yes")
+            expect(page).to have_css("td:nth-child(5) a[href$='/employees/#{employee.uuid}/symptom_logs/#{today - 1}']")
+          end
+        end
+      end
+    end
+
     context "when employee daily checkup is Cleared" do
       before do
         ::EmployerPortal::Sync.create_account_for_employee! employee

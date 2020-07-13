@@ -24,6 +24,7 @@ class SymptomLogsController < ApplicationController
   def search
     @search ||= ::EmployerPortal::SymptomLogEntry::Search.from_params current_context, params
   end
+
   helper_method :search
 
   def employee_not_synced
