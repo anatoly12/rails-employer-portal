@@ -217,6 +217,8 @@ CREATE TABLE `employers` (
   `created_at` datetime DEFAULT NULL,
   `updated_at` datetime DEFAULT NULL,
   `deleted_at` datetime DEFAULT NULL,
+  `reset_password_digest` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `reset_password_sent_at` datetime DEFAULT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `uuid` (`uuid`),
   UNIQUE KEY `employers_email_index` (`email`),
@@ -307,3 +309,4 @@ INSERT INTO `schema_migrations` (`filename`) VALUES ('20200705071934_add_remote_
 INSERT INTO `schema_migrations` (`filename`) VALUES ('20200707174717_create_audits.rb');
 INSERT INTO `schema_migrations` (`filename`) VALUES ('20200708075657_fix_employers_email_unicity.rb');
 INSERT INTO `schema_migrations` (`filename`) VALUES ('20200708100604_add_queued_at_on_employees.rb');
+INSERT INTO `schema_migrations` (`filename`) VALUES ('20200714131542_add_reset_password_to_employers.rb');

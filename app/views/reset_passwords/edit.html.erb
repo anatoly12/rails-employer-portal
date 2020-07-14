@@ -1,0 +1,21 @@
+<%= render "common/main" do %>
+  <%= render "common/gradient_with_fingerprints" do %>
+    <h1 class="text-3xl font-thin md:my-4 md:text-5xl">Employer Portal Login</h1>
+    <hr class="mb-6 border-t-2 border-white">
+    <div class="text-xl md:text-3xl">Welcome to the Health Passport Employer Portal!</div>
+    <div class="text-xl font-thin md:text-3xl md:mb-4">Getting your team back to business the better way.</div>
+  <% end %>
+  <div class="container mx-auto px-4">
+    <%= form_for editor, as: :reset_password, url: { action: :update }, method: :patch, html: { class: "max-w-lg mx-auto my-4 md:my-20", autocomplete: "off" } do |f| %>
+      <h2 class="text-3xl font-thin">Choose a new password<h2>
+      <%= f.hidden_field :email %>
+      <div class="mb-4">
+        <%= f.password_field :password, placeholder: "Password", class: text_field_class(editor.errors_on(:password)) %>
+        <%= render "common/errors", errors: editor.errors_on(:password) %>
+      </div>
+      <div class="md:mt-12">
+        <%= button_tag "Update password", type: "submit", class: primary_button_class(:blue) %>
+      </div>
+    <% end %>
+  </div>
+<% end %>

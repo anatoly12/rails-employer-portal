@@ -16,7 +16,7 @@
     <%= render "common/errors", errors: editor.errors_on(:password) %>
   </div>
   <div class="-mt-2 mb-4">
-    <%= link_to "I forgot my password", "#", class: secondary_link_class %>
+    <%= link_to "I forgot my password", new_reset_password_path, class: secondary_link_class %>
   </div>
   <div class="md:mt-12">
     <%= button_tag "Sign in", type: "submit", class: primary_button_class(:blue) %>

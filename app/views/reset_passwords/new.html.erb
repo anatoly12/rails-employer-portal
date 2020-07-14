@@ -1,0 +1,26 @@
+<%= render "common/main" do %>
+  <%= render "common/gradient_with_fingerprints" do %>
+    <h1 class="text-3xl font-thin md:my-4 md:text-5xl">Employer Portal Login</h1>
+    <hr class="mb-6 border-t-2 border-white">
+    <div class="text-xl md:text-3xl">Welcome to the Health Passport Employer Portal!</div>
+    <div class="text-xl font-thin md:text-3xl md:mb-4">Getting your team back to business the better way.</div>
+  <% end %>
+  <div class="container mx-auto px-4">
+    <%= form_for editor, as: :reset_password, url: { action: :create }, html: { class: "max-w-lg mx-auto my-4 md:my-20", autocomplete: "off" } do |f| %>
+      <h2 class="text-3xl font-thin">Password forgotten<h2>
+      <div class="font-light mb-4">
+        Enter your email to receive a password reset link.
+      </div>
+      <div class="mb-4">
+        <%= f.text_field :email, placeholder: "Email", class: text_field_class(editor.errors_on(:email)) %>
+        <%= render "common/errors", errors: editor.errors_on(:email) %>
+      </div>
+      <div class="-mt-2 mb-4">
+        <%= link_to "Go back to sign in", sessions_path, class: secondary_link_class %>
+      </div>
+      <div class="md:mt-12">
+        <%= button_tag "Reset password", type: "submit", class: primary_button_class(:blue) %>
+      </div>
+    <% end %>
+  </div>
+<% end %>

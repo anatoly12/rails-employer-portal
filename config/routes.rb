@@ -16,6 +16,7 @@ Rails.application.routes.draw do
     root to: "dashboard#index"
   end
   resource :sessions, path: "/sign-in", only: [:show, :create, :destroy]
+  resources :reset_passwords, only: [:index, :new, :create, :show, :edit, :update]
   resources :employees do
     get "bulk_import", on: :collection
     delete "delete_all", on: :collection
