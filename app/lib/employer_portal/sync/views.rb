@@ -35,7 +35,6 @@ class EmployerPortal::Sync::Views
         .left_join(schema[:account_access_grants], account_id: schema[:accounts][:id])
         .left_join(schema[:partner_access_codes], id: schema[:account_access_grants][:partner_access_code_id])
         .left_join(schema[:covid19_daily_checkups], account_id: schema[:accounts][:id], updated_at: db[schema[:covid19_daily_checkups]].where(account_id: schema[:accounts][:id]).select(Sequel.function(:max, :updated_at)))
-        .left_join(schema[:covid19_daily_checkup_statuses], daily_checkup_status_code: schema[:covid19_daily_checkups][:daily_checkup_status_code])
         .left_join(schema[:covid19_evaluations], account_id: schema[:accounts][:id])
         .group_by(schema[:accounts][:id])
         .exclude(schema[:partner_access_codes][:partner_id] => nil)
@@ -57,23 +56,18 @@ class EmployerPortal::Sync::Views
           any_value(
             schema[:partner_access_codes][:partner_id]
           ).as(:partner_id),
-          Sequel.function(
-            :coalesce,
-            any_value(schema[:covid19_daily_checkup_statuses][:daily_checkup_status]),
-            "Did Not Submit"
+          any_value(
+            Sequel.case(
+              [
+                [{ schema[:covid19_daily_checkups][:daily_checkup_status_code] => 2 }, "Not Cleared"],
+                [{ schema[:covid19_daily_checkups][:daily_checkup_status_code] => 1, schema[:covid19_daily_checkups][:checkup_date] => Sequel.function(:curdate) }, "Cleared"],
+              ],
+              "Did Not Submit"
+            )
           ).as(:daily_checkup_status),
           any_value(
             schema[:covid19_daily_checkups][:checkup_date]
           ).as(:daily_checkup_updated_at),
-          any_value(
-            Sequel.case(
-              [
-                [{ schema[:covid19_daily_checkups][:daily_checkup_status_code] => 1 }, "Cleared"],
-                [{ schema[:covid19_daily_checkups][:daily_checkup_status_code] => 2 }, "Contact"],
-              ],
-              "Send Reminder"
-            )
-          ).as(:daily_checkup_action),
           any_value(
             Sequel.case(
               [

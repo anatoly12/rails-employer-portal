@@ -57,7 +57,7 @@ class EmployerPortal::Employee::Editor
   end
 
   def contact_needed?
-    daily_checkup_action == "Contact"
+    dashboard_employee&.daily_checkup_status == "Not Cleared"
   end
 
   def contact_queued?
@@ -79,7 +79,7 @@ class EmployerPortal::Employee::Editor
   end
 
   def reminder_needed?
-    daily_checkup_action == "Send Reminder"
+    dashboard_employee&.daily_checkup_status == "Did Not Submit"
   end
 
   def reminder_queued?
@@ -131,9 +131,5 @@ class EmployerPortal::Employee::Editor
 
   def testing_status
     dashboard_employee&.testing_status || "Not Registered"
-  end
-
-  def daily_checkup_action
-    dashboard_employee&.daily_checkup_action || "Send Reminder"
   end
 end

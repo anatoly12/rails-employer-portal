@@ -122,9 +122,7 @@ feature "Employee edit" do
         ::EmployerPortal::Sync.create_account_for_employee! employee
         ::EmployerPortal::Sync::Covid19DailyCheckupStatus.find_or_create(
           daily_checkup_status_code: 2,
-        ) do |status|
-          status.daily_checkup_status = "Not Cleared"
-        end
+        ) { |status| status.daily_checkup_status = "Not Cleared" }
         ::EmployerPortal::Sync::Covid19DailyCheckup.create(
           account_id: employee.remote_id,
           daily_checkup_status_code: 2,
@@ -232,9 +230,7 @@ feature "Employee edit" do
         ::EmployerPortal::Sync.create_account_for_employee! employee
         ::EmployerPortal::Sync::Covid19DailyCheckupStatus.find_or_create(
           daily_checkup_status_code: 1,
-        ) do |status|
-          status.daily_checkup_status = "Cleared"
-        end
+        ) { |status| status.daily_checkup_status = "Cleared" }
         ::EmployerPortal::Sync::Covid19DailyCheckup.create(
           account_id: employee.remote_id,
           daily_checkup_status_code: 1,

@@ -18,8 +18,6 @@ class EmployerPortal::Employee::Viewer
   end
 
   def daily_checkup_status
-    return unless context.sync_connected?
-
     dashboard_employee&.daily_checkup_status || "Did Not Submit"
   end
 
@@ -29,9 +27,7 @@ class EmployerPortal::Employee::Viewer
   end
 
   def contact_needed?
-    return false unless synced?
-
-    daily_checkup_action == "Contact"
+    dashboard_employee&.daily_checkup_status == "Not Cleared"
   end
 
   def contact_queued?
@@ -39,9 +35,7 @@ class EmployerPortal::Employee::Viewer
   end
 
   def reminder_needed?
-    return false unless synced?
-
-    daily_checkup_action == "Send Reminder"
+    dashboard_employee&.daily_checkup_status == "Did Not Submit"
   end
 
   def reminder_queued?
@@ -76,9 +70,5 @@ class EmployerPortal::Employee::Viewer
 
   def dashboard_employee
     decorated.dashboard_employee if synced?
-  end
-
-  def daily_checkup_action
-    dashboard_employee&.daily_checkup_action || "Send Reminder"
   end
 end

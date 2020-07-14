@@ -118,9 +118,7 @@ feature "Employee dashboard" do
           ::EmployerPortal::Sync.create_account_for_employee! employee
           ::EmployerPortal::Sync::Covid19DailyCheckupStatus.find_or_create(
             daily_checkup_status_code: 2,
-          ) do |status|
-            status.daily_checkup_status = "Not Cleared"
-          end
+          ) { |status| status.daily_checkup_status = "Not Cleared" }
           ::EmployerPortal::Sync::Covid19DailyCheckup.create(
             account_id: employee.remote_id,
             daily_checkup_status_code: 2,
@@ -185,14 +183,49 @@ feature "Employee dashboard" do
         end
       end
 
+      context "when employee daily checkup was Not Cleared yesterday" do
+        before do
+          ::EmployerPortal::Sync.create_account_for_employee! employee
+          ::EmployerPortal::Sync::Covid19DailyCheckupStatus.find_or_create(
+            daily_checkup_status_code: 2,
+          ) { |status| status.daily_checkup_status = "Not Cleared" }
+          ::EmployerPortal::Sync::Covid19DailyCheckup.create(
+            account_id: employee.remote_id,
+            daily_checkup_status_code: 2,
+            checkup_date: today - 1,
+          )
+        end
+
+        scenario "the daily checkup status stays Not Cleared" do
+          visit "/"
+          expect(page).not_to have_css ".blur-3 .container"
+          within "#charts > div:nth-child(1)" do
+            is_expected.to have_charts ["#1dd678", 0], ["#f35200", 100], ["#16a3e5", 0]
+          end
+          within "#charts > div:nth-child(2)" do
+            is_expected.to have_charts ["#1dd678", 0], ["#f35200", 0], ["#16a3e5", 100]
+          end
+          expect(page).to have_css "a[href$='/edit']", count: 1
+          within "a[href$='/employees/#{employee.uuid}/edit']" do
+            expect(page).to have_css "div:nth-child(2)", text: "#{employee.first_name} #{employee.last_name}"
+            expect(page).to have_css "div:nth-child(3)", text: employee.state
+            expect(page).to have_css "div:nth-child(4).text-red-600", text: "Not Cleared"
+            expect(page).to have_css "div:nth-child(5)", text: (today - 1).to_s
+            expect(page).to have_css "div:nth-child(6) button", text: "Contact"
+            expect(page).to have_css "div:nth-child(7).text-blue-600", text: "Not Registered"
+            expect(page).to have_css "div:nth-child(8)", text: "Never"
+            expect(page).to have_css "div:nth-child(9)", text: /\A\z/
+            expect(page).to have_css "div:nth-child(10) svg"
+          end
+        end
+      end
+
       context "when employee daily checkup is Cleared" do
         before do
           ::EmployerPortal::Sync.create_account_for_employee! employee
           ::EmployerPortal::Sync::Covid19DailyCheckupStatus.find_or_create(
             daily_checkup_status_code: 1,
-          ) do |status|
-            status.daily_checkup_status = "Cleared"
-          end
+          ) { |status| status.daily_checkup_status = "Cleared" }
           ::EmployerPortal::Sync::Covid19DailyCheckup.create(
             account_id: employee.remote_id,
             daily_checkup_status_code: 1,
@@ -217,6 +250,43 @@ feature "Employee dashboard" do
             expect(page).to have_css "div:nth-child(5)", text: today.to_s
             expect(page).to have_css "div:nth-child(6)", text: /\A\z/
             expect(page).not_to have_css "div:nth-child(6) button"
+            expect(page).to have_css "div:nth-child(7).text-blue-600", text: "Not Registered"
+            expect(page).to have_css "div:nth-child(8)", text: "Never"
+            expect(page).to have_css "div:nth-child(9)", text: /\A\z/
+            expect(page).to have_css "div:nth-child(10) svg"
+          end
+        end
+      end
+
+      context "when employee daily checkup was Cleared yesterday" do
+        before do
+          ::EmployerPortal::Sync.create_account_for_employee! employee
+          ::EmployerPortal::Sync::Covid19DailyCheckupStatus.find_or_create(
+            daily_checkup_status_code: 1,
+          ) { |status| status.daily_checkup_status = "Cleared" }
+          ::EmployerPortal::Sync::Covid19DailyCheckup.create(
+            account_id: employee.remote_id,
+            daily_checkup_status_code: 1,
+            checkup_date: today - 1,
+          )
+        end
+
+        scenario "the daily checkup status becomes Did Not Submit" do
+          visit "/"
+          expect(page).not_to have_css ".blur-3 .container"
+          within "#charts > div:nth-child(1)" do
+            is_expected.to have_charts ["#1dd678", 0], ["#f35200", 0], ["#16a3e5", 100]
+          end
+          within "#charts > div:nth-child(2)" do
+            is_expected.to have_charts ["#1dd678", 0], ["#f35200", 0], ["#16a3e5", 100]
+          end
+          expect(page).to have_css "a[href$='/edit']", count: 1
+          within "a[href$='/employees/#{employee.uuid}/edit']" do
+            expect(page).to have_css "div:nth-child(2)", text: "#{employee.first_name} #{employee.last_name}"
+            expect(page).to have_css "div:nth-child(3)", text: employee.state
+            expect(page).to have_css "div:nth-child(4).text-blue-600", text: "Did Not Submit"
+            expect(page).to have_css "div:nth-child(5)", text: (today - 1).to_s
+            expect(page).to have_css "div:nth-child(6) button", text: "Send Reminder"
             expect(page).to have_css "div:nth-child(7).text-blue-600", text: "Not Registered"
             expect(page).to have_css "div:nth-child(8)", text: "Never"
             expect(page).to have_css "div:nth-child(9)", text: /\A\z/

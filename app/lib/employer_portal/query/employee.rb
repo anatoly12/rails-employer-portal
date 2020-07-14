@@ -111,7 +111,6 @@ class EmployerPortal::Query::Employee < EmployerPortal::Query::Base
       account_id: [:dashboard_employee, :id],
       daily_checkup_status: [:dashboard_employee, :daily_checkup_status, Sequel.function(:coalesce, Sequel.qualify(:dashboard_employee, :daily_checkup_status), "Did Not Submit")],
       daily_checkup_updated_at: [:dashboard_employee, :daily_checkup_updated_at],
-      daily_checkup_action: [:dashboard_employee, :daily_checkup_action, Sequel.function(:coalesce, Sequel.qualify(:dashboard_employee, :daily_checkup_action), "Send Reminder")],
       testing_status: [:dashboard_employee, :testing_status, Sequel.function(:coalesce, Sequel.qualify(:dashboard_employee, :testing_status), "Not Registered")],
       testing_updated_at: [:dashboard_employee, :testing_updated_at],
     ) if context.sync_connected?
