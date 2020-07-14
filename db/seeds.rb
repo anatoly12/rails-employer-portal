@@ -54,24 +54,27 @@ admin_user = AdminUser.create(
 )
 
 EmailTemplate.create(
-  name: "Employee new",
+  name: "Employee invite",
   subject: "Welcome to Essential Health Passport",
   trigger_key: EmailTemplate::TRIGGER_EMPLOYEE_NEW,
   from: "support@example.com",
   html: "
-    <p>Hello {{employee_email}}!</p>
-    <p>Someone invited you to the Employer Portal. Choose an email through the link below.</p>
+    <p>Hello {{employee_full_name}}!</p>
+    <p>Someone invited you to the Employer Portal. Choose a password through the link below.</p>
     <p><a href='http://localhost:3000/health_modules/password/edit?reset_password_token={{employee_reset_password_token}}'>Choose a password</a></p>
     <p>Thank you and have a nice day.</p>
   ",
-  text: "
-    Hello {{employee_email}}!
-
-    Someone invited you to the Employer Portal. Choose an email through the link below:
-
-    http://localhost:3000/health_modules/password/edit?reset_password_token={{employee_reset_password_token}}
-
-    Thank you and have a nice day.
+)
+EmailTemplate.create(
+  name: "Employer reset password",
+  subject: "Essential Health Employer Portal - Password forgotten",
+  trigger_key: EmailTemplate::TRIGGER_EMPLOYEE_NEW,
+  from: "support@example.com",
+  html: "
+    <p>Hello {{employer_first_name}} {{employer_last_name}}!</p>
+    <p>Seems like you asked for a new password. Choose a new password through the link below.</p>
+    <p><a href='http://employer-portal.test:5000/reset_passwords/{{employer_reset_password_token}}?reset_password[email]={{employer_email}}'>Choose a password</a></p>
+    <p>Thank you and have a nice day.</p>
   ",
 )
 

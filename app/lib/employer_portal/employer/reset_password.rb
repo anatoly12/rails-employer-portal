@@ -53,7 +53,7 @@ class EmployerPortal::Employer::ResetPassword
   end
 
   def update_password
-    employer.set password: password
+    employer.set password: password, reset_password_digest: nil, reset_password_sent_at: nil
     employer.save raise_on_failure: false
   end
 
