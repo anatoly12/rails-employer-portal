@@ -151,4 +151,36 @@ feature "Manage employees" do
       end
     end
   end
+
+  context "when sync is NOT connected" do
+    scenario "I can still list and filter employees" do
+      click_link "Employees"
+      within "table tbody" do
+        expect(page).to have_css "tr", count: 2
+        within "tr:nth-child(1)" do
+          expect(page).to have_css "td", count: 5
+          expect(page).to have_css "td:nth-child(1)", text: employee2.company.name
+          expect(page).to have_css "td:nth-child(3)", text: "#{employee2.first_name} #{employee2.last_name}"
+          expect(page).to have_css "td:nth-child(4)", text: employee2.email
+          expect(page).to have_css "td:nth-child(5) a[title='Sync failed, click to retry']"
+        end
+        within "tr:nth-child(2)" do
+          expect(page).to have_css "td", count: 5
+          expect(page).to have_css "td:nth-child(1)", text: employee1.company.name
+          expect(page).to have_css "td:nth-child(3)", text: "#{employee1.first_name} #{employee1.last_name}"
+          expect(page).to have_css "td:nth-child(4)", text: employee1.email
+          expect(page).to have_css "td:nth-child(5) a[title='Sync failed, click to retry']"
+        end
+      end
+      click_link "Filters"
+      within "#new_filters" do
+        expect(page).to have_field("Company")
+        expect(page).to have_field("Sync status")
+        expect(page).to have_field("Full name contains")
+        expect(page).to have_field("Email contains")
+        expect(page).not_to have_field("Daily checkup status")
+        expect(page).not_to have_field("Testing status")
+      end
+    end
+  end
 end

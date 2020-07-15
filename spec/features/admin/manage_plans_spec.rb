@@ -1,12 +1,13 @@
 require "rails_helper"
 
 feature "Manage plans" do
+  before { sign_in_as_admin_user }
+
   context "when sync is connected", type: :sync do
     let(:passport_product) { @passport_product }
     before do
       with_sync_connected
       @passport_product = create :sync_passport_product
-      sign_in_as_admin_user
     end
 
     scenario "I can add a new plan" do
@@ -150,8 +151,6 @@ feature "Manage plans" do
   end
 
   context "when sync is NOT connected" do
-    before { sign_in_as_admin_user }
-
     scenario "I can still add a new plan" do
       click_link "Plans"
       click_link "Add a new plan"

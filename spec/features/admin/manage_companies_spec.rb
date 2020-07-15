@@ -2,13 +2,13 @@ require "rails_helper"
 
 feature "Manage companies" do
   given!(:plan) { create :plan }
+  before { sign_in_as_admin_user }
 
   context "when sync is connected", type: :sync do
     let(:partner) { @partner }
     before do
       with_sync_connected
       @partner = create :sync_partner
-      sign_in_as_admin_user
     end
 
     scenario "I can add a new company" do
@@ -165,8 +165,6 @@ feature "Manage companies" do
   end
 
   context "when sync is NOT connected" do
-    before { sign_in_as_admin_user }
-
     scenario "I can still add a new company" do
       click_link "Companies"
       click_link "Add a new company"
