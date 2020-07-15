@@ -38,7 +38,7 @@ feature "Employee dashboard" do
             is_expected.to have_charts ["#1dd678", 0], ["#f35200", 0], ["#16a3e5", 100]
           end
           expect(page).to have_css "a[href$='/edit']", count: 1
-          within "a[href$='/employees/#{employee.uuid}/edit']" do
+          within "a[href='/employees/#{employee.uuid}/edit']" do
             expect(page).to have_css "div:nth-child(2)", text: "#{employee.first_name} #{employee.last_name}"
             expect(page).to have_css "div:nth-child(3)", text: employee.state
             expect(page).to have_css "div:nth-child(4).text-blue-600", text: "Did Not Submit"
@@ -66,7 +66,7 @@ feature "Employee dashboard" do
             is_expected.to have_charts ["#1dd678", 0], ["#f35200", 0], ["#16a3e5", 100]
           end
           expect(page).to have_css "a[href$='/edit']", count: 1
-          within "a[href$='/employees/#{employee.uuid}/edit']" do
+          within "a[href='/employees/#{employee.uuid}/edit']" do
             expect(page).to have_css "div:nth-child(2)", text: "#{employee.first_name} #{employee.last_name}"
             expect(page).to have_css "div:nth-child(3)", text: employee.state
             expect(page).to have_css "div:nth-child(4).text-blue-600", text: "Did Not Submit"
@@ -98,7 +98,7 @@ feature "Employee dashboard" do
             is_expected.to have_charts ["#1dd678", 0], ["#f35200", 0], ["#16a3e5", 100]
           end
           expect(page).to have_css "a[href$='/edit']", count: 1
-          within "a[href$='/employees/#{employee.uuid}/edit']" do
+          within "a[href='/employees/#{employee.uuid}/edit']" do
             expect(page).to have_css "div:nth-child(2)", text: "#{employee.first_name} #{employee.last_name}"
             expect(page).to have_css "div:nth-child(3)", text: employee.state
             expect(page).to have_css "div:nth-child(4).text-blue-600", text: "Did Not Submit"
@@ -136,7 +136,7 @@ feature "Employee dashboard" do
             is_expected.to have_charts ["#1dd678", 0], ["#f35200", 0], ["#16a3e5", 100]
           end
           expect(page).to have_css "a[href$='/edit']", count: 1
-          within "a[href$='/employees/#{employee.uuid}/edit']" do
+          within "a[href='/employees/#{employee.uuid}/edit']" do
             expect(page).to have_css "div:nth-child(2)", text: "#{employee.first_name} #{employee.last_name}"
             expect(page).to have_css "div:nth-child(3)", text: employee.state
             expect(page).to have_css "div:nth-child(4).text-red-600", text: "Not Cleared"
@@ -168,7 +168,7 @@ feature "Employee dashboard" do
             is_expected.to have_charts ["#1dd678", 0], ["#f35200", 0], ["#16a3e5", 100]
           end
           expect(page).to have_css "a[href$='/edit']", count: 1
-          within "a[href$='/employees/#{employee.uuid}/edit']" do
+          within "a[href='/employees/#{employee.uuid}/edit']" do
             expect(page).to have_css "div:nth-child(2)", text: "#{employee.first_name} #{employee.last_name}"
             expect(page).to have_css "div:nth-child(3)", text: employee.state
             expect(page).to have_css "div:nth-child(4).text-red-600", text: "Not Cleared"
@@ -206,7 +206,7 @@ feature "Employee dashboard" do
             is_expected.to have_charts ["#1dd678", 0], ["#f35200", 0], ["#16a3e5", 100]
           end
           expect(page).to have_css "a[href$='/edit']", count: 1
-          within "a[href$='/employees/#{employee.uuid}/edit']" do
+          within "a[href='/employees/#{employee.uuid}/edit']" do
             expect(page).to have_css "div:nth-child(2)", text: "#{employee.first_name} #{employee.last_name}"
             expect(page).to have_css "div:nth-child(3)", text: employee.state
             expect(page).to have_css "div:nth-child(4).text-red-600", text: "Not Cleared"
@@ -243,7 +243,7 @@ feature "Employee dashboard" do
             is_expected.to have_charts ["#1dd678", 0], ["#f35200", 0], ["#16a3e5", 100]
           end
           expect(page).to have_css "a[href$='/edit']", count: 1
-          within "a[href$='/employees/#{employee.uuid}/edit']" do
+          within "a[href='/employees/#{employee.uuid}/edit']" do
             expect(page).to have_css "div:nth-child(2)", text: "#{employee.first_name} #{employee.last_name}"
             expect(page).to have_css "div:nth-child(3)", text: employee.state
             expect(page).to have_css "div:nth-child(4).text-green-500", text: "Cleared"
@@ -281,7 +281,7 @@ feature "Employee dashboard" do
             is_expected.to have_charts ["#1dd678", 0], ["#f35200", 0], ["#16a3e5", 100]
           end
           expect(page).to have_css "a[href$='/edit']", count: 1
-          within "a[href$='/employees/#{employee.uuid}/edit']" do
+          within "a[href='/employees/#{employee.uuid}/edit']" do
             expect(page).to have_css "div:nth-child(2)", text: "#{employee.first_name} #{employee.last_name}"
             expect(page).to have_css "div:nth-child(3)", text: employee.state
             expect(page).to have_css "div:nth-child(4).text-blue-600", text: "Did Not Submit"
@@ -315,7 +315,7 @@ feature "Employee dashboard" do
             is_expected.to have_charts ["#1dd678", 100], ["#f35200", 0], ["#16a3e5", 0]
           end
           expect(page).to have_css "a[href$='/edit']", count: 1
-          within "a[href$='/employees/#{employee.uuid}/edit']" do
+          within "a[href='/employees/#{employee.uuid}/edit']" do
             expect(page).to have_css "div:nth-child(2)", text: "#{employee.first_name} #{employee.last_name}"
             expect(page).to have_css "div:nth-child(3)", text: employee.state
             expect(page).to have_css "div:nth-child(4).text-blue-600", text: "Did Not Submit"
@@ -349,7 +349,7 @@ feature "Employee dashboard" do
             is_expected.to have_charts ["#1dd678", 0], ["#f35200", 100], ["#16a3e5", 0]
           end
           expect(page).to have_css "a[href$='/edit']", count: 1
-          within "a[href$='/employees/#{employee.uuid}/edit']" do
+          within "a[href='/employees/#{employee.uuid}/edit']" do
             expect(page).to have_css "div:nth-child(2)", text: "#{employee.first_name} #{employee.last_name}"
             expect(page).to have_css "div:nth-child(3)", text: employee.state
             expect(page).to have_css "div:nth-child(4).text-blue-600", text: "Did Not Submit"
@@ -381,7 +381,7 @@ feature "Employee dashboard" do
             is_expected.to have_charts ["#1dd678", 0], ["#f35200", 0], ["#16a3e5", 100]
           end
           expect(page).to have_css "a[href$='/edit']", count: 1
-          within "a[href$='/employees/#{employee.uuid}/edit']" do
+          within "a[href='/employees/#{employee.uuid}/edit']" do
             expect(page).to have_css "div:nth-child(2)", text: "#{employee.first_name} #{employee.last_name}"
             expect(page).to have_css "div:nth-child(3)", text: employee.state
             expect(page).to have_css "div:nth-child(4).text-blue-600", text: "Did Not Submit"
@@ -408,7 +408,7 @@ feature "Employee dashboard" do
             is_expected.to have_charts ["#1dd678", 0], ["#f35200", 0], ["#16a3e5", 100]
           end
           expect(page).to have_css "a[href$='/edit']", count: 1
-          within "a[href$='/employees/#{employee.uuid}/edit']" do
+          within "a[href='/employees/#{employee.uuid}/edit']" do
             expect(page).to have_css "div:nth-child(2)", text: "#{employee.first_name} #{employee.last_name}"
             expect(page).to have_css "div:nth-child(3)", text: employee.state
             expect(page).to have_css "div:nth-child(4).text-gray-600", text: "Did Not Submit"
@@ -436,7 +436,7 @@ feature "Employee dashboard" do
             is_expected.to have_charts ["#718096", 20], ["#718096", 50], ["#718096", 30]
           end
           expect(page).to have_css "a[href$='/edit']", count: 1
-          within "a[href$='/employees/#{employee.uuid}/edit']" do
+          within "a[href='/employees/#{employee.uuid}/edit']" do
             expect(page).to have_css "div:nth-child(2)", text: "#{employee.first_name} #{employee.last_name}"
             expect(page).to have_css "div:nth-child(3)", text: employee.state
             expect(page).to have_css "div:nth-child(4).text-blue-600", text: "Did Not Submit"
@@ -463,7 +463,7 @@ feature "Employee dashboard" do
           is_expected.to have_charts ["#718096", 20], ["#718096", 50], ["#718096", 30]
         end
         expect(page).to have_css "a[href$='/edit']", count: 1
-        within "a[href$='/employees/#{employee.uuid}/edit']" do
+        within "a[href='/employees/#{employee.uuid}/edit']" do
           expect(page).to have_css "div:nth-child(2)", text: "#{employee.first_name} #{employee.last_name}"
           expect(page).to have_css "div:nth-child(3)", text: employee.state
           expect(page).to have_css "div:nth-child(4).text-gray-600", text: "Did Not Submit"

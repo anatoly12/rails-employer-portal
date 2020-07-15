@@ -6,7 +6,7 @@ class EmployerPortal::Admin::Base::Editor
   # ~~ public class methods ~~
   def self.from_params(context, params)
     edited = if params[:id].present?
-        find_by_id!(params[:id])
+        find_by_id! params[:id]
       else
         new_model
       end

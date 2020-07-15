@@ -46,9 +46,9 @@ class EmployerPortal::Query::Employee < EmployerPortal::Query::Base
       when "0" then ds.where remote_id: nil
       end
     when "daily_checkup_status_equals"
-      ds.where remote_id: DashboardEmployee.where(daily_checkup_status: value).select(:id) if context.sync_connected?
+      ds.where daily_checkup_status: value if context.sync_connected?
     when "testing_status_equals"
-      ds.where remote_id: DashboardEmployee.where(testing_status: value).select(:id) if context.sync_connected?
+      ds.where testing_status: value if context.sync_connected?
     end || ds
   end
 

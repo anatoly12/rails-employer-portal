@@ -27,7 +27,7 @@ feature "Employee edit" do
             expect(page).to have_css ".bg-blue-400"
             expect(page).to have_content "Not Registered"
           end
-          expect(page).to have_css("a[href$='/employees/#{employee.uuid}/health_passport']", text: "Not Registered")
+          expect(page).to have_css("a[href='/employees/#{employee.uuid}/health_passport']", text: "Not Registered")
         end
         expect(page).to have_css("form#edit_employee_#{employee.id}")
         expect(page).not_to have_css "#action_buttons"
@@ -48,7 +48,7 @@ feature "Employee edit" do
             expect(page).to have_css ".bg-blue-400"
             expect(page).to have_content "Not Registered"
           end
-          expect(page).to have_css("a[href$='/employees/#{employee.uuid}/health_passport']", text: "Not Registered")
+          expect(page).to have_css("a[href='/employees/#{employee.uuid}/health_passport']", text: "Not Registered")
         end
         expect(page).to have_css("form#edit_employee_#{employee.id}")
         within "#action_buttons" do
@@ -78,7 +78,7 @@ feature "Employee edit" do
             expect(page).to have_css ".bg-blue-400"
             expect(page).to have_content "Not Registered"
           end
-          expect(page).to have_css("a[href$='/employees/#{employee.uuid}/health_passport']", text: "Not Registered")
+          expect(page).to have_css("a[href='/employees/#{employee.uuid}/health_passport']", text: "Not Registered")
         end
         expect(page).to have_css("form#edit_employee_#{employee.id}")
         within "#action_buttons" do
@@ -141,7 +141,7 @@ feature "Employee edit" do
             expect(page).to have_css ".bg-blue-400"
             expect(page).to have_content "Not Registered"
           end
-          expect(page).to have_css("a[href$='/employees/#{employee.uuid}/health_passport']", text: "Not Registered")
+          expect(page).to have_css("a[href='/employees/#{employee.uuid}/health_passport']", text: "Not Registered")
         end
         expect(page).to have_css("form#edit_employee_#{employee.id}")
         within "#action_buttons" do
@@ -171,7 +171,7 @@ feature "Employee edit" do
             expect(page).to have_css ".bg-blue-400"
             expect(page).to have_content "Not Registered"
           end
-          expect(page).to have_css("a[href$='/employees/#{employee.uuid}/health_passport']", text: "Not Registered")
+          expect(page).to have_css("a[href='/employees/#{employee.uuid}/health_passport']", text: "Not Registered")
         end
         expect(page).to have_css("form#edit_employee_#{employee.id}")
         within "#action_buttons" do
@@ -212,14 +212,14 @@ feature "Employee edit" do
             expect(page).not_to have_css("td:nth-child(2) svg")
             expect(page).to have_css("td:nth-child(3).text-red-600", text: "100.4ºF")
             expect(page).to have_css("td:nth-child(4)", text: "No")
-            expect(page).to have_css("td:nth-child(5) a[href$='/employees/#{employee.uuid}/symptom_logs/#{today}']")
+            expect(page).to have_css("td:nth-child(5) a[href='/employees/#{employee.uuid}/symptom_logs/#{today}']")
           end
           within "tr:nth-child(2)" do
             expect(page).to have_css("td:nth-child(1)", text: (today - 1).to_s)
             expect(page).to have_css("td:nth-child(2) svg")
             expect(page).to have_css("td:nth-child(3):not(.text-red-600)", text: "99.5ºF")
             expect(page).to have_css("td:nth-child(4)", text: "Yes")
-            expect(page).to have_css("td:nth-child(5) a[href$='/employees/#{employee.uuid}/symptom_logs/#{today - 1}']")
+            expect(page).to have_css("td:nth-child(5) a[href='/employees/#{employee.uuid}/symptom_logs/#{today - 1}']")
           end
         end
       end
@@ -249,7 +249,7 @@ feature "Employee edit" do
             expect(page).to have_css ".bg-blue-400"
             expect(page).to have_content "Not Registered"
           end
-          expect(page).to have_css("a[href$='/employees/#{employee.uuid}/health_passport']", text: "Not Registered")
+          expect(page).to have_css("a[href='/employees/#{employee.uuid}/health_passport']", text: "Not Registered")
         end
         expect(page).to have_css("form#edit_employee_#{employee.id}")
         within "#action_buttons" do
@@ -282,7 +282,7 @@ feature "Employee edit" do
             expect(page).to have_css ".bg-blue-400"
             expect(page).to have_content "Passport Complete"
           end
-          expect(page).to have_css("a[href$='/employees/#{employee.uuid}/health_passport']", text: "Cleared")
+          expect(page).to have_css("a[href='/employees/#{employee.uuid}/health_passport']", text: "Cleared")
         end
         expect(page).to have_css("form#edit_employee_#{employee.id}")
         within "#action_buttons" do
@@ -315,7 +315,7 @@ feature "Employee edit" do
             expect(page).to have_css ".bg-blue-400"
             expect(page).to have_content "Passport Complete"
           end
-          expect(page).to have_css("a[href$='/employees/#{employee.uuid}/health_passport']", text: "Not Cleared")
+          expect(page).to have_css("a[href='/employees/#{employee.uuid}/health_passport']", text: "Not Cleared")
         end
         expect(page).to have_css("form#edit_employee_#{employee.id}")
         within "#action_buttons" do
@@ -356,7 +356,7 @@ feature "Employee edit" do
             expect(page).to have_css ".bg-blue-400"
             expect(page).to have_content "Not Registered"
           end
-          expect(page).to have_css("a[href$='/employees/#{employee.uuid}/health_passport']", text: "Not Registered")
+          expect(page).to have_css("a[href='/employees/#{employee.uuid}/health_passport']", text: "Not Registered")
         end
         expect(page).to have_css("form#edit_employee_#{employee.id}")
         within "#action_buttons" do
@@ -385,7 +385,7 @@ feature "Employee edit" do
             expect(page).to have_css ".bg-blue-400"
             expect(page).to have_content "Not Registered"
           end
-          expect(page).not_to have_css("a[href$='/employees/#{employee.uuid}/health_passport']")
+          expect(page).not_to have_css("a[href='/employees/#{employee.uuid}/health_passport']")
         end
         expect(page).to have_css("form#edit_employee_#{employee.id}")
         within "#action_buttons" do
@@ -411,7 +411,7 @@ feature "Employee edit" do
         within "#testing-progress.bg-gray-100" do
           expect(page).to have_css(".italic", text: "Feature not included in your current plan")
           expect(page).not_to have_css(".bg-blue-400")
-          expect(page).not_to have_css("a[href$='/employees/#{employee.uuid}/health_passport']")
+          expect(page).not_to have_css("a[href='/employees/#{employee.uuid}/health_passport']")
         end
         expect(page).to have_css("form#edit_employee_#{employee.id}")
         within "#action_buttons" do
@@ -445,7 +445,7 @@ feature "Employee edit" do
       within "#testing-progress.bg-gray-100" do
         expect(page).to have_css(".italic", text: "Temporarily unavailable, please come back later")
         expect(page).not_to have_css(".bg-blue-400")
-        expect(page).not_to have_css("a[href$='/employees/#{employee.uuid}/health_passport']")
+        expect(page).not_to have_css("a[href='/employees/#{employee.uuid}/health_passport']")
       end
       within "form#edit_employee_#{employee.id}" do
         fill_in "First Name", with: "SpongeBob"
@@ -458,7 +458,7 @@ feature "Employee edit" do
       expect(page).to have_css("[role=notice]", text: "Employee was updated successfully.")
       expect(page).not_to have_css("[role=alert]")
       expect(page).to have_css "a[href$='/edit']", count: 1
-      within "a[href$='/employees/#{employee.uuid}/edit']" do
+      within "a[href='/employees/#{employee.uuid}/edit']" do
         expect(page).to have_css "div:nth-child(2)", text: "SpongeBob SquarePants"
         expect(page).to have_css "div:nth-child(3)", text: "NY"
       end
