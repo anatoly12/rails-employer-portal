@@ -104,7 +104,7 @@ RSpec.describe ::EmployerPortal::Email::Trigger do
         end
       end
 
-      context "when sync isn't connected" do
+      context "when sync is NOT connected" do
         context "when email template has a covid19_message_code configured" do
           let!(:email_template) { create :email_template, trigger_key: trigger_key, covid19_message_code: -1 }
 
@@ -227,7 +227,7 @@ RSpec.describe ::EmployerPortal::Email::Trigger do
         end
       end
 
-      context "when sync isn't connected" do
+      context "when sync is NOT connected" do
         context "when email template has a covid19_message_code configured" do
           let!(:email_template) { create :email_template, trigger_key: trigger_key, covid19_message_code: -1 }
 
