@@ -17,6 +17,19 @@
         <%= render "form/select", form: form, column: :covid19_message_code, options: form.object.covid19_message_codes_for_select, label: "App notification" %>
         <p class="text-xs text-gray-500 -mb-8">Select a subject to add a row in `covid19_messages` table, or select none to skip in-app notification.</p>
       </div>
+    <% else %>
+      <div data-linked-to-id="email_template_trigger_key" data-linked-to-value="employee_new">
+        <%= render "form/text_field", form: form, column: :covid19_message_code, label: "App notification ID" %>
+        <p class="text-xs text-gray-500 -mb-8">Enter `message_code` of the row in `covid19_messages` table, or select none to skip in-app notification.</p>
+      </div>
+      <div data-linked-to-id="email_template_trigger_key" data-linked-to-value="employee_contact">
+        <%= render "form/text_field", form: form, column: :covid19_message_code, label: "App notification ID" %>
+        <p class="text-xs text-gray-500 -mb-8">Enter `message_code` of the row in `covid19_messages` table, or select none to skip in-app notification.</p>
+      </div>
+      <div data-linked-to-id="email_template_trigger_key" data-linked-to-value="employee_reminder">
+        <%= render "form/text_field", form: form, column: :covid19_message_code, label: "App notification ID" %>
+        <p class="text-xs text-gray-500 -mb-8">Enter `message_code` of the row in `covid19_messages` table, or select none to skip in-app notification.</p>
+      </div>
     <% end %>
   </div>
   <%= render "form/text_field", form: form, column: :from, placeholder: "Customer Support <support@example.com>" %>

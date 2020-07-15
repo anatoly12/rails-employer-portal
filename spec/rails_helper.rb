@@ -81,6 +81,7 @@ RSpec.configure do |config|
 
   config.append_after(:each) do
     if ::EmployerPortal::Sync.connected?
+      ::EmployerPortal::Sync::Covid19MessageCode.dataset.delete
       ::EmployerPortal::Sync::Covid19Message.dataset.delete
       ::EmployerPortal::Sync::Account.dataset.delete
       ::EmployerPortal::Sync::PassportProduct.dataset.delete

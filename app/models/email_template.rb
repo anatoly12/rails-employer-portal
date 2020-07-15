@@ -25,6 +25,7 @@ class EmailTemplate < Sequel::Model
     super
     validates_presence [:name, :trigger_key, :from, :subject]
     validates_includes TRIGGER_KEYS, :trigger_key, allow_blank: true, message: "must be a valid trigger"
+    validates_integer :covid19_message_code, allow_blank: true
   end
 
   # ~~ associations ~~
