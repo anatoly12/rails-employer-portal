@@ -363,6 +363,26 @@ feature "Employee dashboard" do
         end
       end
 
+      context "when employee has uploaded a selfie" do
+        before do
+          ::EmployerPortal::Sync.create_account_for_employee! employee
+          ::EmployerPortal::Sync::Identity.create(
+            account_id: employee.remote_id,
+            selfie_s3_key: "dev/health_modules/identities/109/selfie",
+            consented_at: now,
+          )
+        end
+
+        scenario "I see it as my employee profile picture" do
+          visit "/"
+          expect(page).to have_css "a[href$='/edit']", count: 1
+          within "a[href='/employees/#{employee.uuid}/edit']" do
+            img = page.find "div:nth-child(1) img"
+            expect(img["src"]).to include("s3.amazonaws.com/dev/health_modules/identities/109/selfie")
+          end
+        end
+      end
+
       context "when employee is deactivated" do
         before do
           ::EmployerPortal::Sync.create_account_for_employee! employee

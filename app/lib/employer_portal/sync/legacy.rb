@@ -17,6 +17,7 @@ class EmployerPortal::Sync::Legacy
     klass.const_set :Covid19MessageCode, covid19_message_code_class
     klass.const_set :DataType, data_type_class
     klass.const_set :Demographic, demographic_class
+    klass.const_set :Identity, identity_class
     klass.const_set :Kit, kit_class
     klass.const_set :List, list_class
     klass.const_set :ListItem, list_item_class
@@ -40,6 +41,7 @@ class EmployerPortal::Sync::Legacy
     klass.send :remove_const, :Covid19MessageCode
     klass.send :remove_const, :DataType
     klass.send :remove_const, :Demographic
+    klass.send :remove_const, :Identity
     klass.send :remove_const, :Kit
     klass.send :remove_const, :List
     klass.send :remove_const, :ListItem
@@ -164,6 +166,16 @@ class EmployerPortal::Sync::Legacy
     prefix = klass.to_s
     Class.new(
       Sequel::Model(db[schema[:account_demographics]])
+    ) {
+      many_to_one :account, class: "#{prefix}::Account"
+      plugin :timestamps, update_on_create: true
+    }
+  end
+
+  def identity_class
+    prefix = klass.to_s
+    Class.new(
+      Sequel::Model(db[schema[:identities]])
     ) {
       many_to_one :account, class: "#{prefix}::Account"
       plugin :timestamps, update_on_create: true
