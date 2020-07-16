@@ -7,7 +7,7 @@ feature "Manage employers" do
   scenario "I can add a new employer" do
     click_link "Employers"
     click_link "Add a new employer"
-    within("#new_employer") do
+    within "#new_employer" do
       select company.name, from: "Company"
       select "Super admin", from: "Role"
       fill_in "First name", with: Faker::Name.first_name

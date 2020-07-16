@@ -14,7 +14,7 @@ feature "Manage companies" do
     scenario "I can add a new company" do
       click_link "Companies"
       click_link "Add a new company"
-      within("#new_company") do
+      within "#new_company" do
         fill_in "Name", with: Faker::Company.name
         select plan.name, from: "Plan"
         select partner.name, from: "Linked to partner", exact: true
@@ -168,7 +168,7 @@ feature "Manage companies" do
     scenario "I can still add a new company" do
       click_link "Companies"
       click_link "Add a new company"
-      within("#new_company") do
+      within "#new_company" do
         fill_in "Name", with: Faker::Company.name
         select plan.name, from: "Plan"
         fill_in "Linked to partner ID", with: 21, exact: true

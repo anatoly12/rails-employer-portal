@@ -13,7 +13,7 @@ feature "Manage plans" do
     scenario "I can add a new plan" do
       click_link "Plans"
       click_link "Add a new plan"
-      within("#new_plan") do
+      within "#new_plan" do
         fill_in "Name", with: Faker::Commerce.product_name
         fill_in "Employer limit", with: "0"
         fill_in "Employee limit", with: "0"
@@ -154,7 +154,7 @@ feature "Manage plans" do
     scenario "I can still add a new plan" do
       click_link "Plans"
       click_link "Add a new plan"
-      within("#new_plan") do
+      within "#new_plan" do
         fill_in "Name", with: Faker::Commerce.product_name
         fill_in "Employer limit", with: "0"
         fill_in "Employee limit", with: "0"
@@ -169,7 +169,7 @@ feature "Manage plans" do
     scenario "I can also add a new plan without passport product" do
       click_link "Plans"
       click_link "Add a new plan"
-      within("#new_plan") do
+      within "#new_plan" do
         fill_in "Name", with: Faker::Commerce.product_name
         fill_in "Employer limit", with: "0"
         fill_in "Employee limit", with: "0"

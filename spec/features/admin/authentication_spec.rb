@@ -5,7 +5,7 @@ feature "Admin authentication" do
 
   scenario "Signing in with correct credentials" do
     visit "/admin"
-    within("#new_session") do
+    within "#new_session" do
       fill_in "Username", with: admin_user.email
       fill_in "Password", with: admin_user.password
       click_button "Sign in"
@@ -18,7 +18,7 @@ feature "Admin authentication" do
 
   scenario "Trying to sign in with incorrect credentials" do
     visit "/admin"
-    within("#new_session") do
+    within "#new_session" do
       fill_in "Username", with: admin_user.email
       fill_in "Password", with: "wrong password"
       click_button "Sign in"

@@ -90,7 +90,7 @@ RSpec.describe ::EmployerPortal::Email::Composer do
       end
     end
 
-    context "with sync connected", type: :sync do
+    context "when sync is connected", type: :sync do
       let(:dashboard_employee) { double :dashboard_employee, full_name: "Another Fullname", daily_checkup_status: "Cleared" }
       before { with_sync_connected }
 

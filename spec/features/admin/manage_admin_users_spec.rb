@@ -6,7 +6,7 @@ feature "Manage admin users" do
   scenario "I can add a new admin user" do
     click_link "Admin users"
     click_link "Add a new admin user"
-    within("#new_admin_user") do
+    within "#new_admin_user" do
       fill_in "Email", with: Faker::Internet.unique.safe_email
       fill_in "Password", with: Faker::Internet.password
       click_button "Create"

@@ -21,7 +21,7 @@ feature "Employee dashboard" do
     given(:now) { Time.now }
     given(:today) { now.to_date }
 
-    context "with sync connected", type: :sync do
+    context "when sync is connected", type: :sync do
       before do
         with_sync_connected
         ::EmployerPortal::Sync.create_partner_for_company! company
@@ -452,7 +452,7 @@ feature "Employee dashboard" do
       end
     end
 
-    context "without sync" do
+    context "when sync is NOT connected" do
       scenario "I still see my employee but statuses are disabled" do
         visit "/"
         expect(page).not_to have_css ".blur-3 .container"

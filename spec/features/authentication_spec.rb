@@ -5,7 +5,7 @@ feature "Authentication" do
 
   scenario "I sign in with the correct credentials" do
     visit "/"
-    within("#new_session") do
+    within "#new_session" do
       expect(page).to have_css "h2", text: "Sign into your account"
       fill_in "Email", with: employer.email
       fill_in "Password", with: employer.password
@@ -18,7 +18,7 @@ feature "Authentication" do
 
   scenario "I try to sign in with the wrong credentials" do
     visit "/"
-    within("#new_session") do
+    within "#new_session" do
       expect(page).to have_css "h2", text: "Sign into your account"
       fill_in "Email", with: employer.email
       fill_in "Password", with: "wrong password"

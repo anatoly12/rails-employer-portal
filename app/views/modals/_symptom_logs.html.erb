@@ -5,7 +5,7 @@
     <% end %>
     symptom log <span class="font-light">from <%= search.date %></span>
   </h2>
-  <ul class="text-xl font-thin">
+  <ul id="entries" class="text-xl font-thin">
     <% search.results.each_with_index do |entry, index| %>
       <%= render "symptom_logs/entry", entry: entry, index: index %>
     <% end %>

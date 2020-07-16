@@ -14,7 +14,7 @@ feature "Manage email templates" do
     scenario "I can add a new email template", js: true do
       click_link "Email templates"
       click_link "Add a new email template"
-      within("#new_email_template") do
+      within "#new_email_template" do
         fill_in "Name (admin only)", with: "Template 1"
         fill_in "Subject", with: "Welcome to Essential Health Passport"
         expect(page).not_to have_field "App notification"
@@ -179,7 +179,7 @@ feature "Manage email templates" do
     scenario "I can still add a new email template", js: true do
       click_link "Email templates"
       click_link "Add a new email template"
-      within("#new_email_template") do
+      within "#new_email_template" do
         fill_in "Name (admin only)", with: "Template 1"
         fill_in "Subject", with: "Welcome to Essential Health Passport"
         expect(page).not_to have_field "App notification"

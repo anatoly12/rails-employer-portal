@@ -22,7 +22,7 @@ RSpec.describe AdminUser, type: :model do
     end
 
     it "checks that email is unique" do
-      create(:admin_user, email: subject.email)
+      create :admin_user, email: subject.email
       expect(subject).not_to be_valid
       expect(subject.errors).to eql email: ["is already taken"]
     end

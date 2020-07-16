@@ -9,7 +9,7 @@ feature "Employee edit" do
   given(:today) { now.to_date }
   before { sign_in_as_employer employer }
 
-  context "with sync connected", type: :sync do
+  context "when sync is connected", type: :sync do
     before do
       with_sync_connected
       ::EmployerPortal::Sync.create_partner_for_company! company
@@ -424,7 +424,7 @@ feature "Employee edit" do
     end
   end
 
-  context "without sync" do
+  context "when sync is NOT connected" do
     scenario "I still edit my employee details" do
       visit_employee_edit
       within "#symptom-tracker.bg-gray-100" do
