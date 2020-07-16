@@ -9,7 +9,7 @@ RSpec.describe ::EmployerPortal::Query::Employee do
     let(:filters) { {} }
     let(:sort_order) { "created_at:asc" }
 
-    context "when sync is NOT connected", type: :sync do
+    context "when sync is NOT connected" do
       context "filtering" do
         let!(:employee1) { create :employee }
         let!(:employee2) { create :employee, remote_id: 1 }

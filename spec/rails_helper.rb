@@ -88,6 +88,12 @@ RSpec.configure do |config|
       ::EmployerPortal::Sync::Kit.dataset.delete
       ::EmployerPortal::Sync::Partner.dataset.delete
       ::EmployerPortal::Sync.disconnect
+      Sequel::Model.db.drop_view(
+        :dashboard_employees,
+        :symptom_logs,
+        :symptom_log_entries,
+        if_exists: true,
+      )
     end
     DatabaseCleaner.clean
     ZipCode::CACHE.clear

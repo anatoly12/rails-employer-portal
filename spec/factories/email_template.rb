@@ -6,5 +6,9 @@ FactoryBot.define do
     subject { Faker::Marketing.buzzwords }
     html { Faker::Lorem.paragraph }
     text { Faker::Lorem.paragraph }
+
+    trait :with_plan do
+      plan { create :plan }
+    end
   end
 end

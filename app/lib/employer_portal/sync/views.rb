@@ -9,6 +9,9 @@ class EmployerPortal::Sync::Views
     create_or_replace_dashboard_employees
     create_or_replace_symptom_logs
     create_or_replace_symptom_log_entries
+    DashboardEmployee.columns
+    SymptomLog.columns
+    SymptomLogEntry.columns
   end
 
   private

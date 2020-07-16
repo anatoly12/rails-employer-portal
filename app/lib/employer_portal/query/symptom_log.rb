@@ -17,7 +17,7 @@ class EmployerPortal::Query::SymptomLog < EmployerPortal::Query::Base
 
   def apply_filter(ds, key, value)
     case key
-    when "date"
+    when "date_equals"
       ds.where Sequel.function(:date, :log_date) => value.to_s
     end || ds
   end

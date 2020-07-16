@@ -2,14 +2,6 @@ require "rails_helper"
 
 RSpec.describe ::EmployerPortal::Sync, type: :sync do
   describe ".connect" do
-    before(:all) do
-      Sequel::Model.db.drop_view(
-        :dashboard_employees,
-        :symptom_logs,
-        :symptom_log_entries,
-        if_exists: true,
-      )
-    end
     before { stub_const("#{described_class}::SYNC_DATABASE_URL", url) }
     subject { described_class.connect }
 
@@ -53,16 +45,25 @@ RSpec.describe ::EmployerPortal::Sync, type: :sync do
       end
 
       it "creates dashboard_employees view" do
+        expect do
+          expect { subject }.not_to raise_error
+        end.to output("Sync: connected to ecp-test\n").to_stdout
         expect(db.table_exists?(:dashboard_employees)).to be true
         expect(db[:dashboard_employees].all).to be_empty
       end
 
       it "creates symptom_logs view" do
+        expect do
+          expect { subject }.not_to raise_error
+        end.to output("Sync: connected to ecp-test\n").to_stdout
         expect(db.table_exists?(:symptom_logs)).to be true
         expect(db[:symptom_logs].all).to be_empty
       end
 
       it "creates symptom_log_entries view" do
+        expect do
+          expect { subject }.not_to raise_error
+        end.to output("Sync: connected to ecp-test\n").to_stdout
         expect(db.table_exists?(:symptom_log_entries)).to be true
         expect(db[:symptom_log_entries].all).to be_empty
       end
