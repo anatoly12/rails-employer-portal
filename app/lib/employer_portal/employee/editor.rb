@@ -17,7 +17,7 @@ class EmployerPortal::Employee::Editor
           employer_id: context.account_id,
         )
       end
-    new context, edited, params.permit(:filters, :order, :page)
+    new context, edited, params.permit(:order, :page, filters: {})
   end
 
   # ~~ public instance methods ~~

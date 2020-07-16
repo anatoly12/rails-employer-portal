@@ -1,6 +1,10 @@
 class EmployerPortal::Employee::Search < ::EmployerPortal::Search
 
   # ~~ public instance methods ~~
+  def empty?
+    count == 0 && filters.empty?
+  end
+
   def delete_all
     ds = Employee.where employer_id: context.account_id
     pks = ds.select_map :id

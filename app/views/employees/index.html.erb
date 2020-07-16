@@ -1,6 +1,6 @@
 <%= render "common/main" do %>
   <%= render "employees/dashboard" %>
-  <% if search.count == 0 %>
+  <% if search.empty? %>
     <% content_for :modal do %>
       <%= render "modals/welcome" %>
     <% end %>
