@@ -109,6 +109,7 @@ class EmployerPortal::Query::Employee < EmployerPortal::Query::Base
     end
     res.merge!(
       account_id: [:dashboard_employee, :id],
+      selfie_s3_key: [:dashboard_employee, :selfie_s3_key],
       daily_checkup_status: [:dashboard_employee, :daily_checkup_status, Sequel.function(:coalesce, Sequel.qualify(:dashboard_employee, :daily_checkup_status), "Did Not Submit")],
       daily_checkup_updated_at: [:dashboard_employee, :daily_checkup_updated_at],
       testing_status: [:dashboard_employee, :testing_status, Sequel.function(:coalesce, Sequel.qualify(:dashboard_employee, :testing_status), "Not Registered")],
