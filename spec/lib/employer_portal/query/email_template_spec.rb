@@ -22,7 +22,7 @@ RSpec.describe ::EmployerPortal::Query::EmailTemplate do
         end
       end
 
-      context "by plan id" do
+      context "by plan" do
         let(:filters) { { "plan_id_equals" => email_template2.plan.id.to_s } }
 
         it "returns only the matching email_templates" do

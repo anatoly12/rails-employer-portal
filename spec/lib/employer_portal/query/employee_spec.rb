@@ -14,7 +14,7 @@ RSpec.describe ::EmployerPortal::Query::Employee do
         let!(:employee1) { create :employee }
         let!(:employee2) { create :employee, remote_id: 1 }
 
-        context "by company id" do
+        context "by company" do
           let(:filters) { { "company_id_equals" => employee1.company.id.to_s } }
 
           it "returns only the matching employees" do
