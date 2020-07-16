@@ -18,7 +18,7 @@ feature "Employee symptom logs" do
     given(:date_type_text) { create :sync_data_type, type_of: "TEXT" }
     before do
       with_sync_connected
-      company.plan.update remote_id: passport_product.passport_product_id
+      company.plan.update remote_id: passport_product.pk
       ::EmployerPortal::Sync.create_partner_for_company! company
       ::EmployerPortal::Sync.create_account_for_employee! employee
       travel_to now do

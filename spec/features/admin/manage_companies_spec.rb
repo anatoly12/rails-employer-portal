@@ -62,8 +62,8 @@ feature "Manage companies" do
     context "with existing companies" do
       let(:plan1) { create :plan, name: "Plan 1" }
       let(:plan2) { create :plan, name: "Plan 2" }
-      let!(:company1) { create :company, name: "Company 1", plan: plan1, remote_id: partner.partner_id }
-      let!(:company2) { create :company, name: "Company 2", plan: plan2, remote_id: partner.partner_id }
+      let!(:company1) { create :company, name: "Company 1", plan: plan1, remote_id: partner.pk }
+      let!(:company2) { create :company, name: "Company 2", plan: plan2, remote_id: partner.pk }
 
       scenario "I can list and filter companies" do
         click_link "Companies"

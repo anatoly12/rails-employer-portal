@@ -40,7 +40,7 @@ class EmployerPortal::Admin::EmailTemplate::Editor < ::EmployerPortal::Admin::Ba
     ::EmployerPortal::Sync::Covid19MessageCode.order(
       :message_code
     ).all.map do |message_code|
-      [message_code.message_subject, message_code.message_code]
+      [message_code.message_subject, message_code.pk]
     end
   end
 

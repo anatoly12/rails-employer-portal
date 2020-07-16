@@ -6,10 +6,6 @@ class EmployerPortal::Query::AdminUser < EmployerPortal::Query::Base
     AdminUser
   end
 
-  def apply_filter(ds, _key, _value)
-    ds
-  end
-
   def apply_order(ds, column)
     case column
     when "email"

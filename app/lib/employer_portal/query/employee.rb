@@ -65,13 +65,13 @@ class EmployerPortal::Query::Employee < EmployerPortal::Query::Base
     when "state"
       ds.order :state
     when "checkup"
-      ds.order :daily_checkup_status
+      context.sync_connected? ? ds.order(:daily_checkup_status) : ds.order(:id)
     when "checkup_updated_at"
-      ds.order :daily_checkup_updated_at
+      context.sync_connected? ? ds.order(:daily_checkup_updated_at) : ds.order(:id)
     when "testing"
-      ds.order :testing_status
+      context.sync_connected? ? ds.order(:testing_status) : ds.order(:id)
     when "testing_updated_at"
-      ds.order :testing_updated_at
+      context.sync_connected? ? ds.order(:testing_updated_at) : ds.order(:id)
     else # "created_at"
       ds.order(:created_at, :id)
     end

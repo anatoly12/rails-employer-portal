@@ -22,7 +22,7 @@ class EmployerPortal::Admin::Plan::Editor < ::EmployerPortal::Admin::Base::Edito
     ::EmployerPortal::Sync::PassportProduct.order(
       :passport_product_id
     ).all.map do |passport|
-      [passport.name, passport.passport_product_id]
+      [passport.name, passport.pk]
     end
   end
 

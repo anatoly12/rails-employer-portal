@@ -119,7 +119,7 @@ RSpec.describe ::EmployerPortal::Email::Trigger do
 
         context "when email template has a covid19_message_code configured" do
           let(:covid19_message_code) { create :sync_covid19_message_code }
-          let!(:email_template) { create :email_template, trigger_key: trigger_key, covid19_message_code: covid19_message_code.message_code }
+          let!(:email_template) { create :email_template, trigger_key: trigger_key, covid19_message_code: covid19_message_code.pk }
 
           it "doesn't add any covid19_messages" do
             expect { subject.send_all }.not_to change(::EmployerPortal::Sync::Covid19Message, :count)
@@ -242,7 +242,7 @@ RSpec.describe ::EmployerPortal::Email::Trigger do
 
         context "when email template has a covid19_message_code configured" do
           let(:covid19_message_code) { create :sync_covid19_message_code }
-          let!(:email_template) { create :email_template, trigger_key: trigger_key, covid19_message_code: covid19_message_code.message_code }
+          let!(:email_template) { create :email_template, trigger_key: trigger_key, covid19_message_code: covid19_message_code.pk }
 
           context "when employee hasn't been synced yet" do
             it "doesn't add any covid19_messages" do
@@ -252,7 +252,7 @@ RSpec.describe ::EmployerPortal::Email::Trigger do
 
           context "when employee has a been synced" do
             let(:partner) { create :sync_partner }
-            let(:company) { create :company, remote_id: partner.partner_id }
+            let(:company) { create :company, remote_id: partner.pk }
             let(:employee) { create :employee, company: company, employer: employer, remote_id: -1 }
             before do
               ::EmployerPortal::Sync::create_account_for_employee! employee
@@ -263,7 +263,7 @@ RSpec.describe ::EmployerPortal::Email::Trigger do
               expect { subject.send_all }.to change(::EmployerPortal::Sync::Covid19Message, :count).by(1)
               message = ::EmployerPortal::Sync::Covid19Message.order(:covid19_message_id).last
               expect(message.account_id).to eql employee.remote_id
-              expect(message.message_code).to eql covid19_message_code.message_code
+              expect(message.message_code).to eql covid19_message_code.pk
             end
           end
         end

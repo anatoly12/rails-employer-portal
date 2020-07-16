@@ -10,8 +10,6 @@ class EmployerPortal::Query::Plan < EmployerPortal::Query::Base
 
   def apply_filter(ds, key, value)
     case key
-    when "plan_id_equals"
-      ds.where plan_id: value.to_s
     when "name_contains"
       ds.where Sequel.ilike(:name, value_for_ilike(value))
     end || ds

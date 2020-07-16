@@ -138,7 +138,7 @@ RSpec.describe ::EmployerPortal::Sync, type: :sync do
 
         context "when company.remote_id doesn't match any access code" do
           let(:partner) { create :sync_partner }
-          let(:company) { create :company, remote_id: partner.partner_id }
+          let(:company) { create :company, remote_id: partner.pk }
 
           it "doesn't create any kit" do
             expect { subject }.not_to change { described_class::Kit.count }
@@ -155,7 +155,7 @@ RSpec.describe ::EmployerPortal::Sync, type: :sync do
 
         context "when company.remote_id matches an access code" do
           let(:partner) { create :sync_partner }
-          let(:company) { create :company, remote_id: partner.partner_id }
+          let(:company) { create :company, remote_id: partner.pk }
           let!(:access_code) { create :sync_access_code, partner: partner }
 
           it "doesn't create any kit" do
@@ -173,14 +173,15 @@ RSpec.describe ::EmployerPortal::Sync, type: :sync do
             account = described_class::Account.order(:id).last
             expect(account.access_grants.size).to eql 1
             access_grant = account.access_grants.first
-            expect(access_grant.partner_access_code_id).to eql access_code.id
+            expect(access_grant.partner_access_code_id).not_to be_nil
+            expect(access_grant.partner_access_code_id).to eql access_code.pk
           end
         end
 
         context "when company.remote_id matches a passport product" do
           let(:passport_product) { create :sync_passport_product }
           let(:partner) { create :sync_partner, passport_product: passport_product }
-          let(:company) { create :company, remote_id: partner.partner_id }
+          let(:company) { create :company, remote_id: partner.pk }
 
           it "creates a kit" do
             expect do
@@ -281,7 +282,7 @@ RSpec.describe ::EmployerPortal::Sync, type: :sync do
 
         context "with an existing access grant with this partner" do
           let(:partner) { create :sync_partner }
-          let(:company) { create :company, remote_id: partner.partner_id }
+          let(:company) { create :company, remote_id: partner.pk }
           let(:access_code) { create :sync_access_code, partner: partner }
           let!(:access_grant) { create :sync_access_grant, account: account, access_code: access_code }
 
@@ -300,7 +301,7 @@ RSpec.describe ::EmployerPortal::Sync, type: :sync do
 
         context "with an existing access grant but with another partner" do
           let(:partner) { create :sync_partner }
-          let(:company) { create :company, remote_id: partner.partner_id }
+          let(:company) { create :company, remote_id: partner.pk }
           let!(:access_code) { create :sync_access_code, partner: partner }
           let(:another_access_code) { create :sync_access_code, partner: create(:sync_partner) }
           let!(:access_grant) { create :sync_access_grant, account: account, access_code: another_access_code }
@@ -310,13 +311,14 @@ RSpec.describe ::EmployerPortal::Sync, type: :sync do
               subject
             end.to change { account.reload.access_grants.size }.from(1).to(2)
             access_grant = account.access_grants.last
-            expect(access_grant.partner_access_code_id).to eql access_code.id
+            expect(access_grant.partner_access_code_id).not_to be_nil
+            expect(access_grant.partner_access_code_id).to eql access_code.pk
           end
         end
 
         context "without existing access grant" do
           let(:partner) { create :sync_partner }
-          let(:company) { create :company, remote_id: partner.partner_id }
+          let(:company) { create :company, remote_id: partner.pk }
           let!(:access_code) { create :sync_access_code, partner: partner }
 
           it "creates an access grant for the existing account" do
@@ -324,14 +326,15 @@ RSpec.describe ::EmployerPortal::Sync, type: :sync do
               subject
             end.to change { account.reload.access_grants.size }.by(1)
             access_grant = account.access_grants.first
-            expect(access_grant.partner_access_code_id).to eql access_code.id
+            expect(access_grant.partner_access_code_id).not_to be_nil
+            expect(access_grant.partner_access_code_id).to eql access_code.pk
           end
         end
 
         context "with an existing kit with this partner" do
           let(:passport_product) { create :sync_passport_product }
           let(:partner) { create :sync_partner, passport_product: passport_product }
-          let(:company) { create :company, remote_id: partner.partner_id }
+          let(:company) { create :company, remote_id: partner.pk }
           let(:requisition) { create :sync_requisition, user: account.user }
           let!(:kit) { create :sync_kit, t_kit: passport_product.t_kit, requisition: requisition, partner: partner }
 
@@ -351,7 +354,7 @@ RSpec.describe ::EmployerPortal::Sync, type: :sync do
         context "with an existing kit but with another partner" do
           let(:passport_product) { create :sync_passport_product }
           let(:partner) { create :sync_partner, passport_product: passport_product }
-          let(:company) { create :company, remote_id: partner.partner_id }
+          let(:company) { create :company, remote_id: partner.pk }
           let(:requisition) { create :sync_requisition, user: account.user }
           let!(:kit) { create :sync_kit, t_kit: passport_product.t_kit, requisition: requisition, partner: create(:sync_partner) }
 
@@ -371,7 +374,7 @@ RSpec.describe ::EmployerPortal::Sync, type: :sync do
         context "without existing kit" do
           let(:passport_product) { create :sync_passport_product }
           let(:partner) { create :sync_partner, passport_product: passport_product }
-          let(:company) { create :company, remote_id: partner.partner_id }
+          let(:company) { create :company, remote_id: partner.pk }
 
           it "creates a kit" do
             expect do
@@ -446,7 +449,8 @@ RSpec.describe ::EmployerPortal::Sync, type: :sync do
 
     context "when plan is linked to a passport product" do
       let(:passport_product) { create :sync_passport_product }
-      let(:plan) { create :plan, remote_id: passport_product.id }
+      let(:plan) { create :plan, remote_id: passport_product.pk }
+      let(:company) { create :company, plan: plan }
 
       it "creates a new partner with passport product" do
         expect do
@@ -455,7 +459,8 @@ RSpec.describe ::EmployerPortal::Sync, type: :sync do
         partner = described_class::Partner.order(:partner_id).last
         expect(partner.name).to eql company.name
         expect(partner.type_of).to eql "CONSUMER"
-        expect(partner.passport_product_id).to eql passport_product.id
+        expect(partner.passport_product_id).not_to be_nil
+        expect(partner.passport_product_id).to eql passport_product.pk
       end
     end
 

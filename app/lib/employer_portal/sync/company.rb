@@ -14,7 +14,7 @@ class EmployerPortal::Sync::Company
     db.transaction do
       partner = create_partner
       create_access_code(partner)
-      company.update remote_id: partner.partner_id, remote_sync_at: now
+      company.update remote_id: partner.pk, remote_sync_at: now
     end
   rescue Sequel::Error => e
     raise ::EmployerPortal::Error::Sync::CantCreatePartner, e.message
