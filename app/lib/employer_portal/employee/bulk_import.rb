@@ -18,7 +18,10 @@ class EmployerPortal::Employee::BulkImport
     @context = context
     @file = file
     @tags = tags
+    @now = Time.now
     @errors = []
+    @employee_tag_ids = []
+    @employee_ids = []
   end
 
   def has_file?
@@ -33,7 +36,7 @@ class EmployerPortal::Employee::BulkImport
     raise_error "Error: can't find any employee in given file." if employees.empty?
     validate
     raise_error errors.first if errors.any?
-    persist!
+    persist
     enqueue_background_jobs
   rescue CSV::MalformedCSVError => e
     raise_error "Error: invalid file format."
@@ -41,7 +44,7 @@ class EmployerPortal::Employee::BulkImport
 
   private
 
-  attr_reader :context, :file, :tags, :errors
+  attr_reader :context, :file, :tags, :now, :errors, :employee_tag_ids, :employee_ids
 
   def original_ext
     File.extname(file.original_filename).downcase
@@ -95,20 +98,59 @@ class EmployerPortal::Employee::BulkImport
     end
   end
 
-  def persist!
-    pks = Employee.import(
+  def persist
+    persist_tags
+    persist_employees
+    persist_taggings
+    persist_audit
+  end
+
+  def persist_tags
+    employee_tags = tags.map do |tag|
+      EmployeeTag.find_or_create(
+        company_id: context.company_id,
+        name: tag,
+      )
+    end.compact
+
+    @employee_tag_ids = employee_tags.map(&:id)
+  end
+
+  def persist_employees
+    @employee_ids = Employee.import(
       employees.first.values.keys,
       employees.map { |employee| employee.values.values },
       return: :primary_key,
     )
+  end
+
+  def persist_taggings
+    taggings = employee_ids.flat_map do |employee_id|
+      employee_tag_ids.map do |employee_tag_id|
+        [employee_id, employee_tag_id, now]
+      end
+    end
+    return if taggings.empty?
+
+    EmployeeTagging.import(
+      [:employee_id, :employee_tag_id, :created_at],
+      taggings
+    )
+  end
+
+  def persist_audit
     Audit.create(
       item_type: Employee,
       item_id: nil,
       event: "import",
-      changes: pks.to_json,
+      changes: {
+        employee_tag_ids: employee_tag_ids,
+        employee_ids: employee_ids,
+      }.to_json,
+      created_at: now,
       created_by_type: Sequel::Plugins::WithAudits.created_by_type,
       created_by_id: Sequel::Plugins::WithAudits.created_by_id,
-    ) if pks.any?
+    ) if employee_ids.any?
   end
 
   def enqueue_background_jobs

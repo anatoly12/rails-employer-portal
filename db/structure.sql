@@ -166,6 +166,43 @@ CREATE TABLE `email_templates` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
+-- Table structure for table `employee_taggings`
+--
+
+DROP TABLE IF EXISTS `employee_taggings`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `employee_taggings` (
+  `employee_id` int(11) NOT NULL,
+  `employee_tag_id` int(11) NOT NULL,
+  `created_at` datetime DEFAULT NULL,
+  PRIMARY KEY (`employee_id`,`employee_tag_id`),
+  KEY `employee_tag_id` (`employee_tag_id`),
+  CONSTRAINT `employee_taggings_ibfk_1` FOREIGN KEY (`employee_id`) REFERENCES `employees` (`id`) ON DELETE CASCADE,
+  CONSTRAINT `employee_taggings_ibfk_2` FOREIGN KEY (`employee_tag_id`) REFERENCES `employee_tags` (`id`) ON DELETE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Table structure for table `employee_tags`
+--
+
+DROP TABLE IF EXISTS `employee_tags`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `employee_tags` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `company_id` int(11) NOT NULL,
+  `name` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `created_at` datetime DEFAULT NULL,
+  `updated_at` datetime DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `employee_tags_company_id_name_index` (`company_id`,`name`),
+  CONSTRAINT `employee_tags_ibfk_1` FOREIGN KEY (`company_id`) REFERENCES `companies` (`id`) ON DELETE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
 -- Table structure for table `employees`
 --
 
@@ -310,3 +347,4 @@ INSERT INTO `schema_migrations` (`filename`) VALUES ('20200707174717_create_audi
 INSERT INTO `schema_migrations` (`filename`) VALUES ('20200708075657_fix_employers_email_unicity.rb');
 INSERT INTO `schema_migrations` (`filename`) VALUES ('20200708100604_add_queued_at_on_employees.rb');
 INSERT INTO `schema_migrations` (`filename`) VALUES ('20200714131542_add_reset_password_to_employers.rb');
+INSERT INTO `schema_migrations` (`filename`) VALUES ('20200717120049_create_employee_tags.rb');

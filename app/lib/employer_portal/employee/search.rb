@@ -7,19 +7,19 @@ class EmployerPortal::Employee::Search < ::EmployerPortal::Search
 
   def delete_all
     ds = Employee.where employer_id: context.account_id
-    pks = ds.select_map :id
-    return 0 unless pks.any?
+    ids = ds.select_map :id
+    return 0 unless ids.any?
 
     ds.delete
     Audit.create(
       item_type: Employee,
       item_id: nil,
       event: "delete_all",
-      changes: pks.to_json,
+      changes: ids.to_json,
       created_by_type: Sequel::Plugins::WithAudits.created_by_type,
       created_by_id: Sequel::Plugins::WithAudits.created_by_id,
     )
-    pks.size
+    ids.size
   end
 
   # ~~ overrides for EmployerPortal::Search ~~
