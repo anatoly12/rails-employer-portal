@@ -5,8 +5,11 @@ class EmployerPortal::Employee::BulkImport
   # ~~ public class methods ~~
   def self.from_params(context, params)
     file = params[:file]
-    tags = JSON.parse(params[:tags]).map { |tag| tag["value"] }
-    raise params.inspect
+    tags = if params[:tags].present?
+        JSON.parse(params[:tags]).map { |tag| tag["value"] }
+      else
+        []
+      end
     new context, file, tags
   end
 

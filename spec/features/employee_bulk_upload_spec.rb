@@ -6,7 +6,7 @@ feature "Employee bulk upload" do
   scenario "I upload a valid file but the ZIP code doesn't exist" do
     within ".blur-3 .container" do
       click_link "Bulk Upload"
-      expect(page).to have_content "Please match your fields to the sample below."
+      expect(page).to have_content "Please match your fields to the sample below:"
       expect do
         upload_file "Upload File", "sample_valid.txt"
       end.not_to have_enqueued_job CreateAccountForEmployeeJob
@@ -21,7 +21,7 @@ feature "Employee bulk upload" do
     scenario "I upload a valid file in Unicode text format" do
       within ".blur-3 .container" do
         click_link "Bulk Upload"
-        expect(page).to have_content "Please match your fields to the sample below."
+        expect(page).to have_content "Please match your fields to the sample below:"
         expect do
           upload_file "Upload File", "sample_valid.txt"
         end.to have_enqueued_job(CreateAccountForEmployeeJob).exactly(5).times
@@ -33,7 +33,7 @@ feature "Employee bulk upload" do
     scenario "I upload a valid file in CSV format" do
       within ".blur-3 .container" do
         click_link "Bulk Upload"
-        expect(page).to have_content "Please match your fields to the sample below."
+        expect(page).to have_content "Please match your fields to the sample below:"
         expect do
           upload_file "Upload File", "sample_valid.csv"
         end.to have_enqueued_job(CreateAccountForEmployeeJob).exactly(5).times
@@ -45,7 +45,7 @@ feature "Employee bulk upload" do
     scenario "I upload a valid file in TSV format" do
       within ".blur-3 .container" do
         click_link "Bulk Upload"
-        expect(page).to have_content "Please match your fields to the sample below."
+        expect(page).to have_content "Please match your fields to the sample below:"
         expect do
           upload_file "Upload File", "sample_valid.tsv"
         end.to have_enqueued_job(CreateAccountForEmployeeJob).exactly(5).times
@@ -57,7 +57,7 @@ feature "Employee bulk upload" do
     scenario "I upload a file with an invalid UTF-8 sequence" do
       within ".blur-3 .container" do
         click_link "Bulk Upload"
-        expect(page).to have_content "Please match your fields to the sample below."
+        expect(page).to have_content "Please match your fields to the sample below:"
         expect do
           upload_file "Upload File", "sample_invalid.csv"
         end.not_to have_enqueued_job CreateAccountForEmployeeJob
@@ -69,7 +69,7 @@ feature "Employee bulk upload" do
     scenario "I upload a file without any employee" do
       within ".blur-3 .container" do
         click_link "Bulk Upload"
-        expect(page).to have_content "Please match your fields to the sample below."
+        expect(page).to have_content "Please match your fields to the sample below:"
         expect do
           upload_file "Upload File", "sample_empty.csv"
         end.not_to have_enqueued_job CreateAccountForEmployeeJob

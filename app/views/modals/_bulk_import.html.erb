@@ -3,20 +3,14 @@
     <%= link_to employees_path, class: "float-right -mt-2 -mr-2 hover:text-blue-500 hover:border-blue-500 h-10 w-10 p-2" do %>
       <%= render "icon/close_outline", icon_class: "pointer-events-none" %>
     <% end %>
-    Bulk upload
+    Bulk import
   </h2>
   <%= form_tag employees_path, multipart: true, autocomplete: "off" do %>
-    <div class="mb-2">Put new employees in the following groups:</div>
-    <div class="mb-6">
-      <input name="tags" placeholder="Team, workplace, etc." data-tagging>
+    <div class="mb-4">Put new employees in the following groups:</div>
+    <div class="mb-4">
+      <input name="tags" placeholder="Team, workplace, etc." data-tagging data-whitelist="banana,orange,pepsi">
     </div>
-    <div class="mb-2">
-      Upload type accepted:
-      <a href="/employee_bulk_import/sample.txt" class="hover:text-blue-500" target="_blank" rel="noopener noreferrer" download>Unicode Text (.txt)</a>,
-      <a href="/employee_bulk_import/sample.csv" class="hover:text-blue-500" target="_blank" rel="noopener noreferrer" download>Comma-separated values (.csv)</a> or
-      <a href="/employee_bulk_import/sample.tsv" class="hover:text-blue-500" target="_blank" rel="noopener noreferrer" download>Tab-separated values (.tsv)</a>
-    </div>
-    <div class="flex flex-col items-start mb-2 -mx-2 md:-mx-4 md:flex-row">
+    <div class="flex flex-col -mx-2 md:-mx-4 md:flex-row">
       <a href="/employee_bulk_import/sample.txt" class="<%= secondary_button_class(:blue) %> flex items-center mb-4 mx-2 md:mx-4" target="_blank" rel="noopener noreferrer" download>
         <%= render "icon/arrow_outline_down", icon_class: "h-3 w-3 mr-2" %>
         <span>Download Sample</span>
@@ -28,13 +22,13 @@
       </label>
     </div>
   <% end %>
-  <div class="mb-2 flex items-center">
+  <div class="mb-4 flex items-center">
     Please match your fields to the sample below:
     <a title="Your file will not be uploaded if it does not include the required fields." class="ml-2 hidden md:block">
       <%= render "icon/exclamation_solid", icon_class: "h-3 w-3 text-orange-500" %>
     </a>
   </div>
-  <div class="relative -mx-4 md:m-0">
+  <div class="relative -mx-4 mb-4 overflow-hidden md:mx-0 md:overflow-visible">
     <table class="table-fixed w-full text-xs relative z-10 md:table-auto">
       <thead>
         <tr class="text-left align-middle bg-gray-700 text-white">
@@ -83,6 +77,12 @@
         </tr>
       </tbody>
     </table>
-    <div class="absolute bottom-0 left-0 w-full text-center text-6xl font-bold tracking-widest leading-tight text-gray-400 select-none">EXAMPLE</div>
+    <div class="absolute bottom-0 left-0 w-full text-center text-6xl pb-3 font-bold tracking-widest leading-tight text-gray-400 select-none">SAMPLE</div>
+  </div>
+  <div>
+    Upload type accepted:
+    <a href="/employee_bulk_import/sample.txt" class="hover:text-blue-500" target="_blank" rel="noopener noreferrer" download>Unicode Text (.txt)</a>,
+    <a href="/employee_bulk_import/sample.csv" class="hover:text-blue-500" target="_blank" rel="noopener noreferrer" download>Comma-separated values (.csv)</a> or
+    <a href="/employee_bulk_import/sample.tsv" class="hover:text-blue-500" target="_blank" rel="noopener noreferrer" download>Tab-separated values (.tsv)</a>
   </div>
 </div>

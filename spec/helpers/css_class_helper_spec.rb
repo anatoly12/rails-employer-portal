@@ -83,13 +83,13 @@ describe CssClassHelper do
     context "when color is blue" do
       let(:color) { :blue }
 
-      it { is_expected.to contain_exactly "appearance-none", "bg-white", "text-blue-400", "border-blue-400", "hover:border-blue-700", "hover:text-blue-800", "focus:outline-none", "focus:border-blue-700", "border-2", "px-3", "leading-6", "font-semibold" }
+      it { is_expected.to contain_exactly "appearance-none", "bg-white", "text-blue-400", "border-blue-400", "hover:border-blue-700", "hover:text-blue-800", "focus:outline-none", "focus:border-blue-700", "border-2", "px-3", "py-1", "leading-6", "font-semibold" }
     end
 
     context "when color is red" do
       let(:color) { :red }
 
-      it { is_expected.to contain_exactly "appearance-none", "bg-white", "text-red-400", "border-red-400", "hover:border-red-700", "hover:text-red-800", "focus:outline-none", "focus:border-red-700", "border-2", "px-3", "leading-6", "font-semibold" }
+      it { is_expected.to contain_exactly "appearance-none", "bg-white", "text-red-400", "border-red-400", "hover:border-red-700", "hover:text-red-800", "focus:outline-none", "focus:border-red-700", "border-2", "px-3", "py-1", "leading-6", "font-semibold" }
     end
   end
 

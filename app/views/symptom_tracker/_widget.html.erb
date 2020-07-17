@@ -2,20 +2,22 @@
   <div class="md:w-full md:h-48 md:overflow-hidden">
     <h3 class="text-2xl font-medium relative">
       Symptom Tracker <span class="whitespace-no-wrap">at-a-glance</span>
-      <%= form_for search.filters, as: :filters, url: edit_employee_path(id: search.employee), method: :get, html: { class: "absolute top-0 right-0 mt-1 text-base font-normal select-none", autocomplete: "off" } do |f| %>
-        <%= hidden_field_tag :page, nil %>
-        <div class="relative overflow-hidden hover:text-black <%= f.object.empty? ? "text-gray-300" : "text-gray-600" %>">
-          <%= f.text_field :date_equals, type: :date, class: "w-48 border border-gray-300 bg-white leading-6 pl-3 appearance-none focus:outline-none focus:border-gray-500 #{f.object.empty? ? "pr-8" : "pr-14"}", data: { auto_submit: true } %>
-          <div class="absolute top-0 bottom-0 right-0 flex items-center mr-2 pointer-events-none">
-            <%= render "icon/calendar", icon_class: "h-4 w-4" %>
+      <div class="flex justify-end mb-4 md:block">
+        <%= form_for search.filters, as: :filters, url: edit_employee_path(id: search.employee), method: :get, html: { class: "md:absolute md:top-0 md:right-0 text-base font-normal select-none", autocomplete: "off" } do |f| %>
+          <%= hidden_field_tag :page, nil %>
+          <div class="relative overflow-hidden hover:text-black <%= f.object.empty? ? "text-gray-300" : "text-black" %>">
+            <%= f.text_field :date_equals, type: :date, class: "w-48 border-2 border-gray-300 bg-white leading-6 pl-3 appearance-none focus:outline-none focus:border-gray-500 #{f.object.empty? ? "pr-8" : "pr-14"}", data: { auto_submit: true } %>
+            <div class="absolute top-0 bottom-0 right-0 flex items-center mr-2 text-blue-500 pointer-events-none">
+              <%= render "icon/calendar", icon_class: "h-4 w-4" %>
+            </div>
           </div>
-        </div>
-        <% unless f.object.empty? %>
-          <%= link_to edit_employee_path(id: search.employee, filters: nil, page: nil), class: "absolute top-0 right-0 h-full w-6 mr-8 flex items-center justify-center text-gray-500 box-content focus:outline-none hover:text-black" do %>
-            <%= render "icon/close", icon_class: "h-4 w-4" %>
+          <% unless f.object.empty? %>
+            <%= link_to edit_employee_path(id: search.employee, filters: nil, page: nil), class: "absolute top-0 right-0 h-full w-6 mr-6 flex items-center justify-center text-gray-500 box-content focus:outline-none hover:text-black" do %>
+              <%= render "icon/close", icon_class: "h-4 w-4" %>
+            <% end %>
           <% end %>
         <% end %>
-      <% end %>
+      </div>
     </h3>
     <table class="table-auto w-full text-xs">
       <thead>

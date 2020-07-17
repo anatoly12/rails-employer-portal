@@ -1,6 +1,6 @@
 <%= form_for filters, as: :filters, url: { action: :index }, method: :get, html: { class: "relative select-none mb-4 mx-2", autocomplete: "off" } do |f| %>
   <%= hidden_field_tag :page, nil %>
-  <%= f.text_field :full_name_contains, class: "w-48 border-2 border-gray-300 bg-white leading-6 font-semibold pl-3 appearance-none focus:outline-none focus:border-gray-500 #{f.object.empty? ? "pr-8" : "pr-14"}", placeholder: "Search", data: { auto_submit: true } %>
+  <%= f.text_field :full_name_contains, class: "w-48 border-2 border-gray-300 bg-white leading-6 font-semibold pl-3 py-1 appearance-none focus:outline-none focus:border-gray-500 #{f.object.empty? ? "pr-8" : "pr-14"}", placeholder: "Search", data: { auto_submit: true } %>
   <button id="filters_submit" type="submit" class="absolute top-0 right-0 h-full w-6 px-1 flex items-center justify-center text-gray-300 appearance-none box-content focus:outline-none hover:text-black">
     <%= render "icon/search", icon_class: "h-4 w-4" %>
   </button>

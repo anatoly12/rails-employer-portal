@@ -25,7 +25,7 @@ module CssClassHelper
   end
 
   def secondary_button_class(color)
-    "#{base_button_class(color)} border-2 px-3 leading-6 font-semibold"
+    "#{base_button_class(color)} border-2 px-3 py-1 leading-6 font-semibold"
   end
 
   def thin_button_class(color)

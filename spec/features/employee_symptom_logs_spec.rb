@@ -68,7 +68,7 @@ feature "Employee symptom logs" do
   def visit_symptom_log(date)
     visit "/employees/#{employee.uuid}/symptom_logs/#{date}"
     within ".blur-3 .container" do
-      expect(page).to have_css "h2", text: "symptom log from #{date}"
+      expect(page).to have_css "h2", text: "Symptom log from #{date}"
     end
   end
 end
