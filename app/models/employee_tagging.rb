@@ -5,5 +5,5 @@ class EmployeeTagging < Sequel::Model
 
   # ~~ associations ~~
   many_to_one :employee, class: "Employee"
-  many_to_one :tag, class: "EmployeeTag"
+  many_to_one :tag, class: "EmployeeTag", key: :employee_tag_id
 end

@@ -120,6 +120,10 @@ class EmployerPortal::Employee::Editor
     ).update is_active: true
   end
 
+  def tags
+    edited.tags.map(&:name).join(",")
+  end
+
   private
 
   attr_reader :context, :edited, :symptom_log_params

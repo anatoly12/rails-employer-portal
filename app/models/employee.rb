@@ -30,7 +30,7 @@ class Employee < Sequel::Model
   one_to_many :contact_email_logs, class: "EmailLog", conditions: { trigger_key: EmailTemplate::TRIGGER_EMPLOYEE_CONTACT }
   one_to_many :reminder_email_logs, class: "EmailLog", conditions: { trigger_key: EmailTemplate::TRIGGER_EMPLOYEE_REMINDER }
   one_to_many :taggings, class: "EmployeeTagging"
-  many_to_many :tags, through: :taggings
+  many_to_many :tags, class: "EmployeeTag", join_table: :employee_taggings, right_key: :employee_tag_id
 
   # ~~ public class methods ~~
   def self.add_connected_associations

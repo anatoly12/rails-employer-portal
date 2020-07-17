@@ -1,6 +1,6 @@
 <% errors = form.object.errors_on column %>
 <div>
-  <%= form.label column, local_assigns[:label].presence, class: "text-3xl font-thin" %>
+  <%= form.label column, local_assigns[:label].presence, class: "block text-3xl font-thin mb-2" %>
   <%= form.select column, options, { include_blank: local_assigns.fetch(:include_blank, true) }, class: select_field_class(errors) %>
   <%= render "common/errors", errors: errors %>
 </div>

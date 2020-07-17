@@ -1,6 +1,6 @@
 <% errors = form.object.errors_on column %>
 <div>
-  <%= form.label column, local_assigns[:label].presence, class: "text-3xl font-thin" %>
+  <%= form.label column, local_assigns[:label].presence, class: "block text-3xl font-thin mb-2" %>
   <div class="relative overflow-hidden">
     <%= form.text_field column, type: :date, class: text_field_class(errors), placeholder: local_assigns[:placeholder].presence %>
     <div class="absolute top-0 bottom-0 right-0 flex items-center text-blue-400 pointer-events-none">

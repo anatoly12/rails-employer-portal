@@ -1,0 +1,6 @@
+<% errors = form.object.errors_on :tags %>
+<div>
+  <%= form.label :tags, local_assigns[:label].presence, class: "block text-3xl font-thin" %>
+  <%= form.text_field :tags, class: text_field_class(errors), placeholder: local_assigns[:placeholder].presence, data: { tagging: true, whitelist: "banana,orange,pepsi" } %>
+  <%= render "common/errors", errors: errors %>
+</div>
