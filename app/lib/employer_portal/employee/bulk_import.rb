@@ -99,10 +99,12 @@ class EmployerPortal::Employee::BulkImport
   end
 
   def persist
-    persist_tags
-    persist_employees
-    persist_taggings
-    persist_audit
+    Sequel::Model.db.transaction do
+      persist_tags
+      persist_employees
+      persist_taggings
+      persist_audit
+    end
   end
 
   def persist_tags
