@@ -2,10 +2,19 @@ require "csv"
 
 class EmployerPortal::Employee::BulkImport
 
+  # ~~ public class methods ~~
+  def self.from_params(context, params)
+    file = params[:file]
+    tags = JSON.parse(params[:tags]).map { |tag| tag["value"] }
+    raise params.inspect
+    new context, file, tags
+  end
+
   # ~~ public instance methods ~~
-  def initialize(context, file)
+  def initialize(context, file, tags)
     @context = context
     @file = file
+    @tags = tags
     @errors = []
   end
 
@@ -29,7 +38,7 @@ class EmployerPortal::Employee::BulkImport
 
   private
 
-  attr_reader :context, :file, :errors
+  attr_reader :context, :file, :tags, :errors
 
   def original_ext
     File.extname(file.original_filename).downcase

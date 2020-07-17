@@ -1,3 +1,0 @@
-<%= link_to((request.referer.present? && request.referer != url_for(only_path: false) ? request.referer : default_url), class: "float-right -mt-2 -mr-2 hover:text-blue-500 hover:border-blue-500 h-10 w-10 p-2") do %>
-  <%= render "icon/close_outline", icon_class: "pointer-events-none" %>
-<% end %>

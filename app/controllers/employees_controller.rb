@@ -26,9 +26,9 @@ class EmployeesController < ApplicationController
   end
 
   def create
-    bulk = ::EmployerPortal::Employee::BulkImport.new(
+    bulk = ::EmployerPortal::Employee::BulkImport.from_params(
       current_context,
-      params[:file]
+      params
     )
     if bulk.has_file?
       begin

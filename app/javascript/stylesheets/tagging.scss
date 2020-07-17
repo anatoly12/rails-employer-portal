@@ -1,0 +1,11 @@
+$tags-border-color: #cbd5e0; // bg-gray-400
+$tags-hover-border-color: #718096; // bg-gray-600
+$tags-focus-border-color: #63b3ed; // bg-blue-400
+$tag-bg: #edf2f7; // bg-gray-200
+$tag-hover: #bee3f8; // bg-blue-200
+$tag-remove: #f56565; // bg-red-500
+$tagify-dd-color-primary: #63b3ed; // bg-blue-400
+@import "@yaireo/tagify/src/tagify";
+.tagify{
+  border-width: 2px;
+}
