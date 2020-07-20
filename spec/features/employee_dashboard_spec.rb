@@ -373,12 +373,26 @@ feature "Employee dashboard" do
           )
         end
 
-        scenario "I see it as my employee profile picture" do
-          visit "/"
-          expect(page).to have_css "a[href$='/edit']", count: 1
-          within "a[href='/employees/#{employee.uuid}/edit']" do
-            img = page.find "div:nth-child(1) img"
-            expect(img["src"]).to include("s3.amazonaws.com/dev/health_modules/identities/109/selfie")
+        context "when AWS is connected", type: :aws do
+          before { with_aws_connected }
+
+          scenario "I see it as my employee profile picture" do
+            visit "/"
+            expect(page).to have_css "a[href$='/edit']", count: 1
+            within "a[href='/employees/#{employee.uuid}/edit']" do
+              img = page.find "div:nth-child(1) img"
+              expect(img["src"]).to include("s3.amazonaws.com/dev/health_modules/identities/109/selfie")
+            end
+          end
+        end
+
+        context "when AWS is NOT connected" do
+          scenario "I see it as my employee profile picture" do
+            visit "/"
+            expect(page).to have_css "a[href$='/edit']", count: 1
+            within "a[href='/employees/#{employee.uuid}/edit']" do
+              expect(page).not_to have_css "div:nth-child(1) img"
+            end
           end
         end
       end

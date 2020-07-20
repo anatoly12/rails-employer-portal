@@ -79,7 +79,7 @@ feature "Employee add manually" do
         fill_in "Email", with: "lashunda@example.org"
         fill_in "Phone Number", with: "1-317-415-9130"
         select "New York", from: "State"
-        page.find("tags [contenteditable]").set "Team A,New York"
+        page.find("tags [contenteditable]").set "Team A,New York,"
         expect do
           click_button "Submit"
         end.to change(Employee, :count).by(1)

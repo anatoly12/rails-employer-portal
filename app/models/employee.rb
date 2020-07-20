@@ -61,9 +61,9 @@ class Employee < Sequel::Model
   end
 
   def previous_changes
-    tag_names_before = tags_before.map(&:name).sort
-    tag_names_after = tags_after.map(&:name).sort
-    return super if tag_names_before == tag_names_after
+    return super if tags_before == tags_after
+    tag_names_before = tags_before.map(&:name).sort.join ","
+    tag_names_after = tags_after.map(&:name).sort.join ","
 
     super.merge tags: [tag_names_before, tag_names_after]
   end

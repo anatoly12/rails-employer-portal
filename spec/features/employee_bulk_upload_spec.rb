@@ -116,7 +116,7 @@ feature "Employee bulk upload" do
       scenario "I can add tags to employees" do
         within ".blur-3 .container" do
           click_link "Bulk Upload"
-          page.find("tags [contenteditable]").set "Team A,New York"
+          page.find("tags [contenteditable]").set "Team A,New York,"
           attach_file "Upload File", Rails.root.join("spec", "fixtures", "sample_valid.txt"), visible: false
         end
         expect(page).to have_css("[role=notice]", text: "5 employees were imported successfully.")

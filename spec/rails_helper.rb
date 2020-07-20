@@ -12,6 +12,11 @@ require "rspec/rails"
 require "capybara/rspec"
 require "database_cleaner/sequel"
 
+Capybara.javascript_driver = :selenium_chrome_headless
+Capybara.configure do |config|
+  config.server = :puma, { Silent: true }
+end
+
 # Requires supporting ruby files with custom matchers and macros, etc, in
 # spec/support/ and its subdirectories. Files matching `spec/**/*_spec.rb` are
 # run as spec files by default. This means that files in spec/support that end
@@ -55,6 +60,7 @@ RSpec.configure do |config|
   config.include FeatureHelpers, type: :feature
   config.include RequestHelpers, type: :request
   config.include SyncHelpers, type: :sync
+  config.include AwsHelpers, type: :aws
 
   # ~~ Database cleaner ~~
   config.before(:suite) do
@@ -80,6 +86,9 @@ RSpec.configure do |config|
   end
 
   config.append_after(:each) do
+    if ::EmployerPortal::Aws.connected?
+      ::EmployerPortal::Aws.disconnect
+    end
     if ::EmployerPortal::Sync.connected?
       ::EmployerPortal::Sync::Covid19MessageCode.dataset.delete
       ::EmployerPortal::Sync::Covid19Message.dataset.delete

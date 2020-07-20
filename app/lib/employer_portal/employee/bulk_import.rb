@@ -147,8 +147,8 @@ class EmployerPortal::Employee::BulkImport
       item_id: nil,
       event: "import",
       changes: {
-        employee_tag_ids: employee_tags.map(&:id),
-        employee_ids: employee_ids,
+        ids: employee_ids,
+        tags: employee_tags.map(&:name).sort.join(","),
       }.to_json,
       created_at: now,
       created_by_type: Sequel::Plugins::WithAudits.created_by_type,

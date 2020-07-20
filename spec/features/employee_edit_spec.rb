@@ -525,7 +525,7 @@ feature "Employee edit" do
             expect(page).to have_css "tag", count: 1
             expect(page).to have_css "tag", text: tag.name
             page.find("tag x").click
-            page.find("span[contenteditable]").set "Team A,New York"
+            page.find("span[contenteditable]").set "Team A,New York,"
           end
           click_button "Save changes"
         end

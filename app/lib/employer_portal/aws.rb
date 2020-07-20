@@ -9,7 +9,7 @@ module EmployerPortal::Aws
   CACHE = ::ActiveSupport::Cache::MemoryStore.new size: 1.megabyte, expires_in: 30.minutes
 
   class << self
-    def init
+    def connect
       return if connected?
       log("AWS_ACCESS_KEY_ID not configured, skip") and return if AWS_ACCESS_KEY_ID.blank?
       log("AWS_SECRET_ACCESS_KEY not configured, skip") and return if AWS_SECRET_ACCESS_KEY.blank?
@@ -19,6 +19,12 @@ module EmployerPortal::Aws
       })
       log("connected")
       @connected = true
+    end
+
+    def disconnect
+      CACHE.clear
+      @bucket = nil
+      @connected = false
     end
 
     def connected?
