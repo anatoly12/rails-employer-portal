@@ -21,8 +21,8 @@ module FeatureHelpers
   end
 
   def upload_file(field_name, filename)
-    input = find_field field_name
+    input = find_field field_name, visible: false
     input.attach_file(Rails.root.join("spec", "fixtures", filename))
-    input.parent_form.submit
+    input.parent_form.submit if Capybara.current_driver == :rack_test
   end
 end

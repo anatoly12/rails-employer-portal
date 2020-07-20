@@ -36,7 +36,7 @@ RSpec.describe Employee, type: :model do
     it "checks that email is unique within the company" do
       create :employee, email: subject.email
       expect(subject).to be_valid
-      create :employee, company_id: subject.company_id, email: subject.email
+      create :employee, company: subject.company, email: subject.email
       expect(subject).not_to be_valid
       expect(subject.errors).to eql email: ["is already taken"]
     end

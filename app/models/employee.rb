@@ -2,12 +2,16 @@ require "uri"
 
 class Employee < Sequel::Model
 
+  # ~~ accessors ~~
+  attr_accessor :tags_before, :tags_after
+
   # ~~ plugins ~~
   plugin :uuid
   plugin :timestamps, update_on_create: true
   plugin :validation_helpers
   plugin :active_model
   plugin :with_audits
+  plugin :after_initialize
 
   # ~~ validations ~~
   def validate
@@ -42,8 +46,26 @@ class Employee < Sequel::Model
   end
 
   # ~~ public instance methods ~~
+  def after_initialize
+    @tags_before = []
+    @tags_after = []
+  end
+
   def to_param
     uuid
+  end
+
+  def track_tags_changes
+    @tags_before = tags.dup
+    @tags_after = tags.dup
+  end
+
+  def previous_changes
+    tag_names_before = tags_before.map(&:name).sort
+    tag_names_after = tags_after.map(&:name).sort
+    return super if tag_names_before == tag_names_after
+
+    super.merge tags: [tag_names_before, tag_names_after]
   end
 
   private

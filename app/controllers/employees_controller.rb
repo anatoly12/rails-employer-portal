@@ -26,10 +26,6 @@ class EmployeesController < ApplicationController
   end
 
   def create
-    bulk = ::EmployerPortal::Employee::BulkImport.from_params(
-      current_context,
-      params
-    )
     if bulk.has_file?
       begin
         bulk.save!
@@ -144,4 +140,13 @@ class EmployeesController < ApplicationController
   end
 
   helper_method :editor
+
+  def bulk
+    @bulk ||= ::EmployerPortal::Employee::BulkImport.from_params(
+      current_context,
+      params
+    )
+  end
+
+  helper_method :bulk
 end

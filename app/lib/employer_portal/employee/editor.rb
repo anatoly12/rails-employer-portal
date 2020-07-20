@@ -10,7 +10,10 @@ class EmployerPortal::Employee::Editor
         Employee.where(
           company_id: context.company_id,
           uuid: params[:id],
-        ).limit(1).first || raise(::EmployerPortal::Error::Employee::NotFound)
+        ).limit(1).eager(
+          :taggings,
+          :tags
+        ).first || raise(::EmployerPortal::Error::Employee::NotFound)
       else
         Employee.new(
           company_id: context.company_id,
@@ -24,6 +27,7 @@ class EmployerPortal::Employee::Editor
   def initialize(context, edited, symptom_log_params = {})
     @context = context
     @edited = edited
+    edited.track_tags_changes
     @symptom_log_params = symptom_log_params
   end
 
@@ -36,16 +40,22 @@ class EmployerPortal::Employee::Editor
   end
 
   def update_attributes(params)
-    edited.set params.fetch(:employee, {}).permit(
+    employee_params = params.fetch :employee, {}
+    edited.set employee_params.permit(
       :first_name,
       :last_name,
       :email,
       :phone,
       :state
     )
-    success = edited.save raise_on_failure: false
-    CreateAccountForEmployeeJob.perform_later edited.uuid if success
-    success
+    return false unless edited.valid?
+
+    @tags = if employee_params[:tags].present?
+        JSON.parse(employee_params[:tags]).map { |tag| tag["value"] }
+      else
+        []
+      end
+    persist
   end
 
   def symptom_log_search
@@ -121,7 +131,7 @@ class EmployerPortal::Employee::Editor
   end
 
   def tags
-    edited.tags.map(&:name).join(",")
+    @tags ||= edited.tags_before.map(&:name).join ","
   end
 
   private
@@ -133,7 +143,43 @@ class EmployerPortal::Employee::Editor
     edited.dashboard_employee if synced?
   end
 
-  def testing_status
-    dashboard_employee&.testing_status || "Not Registered"
+  def persist
+    Sequel::Model.db.transaction do
+      persist_tags
+      persist_employees
+      persist_taggings
+      persist_audit
+    end
+  end
+
+  def persist_tags
+    edited.tags_after = tags.map do |tag|
+      EmployeeTag.find_or_create(
+        company_id: context.company_id,
+        name: tag,
+      )
+    end
+  end
+
+  def persist_employees
+    edited.save validate: false
+  end
+
+  def persist_taggings
+    to_add = edited.tags_after.dup
+    edited.taggings.each do |tagging|
+      if to_add.include? tagging.tag
+        to_add.delete tagging.tag
+      else
+        tagging.destroy
+      end
+    end
+    to_add.each do |tag|
+      edited.add_tagging EmployeeTagging.new(tag: tag)
+    end
+  end
+
+  def persist_audit
+    CreateAccountForEmployeeJob.perform_later edited.uuid
   end
 end

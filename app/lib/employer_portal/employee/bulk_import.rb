@@ -2,6 +2,9 @@ require "csv"
 
 class EmployerPortal::Employee::BulkImport
 
+  # ~~ accessors ~~
+  attr_reader :tags
+
   # ~~ public class methods ~~
   def self.from_params(context, params)
     file = params[:file]
@@ -20,7 +23,7 @@ class EmployerPortal::Employee::BulkImport
     @tags = tags
     @now = Time.now
     @errors = []
-    @employee_tag_ids = []
+    @employee_tags = []
     @employee_ids = []
   end
 
@@ -44,7 +47,7 @@ class EmployerPortal::Employee::BulkImport
 
   private
 
-  attr_reader :context, :file, :tags, :now, :errors, :employee_tag_ids, :employee_ids
+  attr_reader :context, :file, :now, :errors, :employee_tags, :employee_ids
 
   def original_ext
     File.extname(file.original_filename).downcase
@@ -108,14 +111,12 @@ class EmployerPortal::Employee::BulkImport
   end
 
   def persist_tags
-    employee_tags = tags.map do |tag|
+    @employee_tags = tags.map do |tag|
       EmployeeTag.find_or_create(
         company_id: context.company_id,
         name: tag,
       )
-    end.compact
-
-    @employee_tag_ids = employee_tags.map(&:id)
+    end
   end
 
   def persist_employees
@@ -128,8 +129,8 @@ class EmployerPortal::Employee::BulkImport
 
   def persist_taggings
     taggings = employee_ids.flat_map do |employee_id|
-      employee_tag_ids.map do |employee_tag_id|
-        [employee_id, employee_tag_id, now]
+      employee_tags.map do |employee_tag|
+        [employee_id, employee_tag.id, now]
       end
     end
     return if taggings.empty?
@@ -146,7 +147,7 @@ class EmployerPortal::Employee::BulkImport
       item_id: nil,
       event: "import",
       changes: {
-        employee_tag_ids: employee_tag_ids,
+        employee_tag_ids: employee_tags.map(&:id),
         employee_ids: employee_ids,
       }.to_json,
       created_at: now,

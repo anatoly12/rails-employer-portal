@@ -494,6 +494,52 @@ feature "Employee edit" do
         )
       end
     end
+
+    context "without javascript" do
+      given!(:tag) { create :employee_tag, company: company }
+      given!(:tagging) { create :employee_tagging, employee: employee, tag: tag }
+
+      scenario "I can change my employee tags" do
+        visit_employee_edit
+        within "form#edit_employee_#{employee.id}" do
+          expect(page).to have_field "Member of", with: tag.name
+          fill_in "Member of", with: '[{"value":"Team A"},{"value":"New York"}]'
+          click_button "Save changes"
+        end
+        expect(page).to have_css("[role=notice]", text: "Employee was updated successfully.")
+        visit_employee_edit
+        within "form#edit_employee_#{employee.id}" do
+          expect(page).to have_field "Member of", with: "Team A,New York"
+        end
+      end
+    end
+
+    context "with javascript", js: true do
+      given!(:tag) { create :employee_tag, company: company }
+      given!(:tagging) { create :employee_tagging, employee: employee, tag: tag }
+
+      scenario "I can change my employee tags" do
+        visit_employee_edit
+        within "form#edit_employee_#{employee.id}" do
+          within "tags" do
+            expect(page).to have_css "tag", count: 1
+            expect(page).to have_css "tag", text: tag.name
+            page.find("tag x").click
+            page.find("span[contenteditable]").set "Team A,New York"
+          end
+          click_button "Save changes"
+        end
+        expect(page).to have_css("[role=notice]", text: "Employee was updated successfully.")
+        visit_employee_edit
+        within "form#edit_employee_#{employee.id}" do
+          within "tags" do
+            expect(page).to have_css "tag", count: 2
+            expect(page).to have_css "tag", text: "Team A"
+            expect(page).to have_css "tag", text: "New York"
+          end
+        end
+      end
+    end
   end
 
   def visit_employee_edit

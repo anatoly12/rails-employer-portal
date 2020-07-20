@@ -13,7 +13,7 @@ class EmployerPortal::Context
   def initialize(account_id:, section:)
     @given_account_id = account_id
     @section = section
-    ::Sequel::Plugins::WithAudits.audited_by account
+    Sequel::Plugins::WithAudits.audited_by account
   end
 
   def account

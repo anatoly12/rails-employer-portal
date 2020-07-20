@@ -19,10 +19,6 @@ class EmployerPortal::Admin::Base::Editor
     @edited = edited
   end
 
-  def persisted?
-    !edited.new?
-  end
-
   def errors_on(column)
     edited.errors.on(column)
   end
@@ -40,11 +36,11 @@ class EmployerPortal::Admin::Base::Editor
 
   # ~~ protected class methods ~~
   def self.find_by_id!(_id)
-    raise NotImplementedError
+    raise NotImplementedError, "#{self}.find_by_id!"
   end
 
   def self.new_model
-    raise NotImplementedError
+    raise NotImplementedError, "#{self}.new_model!"
   end
 
   private

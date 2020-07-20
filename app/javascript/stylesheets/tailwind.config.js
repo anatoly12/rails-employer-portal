@@ -19,6 +19,9 @@ module.exports = {
         '2xl': '1860px',
         '3xl': '2560px',
       },
+      zIndex: {
+        '-10': '-10',
+      },
     },
   },
   variants: {

@@ -60,7 +60,7 @@ class EmployerPortal::Search
   end
 
   def decorator
-    raise NotImplementedError
+    raise NotImplementedError, "#{self.class}#decorator"
   end
 
   def query

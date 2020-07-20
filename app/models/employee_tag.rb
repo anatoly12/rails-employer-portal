@@ -7,7 +7,7 @@ class EmployeeTag < Sequel::Model
   # ~~ validations ~~
   def validate
     super
-    validates_presence [:name]
+    validates_presence [:company_id, :name]
     validates_unique(:name) { |ds| ds.where(company_id: company_id) }
   end
 

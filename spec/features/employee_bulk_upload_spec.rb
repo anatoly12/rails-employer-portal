@@ -7,8 +7,9 @@ feature "Employee bulk upload" do
     within ".blur-3 .container" do
       click_link "Bulk Upload"
       expect(page).to have_content "Please match your fields to the sample below:"
+      attach_file "Upload File", Rails.root.join("spec", "fixtures", "sample_valid.txt")
       expect do
-        upload_file "Upload File", "sample_valid.txt"
+        click_button "Submit"
       end.not_to have_enqueued_job CreateAccountForEmployeeJob
     end
     expect(page).not_to have_css("[role=notice]")
@@ -22,8 +23,9 @@ feature "Employee bulk upload" do
       within ".blur-3 .container" do
         click_link "Bulk Upload"
         expect(page).to have_content "Please match your fields to the sample below:"
+        attach_file "Upload File", Rails.root.join("spec", "fixtures", "sample_valid.txt")
         expect do
-          upload_file "Upload File", "sample_valid.txt"
+          click_button "Submit"
         end.to have_enqueued_job(CreateAccountForEmployeeJob).exactly(5).times
       end
       expect(page).to have_css("[role=notice]", text: "5 employees were imported successfully.")
@@ -34,8 +36,9 @@ feature "Employee bulk upload" do
       within ".blur-3 .container" do
         click_link "Bulk Upload"
         expect(page).to have_content "Please match your fields to the sample below:"
+        attach_file "Upload File", Rails.root.join("spec", "fixtures", "sample_valid.csv")
         expect do
-          upload_file "Upload File", "sample_valid.csv"
+          click_button "Submit"
         end.to have_enqueued_job(CreateAccountForEmployeeJob).exactly(5).times
       end
       expect(page).to have_css("[role=notice]", text: "5 employees were imported successfully.")
@@ -46,8 +49,9 @@ feature "Employee bulk upload" do
       within ".blur-3 .container" do
         click_link "Bulk Upload"
         expect(page).to have_content "Please match your fields to the sample below:"
+        attach_file "Upload File", Rails.root.join("spec", "fixtures", "sample_valid.tsv")
         expect do
-          upload_file "Upload File", "sample_valid.tsv"
+          click_button "Submit"
         end.to have_enqueued_job(CreateAccountForEmployeeJob).exactly(5).times
       end
       expect(page).to have_css("[role=notice]", text: "5 employees were imported successfully.")
@@ -58,8 +62,9 @@ feature "Employee bulk upload" do
       within ".blur-3 .container" do
         click_link "Bulk Upload"
         expect(page).to have_content "Please match your fields to the sample below:"
+        attach_file "Upload File", Rails.root.join("spec", "fixtures", "sample_invalid.csv")
         expect do
-          upload_file "Upload File", "sample_invalid.csv"
+          click_button "Submit"
         end.not_to have_enqueued_job CreateAccountForEmployeeJob
       end
       expect(page).not_to have_css("[role=notice]")
@@ -70,12 +75,55 @@ feature "Employee bulk upload" do
       within ".blur-3 .container" do
         click_link "Bulk Upload"
         expect(page).to have_content "Please match your fields to the sample below:"
+        attach_file "Upload File", Rails.root.join("spec", "fixtures", "sample_empty.csv")
         expect do
-          upload_file "Upload File", "sample_empty.csv"
+          click_button "Submit"
         end.not_to have_enqueued_job CreateAccountForEmployeeJob
       end
       expect(page).not_to have_css("[role=notice]")
       expect(page).to have_css("[role=alert]", text: "Error: can't find any employee in given file.")
+    end
+
+    context "without javascript" do
+      scenario "I can add tags to employees" do
+        within ".blur-3 .container" do
+          click_link "Bulk Upload"
+          fill_in "tags", with: '[{"value":"Team A"},{"value":"New York"}]'
+          attach_file "Upload File", Rails.root.join("spec", "fixtures", "sample_valid.txt")
+          click_button "Submit"
+        end
+        expect(page).to have_css("[role=notice]", text: "5 employees were imported successfully.")
+        Employee.order(:created_at).last(5).each do |employee|
+          expect(employee.tags.map(&:name)).to contain_exactly "Team A", "New York"
+        end
+      end
+
+      scenario "tags aren't lost in case of error" do
+        within ".blur-3 .container" do
+          click_link "Bulk Upload"
+          fill_in "tags", with: '[{"value":"Team A"},{"value":"New York"}]'
+          attach_file "Upload File", Rails.root.join("spec", "fixtures", "sample_invalid.csv")
+          click_button "Submit"
+        end
+        expect(page).to have_css("[role=alert]", text: "Error: invalid file format.")
+        within ".blur-3 .container" do
+          expect(page).to have_field("tags", with: "Team A,New York")
+        end
+      end
+    end
+
+    context "with javascript", js: true do
+      scenario "I can add tags to employees" do
+        within ".blur-3 .container" do
+          click_link "Bulk Upload"
+          page.find("tags [contenteditable]").set "Team A,New York"
+          attach_file "Upload File", Rails.root.join("spec", "fixtures", "sample_valid.txt"), visible: false
+        end
+        expect(page).to have_css("[role=notice]", text: "5 employees were imported successfully.")
+        Employee.order(:created_at).last(5).each do |employee|
+          expect(employee.tags.map(&:name)).to contain_exactly "Team A", "New York"
+        end
+      end
     end
   end
 end
