@@ -12,50 +12,22 @@ RSpec.describe ::EmployerPortal::EmployeeTag do
       end
     end
 
-    context "with an unused tag" do
-      let!(:tag) { create :employee_tag }
-
-      it "is empty" do
-        expect(subject).to be_empty
-      end
-    end
-
-    context "with a tag in use but from another company" do
-      let(:employee) { create :employee }
-      let(:tag) { create :employee_tag }
-      let!(:tagging) { create :employee_tagging, employee: employee, tag: tag }
-
-      it "is empty" do
-        expect(subject).to be_empty
-      end
-    end
-
-    context "with a tag in use" do
-      let(:employee) { create :employee }
-      let(:tag) { create :employee_tag, company: company }
-      let!(:tagging) { create :employee_tagging, employee: employee, tag: tag }
-
-      it "equals the tag name" do
-        expect(subject).to eql [tag.name]
-      end
-    end
-
-    context "with multiple tags" do
-      let(:tag1) { create :employee_tag, name: "Team D" }
-      let(:tag2) { create :employee_tag, name: "Team C", company: company }
-      let(:tag3) { create :employee_tag, name: "Team B", company: company }
-      let(:tag4) { create :employee_tag, name: "Team A", company: company }
-      let!(:tagging1) { create :employee_tagging, tag: tag1, employee: create(:employee) }
-      let!(:tagging2) { create :employee_tagging, tag: tag3, employee: create(:employee) }
-      let!(:tagging3) { create :employee_tagging, tag: tag4, employee: create(:employee) }
+    context "with tags" do
+      let(:from_another_company) { create :employee_tag, name: "Team D" }
+      let!(:unused) { create :employee_tag, name: "Team C", company: company }
+      let(:used1) { create :employee_tag, name: "Team B", company: company }
+      let(:used2) { create :employee_tag, name: "Team A", company: company }
+      let!(:tagging1) { create :employee_tagging, tag: from_another_company, employee: create(:employee) }
+      let!(:tagging2) { create :employee_tagging, tag: used1, employee: create(:employee) }
+      let!(:tagging3) { create :employee_tagging, tag: used2, employee: create(:employee) }
 
       it "is sorted by name" do
-        expect(subject).to eql [tag4.name, tag3.name]
+        expect(subject).to eql [used2.name, used1.name, unused.name]
       end
 
       it "is sorted by employee count" do
-        create :employee_tagging, tag: tag3, employee: create(:employee)
-        expect(subject).to eql [tag3.name, tag4.name]
+        create :employee_tagging, tag: used1, employee: create(:employee)
+        expect(subject).to eql [used1.name, used2.name, unused.name]
       end
     end
   end

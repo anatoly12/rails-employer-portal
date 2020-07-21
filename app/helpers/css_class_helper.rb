@@ -8,8 +8,12 @@ module CssClassHelper
     base_input_class(has_error) << " appearance-none border"
   end
 
-  def select_field_class(has_error = false)
+  def select_class(has_error = false)
     base_input_class(has_error) << " bg-white border-b"
+  end
+
+  def select_multiple_class(has_error = false)
+    base_input_class(has_error) << " bg-white border h-64 px-4 py-4 overflow-y-scroll"
   end
 
   def primary_link_class

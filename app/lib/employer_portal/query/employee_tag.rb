@@ -5,9 +5,7 @@ class EmployerPortal::Query::EmployeeTag < EmployerPortal::Query::Base
   def dataset
     EmployeeTag.eager_graph(*graphs).set_graph_aliases(graph_aliases).where(
       company_id: context.company_id,
-    ).group_by(:id).qualify.from_self.where(
-      Sequel.identifier(:employee_count) > 0
-    )
+    ).group_by(:id).qualify.from_self
   end
 
   def apply_filter(ds, _key, _value)

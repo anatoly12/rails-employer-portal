@@ -3,6 +3,6 @@
   <% unless local_assigns[:label] == false %>
     <%= form.label column, local_assigns[:label].presence, class: "block text-3xl font-thin mb-2" %>
   <% end %>
-  <%= form.password_field column, class: text_field_class(errors), placeholder: local_assigns[:placeholder].presence %>
+  <%= form.select column, options, { include_blank: false }, multiple: true, class: select_multiple_class(errors) %>
   <%= render "common/errors", errors: errors %>
 </div>

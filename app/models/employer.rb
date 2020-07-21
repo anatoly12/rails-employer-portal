@@ -8,6 +8,7 @@ class Employer < Sequel::Model
   plugin :validation_helpers
   plugin :active_model
   plugin :with_audits
+  plugin :serialization, :json, :allowed_employee_tags
 
   # ~~ validations ~~
   def validate
@@ -18,6 +19,7 @@ class Employer < Sequel::Model
     validates_max_length 128, :password, allow_blank: true, message: lambda { |s| "is too long (max is #{s} characters)" }
     validates_format ::EmployerPortal::Regexp::EMAIL_FORMAT, :email, allow_blank: true
     validates_unique(:email) { |ds| ds.where deleted_at: nil }
+    validates_presence :allowed_employee_tags unless allowed_all_employee_tags
   end
 
   # ~~ associations ~~

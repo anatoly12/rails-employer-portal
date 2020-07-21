@@ -1,6 +1,8 @@
 <% errors = form.object.errors_on :tags %>
 <div>
-  <%= form.label :tags, local_assigns[:label].presence, class: "block text-3xl font-thin" %>
+  <% unless local_assigns[:label] == false %>
+    <%= form.label :tags, local_assigns[:label].presence, class: "block text-3xl font-thin" %>
+  <% end %>
   <%= form.text_field :tags, class: text_field_class(errors), placeholder: local_assigns[:placeholder].presence, data: { tagging: true, whitelist: form.object.tags_whitelist.join(",") } %>
   <%= render "common/errors", errors: errors %>
 </div>

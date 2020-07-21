@@ -33,8 +33,8 @@ describe CssClassHelper do
     end
   end
 
-  describe "#select_field_class" do
-    subject { helper.select_field_class(has_error).split " " }
+  describe "#select_class" do
+    subject { helper.select_class(has_error).split " " }
 
     context "without error" do
       let(:has_error) { false }

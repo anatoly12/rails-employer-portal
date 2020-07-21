@@ -46,6 +46,10 @@ employer = Employer.create(
   email: ENV.fetch("EMPLOYER_EMAIL", Faker::Internet.safe_email),
   password: ENV.fetch("EMPLOYER_PASSWORD", Faker::Internet.password),
   role: "super_admin",
+  allowed_to_add_employees: true,
+  allowed_to_add_employee_tags: true,
+  allowed_all_employee_tags: true,
+  allowed_employee_tags: [],
 )
 
 admin_user = AdminUser.create(

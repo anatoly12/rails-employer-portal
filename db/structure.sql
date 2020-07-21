@@ -256,6 +256,10 @@ CREATE TABLE `employers` (
   `deleted_at` datetime DEFAULT NULL,
   `reset_password_digest` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `reset_password_sent_at` datetime DEFAULT NULL,
+  `allowed_to_add_employees` tinyint(1) NOT NULL DEFAULT '0',
+  `allowed_to_add_employee_tags` tinyint(1) NOT NULL DEFAULT '0',
+  `allowed_all_employee_tags` tinyint(1) NOT NULL DEFAULT '0',
+  `allowed_employee_tags` json DEFAULT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `uuid` (`uuid`),
   UNIQUE KEY `employers_email_index` (`email`),
@@ -276,9 +280,9 @@ CREATE TABLE `plans` (
   `uuid` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
   `name` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `billed_by` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `daily_checkup_enabled` tinyint(1) DEFAULT NULL,
-  `testing_enabled` tinyint(1) DEFAULT NULL,
-  `health_passport_enabled` tinyint(1) DEFAULT NULL,
+  `daily_checkup_enabled` tinyint(1) NOT NULL DEFAULT '0',
+  `testing_enabled` tinyint(1) NOT NULL DEFAULT '0',
+  `health_passport_enabled` tinyint(1) NOT NULL DEFAULT '0',
   `employer_limit` int(11) DEFAULT '0',
   `employee_limit` int(11) DEFAULT '0',
   `remote_id` bigint(20) DEFAULT NULL,
@@ -348,3 +352,5 @@ INSERT INTO `schema_migrations` (`filename`) VALUES ('20200708075657_fix_employe
 INSERT INTO `schema_migrations` (`filename`) VALUES ('20200708100604_add_queued_at_on_employees.rb');
 INSERT INTO `schema_migrations` (`filename`) VALUES ('20200714131542_add_reset_password_to_employers.rb');
 INSERT INTO `schema_migrations` (`filename`) VALUES ('20200717120049_create_employee_tags.rb');
+INSERT INTO `schema_migrations` (`filename`) VALUES ('20200721141009_add_missing_defaults.rb');
+INSERT INTO `schema_migrations` (`filename`) VALUES ('20200721141404_add_population_restrictions_to_employers.rb');

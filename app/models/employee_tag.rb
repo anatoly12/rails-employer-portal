@@ -14,4 +14,9 @@ class EmployeeTag < Sequel::Model
   # ~~ associations ~~
   many_to_one :company, class: "Company"
   one_to_many :taggings, class: "EmployeeTagging"
+
+  # ~~ public instance methods ~~
+  def for_select
+    [name, id]
+  end
 end

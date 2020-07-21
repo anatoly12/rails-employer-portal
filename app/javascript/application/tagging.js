@@ -7,7 +7,7 @@ document.addEventListener('turbolinks:load', () => {
       whitelist: whitelist.split(','),
       dropdown: {
         maxItems: 3,
-        enabled: 0,
+        enabled: whitelist.length > 0 ? 0 : 1,
         closeOnSelect: false,
       },
     })

@@ -1,8 +1,28 @@
 <div class="grid grid-cols-2 gap-20 mb-10">
-  <%= render "form/select", form: form, column: :company_id, options: form.object.companies_for_select %>
+  <%= render "form/select", form: form, column: :company_id, options: form.object.companies.map(&:for_select) %>
   <%= render "form/select", form: form, column: :role, options: form.object.roles_for_select %>
   <%= render "form/text_field", form: form, column: :first_name %>
   <%= render "form/text_field", form: form, column: :last_name %>
   <%= render "form/text_field", form: form, column: :email %>
   <%= render "form/password_field", form: form, column: :password %>
+  <div>
+    <div class="mb-10">
+      <%= render "form/check_box", form: form, column: :allowed_to_add_employees, label: "Can add new employees" %>
+    </div>
+    <div data-linked-to-id="employer_employee_tag_mode" data-linked-to-value="unlimited">
+      <%= render "form/check_box", form: form, column: :allowed_to_add_employee_tags, label: "Can add new groups" %>
+    </div>
+  </div>
+  <div>
+    <%= render "form/select", form: form, column: :employee_tag_mode, options: form.object.employee_tag_modes_for_select, label: "Population restrictions", include_blank: false %>
+    <%= render "common/errors", errors: form.object.errors_on(:allowed_all_employee_tags) %>
+    <div data-linked-to-id="employer_employee_tag_mode" data-linked-to-value="restricted">
+      <% form.object.companies.each do |company| %>
+        <div data-linked-to-id="employer_company_id" data-linked-to-value="<%= company.id %>" class="mt-4">
+          <% employee_tags = form.object.employee_tags.select { |tag| tag.company == company } %>
+          <%= render "form/select_multiple", form: form, column: :allowed_employee_tags, options: employee_tags.map(&:for_select), label: false %>
+        </div>
+      <% end %>
+    </div>
+  </div>
 </div>

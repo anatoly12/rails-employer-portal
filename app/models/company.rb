@@ -20,4 +20,9 @@ class Company < Sequel::Model
   one_to_many :employers, class: "Employer"
   one_to_many :undeleted_employers, class: "Employer", conditions: { deleted_at: nil }
   one_to_many :employees, class: "Employee"
+
+  # ~~ public instance methods ~~
+  def for_select
+    [name, id]
+  end
 end
