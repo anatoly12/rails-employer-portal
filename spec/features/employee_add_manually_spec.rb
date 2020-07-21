@@ -1,7 +1,8 @@
 require "rails_helper"
 
 feature "Employee add manually" do
-  before { sign_in_as_employer }
+  let(:employer) { create :employer }
+  before { sign_in_as_employer employer }
 
   scenario "I add the first employee" do
     within ".blur-3 .container" do
@@ -60,10 +61,25 @@ feature "Employee add manually" do
         fill_in "employee_tags", with: '[{"value":"Team A"},{"value":"New York"}]'
         expect do
           click_button "Submit"
-        end.to change(Employee, :count).by(1)
+        end.to change(Employee, :count).by(1).and change(Audit, :count).by(1)
       end
-      employee = Employee.order(:created_at).last
+      employee = Employee.order(:id).last
+      audit = Audit.order(:id).last
       expect(employee.tags.map(&:name)).to contain_exactly "Team A", "New York"
+      expect(audit.item_type).to eql "Employee"
+      expect(audit.item_id).to eql employee.id
+      expect(audit.event).to eql "create"
+      expect(audit.changes).to eql(
+        "company_id" => employer.company_id,
+        "employer_id" => employer.id,
+        "uuid" => employee.uuid,
+        "first_name" => "Lashunda",
+        "last_name" => "Kohler",
+        "email" => "lashunda@example.org",
+        "phone" => "1-317-415-9130",
+        "state" => "NY",
+        "tags" => "New York,Team A",
+      )
     end
   end
 
@@ -82,10 +98,25 @@ feature "Employee add manually" do
         page.find("tags [contenteditable]").set "Team A,New York,"
         expect do
           click_button "Submit"
-        end.to change(Employee, :count).by(1)
+        end.to change(Employee, :count).by(1).and change(Audit, :count).by(1)
       end
-      employee = Employee.order(:created_at).last
+      employee = Employee.order(:id).last
+      audit = Audit.order(:id).last
       expect(employee.tags.map(&:name)).to contain_exactly "Team A", "New York"
+      expect(audit.item_type).to eql "Employee"
+      expect(audit.item_id).to eql employee.id
+      expect(audit.event).to eql "create"
+      expect(audit.changes).to eql(
+        "company_id" => employer.company_id,
+        "employer_id" => employer.id,
+        "uuid" => employee.uuid,
+        "first_name" => "Lashunda",
+        "last_name" => "Kohler",
+        "email" => "lashunda@example.org",
+        "phone" => "1-317-415-9130",
+        "state" => "NY",
+        "tags" => "New York,Team A",
+      )
     end
   end
 end

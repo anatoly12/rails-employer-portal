@@ -90,12 +90,23 @@ feature "Employee bulk upload" do
           click_link "Bulk Upload"
           fill_in "tags", with: '[{"value":"Team A"},{"value":"New York"}]'
           attach_file "Upload File", Rails.root.join("spec", "fixtures", "sample_valid.txt")
-          click_button "Submit"
+          expect do
+            click_button "Submit"
+          end.to change(Employee, :count).by(5).and change(Audit, :count).by(1)
         end
         expect(page).to have_css("[role=notice]", text: "5 employees were imported successfully.")
-        Employee.order(:created_at).last(5).each do |employee|
+        employees = Employee.order(:id).last(5)
+        employees.each do |employee|
           expect(employee.tags.map(&:name)).to contain_exactly "Team A", "New York"
         end
+        audit = Audit.order(:id).last
+        expect(audit.item_type).to eql "Employee"
+        expect(audit.item_id).to be_nil
+        expect(audit.event).to eql "import"
+        expect(audit.changes).to eql(
+          "ids" => employees.map(&:id).sort,
+          "tags" => "New York,Team A",
+        )
       end
 
       scenario "tags aren't lost in case of error" do
@@ -103,7 +114,9 @@ feature "Employee bulk upload" do
           click_link "Bulk Upload"
           fill_in "tags", with: '[{"value":"Team A"},{"value":"New York"}]'
           attach_file "Upload File", Rails.root.join("spec", "fixtures", "sample_invalid.csv")
-          click_button "Submit"
+          expect do
+            click_button "Submit"
+          end.to change(Employee, :count).by(0).and change(Audit, :count).by(0)
         end
         expect(page).to have_css("[role=alert]", text: "Error: invalid file format.")
         within ".blur-3 .container" do
@@ -120,9 +133,18 @@ feature "Employee bulk upload" do
           attach_file "Upload File", Rails.root.join("spec", "fixtures", "sample_valid.txt"), visible: false
         end
         expect(page).to have_css("[role=notice]", text: "5 employees were imported successfully.")
-        Employee.order(:created_at).last(5).each do |employee|
+        employees = Employee.order(:id).last(5)
+        employees.each do |employee|
           expect(employee.tags.map(&:name)).to contain_exactly "Team A", "New York"
         end
+        audit = Audit.order(:id).last
+        expect(audit.item_type).to eql "Employee"
+        expect(audit.item_id).to be_nil
+        expect(audit.event).to eql "import"
+        expect(audit.changes).to eql(
+          "ids" => employees.map(&:id).sort,
+          "tags" => "New York,Team A",
+        )
       end
     end
   end

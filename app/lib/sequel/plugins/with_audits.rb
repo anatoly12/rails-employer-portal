@@ -66,7 +66,7 @@ module Sequel::Plugins::WithAudits
         item_type: model,
         item_id: pk,
         event: event,
-        changes: changes.to_json,
+        changes: changes,
         created_by_type: Sequel::Plugins::WithAudits.created_by_type,
         created_by_id: Sequel::Plugins::WithAudits.created_by_id,
       ) if changes.present?

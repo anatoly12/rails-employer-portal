@@ -68,6 +68,12 @@ class Employee < Sequel::Model
     super.merge tags: [tag_names_before, tag_names_after]
   end
 
+  def values
+    return super unless tags_after
+
+    super.merge tags: tags_after.map(&:name).sort.join(",")
+  end
+
   private
 
   # ~~ private instance methods ~~

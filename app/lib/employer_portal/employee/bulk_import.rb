@@ -120,9 +120,11 @@ class EmployerPortal::Employee::BulkImport
   end
 
   def persist_employees
+    columns = employees.first.columns
+    rows = employees.map { |employee| employee.values.slice(*columns) }
     @employee_ids = Employee.import(
-      employees.first.values.keys,
-      employees.map { |employee| employee.values.values },
+      rows.first.keys,
+      rows.map(&:values),
       return: :primary_key,
     )
   end
@@ -149,7 +151,7 @@ class EmployerPortal::Employee::BulkImport
       changes: {
         ids: employee_ids,
         tags: employee_tags.map(&:name).sort.join(","),
-      }.to_json,
+      },
       created_at: now,
       created_by_type: Sequel::Plugins::WithAudits.created_by_type,
       created_by_id: Sequel::Plugins::WithAudits.created_by_id,

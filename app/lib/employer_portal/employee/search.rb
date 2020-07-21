@@ -15,7 +15,7 @@ class EmployerPortal::Employee::Search < ::EmployerPortal::Search
       item_type: Employee,
       item_id: nil,
       event: "delete_all",
-      changes: ids.to_json,
+      changes: ids,
       created_by_type: Sequel::Plugins::WithAudits.created_by_type,
       created_by_id: Sequel::Plugins::WithAudits.created_by_id,
     )

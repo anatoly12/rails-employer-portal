@@ -504,9 +504,16 @@ feature "Employee edit" do
         within "form#edit_employee_#{employee.id}" do
           expect(page).to have_field "Member of", with: tag.name
           fill_in "Member of", with: '[{"value":"Team A"},{"value":"New York"}]'
-          click_button "Save changes"
+          expect do
+            click_button "Save changes"
+          end.to change(Employee, :count).by(0).and change(Audit, :count).by(1)
         end
         expect(page).to have_css("[role=notice]", text: "Employee was updated successfully.")
+        audit = Audit.order(:id).last
+        expect(audit.item_type).to eql "Employee"
+        expect(audit.item_id).to eql employee.id
+        expect(audit.event).to eql "update"
+        expect(audit.changes).to eql "tags" => [tag.name, "New York,Team A"]
         visit_employee_edit
         within "form#edit_employee_#{employee.id}" do
           expect(page).to have_field "Member of", with: "Team A,New York"
@@ -530,6 +537,11 @@ feature "Employee edit" do
           click_button "Save changes"
         end
         expect(page).to have_css("[role=notice]", text: "Employee was updated successfully.")
+        audit = Audit.order(:id).last
+        expect(audit.item_type).to eql "Employee"
+        expect(audit.item_id).to eql employee.id
+        expect(audit.event).to eql "update"
+        expect(audit.changes).to eql "tags" => [tag.name, "New York,Team A"]
         visit_employee_edit
         within "form#edit_employee_#{employee.id}" do
           within "tags" do
