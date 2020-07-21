@@ -3,6 +3,7 @@ class EmployeesController < ApplicationController
   before_action :ensure_employee_synced!, only: [:destroy, :reactivate]
   before_action :ensure_daily_checkup_enabled!, only: [:contact, :send_reminder]
   before_action :ensure_health_passport_enabled!, only: :health_passport
+  before_action :ensure_employee_access!, except: [:index, :bulk_import, :delete_all, :create, :show]
   rescue_from ::EmployerPortal::Error::Employee::NotFound, with: :employee_not_found
   rescue_from ::EmployerPortal::Error::Employee::NotSynced, with: :employee_not_synced
   rescue_from ::EmployerPortal::Error::DisabledFeature, with: :disabled_feature
@@ -26,22 +27,7 @@ class EmployeesController < ApplicationController
   end
 
   def create
-    if bulk.has_file?
-      begin
-        bulk.save!
-        flash.notice = "#{bulk.count} employees were imported successfully."
-        redirect_to action: :index
-      rescue ::EmployerPortal::Error::Employee::BulkImport::Base => e
-        flash.now.alert = e.message
-        render :bulk_import
-      end
-    elsif editor.update_attributes params
-      flash.notice = "Employee was created successfully."
-      redirect_to action: :index
-    else
-      flash.now.alert = "Please review errors and try submitting it again."
-      render :new
-    end
+    bulk.has_file? ? create_bulk : create_manually
   end
 
   # ~~ member actions ~~
@@ -104,6 +90,10 @@ class EmployeesController < ApplicationController
 
   private
 
+  def ensure_employee_access!
+    editor.ensure_access!
+  end
+
   def ensure_employee_synced!
     raise ::EmployerPortal::Error::Employee::NotSynced unless editor.synced?
   end
@@ -149,4 +139,24 @@ class EmployeesController < ApplicationController
   end
 
   helper_method :bulk
+
+  def create_bulk
+    bulk.save!
+    flash.notice = "#{bulk.count} employees were imported successfully."
+    redirect_to action: :index
+  rescue ::EmployerPortal::Error::Employee::BulkImport::Base => e
+    flash.now.alert = e.message
+    render :bulk_import
+  end
+
+  def create_manually
+    ensure_employee_access!
+    if editor.update_attributes params
+      flash.notice = "Employee was created successfully."
+      redirect_to action: :index
+    else
+      flash.now.alert = "Please review errors and try submitting it again."
+      render :new
+    end
+  end
 end

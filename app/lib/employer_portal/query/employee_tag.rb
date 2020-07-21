@@ -3,13 +3,12 @@ class EmployerPortal::Query::EmployeeTag < EmployerPortal::Query::Base
 
   # ~~ overrides for EmployerPortal::Query::Base ~~
   def dataset
-    EmployeeTag.eager_graph(*graphs).set_graph_aliases(graph_aliases).where(
-      company_id: context.company_id,
-    ).group_by(:id).qualify.from_self
-  end
-
-  def apply_filter(ds, _key, _value)
-    ds
+    ds = EmployeeTag.eager_graph(*graphs).set_graph_aliases graph_aliases
+    ds = ds.where company_id: context.company_id
+    unless context.allowed_all_employee_tags?
+      ds = ds.where id: context.allowed_employee_tags
+    end
+    ds.group_by(:id).qualify.from_self
   end
 
   def apply_order(ds, _column)

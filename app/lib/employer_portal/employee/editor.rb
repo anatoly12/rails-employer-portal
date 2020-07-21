@@ -138,6 +138,15 @@ class EmployerPortal::Employee::Editor
     ::EmployerPortal::EmployeeTag.whitelist context
   end
 
+  def ensure_access!
+    allowed = if persisted?
+        context.allowed_all_employee_tags? || (edited.tags_before.map(&:id) & context.allowed_employee_tags).any?
+      else
+        context.allowed_to_add_employees?
+      end
+    raise ::EmployerPortal::Error::Employee::NotAllowed unless allowed
+  end
+
   private
 
   attr_reader :context, :edited, :symptom_log_params

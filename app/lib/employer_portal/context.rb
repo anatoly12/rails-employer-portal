@@ -62,6 +62,22 @@ class EmployerPortal::Context
     end
   end
 
+  def allowed_to_add_employees?
+    !!account.try(:allowed_to_add_employees)
+  end
+
+  def allowed_to_add_employee_tags?
+    !!account.try(:allowed_to_add_employee_tags)
+  end
+
+  def allowed_all_employee_tags?
+    !!account.try(:allowed_all_employee_tags)
+  end
+
+  def allowed_employee_tags
+    account.try(:allowed_employee_tags) || []
+  end
+
   private
 
   attr_reader :given_account_id, :section

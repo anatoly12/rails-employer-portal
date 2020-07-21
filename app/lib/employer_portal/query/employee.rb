@@ -26,6 +26,11 @@ class EmployerPortal::Query::Employee < EmployerPortal::Query::Base
     ds = Employee.eager_graph(*graphs).set_graph_aliases(graph_aliases)
     if context.section_application?
       ds = ds.where company_id: context.company_id
+      unless context.allowed_all_employee_tags?
+        ds = ds.where id: EmployeeTagging.where(
+          employee_tag_id: context.allowed_employee_tags,
+        ).select(:employee_id)
+      end
     else
       ds = ds.where Sequel.qualify(:company, :deleted_at) => nil
     end
