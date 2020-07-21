@@ -134,6 +134,10 @@ class EmployerPortal::Employee::Editor
     @tags ||= edited.tags_before.map(&:name).join ","
   end
 
+  def tags_whitelist
+    ::EmployerPortal::EmployeeTag.whitelist context
+  end
+
   private
 
   attr_reader :context, :edited, :symptom_log_params

@@ -8,7 +8,7 @@
   <%= form_tag employees_path, multipart: true, autocomplete: "off" do %>
     <div class="mb-4">Put new employees in the following groups:</div>
     <div class="mb-4">
-      <input name="tags" placeholder="Team, workplace, etc." data-tagging data-whitelist="banana,orange,pepsi" value="<%= bulk.tags.join(",") %>">
+      <%= text_field_tag "tags", bulk.tags.join(","), placeholder: "Team, workplace, etc.", data: { tagging: true, whitelist: bulk.tags_whitelist.join(",") } %>
     </div>
     <div class="flex flex-col -mx-2 md:-mx-4 md:flex-row">
       <a href="/employee_bulk_import/sample.txt" class="<%= secondary_button_class(:blue) %> flex items-center mb-4 mx-2 md:mx-4" target="_blank" rel="noopener noreferrer" download>

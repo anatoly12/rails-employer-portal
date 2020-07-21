@@ -18,7 +18,7 @@
           <% end %>
         <% end %>
       </ul>
-    <% else # entry.type_date? or entry.type_text? %>
+    <% else %>
       <div class="my-2 p-2 border border-black">
         <%= entry.response.presence || raw("&nbsp;") %>
       </div>

@@ -45,6 +45,10 @@ class EmployerPortal::Employee::BulkImport
     raise_error "Error: invalid file format."
   end
 
+  def tags_whitelist
+    ::EmployerPortal::EmployeeTag.whitelist context
+  end
+
   private
 
   attr_reader :context, :file, :now, :errors, :employee_tags, :employee_ids

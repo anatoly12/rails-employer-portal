@@ -28,10 +28,6 @@ class EmployerPortal::Context
     ::EmployerPortal::Sync.connected?
   end
 
-  def aws_connected?
-    ::EmployerPortal::Aws.connected?
-  end
-
   def daily_checkup_enabled?
     return false unless sync_connected?
 
