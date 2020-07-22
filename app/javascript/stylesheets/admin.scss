@@ -1,6 +1,9 @@
 @import "tailwindcss/base";
 @import "tailwindcss/components";
 @import "tailwindcss/utilities";
+
+/* purgecss start ignore */
 @import "checkbox";
 @import "date_picker";
 @import "codemirror";
+/* purgecss end ignore */
