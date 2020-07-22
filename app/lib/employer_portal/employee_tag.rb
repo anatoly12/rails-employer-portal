@@ -5,6 +5,12 @@ class EmployerPortal::EmployeeTag
     @context = context
   end
 
+  def for_select
+    ::EmployerPortal::Query::EmployeeTag.new(
+      context
+    ).search_dataset({}, "").all.map(&:for_select)
+  end
+
   def whitelist
     ::EmployerPortal::Query::EmployeeTag.new(
       context

@@ -85,7 +85,15 @@ class EmployerPortal::Filters
     filters.reject { |_, value| value.blank? }
   end
 
+  def employee_tags_for_select
+    employee_tag.for_select
+  end
+
   private
 
   attr_reader :context, :filters
+
+  def employee_tag
+    @employee_tag ||= ::EmployerPortal::EmployeeTag.new context
+  end
 end

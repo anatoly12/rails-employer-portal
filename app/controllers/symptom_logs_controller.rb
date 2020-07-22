@@ -2,6 +2,7 @@ class SymptomLogsController < ApplicationController
   before_action :ensure_sync_connected!
   before_action :ensure_employee_synced!
   before_action :ensure_daily_checkup_enabled!
+  before_action :ensure_employee_access!
   rescue_from ::EmployerPortal::Error::Employee::NotFound, with: :employee_not_found
   rescue_from ::EmployerPortal::Error::Employee::NotSynced, with: :employee_not_synced
   rescue_from ::EmployerPortal::Error::DisabledFeature, with: :disabled_feature
@@ -14,6 +15,10 @@ class SymptomLogsController < ApplicationController
 
   def ensure_employee_synced!
     raise ::EmployerPortal::Error::Employee::NotSynced unless search.employee_editor.synced?
+  end
+
+  def ensure_employee_access!
+    search.employee_editor.ensure_access!
   end
 
   def employee_not_found

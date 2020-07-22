@@ -90,12 +90,12 @@ class EmployeesController < ApplicationController
 
   private
 
-  def ensure_employee_access!
-    editor.ensure_access!
-  end
-
   def ensure_employee_synced!
     raise ::EmployerPortal::Error::Employee::NotSynced unless editor.synced?
+  end
+
+  def ensure_employee_access!
+    editor.ensure_access!
   end
 
   def employee_not_found

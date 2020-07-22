@@ -54,6 +54,11 @@ class EmployerPortal::Query::Employee < EmployerPortal::Query::Base
       ds.where daily_checkup_status: value if context.sync_connected?
     when "testing_status_equals"
       ds.where testing_status: value if context.sync_connected?
+    when "employee_tag_id_equals"
+      employee_tag_id = value.to_i
+      ds.where id: EmployeeTagging.where(
+        employee_tag_id: employee_tag_id,
+      ).select(:employee_id) if context.allowed_all_employee_tags? || context.allowed_employee_tags.include?(employee_tag_id)
     end || ds
   end
 
