@@ -45,6 +45,7 @@ end
 
 group :test do
   gem "rspec-rails", "~> 4.0", ">= 4.0.1"
+  gem "rspec-retry", ">= 0.6.2"
   gem "factory_bot", "~> 6.0", ">= 6.0.2"
   gem "capybara", "~> 3.33"
   gem "webdrivers", "~> 4.4", ">= 4.4.1"

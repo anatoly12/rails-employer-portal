@@ -8,6 +8,7 @@ require File.expand_path("../config/environment", __dir__)
 # Prevent database truncation if the environment is production
 abort("The Rails environment is running in production mode!") if Rails.env.production?
 require "rspec/rails"
+require "rspec/retry"
 # Add additional requires below this line. Rails is not loaded until this point!
 require "capybara/rspec"
 require "database_cleaner/sequel"
@@ -106,5 +107,21 @@ RSpec.configure do |config|
     end
     DatabaseCleaner.clean
     ZipCode::CACHE.clear
+  end
+
+  # Only retry when Selenium raises Net::ReadTimeout
+  config.exceptions_to_retry = [Net::ReadTimeout]
+
+  # Try twice (= retry once), wait 1 second between tries
+  config.around :each, :js do |example|
+    example.run_with_retry retry: 2, retry_wait: 1
+  end
+
+  # Callback to be run between retries
+  config.retry_callback = proc do |example|
+    # run some additional clean up task - can be filtered by example metadata
+    if example.metadata[:js]
+      Capybara.reset!
+    end
   end
 end
