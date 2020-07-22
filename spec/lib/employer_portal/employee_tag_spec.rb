@@ -5,12 +5,12 @@ RSpec.describe ::EmployerPortal::EmployeeTag do
     let(:company) { create :company }
     let(:employer) { create :employer, company: company }
     let(:context) { ::EmployerPortal::Context.new account_id: employer.id, section: :application }
-    subject { described_class.whitelist context }
+    subject { described_class.new(context).whitelist }
 
     context "when employer is allowed all employee tags" do
       context "without tag" do
         it "is empty" do
-          expect(subject).to be_empty
+          is_expected.to be_empty
         end
       end
 
@@ -24,12 +24,12 @@ RSpec.describe ::EmployerPortal::EmployeeTag do
         let!(:tagging3) { create :employee_tagging, tag: used2, employee: create(:employee) }
 
         it "is sorted by name" do
-          expect(subject).to eql [used2.name, used1.name, unused.name]
+          is_expected.to eql [used2.name, used1.name, unused.name]
         end
 
         it "is sorted by employee count" do
           create :employee_tagging, tag: used1, employee: create(:employee)
-          expect(subject).to eql [used1.name, used2.name, unused.name]
+          is_expected.to eql [used1.name, used2.name, unused.name]
         end
       end
     end
@@ -45,7 +45,7 @@ RSpec.describe ::EmployerPortal::EmployeeTag do
       let(:employer) { create :employer, company: company, allowed_all_employee_tags: false, allowed_employee_tags: [used1.id, used2.id] }
 
       it "returns only allowed tag names" do
-        expect(subject).to eql [used2.name, used1.name]
+        is_expected.to eql [used2.name, used1.name]
       end
     end
   end

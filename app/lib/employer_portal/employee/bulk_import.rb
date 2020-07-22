@@ -5,6 +5,9 @@ class EmployerPortal::Employee::BulkImport
   # ~~ accessors ~~
   attr_reader :tags
 
+  # ~~ delegates ~~
+  delegate :whitelist, to: :employee_tag, prefix: :tags
+
   # ~~ public class methods ~~
   def self.from_params(context, params)
     file = params[:file]
@@ -23,7 +26,7 @@ class EmployerPortal::Employee::BulkImport
     @tags = tags
     @now = Time.now
     @errors = []
-    @employee_tags = []
+    @tags_after = []
     @employee_ids = []
   end
 
@@ -45,13 +48,9 @@ class EmployerPortal::Employee::BulkImport
     raise_error "Error: invalid file format."
   end
 
-  def tags_whitelist
-    ::EmployerPortal::EmployeeTag.whitelist context
-  end
-
   private
 
-  attr_reader :context, :file, :now, :errors, :employee_tags, :employee_ids
+  attr_reader :context, :file, :now, :errors, :tags_after, :employee_ids
 
   def original_ext
     File.extname(file.original_filename).downcase
@@ -114,13 +113,12 @@ class EmployerPortal::Employee::BulkImport
     end
   end
 
+  def employee_tag
+    @employee_tag ||= ::EmployerPortal::EmployeeTag.new context
+  end
+
   def persist_tags
-    @employee_tags = tags.map do |tag|
-      EmployeeTag.find_or_create(
-        company_id: context.company_id,
-        name: tag,
-      )
-    end
+    @tags_after = employee_tag.find_or_create_tags [], tags
   end
 
   def persist_employees
@@ -135,7 +133,7 @@ class EmployerPortal::Employee::BulkImport
 
   def persist_taggings
     taggings = employee_ids.flat_map do |employee_id|
-      employee_tags.map do |employee_tag|
+      tags_after.map do |employee_tag|
         [employee_id, employee_tag.id, now]
       end
     end
@@ -154,7 +152,7 @@ class EmployerPortal::Employee::BulkImport
       event: "import",
       changes: {
         ids: employee_ids,
-        tags: employee_tags.map(&:name).sort.join(","),
+        tags: tags_after.map(&:name).sort.join(","),
       },
       created_at: now,
       created_by_type: Sequel::Plugins::WithAudits.created_by_type,

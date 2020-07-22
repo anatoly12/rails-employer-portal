@@ -1,8 +1,8 @@
 class EmployerPortal::Employee::Editor
 
   # ~~ delegates ~~
-  delegate :first_name, :last_name, :email, :phone, :state, :to_key,
-    :to_model, :to_param, to: :edited
+  delegate :first_name, :last_name, :email, :phone, :state, :to_key, :to_model, :to_param, to: :edited
+  delegate :whitelist, to: :employee_tag, prefix: :tags
 
   # ~~ public class methods ~~
   def self.from_params(context, params)
@@ -131,11 +131,9 @@ class EmployerPortal::Employee::Editor
   end
 
   def tags
-    @tags ||= edited.tags_before.map(&:name).join ","
-  end
-
-  def tags_whitelist
-    ::EmployerPortal::EmployeeTag.whitelist context
+    @tags ||= edited.tags_before.select do |tag|
+      context.allowed_all_employee_tags? || context.allowed_employee_tags.include?(tag.id)
+    end.map(&:name).join ","
   end
 
   def ensure_access!
@@ -165,13 +163,12 @@ class EmployerPortal::Employee::Editor
     end
   end
 
+  def employee_tag
+    @employee_tag ||= ::EmployerPortal::EmployeeTag.new context
+  end
+
   def persist_tags
-    edited.tags_after = tags.map do |tag|
-      EmployeeTag.find_or_create(
-        company_id: context.company_id,
-        name: tag,
-      )
-    end
+    edited.tags_after = employee_tag.find_or_create_tags edited.tags_before, tags
   end
 
   def persist_employees
