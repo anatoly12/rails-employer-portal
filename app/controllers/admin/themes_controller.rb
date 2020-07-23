@@ -3,7 +3,6 @@ class Admin::ThemesController < Admin::BaseController
 
   # ~~ member actions ~~
   def show
-    raise ::EmployerPortal::ColorPalette.new.used_colors.inspect
   end
 
   def update

@@ -1,0 +1,6 @@
+<h2 class="mb-10 text-xl">Customize color palette</h2>
+<div class="grid grid-cols-2 gap-10 mb-10 lg:grid-cols-4 xl:grid-cols-8">
+  <% form.object.used_colors.each do |color| %>
+    <div>Color: <%= color %></div>
+  <% end %>
+</div>
