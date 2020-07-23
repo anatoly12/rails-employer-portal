@@ -19,7 +19,7 @@ module.exports = (env, _args) => {
           './app/javascript/application/*.js',
           './app/javascript/admin/*.js',
         ] : [
-          './app/helpers/!(admin)*.rb',
+          './app/helpers/!(admin).rb',
           './app/views/!(admin)/*.html.erb',
           './app/javascript/application/*.js',
         ],
@@ -27,7 +27,7 @@ module.exports = (env, _args) => {
           // Capture as liberally as possible, including things like `h-(screen-1.5)`
           const broadMatches = content.match(/[^<>"'`\s]*[^<>"'`\s:]/g) || []
           // Capture classes within other delimiters like .block(class="w-1/2") in Pug
-          const innerMatches = content.match(/[^<>"'`\s.()]*[^<>"'`\s.():]/g) || []
+          const innerMatches = content.match(/[^<>"'`\s.(){}[\]#=%]*[^<>"'`\s.(){}[\]#=%:]/g) || []
           return broadMatches.concat(innerMatches)
         }
       })] : []

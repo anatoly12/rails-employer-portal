@@ -49,14 +49,8 @@ describe CssClassHelper do
     end
   end
 
-  describe "#primary_link_class" do
-    subject { helper.primary_link_class.split " " }
-
-    it { is_expected.to contain_exactly "text-xs", "font-bold", "underline", "focus:outline-none", "text-blue-400", "hover:text-blue-600", "focus:text-blue-600" }
-  end
-
-  describe "#secondary_link_class" do
-    subject { helper.secondary_link_class.split " " }
+  describe "#link_class" do
+    subject { helper.link_class.split " " }
 
     it { is_expected.to contain_exactly "text-xs", "font-bold", "underline", "focus:outline-none", "text-blue-300", "hover:text-blue-500", "focus:text-blue-500" }
   end

@@ -21,5 +21,8 @@
     <% else %>
       <%= yield %>
     <% end %>
+    <% if current_context.with_overrides? %>
+      <link rel="stylesheet" href="<%= overrides_company_path id: current_context.company, format: :css, t: current_context.timestamp %>">
+    <% end %>
   </body>
 </html>

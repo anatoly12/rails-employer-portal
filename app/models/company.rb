@@ -6,6 +6,7 @@ class Company < Sequel::Model
   plugin :validation_helpers
   plugin :active_model
   plugin :with_audits
+  plugin :serialization, :json, :color_overrides
 
   # ~~ validations ~~
   def validate

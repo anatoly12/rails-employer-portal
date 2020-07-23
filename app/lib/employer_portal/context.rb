@@ -78,6 +78,14 @@ class EmployerPortal::Context
     account.try(:allowed_employee_tags) || []
   end
 
+  def with_overrides?
+    account&.company&.color_overrides.present?
+  end
+
+  def timestamp
+    account&.company&.updated_at.to_i
+  end
+
   private
 
   attr_reader :given_account_id, :section

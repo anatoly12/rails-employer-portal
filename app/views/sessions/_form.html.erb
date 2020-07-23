@@ -1,7 +1,7 @@
 <%= form_for editor, as: :session, url: { action: :create }, html: { class: "max-w-lg mx-auto my-4 md:my-20", autocomplete: "off" } do |f| %>
   <h2 class="text-3xl font-thin">Sign into your account<h2>
   <div class="mb-4">
-    <%= link_to "I need to create an account", "#", class: primary_link_class %>
+    <%= link_to "I need to create an account", "#", class: link_class %>
   </div>
   <% if editor.errors_on(:base) %>
     <p class="text-red-400 mb-4"><%= editor.errors_on(:base).to_sentence %></p>
@@ -16,7 +16,7 @@
     <%= render "common/errors", errors: editor.errors_on(:password) %>
   </div>
   <div class="-mt-2 mb-4">
-    <%= link_to "I forgot my password", new_reset_password_path, class: secondary_link_class %>
+    <%= link_to "I forgot my password", new_reset_password_path, class: link_class %>
   </div>
   <div class="md:mt-12">
     <%= button_tag "Sign in", type: "submit", class: primary_button_class(:blue) %>

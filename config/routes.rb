@@ -6,7 +6,7 @@ Rails.application.routes.draw do
     resource :sessions, path: "/sign-in", only: [:show, :create, :destroy]
     resources :plans
     resources :companies do
-      resource :theme, only: [:show, :update]
+      resource :theme, only: [:show, :update, :destroy]
     end
     resources :employers
     resources :employees, only: [:index] do
@@ -27,6 +27,9 @@ Rails.application.routes.draw do
     patch "send_reminder", on: :member
     get "health_passport", on: :member
     resources :symptom_logs, only: :show
+  end
+  resources :companies, only: [] do
+    get "overrides", on: :member
   end
   resources :plans, only: [:index]
   root to: "employees#index"

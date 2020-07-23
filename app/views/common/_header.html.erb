@@ -11,14 +11,14 @@
           <li class="hidden m-3 text-blue-400 lg:block"><a href="#">COVID-19 Guidelines</a></li>
           <li class="hidden m-3 text-blue-400 lg:block"><a href="#">Support</a></li>
           <li id="signout" class="ml-3" data-turbolinks-permanent>
-            <%= link_to sessions_path, method: :delete, data: { turbolinks: "false" } do %>
-              <%= image_pack_tag "icon-account.svg", alt: "My account", class: "inline-block max-w-none" %>
+            <%= link_to sessions_path, method: :delete, class: "text-blue-400", data: { turbolinks: "false" } do %>
+              <%= render "icon/account", icon_class: "w-8 h-8" %>
             <% end %>
           </li>
         </ul>
       <% else %>
         <ul class="ml-auto">
-          <li><%= image_pack_tag "icon-account.svg", alt: "My account", class: "inline-block max-w-none" %></li>
+          <li class="text-blue-400"><%= render "icon/account", icon_class: "w-8 h-8" %></li>
         </ul>
       <% end %>
     </nav>

@@ -1,0 +1,10 @@
+<div class="flex flex-col items-center text-xs">
+  <div class="text-gray-400"><%= color %></div>
+  <input type="hidden" name="theme[colors][<%= color %>]" value="<%= value %>" data-color>
+  <div class="flex justify-center items-center rounded-full border h-8 w-8 my-1">
+    <div style="background:<%= value %>" class="rounded-full h-6 w-6"></div>
+  </div>
+  <% if used_count > 0 %>
+    <div class="text-gray-300"><%= used_count %> times</div>
+  <% end %>
+</div>

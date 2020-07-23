@@ -15,6 +15,12 @@ class Admin::ThemesController < Admin::BaseController
     end
   end
 
+  def destroy
+    editor.reset_attributes!
+    flash.notice = "Theme for #{editor.company_name} was reset successfully."
+    render :show
+  end
+
   private
 
   def company_not_found

@@ -5,46 +5,79 @@ class EmployerPortal::ColorPalette
   # ~~ constants ~~
   CACHE = ::EmployerPortal::MemoryCache.new 100
 
-  def initialize
-    load_file if CACHE.empty?
+  def initialize(company)
+    @company = company
   end
 
   def used_colors
-    default_colors.keys.select { |color| used? color }
+    default_colors.keys.reject { |color| used_count(color).zero? }
+  end
+
+  def used_count(color)
+    count = CACHE.get color
+    count ||= used_count_without_cache color
+    CACHE.set color, count
+    count
+  end
+
+  def default_value(color)
+    default_colors[color]
+  end
+
+  def current_value(color)
+    colors[color]
+  end
+
+  def css_overrides
+    return unless parser && color_overrides.any?
+
+    new_parser = CssParser::Parser.new
+    parser.each_selector.each do |selector, declarations|
+      matching = color_overrides.select do |color, _|
+        selector.include? "-#{color}"
+      end
+      if matching.any?
+        rgb = hex_to_rgb matching.values.first
+        replaced = declarations.split(";").select do |declaration|
+          declaration.include? "rgba"
+        end.map do |declaration|
+          declaration.gsub(/rgba\(\d+,\d+,\d+,/, "rgba(#{rgb.join(",")},").strip
+        end.join ";"
+        new_parser.add_rule! selector, replaced
+      end
+    end
+    new_parser.to_s
   end
 
   private
 
-  attr_reader :parser
+  attr_reader :company
 
-  def load_file
-    path = Rails.root.join "public", "packs", "css", "application-*.css"
-    file = Dir.glob(path).max_by { |f| File.mtime(f) }
-    if file
-      @parser = CssParser::Parser.new
-      parser.load_file! file
-    end
+  def parser
+    return @parser if defined? @parser
+    @parser = begin
+        path = Rails.root.join "public", "packs", "css", "application-*.css"
+        file = Dir.glob(path).max_by { |f| File.mtime(f) }
+        if file
+          parser = CssParser::Parser.new
+          parser.load_file! file
+          parser
+        else
+          false
+        end
+      end
   end
 
-  def used?(color)
-    value = CACHE.get color
-    if value.nil?
-      value = used_without_cache? color
-      CACHE.set color, value
-    end
-    value
-  end
+  def used_count_without_cache(color)
+    return -1 unless parser
 
-  def used_without_cache?(color)
-    !parser || parser.each_selector.any? do |selector|
-      return true if selector.include? "-#{color}"
-    end
+    parser.each_selector.count { |selector| selector.include? "-#{color}" }
   end
 
   def default_colors
     {
-      "black" => "#000",
-      "white" => "#fff",
+      "black" => "#000000",
+      "white" => "#ffffff",
       "gray-100" => "#f7fafc",
       "gray-200" => "#edf2f7",
       "gray-300" => "#e2e8f0",
@@ -136,5 +169,21 @@ class EmployerPortal::ColorPalette
       "pink-800" => "#97266d",
       "pink-900" => "#702459",
     }
+  end
+
+  def color_overrides
+    company.color_overrides || {}
+  end
+
+  def colors
+    @colors ||= default_colors.merge color_overrides
+  end
+
+  def hex_to_rgb(hex)
+    if hex.match(/#([0-9a-f]{2})([0-9a-f]{2})([0-9a-f]{2})/)
+      [$1.hex, $2.hex, $3.hex]
+    else
+      [0, 0, 0]
+    end
   end
 end

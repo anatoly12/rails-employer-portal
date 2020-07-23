@@ -2,7 +2,7 @@
   <div class="container p-4 mx-auto">
     <div class="flex items-center justify-between px-2">
       <%= image_pack_tag "logo.png", alt: "Logo", class: "h-8 inline-block max-w-none md:mt-3" %>
-      <%= image_pack_tag "icon-account.svg", alt: "My account", class: "h-4 inline-block max-w-none md:-mt-3" %>
+      <div class="inline-block text-blue-400"><%= render "icon/account", icon_class: "w-4 h-4 md:-mt-3" %></div>
     </div>
     <nav class="text-xs text-gray-600 mt-4 md:mt-0 md:ml-auto md:mr-2 md:-mt-2">
       <ul class="md:flex md:justify-end">

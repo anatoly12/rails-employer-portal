@@ -23,9 +23,7 @@ gem "daemons"
 # AWS
 gem "aws-sdk-s3", "~> 1.71", ">= 1.71.1"
 # Debug
-gem "pry", require: false
-# Reduces boot times through caching; required in config/boot.rb
-# gem "bootsnap", ">= 1.4.2", require: false
+gem "pry"
 # For white-label
 gem "css_parser", "~> 1.7.1"
 
