@@ -4,7 +4,7 @@ class EmployerPortal::MemoryCache
   attr_reader :max_size
 
   # ~~ delegates ~~
-  delegate :delete, :clear, to: :cache
+  delegate :empty?, :delete, :clear, to: :cache
 
   # ~~ public instance methods ~~
   def initialize(max_size = 50)

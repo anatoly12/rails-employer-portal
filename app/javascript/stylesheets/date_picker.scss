@@ -11,6 +11,6 @@ input[type=date]::-webkit-calendar-picker-indicator{
   height: 300%;
   cursor: pointer;
 }
-input[type=date]:focus + .text-blue-400{
+input[type=date]:focus + div{
   color: black;
 }

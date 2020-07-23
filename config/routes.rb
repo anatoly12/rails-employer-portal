@@ -5,7 +5,9 @@ Rails.application.routes.draw do
   namespace :admin do
     resource :sessions, path: "/sign-in", only: [:show, :create, :destroy]
     resources :plans
-    resources :companies
+    resources :companies do
+      resource :theme, only: [:show, :update]
+    end
     resources :employers
     resources :employees, only: [:index] do
       patch "retry", on: :member

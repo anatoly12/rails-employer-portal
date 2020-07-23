@@ -10,6 +10,11 @@
   <td class="py-4 px-6 border-b border-gray-200 whitespace-no-wrap text-center">
     <%= link_to company.employee_count, admin_employees_path(filters: { company_id_equals: company }), class: "text-gray-100 font-bold text-xs bg-blue-400 hover:bg-blue-500 rounded-lg p-2 inline-block" %>
   </td>
+  <td class="py-4 px-6 border-b border-gray-200 whitespace-no-wrap text-center">
+    <%= link_to(admin_company_theme_path(company), class: "text-blue-100 font-bold text-xs bg-blue-400 hover:bg-blue-500 rounded-lg p-2 inline-flex items-center", title: "Customize theme") do %>
+      <%= render "icon/color_palette", icon_class: "w-4 h-4" %>
+    <% end %>
+  </td>
   <td class="py-4 px-6 border-b border-gray-200 whitespace-no-wrap">
     <%= link_to({ action: :edit, id: company }, class: "text-gray-100 font-bold text-xs bg-blue-400 hover:bg-blue-500 rounded-lg pl-4 pr-6 py-2 inline-flex items-center") do %>
       <%= render "icon/edit_pencil", icon_class: "w-3 h-3 mr-2" %>
