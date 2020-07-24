@@ -10,14 +10,7 @@ class EmployerPortal::ColorPalette
   end
 
   def used_colors
-    default_colors.keys.reject { |color| used_count(color).zero? }
-  end
-
-  def used_count(color)
-    count = CACHE.get color
-    count ||= used_count_without_cache color
-    CACHE.set color, count
-    count
+    @used_colors ||= default_colors.keys.select { |color| configurable? color }
   end
 
   def default_value(color)
@@ -32,6 +25,9 @@ class EmployerPortal::ColorPalette
     return unless parser && color_overrides.any?
 
     new_parser = CssParser::Parser.new
+    if color_overrides.any? { |color, _| color.starts_with? "gradient-" }
+      new_parser.add_rule! ".bg-gradient", "background-image: linear-gradient(to bottom, #{colors["gradient-top"]} 0%, #{colors["gradient-bottom"]} 100%);"
+    end
     parser.each_selector.each do |selector, declarations|
       matching = color_overrides.select do |color, _|
         selector.include? "-#{color}"
@@ -68,14 +64,28 @@ class EmployerPortal::ColorPalette
       end
   end
 
-  def used_count_without_cache(color)
-    return -1 unless parser
+  def configurable?(color)
+    configurable = CACHE.get color
+    configurable ||= configurable_without_cache? color
+    CACHE.set color, configurable
+    configurable
+  end
 
-    parser.each_selector.count { |selector| selector.include? "-#{color}" }
+  def configurable_without_cache?(color)
+    return true unless parser
+    return true if color.starts_with?("gradient") || color.starts_with?("chart")
+
+    parser.each_selector.any? { |selector| selector.include? "-#{color}" }
   end
 
   def default_colors
     {
+      "gradient-top" => "#17a9e6",
+      "gradient-bottom" => "#1394c9",
+      "chart-cleared" => "#1dd678",
+      "chart-not-cleared" => "#f35200",
+      "chart-pending" => "#16a3e5",
+      "chart-disabled" => "#718096",
       "black" => "#000000",
       "white" => "#ffffff",
       "gray-100" => "#f7fafc",

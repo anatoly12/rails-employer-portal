@@ -1,3 +1,4 @@
+<% color_palette = ::EmployerPortal::ColorPalette.new current_context.account.company %>
 <div id="charts" class="-mx-4 text-xs lg:mx-0 lg:flex lg:my-4 xl:my-6 xl:text-sm" data-turbolinks-permanent>
   <% if current_context.daily_checkup_enabled? %>
     <div class="p-4 border-b border-blue-500 lg:border-none lg:shadow lg:p-2 lg:flex-1 lg:mr-2 xl:mr-4 xl:p-4">
@@ -15,9 +16,9 @@
         <% end %>
       </div>
       <div class="md:flex">
-        <%= render "chart/widget", color: "#1dd678", percent: stats.no_symptoms_percent, label: "No Symptoms" %>
-        <%= render "chart/widget", color: "#f35200", percent: stats.symptoms_percent, label: "Symptoms" %>
-        <%= render "chart/widget", color: "#16a3e5", percent: stats.did_not_submit_percent, label: "Did Not Submit" %>
+        <%= render "chart/widget", color: color_palette.current_value("chart-cleared"), percent: stats.no_symptoms_percent, label: "No Symptoms" %>
+        <%= render "chart/widget", color: color_palette.current_value("chart-not-cleared"), percent: stats.symptoms_percent, label: "Symptoms" %>
+        <%= render "chart/widget", color: color_palette.current_value("chart-pending"), percent: stats.did_not_submit_percent, label: "Did Not Submit" %>
       </div>
     </div>
   <% else %>
@@ -25,9 +26,9 @@
       <h3 class="font-semibold text-xl">Overview Symptoms</h3>
       <div class="italic"><%= current_context.disabled_feature_message %></div>
       <div class="md:flex">
-        <%= render "chart/widget", color: "#718096", percent: 20, label: "No Symptoms" %>
-        <%= render "chart/widget", color: "#718096", percent: 50, label: "Symptoms" %>
-        <%= render "chart/widget", color: "#718096", percent: 30, label: "Did Not Submit" %>
+        <%= render "chart/widget", color: color_palette.current_value("chart-disabled"), percent: 20, label: "No Symptoms" %>
+        <%= render "chart/widget", color: color_palette.current_value("chart-disabled"), percent: 50, label: "Symptoms" %>
+        <%= render "chart/widget", color: color_palette.current_value("chart-disabled"), percent: 30, label: "Did Not Submit" %>
       </div>
     </div>
   <% end %>
@@ -47,9 +48,9 @@
         <% end %>
       </div>
       <div class="md:flex">
-        <%= render "chart/widget", color: "#1dd678", percent: stats.cleared_percent, label: "Cleared" %>
-        <%= render "chart/widget", color: "#f35200", percent: stats.inconclusive_percent, label: "Inconclusive" %>
-        <%= render "chart/widget", color: "#16a3e5", percent: stats.in_progress_percent, label: "In Progress" %>
+        <%= render "chart/widget", color: color_palette.current_value("chart-cleared"), percent: stats.cleared_percent, label: "Cleared" %>
+        <%= render "chart/widget", color: color_palette.current_value("chart-not-cleared"), percent: stats.inconclusive_percent, label: "Inconclusive" %>
+        <%= render "chart/widget", color: color_palette.current_value("chart-pending"), percent: stats.in_progress_percent, label: "In Progress" %>
       </div>
     </div>
   <% else %>
@@ -57,9 +58,9 @@
       <h3 class="font-semibold text-xl">Overview Testing Status</h3>
       <div class="italic"><%= current_context.disabled_feature_message %></div>
       <div class="md:flex">
-        <%= render "chart/widget", color: "#718096", percent: 20, label: "Cleared" %>
-        <%= render "chart/widget", color: "#718096", percent: 50, label: "Inconclusive" %>
-        <%= render "chart/widget", color: "#718096", percent: 30, label: "In Progress" %>
+        <%= render "chart/widget", color: color_palette.current_value("chart-disabled"), percent: 20, label: "Cleared" %>
+        <%= render "chart/widget", color: color_palette.current_value("chart-disabled"), percent: 50, label: "Inconclusive" %>
+        <%= render "chart/widget", color: color_palette.current_value("chart-disabled"), percent: 30, label: "In Progress" %>
       </div>
     </div>
   <% end %>

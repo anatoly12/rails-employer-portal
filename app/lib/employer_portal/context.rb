@@ -79,7 +79,7 @@ class EmployerPortal::Context
   end
 
   def with_overrides?
-    account&.company&.color_overrides.present?
+    (account&.company&.color_overrides || []).any? { |color, _| !color.start_with? "chart-" }
   end
 
   def timestamp
