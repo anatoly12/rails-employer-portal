@@ -39,6 +39,14 @@ module EmployerPortal::Aws
       end
     end
 
+    def upload_file(file_path, object_key)
+      full_key = "#{S3_PREFIX}/health_modules/#{object_key}"
+      File.open(file_path, "rb") do |file|
+        bucket.put_object body: file, key: full_key
+      end
+      full_key
+    end
+
     private
 
     def log(message)

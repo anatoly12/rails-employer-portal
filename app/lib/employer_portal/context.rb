@@ -79,11 +79,15 @@ class EmployerPortal::Context
   end
 
   def with_overrides?
-    (account&.company&.color_overrides || []).any? { |color, _| !color.start_with? "chart-" }
+    (company&.color_overrides || []).any? { |color, _| !color.start_with? "chart-" }
   end
 
   def timestamp
-    account&.company&.updated_at.to_i
+    company&.updated_at.to_i
+  end
+
+  def custom_logo_url
+    @custom_logo_url ||= ::EmployerPortal::Aws.presigned_url company&.logo_s3_key
   end
 
   private

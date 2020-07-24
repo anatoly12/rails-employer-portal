@@ -1,4 +1,4 @@
-<% color_palette = ::EmployerPortal::ColorPalette.new current_context.account.company %>
+<% color_palette = ::EmployerPortal::ColorPalette.new current_context.company %>
 <div id="charts" class="-mx-4 text-xs lg:mx-0 lg:flex lg:my-4 xl:my-6 xl:text-sm" data-turbolinks-permanent>
   <% if current_context.daily_checkup_enabled? %>
     <div class="p-4 border-b border-blue-500 lg:border-none lg:shadow lg:p-2 lg:flex-1 lg:mr-2 xl:mr-4 xl:p-4">

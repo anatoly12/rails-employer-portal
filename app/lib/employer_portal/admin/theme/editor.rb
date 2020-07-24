@@ -16,7 +16,14 @@ class EmployerPortal::Admin::Theme::Editor < ::EmployerPortal::Admin::Base::Edit
   end
 
   def update_attributes(params)
-    theme_params = params.fetch :theme, {}
+    theme_params = params.fetch :company, {}
+    logo = theme_params[:logo]
+    if logo&.size > 0
+      edited.logo_s3_key = ::EmployerPortal::Aws.upload_file(
+        logo.path,
+        "companies/#{edited.uuid}/#{SecureRandom.uuid}#{File.extname logo.path}"
+      )
+    end
     edited.color_overrides = theme_params.fetch(:colors, {}).to_unsafe_h.select do |color, value|
       color_palette.used_colors.include?(color) && value != color_palette.default_value(color)
     end
@@ -25,6 +32,10 @@ class EmployerPortal::Admin::Theme::Editor < ::EmployerPortal::Admin::Base::Edit
 
   def color_palette
     @color_palette ||= ::EmployerPortal::ColorPalette.new edited
+  end
+
+  def logo_url
+    ::EmployerPortal::Aws.presigned_url edited.logo_s3_key
   end
 
   protected

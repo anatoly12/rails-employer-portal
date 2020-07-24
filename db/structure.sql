@@ -72,6 +72,7 @@ CREATE TABLE `companies` (
   `plan_id` int(11) NOT NULL,
   `remote_sync_at` datetime DEFAULT NULL,
   `color_overrides` json DEFAULT NULL,
+  `logo_s3_key` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `uuid` (`uuid`),
   KEY `companies_plan_id_index` (`plan_id`),
@@ -356,3 +357,4 @@ INSERT INTO `schema_migrations` (`filename`) VALUES ('20200717120049_create_empl
 INSERT INTO `schema_migrations` (`filename`) VALUES ('20200721141009_add_missing_defaults.rb');
 INSERT INTO `schema_migrations` (`filename`) VALUES ('20200721141404_add_population_restrictions_to_employers.rb');
 INSERT INTO `schema_migrations` (`filename`) VALUES ('20200723133249_add_color_overrides_to_companies.rb');
+INSERT INTO `schema_migrations` (`filename`) VALUES ('20200724142135_add_logo_to_companies.rb');
