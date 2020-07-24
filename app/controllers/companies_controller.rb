@@ -1,7 +1,7 @@
 class CompaniesController < ApplicationController
   # ~~ collection actions ~~
   def overrides
-    return head :not_found unless params[:id].to_i == current_context.company_id
+    return head :not_found unless params[:id] == current_context.company&.uuid
 
     respond_to do |format|
       format.css do
