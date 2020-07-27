@@ -5,36 +5,40 @@ class EmployerPortal::Employee::Stats
     @context = context
   end
 
-  def no_symptoms_percent
+  def no_symptoms_count
     return 0 unless context.sync_connected? && total > 0
 
-    count_by_daily_checkup_status.fetch("Cleared", 0) * 100 / total
+    count_by_daily_checkup_status.fetch "Cleared", 0
   end
 
-  def symptoms_percent
+  def symptoms_count
     return 0 unless context.sync_connected? && total > 0
 
-    count_by_daily_checkup_status.fetch("Not Cleared", 0) * 100 / total
+    count_by_daily_checkup_status.fetch "Not Cleared", 0
   end
 
-  def did_not_submit_percent
-    100 - no_symptoms_percent - symptoms_percent
+  def did_not_submit_count
+    total - no_symptoms_count - symptoms_count
   end
 
-  def cleared_percent
+  def cleared_count
     return 0 unless context.sync_connected? && total > 0
 
-    count_by_testing_status.fetch("Cleared", 0) * 100 / total
+    count_by_testing_status.fetch "Cleared", 0
   end
 
-  def inconclusive_percent
+  def inconclusive_count
     return 0 unless context.sync_connected? && total > 0
 
-    count_by_testing_status.fetch("Inconclusive", 0) * 100 / total
+    count_by_testing_status.fetch "Inconclusive", 0
   end
 
-  def in_progress_percent
-    100 - cleared_percent - inconclusive_percent
+  def in_progress_count
+    total - cleared_count - inconclusive_count
+  end
+
+  def total
+    @total ||= count_by_daily_checkup_status.values.sum
   end
 
   def daily_checkup_available_count
@@ -66,10 +70,6 @@ class EmployerPortal::Employee::Stats
   attr_reader :context
 
   # ~~ private instance methods ~~
-  def total
-    @total ||= count_by_daily_checkup_status.values.sum
-  end
-
   def employee_limit
     @employee_limit ||= context.company&.plan&.employee_limit || 0
   end

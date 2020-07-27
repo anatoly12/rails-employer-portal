@@ -1,9 +1,9 @@
 <div class="flex flex-1 mt-4 items-center">
-  <div class="relative chart pr-3" data-color="<%= color %>" data-percent="<%= percent %>">
+  <div class="relative chart pr-3" data-color="<%= color %>" data-percent="<%= count * 100 / total %>">
     <div class="text-center font-semibold text-lg tracking-tight percent"></div>
   </div>
   <div class="flex-1">
     <div class="font-semibold pb-1"><%= label %></div>
-    <div class="font-light text-gray-600"><%= percent %> of 100</div>
+    <div class="font-light text-gray-600"><%= count %> of <%= total %></div>
   </div>
 </div>

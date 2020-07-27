@@ -32,10 +32,18 @@ feature "Employee dashboard" do
           visit "/"
           expect(page).not_to have_css ".blur-3 .container"
           within "#charts > div:nth-child(1)" do
-            is_expected.to have_charts ["#1dd678", 0], ["#f35200", 0], ["#16a3e5", 100]
+            is_expected.to have_charts [
+                          { color: "#1dd678", count: 0, total: 1, percent: 0 },
+                          { color: "#f35200", count: 0, total: 1, percent: 0 },
+                          { color: "#16a3e5", count: 1, total: 1, percent: 100 },
+                        ]
           end
           within "#charts > div:nth-child(2)" do
-            is_expected.to have_charts ["#1dd678", 0], ["#f35200", 0], ["#16a3e5", 100]
+            is_expected.to have_charts [
+                          { color: "#1dd678", count: 0, total: 1, percent: 0 },
+                          { color: "#f35200", count: 0, total: 1, percent: 0 },
+                          { color: "#16a3e5", count: 1, total: 1, percent: 100 },
+                        ]
           end
           expect(page).to have_css "a[href$='/edit']", count: 1
           within "a[href='/employees/#{employee.uuid}/edit']" do
@@ -60,10 +68,18 @@ feature "Employee dashboard" do
           visit "/"
           expect(page).not_to have_css ".blur-3 .container"
           within "#charts > div:nth-child(1)" do
-            is_expected.to have_charts ["#1dd678", 0], ["#f35200", 0], ["#16a3e5", 100]
+            is_expected.to have_charts [
+                          { color: "#1dd678", count: 0, total: 1, percent: 0 },
+                          { color: "#f35200", count: 0, total: 1, percent: 0 },
+                          { color: "#16a3e5", count: 1, total: 1, percent: 100 },
+                        ]
           end
           within "#charts > div:nth-child(2)" do
-            is_expected.to have_charts ["#1dd678", 0], ["#f35200", 0], ["#16a3e5", 100]
+            is_expected.to have_charts [
+                          { color: "#1dd678", count: 0, total: 1, percent: 0 },
+                          { color: "#f35200", count: 0, total: 1, percent: 0 },
+                          { color: "#16a3e5", count: 1, total: 1, percent: 100 },
+                        ]
           end
           expect(page).to have_css "a[href$='/edit']", count: 1
           within "a[href='/employees/#{employee.uuid}/edit']" do
@@ -92,10 +108,18 @@ feature "Employee dashboard" do
           visit "/"
           expect(page).not_to have_css ".blur-3 .container"
           within "#charts > div:nth-child(1)" do
-            is_expected.to have_charts ["#1dd678", 0], ["#f35200", 0], ["#16a3e5", 100]
+            is_expected.to have_charts [
+                          { color: "#1dd678", count: 0, total: 1, percent: 0 },
+                          { color: "#f35200", count: 0, total: 1, percent: 0 },
+                          { color: "#16a3e5", count: 1, total: 1, percent: 100 },
+                        ]
           end
           within "#charts > div:nth-child(2)" do
-            is_expected.to have_charts ["#1dd678", 0], ["#f35200", 0], ["#16a3e5", 100]
+            is_expected.to have_charts [
+                          { color: "#1dd678", count: 0, total: 1, percent: 0 },
+                          { color: "#f35200", count: 0, total: 1, percent: 0 },
+                          { color: "#16a3e5", count: 1, total: 1, percent: 100 },
+                        ]
           end
           expect(page).to have_css "a[href$='/edit']", count: 1
           within "a[href='/employees/#{employee.uuid}/edit']" do
@@ -130,10 +154,18 @@ feature "Employee dashboard" do
           visit "/"
           expect(page).not_to have_css ".blur-3 .container"
           within "#charts > div:nth-child(1)" do
-            is_expected.to have_charts ["#1dd678", 0], ["#f35200", 100], ["#16a3e5", 0]
+            is_expected.to have_charts [
+                          { color: "#1dd678", count: 0, total: 1, percent: 0 },
+                          { color: "#f35200", count: 1, total: 1, percent: 100 },
+                          { color: "#16a3e5", count: 0, total: 1, percent: 0 },
+                        ]
           end
           within "#charts > div:nth-child(2)" do
-            is_expected.to have_charts ["#1dd678", 0], ["#f35200", 0], ["#16a3e5", 100]
+            is_expected.to have_charts [
+                          { color: "#1dd678", count: 0, total: 1, percent: 0 },
+                          { color: "#f35200", count: 0, total: 1, percent: 0 },
+                          { color: "#16a3e5", count: 1, total: 1, percent: 100 },
+                        ]
           end
           expect(page).to have_css "a[href$='/edit']", count: 1
           within "a[href='/employees/#{employee.uuid}/edit']" do
@@ -162,10 +194,18 @@ feature "Employee dashboard" do
           visit "/"
           expect(page).not_to have_css ".blur-3 .container"
           within "#charts > div:nth-child(1)" do
-            is_expected.to have_charts ["#1dd678", 0], ["#f35200", 100], ["#16a3e5", 0]
+            is_expected.to have_charts [
+                          { color: "#1dd678", count: 0, total: 1, percent: 0 },
+                          { color: "#f35200", count: 1, total: 1, percent: 100 },
+                          { color: "#16a3e5", count: 0, total: 1, percent: 0 },
+                        ]
           end
           within "#charts > div:nth-child(2)" do
-            is_expected.to have_charts ["#1dd678", 0], ["#f35200", 0], ["#16a3e5", 100]
+            is_expected.to have_charts [
+                          { color: "#1dd678", count: 0, total: 1, percent: 0 },
+                          { color: "#f35200", count: 0, total: 1, percent: 0 },
+                          { color: "#16a3e5", count: 1, total: 1, percent: 100 },
+                        ]
           end
           expect(page).to have_css "a[href$='/edit']", count: 1
           within "a[href='/employees/#{employee.uuid}/edit']" do
@@ -200,10 +240,18 @@ feature "Employee dashboard" do
           visit "/"
           expect(page).not_to have_css ".blur-3 .container"
           within "#charts > div:nth-child(1)" do
-            is_expected.to have_charts ["#1dd678", 0], ["#f35200", 100], ["#16a3e5", 0]
+            is_expected.to have_charts [
+                          { color: "#1dd678", count: 0, total: 1, percent: 0 },
+                          { color: "#f35200", count: 1, total: 1, percent: 100 },
+                          { color: "#16a3e5", count: 0, total: 1, percent: 0 },
+                        ]
           end
           within "#charts > div:nth-child(2)" do
-            is_expected.to have_charts ["#1dd678", 0], ["#f35200", 0], ["#16a3e5", 100]
+            is_expected.to have_charts [
+                          { color: "#1dd678", count: 0, total: 1, percent: 0 },
+                          { color: "#f35200", count: 0, total: 1, percent: 0 },
+                          { color: "#16a3e5", count: 1, total: 1, percent: 100 },
+                        ]
           end
           expect(page).to have_css "a[href$='/edit']", count: 1
           within "a[href='/employees/#{employee.uuid}/edit']" do
@@ -237,10 +285,18 @@ feature "Employee dashboard" do
           visit "/"
           expect(page).not_to have_css ".blur-3 .container"
           within "#charts > div:nth-child(1)" do
-            is_expected.to have_charts ["#1dd678", 100], ["#f35200", 0], ["#16a3e5", 0]
+            is_expected.to have_charts [
+                          { color: "#1dd678", count: 1, total: 1, percent: 100 },
+                          { color: "#f35200", count: 0, total: 1, percent: 0 },
+                          { color: "#16a3e5", count: 0, total: 1, percent: 0 },
+                        ]
           end
           within "#charts > div:nth-child(2)" do
-            is_expected.to have_charts ["#1dd678", 0], ["#f35200", 0], ["#16a3e5", 100]
+            is_expected.to have_charts [
+                          { color: "#1dd678", count: 0, total: 1, percent: 0 },
+                          { color: "#f35200", count: 0, total: 1, percent: 0 },
+                          { color: "#16a3e5", count: 1, total: 1, percent: 100 },
+                        ]
           end
           expect(page).to have_css "a[href$='/edit']", count: 1
           within "a[href='/employees/#{employee.uuid}/edit']" do
@@ -275,10 +331,18 @@ feature "Employee dashboard" do
           visit "/"
           expect(page).not_to have_css ".blur-3 .container"
           within "#charts > div:nth-child(1)" do
-            is_expected.to have_charts ["#1dd678", 0], ["#f35200", 0], ["#16a3e5", 100]
+            is_expected.to have_charts [
+                          { color: "#1dd678", count: 0, total: 1, percent: 0 },
+                          { color: "#f35200", count: 0, total: 1, percent: 0 },
+                          { color: "#16a3e5", count: 1, total: 1, percent: 100 },
+                        ]
           end
           within "#charts > div:nth-child(2)" do
-            is_expected.to have_charts ["#1dd678", 0], ["#f35200", 0], ["#16a3e5", 100]
+            is_expected.to have_charts [
+                          { color: "#1dd678", count: 0, total: 1, percent: 0 },
+                          { color: "#f35200", count: 0, total: 1, percent: 0 },
+                          { color: "#16a3e5", count: 1, total: 1, percent: 100 },
+                        ]
           end
           expect(page).to have_css "a[href$='/edit']", count: 1
           within "a[href='/employees/#{employee.uuid}/edit']" do
@@ -309,10 +373,18 @@ feature "Employee dashboard" do
           visit "/"
           expect(page).not_to have_css ".blur-3 .container"
           within "#charts > div:nth-child(1)" do
-            is_expected.to have_charts ["#1dd678", 0], ["#f35200", 0], ["#16a3e5", 100]
+            is_expected.to have_charts [
+                          { color: "#1dd678", count: 0, total: 1, percent: 0 },
+                          { color: "#f35200", count: 0, total: 1, percent: 0 },
+                          { color: "#16a3e5", count: 1, total: 1, percent: 100 },
+                        ]
           end
           within "#charts > div:nth-child(2)" do
-            is_expected.to have_charts ["#1dd678", 100], ["#f35200", 0], ["#16a3e5", 0]
+            is_expected.to have_charts [
+                          { color: "#1dd678", count: 1, total: 1, percent: 100 },
+                          { color: "#f35200", count: 0, total: 1, percent: 0 },
+                          { color: "#16a3e5", count: 0, total: 1, percent: 0 },
+                        ]
           end
           expect(page).to have_css "a[href$='/edit']", count: 1
           within "a[href='/employees/#{employee.uuid}/edit']" do
@@ -343,10 +415,18 @@ feature "Employee dashboard" do
           visit "/"
           expect(page).not_to have_css ".blur-3 .container"
           within "#charts > div:nth-child(1)" do
-            is_expected.to have_charts ["#1dd678", 0], ["#f35200", 0], ["#16a3e5", 100]
+            is_expected.to have_charts [
+                          { color: "#1dd678", count: 0, total: 1, percent: 0 },
+                          { color: "#f35200", count: 0, total: 1, percent: 0 },
+                          { color: "#16a3e5", count: 1, total: 1, percent: 100 },
+                        ]
           end
           within "#charts > div:nth-child(2)" do
-            is_expected.to have_charts ["#1dd678", 0], ["#f35200", 100], ["#16a3e5", 0]
+            is_expected.to have_charts [
+                          { color: "#1dd678", count: 0, total: 1, percent: 0 },
+                          { color: "#f35200", count: 1, total: 1, percent: 100 },
+                          { color: "#16a3e5", count: 0, total: 1, percent: 0 },
+                        ]
           end
           expect(page).to have_css "a[href$='/edit']", count: 1
           within "a[href='/employees/#{employee.uuid}/edit']" do
@@ -409,10 +489,18 @@ feature "Employee dashboard" do
           visit "/"
           expect(page).not_to have_css ".blur-3 .container"
           within "#charts > div:nth-child(1)" do
-            is_expected.to have_charts ["#1dd678", 0], ["#f35200", 0], ["#16a3e5", 100]
+            is_expected.to have_charts [
+                          { color: "#1dd678", count: 0, total: 1, percent: 0 },
+                          { color: "#f35200", count: 0, total: 1, percent: 0 },
+                          { color: "#16a3e5", count: 1, total: 1, percent: 100 },
+                        ]
           end
           within "#charts > div:nth-child(2)" do
-            is_expected.to have_charts ["#1dd678", 0], ["#f35200", 0], ["#16a3e5", 100]
+            is_expected.to have_charts [
+                          { color: "#1dd678", count: 0, total: 1, percent: 0 },
+                          { color: "#f35200", count: 0, total: 1, percent: 0 },
+                          { color: "#16a3e5", count: 1, total: 1, percent: 100 },
+                        ]
           end
           expect(page).to have_css "a[href$='/edit']", count: 1
           within "a[href='/employees/#{employee.uuid}/edit']" do
@@ -436,10 +524,18 @@ feature "Employee dashboard" do
           visit "/"
           expect(page).not_to have_css ".blur-3 .container"
           within "#charts > div:nth-child(1)" do
-            is_expected.to have_charts ["#718096", 20], ["#718096", 50], ["#718096", 30]
+            is_expected.to have_charts [
+                          { color: "#718096", count: 20, total: 100, percent: 20 },
+                          { color: "#718096", count: 50, total: 100, percent: 50 },
+                          { color: "#718096", count: 30, total: 100, percent: 30 },
+                        ]
           end
           within "#charts > div:nth-child(2)" do
-            is_expected.to have_charts ["#1dd678", 0], ["#f35200", 0], ["#16a3e5", 100]
+            is_expected.to have_charts [
+                          { color: "#1dd678", count: 0, total: 1, percent: 0 },
+                          { color: "#f35200", count: 0, total: 1, percent: 0 },
+                          { color: "#16a3e5", count: 1, total: 1, percent: 100 },
+                        ]
           end
           expect(page).to have_css "a[href$='/edit']", count: 1
           within "a[href='/employees/#{employee.uuid}/edit']" do
@@ -464,10 +560,18 @@ feature "Employee dashboard" do
           visit "/"
           expect(page).not_to have_css ".blur-3 .container"
           within "#charts > div:nth-child(1)" do
-            is_expected.to have_charts ["#1dd678", 0], ["#f35200", 0], ["#16a3e5", 100]
+            is_expected.to have_charts [
+                          { color: "#1dd678", count: 0, total: 1, percent: 0 },
+                          { color: "#f35200", count: 0, total: 1, percent: 0 },
+                          { color: "#16a3e5", count: 1, total: 1, percent: 100 },
+                        ]
           end
           within "#charts > div:nth-child(2)" do
-            is_expected.to have_charts ["#718096", 20], ["#718096", 50], ["#718096", 30]
+            is_expected.to have_charts [
+                          { color: "#718096", count: 20, total: 100, percent: 20 },
+                          { color: "#718096", count: 50, total: 100, percent: 50 },
+                          { color: "#718096", count: 30, total: 100, percent: 30 },
+                        ]
           end
           expect(page).to have_css "a[href$='/edit']", count: 1
           within "a[href='/employees/#{employee.uuid}/edit']" do
@@ -491,10 +595,18 @@ feature "Employee dashboard" do
         visit "/"
         expect(page).not_to have_css ".blur-3 .container"
         within "#charts > div:nth-child(1)" do
-          is_expected.to have_charts ["#718096", 20], ["#718096", 50], ["#718096", 30]
+          is_expected.to have_charts [
+                                       { color: "#718096", count: 20, total: 100, percent: 20 },
+                                       { color: "#718096", count: 50, total: 100, percent: 50 },
+                                       { color: "#718096", count: 30, total: 100, percent: 30 },
+                                     ]
         end
         within "#charts > div:nth-child(2)" do
-          is_expected.to have_charts ["#718096", 20], ["#718096", 50], ["#718096", 30]
+          is_expected.to have_charts [
+                                       { color: "#718096", count: 20, total: 100, percent: 20 },
+                                       { color: "#718096", count: 50, total: 100, percent: 50 },
+                                       { color: "#718096", count: 30, total: 100, percent: 30 },
+                                     ]
         end
         expect(page).to have_css "a[href$='/edit']", count: 1
         within "a[href='/employees/#{employee.uuid}/edit']" do
@@ -527,10 +639,18 @@ feature "Employee dashboard" do
       visit "/"
       expect(page).not_to have_css ".blur-3 .container"
       within "#charts > div:nth-child(1)" do
-        is_expected.to have_charts ["#1dd678", 0], ["#f35200", 0], ["#16a3e5", 100]
+        is_expected.to have_charts [
+                      { color: "#1dd678", count: 0, total: 2, percent: 0 },
+                      { color: "#f35200", count: 0, total: 2, percent: 0 },
+                      { color: "#16a3e5", count: 2, total: 2, percent: 100 },
+                    ]
       end
       within "#charts > div:nth-child(2)" do
-        is_expected.to have_charts ["#1dd678", 0], ["#f35200", 0], ["#16a3e5", 100]
+        is_expected.to have_charts [
+                      { color: "#1dd678", count: 0, total: 2, percent: 0 },
+                      { color: "#f35200", count: 0, total: 2, percent: 0 },
+                      { color: "#16a3e5", count: 2, total: 2, percent: 100 },
+                    ]
       end
       is_expected.to have_employees alice, bob
       click_link "Employee Name"

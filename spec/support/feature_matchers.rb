@@ -13,13 +13,16 @@ RSpec::Matchers.define :have_form_errors do |errors|
   end
 end
 
-RSpec::Matchers.define :have_charts do |*color_and_percent|
+RSpec::Matchers.define :have_charts do |expected|
   match do
     charts = page.all ".chart"
-    color_and_percent.each_with_index do |(color, percent), index|
+    expected.each_with_index do |hash, index|
       chart = charts[index]
-      expect(chart["data-color"]).to eql color
-      expect(chart["data-percent"]).to eql percent.to_s
+      expect(chart["data-color"]).to eql hash.fetch :color
+      expect(chart["data-percent"]).to eql hash.fetch(:percent).to_s
+      text = "#{hash.fetch :count} of #{hash.fetch :total}"
+      regexp = /\A#{Regexp.escape text}\z/
+      expect(chart.sibling("div")).to have_css(".font-light", text: regexp)
     end
   end
 end

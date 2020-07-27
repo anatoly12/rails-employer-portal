@@ -16,9 +16,9 @@
         <% end %>
       </div>
       <div class="md:flex">
-        <%= render "chart/widget", color: color_palette.current_value("chart-cleared"), percent: stats.no_symptoms_percent, label: "No Symptoms" %>
-        <%= render "chart/widget", color: color_palette.current_value("chart-not-cleared"), percent: stats.symptoms_percent, label: "Symptoms" %>
-        <%= render "chart/widget", color: color_palette.current_value("chart-pending"), percent: stats.did_not_submit_percent, label: "Did Not Submit" %>
+        <%= render "chart/widget", color: color_palette.current_value("chart-cleared"), count: stats.no_symptoms_count, total: stats.total, label: "No Symptoms" %>
+        <%= render "chart/widget", color: color_palette.current_value("chart-not-cleared"), count: stats.symptoms_count, total: stats.total, label: "Symptoms" %>
+        <%= render "chart/widget", color: color_palette.current_value("chart-pending"), count: stats.did_not_submit_count, total: stats.total, label: "Did Not Submit" %>
       </div>
     </div>
   <% else %>
@@ -26,9 +26,9 @@
       <h3 class="font-semibold text-xl">Overview Symptoms</h3>
       <div class="italic"><%= current_context.disabled_feature_message %></div>
       <div class="md:flex">
-        <%= render "chart/widget", color: color_palette.current_value("chart-disabled"), percent: 20, label: "No Symptoms" %>
-        <%= render "chart/widget", color: color_palette.current_value("chart-disabled"), percent: 50, label: "Symptoms" %>
-        <%= render "chart/widget", color: color_palette.current_value("chart-disabled"), percent: 30, label: "Did Not Submit" %>
+        <%= render "chart/widget", color: color_palette.current_value("chart-disabled"), count: 20, total: 100, label: "No Symptoms" %>
+        <%= render "chart/widget", color: color_palette.current_value("chart-disabled"), count: 50, total: 100, label: "Symptoms" %>
+        <%= render "chart/widget", color: color_palette.current_value("chart-disabled"), count: 30, total: 100, label: "Did Not Submit" %>
       </div>
     </div>
   <% end %>
@@ -48,9 +48,9 @@
         <% end %>
       </div>
       <div class="md:flex">
-        <%= render "chart/widget", color: color_palette.current_value("chart-cleared"), percent: stats.cleared_percent, label: "Cleared" %>
-        <%= render "chart/widget", color: color_palette.current_value("chart-not-cleared"), percent: stats.inconclusive_percent, label: "Inconclusive" %>
-        <%= render "chart/widget", color: color_palette.current_value("chart-pending"), percent: stats.in_progress_percent, label: "In Progress" %>
+        <%= render "chart/widget", color: color_palette.current_value("chart-cleared"), count: stats.cleared_count, total: stats.total, label: "Cleared" %>
+        <%= render "chart/widget", color: color_palette.current_value("chart-not-cleared"), count: stats.inconclusive_count, total: stats.total, label: "Inconclusive" %>
+        <%= render "chart/widget", color: color_palette.current_value("chart-pending"), count: stats.in_progress_count, total: stats.total, label: "In Progress" %>
       </div>
     </div>
   <% else %>
@@ -58,9 +58,9 @@
       <h3 class="font-semibold text-xl">Overview Testing Status</h3>
       <div class="italic"><%= current_context.disabled_feature_message %></div>
       <div class="md:flex">
-        <%= render "chart/widget", color: color_palette.current_value("chart-disabled"), percent: 20, label: "Cleared" %>
-        <%= render "chart/widget", color: color_palette.current_value("chart-disabled"), percent: 50, label: "Inconclusive" %>
-        <%= render "chart/widget", color: color_palette.current_value("chart-disabled"), percent: 30, label: "In Progress" %>
+        <%= render "chart/widget", color: color_palette.current_value("chart-disabled"), count: 20, total: 100, label: "Cleared" %>
+        <%= render "chart/widget", color: color_palette.current_value("chart-disabled"), count: 50, total: 100, label: "Inconclusive" %>
+        <%= render "chart/widget", color: color_palette.current_value("chart-disabled"), count: 30, total: 100, label: "In Progress" %>
       </div>
     </div>
   <% end %>
