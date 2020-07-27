@@ -2,10 +2,24 @@
   <% if f.object.errors_on(:base) %>
     <p class="text-red-400 mb-4"><%= f.object.errors_on(:base).to_sentence %></p>
   <% end %>
+  <% if f.object.selfie_url %>
+    <div class="md:flex -mx-5 mb-10">
+      <div class="mx-5 mb-10 flex items-center justify-center md:flex-1 md:order-last md:mb-0">
+        <img src="<%= editor.selfie_url %>" class="rounded object-cover lg:w-56 lg:h-64"/>
+      </div>
+      <div class="mx-5 grid gap-10 md:flex-1">
+        <%= render "form/text_field", form: f, column: :first_name, label: "First Name" %>
+        <%= render "form/text_field", form: f, column: :last_name, label: "Last Name" %>
+        <%= render "form/text_field", form: f, column: :email %>
+      </div>
+    </div>
+  <% end %>
   <div class="grid gap-10 mb-10 md:grid-cols-2">
-    <%= render "form/text_field", form: f, column: :first_name, label: "First Name" %>
-    <%= render "form/text_field", form: f, column: :last_name, label: "Last Name" %>
-    <%= render "form/text_field", form: f, column: :email %>
+    <% unless f.object.selfie_url %>
+      <%= render "form/text_field", form: f, column: :first_name, label: "First Name" %>
+      <%= render "form/text_field", form: f, column: :last_name, label: "Last Name" %>
+      <%= render "form/text_field", form: f, column: :email %>
+    <% end %>
     <%= render "form/text_field", form: f, column: :phone, label: "Phone Number", placeholder: "555-555-555" %>
     <%= render "form/select", form: f, column: :state, options: UsaState.for_select %>
     <%= render "form/tags_field", form: f, label: "Member of", placeholder: "Team, workplace, etc." %>

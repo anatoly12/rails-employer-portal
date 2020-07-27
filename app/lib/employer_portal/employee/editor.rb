@@ -2,6 +2,7 @@ class EmployerPortal::Employee::Editor
 
   # ~~ delegates ~~
   delegate :first_name, :last_name, :email, :phone, :state, :to_key, :to_model, :to_param, to: :edited
+  delegate :selfie_url, :initials, to: :viewer
   delegate :whitelist, to: :employee_tag, prefix: :tags
 
   # ~~ public class methods ~~
@@ -191,5 +192,9 @@ class EmployerPortal::Employee::Editor
 
   def persist_audit
     CreateAccountForEmployeeJob.perform_later edited.uuid
+  end
+
+  def viewer
+    @viewer ||= ::EmployerPortal::Employee::Viewer.new context, edited
   end
 end
