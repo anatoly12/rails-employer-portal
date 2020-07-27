@@ -19,7 +19,7 @@ describe CreatePartnerForCompanyJob, type: :job do
     end
 
     context "when sync is NOT connected" do
-      let(:company) { create :company }
+      let(:company) { create :company, remote_id: nil }
 
       it "raises an error" do
         expect(Delayed::Worker.logger).not_to receive(:info)
@@ -30,7 +30,7 @@ describe CreatePartnerForCompanyJob, type: :job do
     end
 
     context "when sync is connected", type: :sync do
-      let(:company) { create :company }
+      let(:company) { create :company, remote_id: nil }
       before { with_sync_connected }
 
       it "sets remote_id on company and logs a message" do

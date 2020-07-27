@@ -11,14 +11,14 @@ class EmployerPortal::Admin::Theme::Editor < ::EmployerPortal::Admin::Base::Edit
 
   # ~~ public instance methods ~~
   def reset_attributes!
-    edited.set color_overrides: {}
+    edited.set logo_s3_key: nil, color_overrides: {}
     edited.save
   end
 
   def update_attributes(params)
-    theme_params = params.fetch :company, {}
+    theme_params = params.fetch :theme, {}
     logo = theme_params[:logo]
-    if logo&.size > 0
+    if logo&.size.to_i > 0
       edited.logo_s3_key = ::EmployerPortal::Aws.upload_file(
         logo.path,
         "companies/#{edited.uuid}/#{SecureRandom.uuid}#{File.extname logo.path}"
@@ -36,6 +36,10 @@ class EmployerPortal::Admin::Theme::Editor < ::EmployerPortal::Admin::Base::Edit
 
   def logo_url
     ::EmployerPortal::Aws.presigned_url edited.logo_s3_key
+  end
+
+  def can_reset?
+    edited.color_overrides.present? || logo_url.present?
   end
 
   protected
