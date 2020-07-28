@@ -1,14 +1,32 @@
-var tooltip
-const tooltipCleanup = () => {
-  if (tooltip) {
-    tooltip.parentNode.removeChild(tooltip)
-    tooltip = null
+;(() => {
+  var tooltip
+  const setup = () => {
+    document.querySelectorAll('a[title]').forEach((link) => {
+      var title = link.getAttribute('title')
+      link.title = ''
+      link.dataset.tooltip = title
+      link.addEventListener('mouseenter', onMouseEnter, false)
+      link.addEventListener('mouseleave', onMouseLeave, false)
+    })
   }
-}
-document.addEventListener('turbolinks:before-visit', () => {
-  tooltipCleanup()
-})
-document.addEventListener('turbolinks:load', () => {
+  const teardown = () => {
+    tooltipCleanup()
+    document.querySelectorAll('a').forEach((link) => {
+      if (link.dataset.tooltip) {
+        link.title = link.dataset.tooltip
+        link.dataset.tooltip = null
+        link.removeEventListener('mouseenter', onMouseEnter, false)
+        link.removeEventListener('mouseleave', onMouseLeave, false)
+      }
+    })
+  }
+  const onMouseEnter = (e) => {
+    tooltipCleanup()
+    tooltipSetup(e.target)
+  }
+  const onMouseLeave = (_) => {
+    tooltipCleanup()
+  }
   const tooltipSetup = (link) => {
     tooltip = document.createElement('div')
     tooltip.className = 'absolute pointer-events-none'
@@ -24,18 +42,12 @@ document.addEventListener('turbolinks:load', () => {
     tooltip.style.top = `${link.offsetTop - 4}px`
     link.parentNode.appendChild(tooltip)
   }
-  document.querySelectorAll('a[title]').forEach((link) => {
-    var title = link.getAttribute('title')
-    if (!link.dataset.tooltip) {
-      link.title = ''
-      link.dataset.tooltip = title
+  const tooltipCleanup = () => {
+    if (tooltip) {
+      tooltip.parentNode.removeChild(tooltip)
+      tooltip = null
     }
-    link.addEventListener('mouseenter', () => {
-      tooltipCleanup()
-      tooltipSetup(link)
-    })
-    link.addEventListener('mouseleave', () => {
-      tooltipCleanup()
-    })
-  })
-})
+  }
+  document.addEventListener('turbolinks:load', setup)
+  document.addEventListener('turbolinks:before-cache', teardown)
+})()

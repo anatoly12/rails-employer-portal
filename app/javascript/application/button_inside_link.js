@@ -1,22 +1,32 @@
-document.addEventListener('turbolinks:before-visit', () => {
-  document.querySelectorAll('button').forEach((button) => {
-    var a = button.closest('a')
-    if (a && a.originalHref) {
-      a.setAttribute('href', a.originalHref)
-    }
-  })
-})
-document.addEventListener('turbolinks:load', () => {
-  document.querySelectorAll('button').forEach((button) => {
-    var a = button.closest('a')
-    if (a) {
-      a.originalHref = a.href
-      button.addEventListener('mouseenter', () => {
-        a.removeAttribute('href')
-      })
-      button.addEventListener('mouseleave', () => {
-        a.setAttribute('href', a.originalHref)
-      })
-    }
-  })
-})
+;(() => {
+  const setup = () => {
+    document.querySelectorAll('button').forEach((button) => {
+      var link = button.closest('a')
+      if (link) {
+        link.originalHref = link.href
+        button.addEventListener('mouseenter', removeHref, false)
+        button.addEventListener('mouseleave', restoreHref, false)
+      }
+    })
+  }
+  const teardown = () => {
+    document.querySelectorAll('button').forEach((button) => {
+      var link = button.closest('a')
+      if (link && link.originalHref) {
+        link.setAttribute('href', link.originalHref)
+        button.removeEventListener('mouseenter', removeHref, false)
+        button.removeEventListener('mouseleave', restoreHref, false)
+      }
+    })
+  }
+  const removeHref = (e) => {
+    const link = e.target.closest('a')
+    link.removeAttribute('href')
+  }
+  const restoreHref = (e) => {
+    const link = e.target.closest('a')
+    link.setAttribute('href', link.originalHref)
+  }
+  document.addEventListener('turbolinks:load', setup)
+  document.addEventListener('turbolinks:before-cache', teardown)
+})()

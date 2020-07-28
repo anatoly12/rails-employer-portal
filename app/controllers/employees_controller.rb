@@ -55,7 +55,7 @@ class EmployeesController < ApplicationController
       editor.deactivate!
       flash.notice = "Employee was deactivated successfully."
     end
-    redirect_to action: :edit
+    redirect_back fallback_location: {action: :edit}
   end
 
   def reactivate
@@ -65,7 +65,7 @@ class EmployeesController < ApplicationController
       editor.reactivate!
       flash.notice = "Employee was reactivated successfully."
     end
-    redirect_to action: :edit
+    redirect_back fallback_location: {action: :edit}
   end
 
   def contact
@@ -75,7 +75,7 @@ class EmployeesController < ApplicationController
       editor.contact_queue!
       flash.notice = "Employee was contacted successfully."
     end
-    redirect_to action: :edit
+    redirect_back fallback_location: {action: :edit}
   end
 
   def send_reminder
@@ -85,7 +85,7 @@ class EmployeesController < ApplicationController
       editor.reminder_queue!
       flash.notice = "Employee reminder was sent successfully."
     end
-    redirect_to action: :edit
+    redirect_back fallback_location: {action: :edit}
   end
 
   private

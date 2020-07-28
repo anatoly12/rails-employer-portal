@@ -1,4 +1,15 @@
-document.addEventListener('turbolinks:load', () => {
+;(() => {
+  const setup = () => {
+    document.querySelectorAll('select').forEach((select) => {
+      select.addEventListener('change', onChange, false)
+      toggleLinkedTo(select)
+    })
+  }
+  const teardown = () => {
+    document.querySelectorAll('select').forEach((select) => {
+      select.removeEventListener('change', onChange, false)
+    })
+  }
   const toggleLinkedTo = (select) => {
     document
       .querySelectorAll(`[data-linked-to-id='${select.id}']`)
@@ -16,8 +27,10 @@ document.addEventListener('turbolinks:load', () => {
         }
       })
   }
-  document.querySelectorAll('select').forEach((select) => {
-    select.addEventListener('change', () => toggleLinkedTo(select))
+  const onChange = (e) => {
+    const select = e.target
     toggleLinkedTo(select)
-  })
-})
+  }
+  document.addEventListener('turbolinks:load', setup)
+  document.addEventListener('turbolinks:before-cache', teardown)
+})()

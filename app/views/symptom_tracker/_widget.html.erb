@@ -3,7 +3,7 @@
     <h3 class="text-2xl font-medium relative">
       Symptom Tracker <span class="whitespace-no-wrap">at-a-glance</span>
       <div class="flex justify-end mb-4 md:block">
-        <%= form_for search.filters, as: :filters, url: edit_employee_path(id: search.employee), method: :get, html: { class: "md:absolute md:top-0 md:right-0 text-base font-normal select-none", autocomplete: "off" } do |f| %>
+        <%= form_for search.filters, as: :filters, url: edit_employee_path(id: search.employee), method: :get, html: { class: "md:absolute md:top-0 md:right-0 text-base font-normal select-none", autocomplete: "off", data: {persist_scroll: true} } do |f| %>
           <%= hidden_field_tag :page, nil %>
           <div class="relative overflow-hidden hover:text-black <%= f.object.empty? ? "text-gray-300" : "text-black" %>">
             <%= f.text_field :date_equals, type: :date, class: "w-48 border-2 border-gray-300 bg-white leading-6 pl-3 appearance-none focus:outline-none focus:border-gray-500 #{f.object.empty? ? "pr-8" : "pr-14"}", data: { auto_submit: true } %>
