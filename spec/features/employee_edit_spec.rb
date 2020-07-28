@@ -495,6 +495,33 @@ feature "Employee edit" do
       end
     end
 
+    context "when employee comes from bulk import" do
+      given!(:employee) { create :employee, :with_zipcode, company: company }
+
+      it "I can update its state" do
+        visit_employee_edit
+        within "form#edit_employee_#{employee.id}" do
+          select "", from: "State"
+          click_button "Save changes"
+        end
+        expect(page).not_to have_css("[role=notice]")
+        expect(page).to have_css("[role=alert]", text: "Please review errors and try submitting it again.")
+        within "form#edit_employee_#{employee.id}" do
+          is_expected.to have_form_errors(
+            employee_state: "is not present",
+          )
+          select "District of Columbia", from: "State"
+          click_button "Save changes"
+        end
+        expect(page).to have_css("[role=notice]", text: "Employee was updated successfully.")
+        expect(page).not_to have_css("[role=alert]")
+        expect(page).to have_css "a[href$='/edit']", count: 1
+        within "a[href='/employees/#{employee.uuid}/edit']" do
+          expect(page).to have_css "div:nth-child(3)", text: "DC"
+        end
+      end
+    end
+
     context "without javascript" do
       given!(:tag) { create :employee_tag, company: company }
       given!(:tagging) { create :employee_tagging, employee: employee, tag: tag }

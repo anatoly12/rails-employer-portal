@@ -49,6 +49,7 @@ class EmployerPortal::Employee::Editor
       :phone,
       :state
     )
+    edited.zipcode = nil if edited.column_changed? :state
     return false unless edited.valid?
 
     @tags = if employee_params[:tags].present?
