@@ -74,6 +74,10 @@ class EmployerPortal::Context
     !!account.try(:allowed_all_employee_tags)
   end
 
+  def restricted_to_single_employee_tag?
+    allowed_employee_tags.size == 1
+  end
+
   def allowed_employee_tags
     account.try(:allowed_employee_tags) || []
   end

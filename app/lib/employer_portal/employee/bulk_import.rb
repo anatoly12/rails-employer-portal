@@ -11,11 +11,7 @@ class EmployerPortal::Employee::BulkImport
   # ~~ public class methods ~~
   def self.from_params(context, params)
     file = params[:file]
-    tags = if params[:tags].present?
-        JSON.parse(params[:tags]).map { |tag| tag["value"] }
-      else
-        []
-      end
+    tags = params[:tags].to_s.split(",").map(&:strip).reject(&:empty?)
     new context, file, tags
   end
 

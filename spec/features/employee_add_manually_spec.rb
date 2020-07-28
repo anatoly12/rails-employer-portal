@@ -58,7 +58,7 @@ feature "Employee add manually" do
         fill_in "Email", with: "lashunda@example.org"
         fill_in "Phone Number", with: "1-317-415-9130"
         select "New York", from: "State"
-        fill_in "employee_tags", with: '[{"value":"Team A"},{"value":"New York"}]'
+        fill_in "employee_tags", with: "Team A,New York"
         expect do
           click_button "Submit"
         end.to change(Employee, :count).by(1).and change(Audit, :count).by(1)

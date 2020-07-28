@@ -14,6 +14,8 @@ import Tagify from '@yaireo/tagify'
           enabled: whitelist.length > 0 ? 0 : 1,
           closeOnSelect: false,
         },
+        originalInputValueFormat: (valuesArr) =>
+          valuesArr.map((item) => item.value).join(','),
       })
     })
   }

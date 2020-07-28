@@ -52,11 +52,7 @@ class EmployerPortal::Employee::Editor
     edited.zipcode = nil if edited.column_changed? :state
     return false unless edited.valid?
 
-    @tags = if employee_params[:tags].present?
-        JSON.parse(employee_params[:tags]).map { |tag| tag["value"] }
-      else
-        []
-      end
+    @tags = employee_params[:tags].to_s.split(",").map(&:strip).reject(&:empty?)
     persist
   end
 

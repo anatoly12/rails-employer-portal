@@ -12,7 +12,7 @@
       <% end %>
     <% end %>
   </div>
-  <% if current_context.allowed_all_employee_tags? || (current_context.allowed_employee_tags.size > 1) %>
+  <% if f.object.employee_tags_for_select.present? %>
     <%= f.select :employee_tag_id_equals, f.object.employee_tags_for_select, { include_blank: "Member of..." }, class: "select-none border-2 w-48 mb-4 mx-2 font-semibold px-3 focus:outline-none focus:border-gray-500 #{f.object.employee_tag_id_equals.blank? ? "text-gray-500" : "text-black"}", data: { auto_submit: true } %>
   <% end %>
 <% end %>

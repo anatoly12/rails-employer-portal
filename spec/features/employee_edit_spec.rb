@@ -530,7 +530,7 @@ feature "Employee edit" do
         visit_employee_edit
         within "form#edit_employee_#{employee.id}" do
           expect(page).to have_field "Member of", with: tag.name
-          fill_in "Member of", with: '[{"value":"Team A"},{"value":"New York"}]'
+          fill_in "Member of", with: "Team A,New York"
           expect do
             click_button "Save changes"
           end.to change(Employee, :count).by(0).and change(Audit, :count).by(1)

@@ -88,7 +88,7 @@ feature "Employee bulk upload" do
       scenario "I can add tags to employees" do
         within ".blur-3 .container" do
           click_link "Bulk Upload"
-          fill_in "tags", with: '[{"value":"Team A"},{"value":"New York"}]'
+          fill_in "tags", with: "Team A,New York"
           attach_file "Upload File", Rails.root.join("spec", "fixtures", "sample_valid.txt")
           expect do
             click_button "Submit"
@@ -112,7 +112,7 @@ feature "Employee bulk upload" do
       scenario "tags aren't lost in case of error" do
         within ".blur-3 .container" do
           click_link "Bulk Upload"
-          fill_in "tags", with: '[{"value":"Team A"},{"value":"New York"}]'
+          fill_in "tags", with: "Team A,New York"
           attach_file "Upload File", Rails.root.join("spec", "fixtures", "sample_invalid.csv")
           expect do
             click_button "Submit"

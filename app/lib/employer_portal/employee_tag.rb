@@ -6,9 +6,14 @@ class EmployerPortal::EmployeeTag
   end
 
   def for_select
-    ::EmployerPortal::Query::EmployeeTag.new(
+    options = ::EmployerPortal::Query::EmployeeTag.new(
       context
     ).search_dataset({}, "").all.map(&:for_select)
+    if context.allowed_all_employee_tags?
+      options if options.present?
+    else
+      options if options.size > 1
+    end
   end
 
   def whitelist

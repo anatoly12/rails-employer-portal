@@ -6,10 +6,14 @@
     Bulk import
   </h2>
   <%= form_tag employees_path, multipart: true, autocomplete: "off" do %>
-    <div class="mb-4">Put new employees in the following groups:</div>
-    <div class="mb-4">
-      <%= text_field_tag "tags", bulk.tags.join(","), placeholder: "Team, workplace, etc.", data: { tagging: true, whitelist: bulk.tags_whitelist.join(","), enforce_whitelist: !current_context.allowed_to_add_employee_tags? } %>
-    </div>
+    <% if current_context.restricted_to_single_employee_tag? %>
+      <%= hidden_field_tag "tags", bulk.tags_whitelist.first %>
+    <% else %>
+      <div class="mb-4">Put new employees in the following groups:</div>
+      <div class="mb-4">
+        <%= text_field_tag "tags", bulk.tags.join(","), placeholder: "Team, workplace, etc.", data: { tagging: true, whitelist: bulk.tags_whitelist.join(","), enforce_whitelist: !current_context.allowed_to_add_employee_tags? } %>
+      </div>
+    <% end %>
     <div class="flex flex-col -mx-2 md:-mx-4 md:flex-row">
       <a href="/employee_bulk_import/sample.txt" class="<%= secondary_button_class(:blue) %> flex items-center mb-4 mx-2 md:mx-4" target="_blank" rel="noopener noreferrer" download>
         <%= render "icon/arrow_outline_down", icon_class: "h-3 w-3 mr-2" %>

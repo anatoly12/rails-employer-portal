@@ -22,7 +22,11 @@
     <% end %>
     <%= render "form/text_field", form: f, column: :phone, label: "Phone Number", placeholder: "555-555-555" %>
     <%= render "form/select", form: f, column: :state, options: UsaState.for_select %>
-    <%= render "form/tags_field", form: f, label: "Member of", placeholder: "Team, workplace, etc." %>
+    <% if current_context.restricted_to_single_employee_tag? %>
+      <%= f.hidden_field :tags, value: form.object.tags_whitelist.first %>
+    <% else %>
+      <%= render "form/tags_field", form: f, label: "Member of", placeholder: "Team, workplace, etc." %>
+    <% end %>
     <div class="flex items-end">
       <% if f.object.persisted? %>
         <%= button_tag "Save changes", type: "submit", class: primary_button_class(:blue) %>
