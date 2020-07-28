@@ -6,12 +6,54 @@ feature "Employee dashboard" do
   before { sign_in_as_employer employer }
 
   context "without any employee" do
-    scenario "I see the welcome message but no employee" do
-      visit "/"
-      within ".blur-3 .container" do
-        expect(page).to have_content "Welcome #{employer.first_name}!"
+    context "when sync is connected", type: :sync do
+      before { with_sync_connected }
+
+      scenario "I see the welcome message but no employee" do
+        visit "/"
+        within ".blur-3 .container" do
+          expect(page).to have_content "Welcome #{employer.first_name}!"
+        end
+        within "#charts > div:nth-child(1)" do
+          is_expected.to have_charts [
+                                       { color: "#1dd678", count: 0, total: 0, percent: 0 },
+                                       { color: "#f35200", count: 0, total: 0, percent: 0 },
+                                       { color: "#16a3e5", count: 0, total: 0, percent: 0 },
+                                     ]
+        end
+        within "#charts > div:nth-child(2)" do
+          is_expected.to have_charts [
+                                       { color: "#1dd678", count: 0, total: 0, percent: 0 },
+                                       { color: "#f35200", count: 0, total: 0, percent: 0 },
+                                       { color: "#16a3e5", count: 0, total: 0, percent: 0 },
+                                     ]
+        end
+        expect(page).not_to have_css "a[href$='/edit']"
       end
-      expect(page).not_to have_css "a[href$='/edit']"
+    end
+
+    context "when sync is NOT connected" do
+      scenario "I see the welcome message but no employee" do
+        visit "/"
+        within ".blur-3 .container" do
+          expect(page).to have_content "Welcome #{employer.first_name}!"
+        end
+        within "#charts > div:nth-child(1)" do
+          is_expected.to have_charts [
+                                       { color: "#718096", count: 20, total: 100, percent: 20 },
+                                       { color: "#718096", count: 50, total: 100, percent: 50 },
+                                       { color: "#718096", count: 30, total: 100, percent: 30 },
+                                     ]
+        end
+        within "#charts > div:nth-child(2)" do
+          is_expected.to have_charts [
+                                       { color: "#718096", count: 20, total: 100, percent: 20 },
+                                       { color: "#718096", count: 50, total: 100, percent: 50 },
+                                       { color: "#718096", count: 30, total: 100, percent: 30 },
+                                     ]
+        end
+        expect(page).not_to have_css "a[href$='/edit']"
+      end
     end
   end
 

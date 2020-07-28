@@ -1,5 +1,5 @@
 <div class="flex flex-1 mt-4 items-center">
-  <div class="relative chart pr-3" data-color="<%= color %>" data-percent="<%= count * 100 / total %>">
+  <div class="relative chart pr-3" data-color="<%= color %>" data-percent="<%= total > 0 ? count * 100 / total : 0 %>">
     <div class="text-center font-semibold text-lg tracking-tight percent"></div>
   </div>
   <div class="flex-1">
