@@ -10,7 +10,7 @@ feature "Manage theme" do
       click_link "Customize theme"
     end
     within "#edit_theme" do
-      expect(page).to have_css "[data-color]", visible: false, count: 36
+      expect(page).to have_css "[data-color]", visible: false, count: 35
       expect(page).not_to have_button "Reset"
       page.find("input[name='theme[colors][gradient-top]']", visible: false).set "#ffcc00"
       page.find("input[name='theme[colors][gradient-bottom]']", visible: false).set "#ffff33"

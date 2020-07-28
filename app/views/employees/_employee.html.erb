@@ -1,4 +1,4 @@
-<%= link_to({ action: :edit, id: employee }, class: "flex items-center border-t text-gray-300 hover:bg-gray-100 #{employee.flagged? ? "hover:text-red-600" : "hover:text-blue-600"}") do %>
+<%= link_to({ action: :edit, id: employee }, class: employee_row_class(employee)) do %>
   <div class="w-14 px-2">
     <% if employee.selfie_url %>
       <img src="<%= employee.selfie_url %>" class="rounded-full h-10 w-10 object-cover"/>

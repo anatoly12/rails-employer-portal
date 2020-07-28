@@ -18,6 +18,8 @@ class EmployerPortal::Employee::Viewer
   end
 
   def daily_checkup_status
+    return "Deactivated" unless active?
+
     dashboard_employee&.daily_checkup_status || "Did Not Submit"
   end
 
@@ -27,7 +29,7 @@ class EmployerPortal::Employee::Viewer
   end
 
   def contact_needed?
-    dashboard_employee&.daily_checkup_status == "Not Cleared"
+    active? && dashboard_employee&.daily_checkup_status == "Not Cleared"
   end
 
   def contact_queued?
@@ -35,7 +37,7 @@ class EmployerPortal::Employee::Viewer
   end
 
   def reminder_needed?
-    dashboard_employee&.daily_checkup_status == "Did Not Submit"
+    active? && dashboard_employee&.daily_checkup_status == "Did Not Submit"
   end
 
   def reminder_queued?
@@ -43,6 +45,8 @@ class EmployerPortal::Employee::Viewer
   end
 
   def testing_status
+    return "Deactivated" unless active?
+
     dashboard_employee&.testing_status || "Not Registered"
   end
 
@@ -57,6 +61,10 @@ class EmployerPortal::Employee::Viewer
 
   def initials
     full_name.split(" ").map(&:chr).first(2).join.upcase
+  end
+
+  def active?
+    !synced? || dashboard_employee&.is_active == 1
   end
 
   private

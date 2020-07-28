@@ -3,10 +3,28 @@ module EmployeesHelper
   TEXT_COLOR_GREEN = "text-green-500"
   TEXT_COLOR_RED = "text-red-600"
   TEXT_COLOR_BLUE = "text-blue-600"
+  TEXT_COLOR_DISABLED = "text-gray-600"
 
   # ~~ public methods ~~
+  def employee_row_class(employee)
+    res = "flex items-center border-t text-gray-300"
+    if employee.active?
+      res << " hover:bg-gray-100"
+    else
+      res << " bg-gray-200 opacity-50"
+    end
+    if employee.flagged?
+      res << " hover:text-red-600"
+    else
+      res << " hover:text-blue-600"
+    end
+    res
+  end
+
   def daily_checkup_color(employee)
     case employee.daily_checkup_status
+    when "Deactivated"
+      TEXT_COLOR_DISABLED
     when "Cleared"
       TEXT_COLOR_GREEN
     when "Not Cleared"
@@ -18,6 +36,8 @@ module EmployeesHelper
 
   def testing_color(employee)
     case employee.testing_status
+    when "Deactivated"
+      TEXT_COLOR_DISABLED
     when "Cleared"
       TEXT_COLOR_GREEN
     when "Inconclusive"

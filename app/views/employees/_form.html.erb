@@ -1,4 +1,4 @@
-<%= form_for editor, html: { autocomplete: "off", data: {turbolinks_permanent: true}} do |f| %>
+<%= form_for editor, html: { autocomplete: "off", data: { turbolinks_permanent: true } } do |f| %>
   <% if f.object.errors_on(:base) %>
     <p class="text-red-400 mb-4"><%= f.object.errors_on(:base).to_sentence %></p>
   <% end %>

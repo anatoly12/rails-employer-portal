@@ -527,7 +527,7 @@ feature "Employee dashboard" do
           ).update is_active: false
         end
 
-        scenario "I see my employee just the same" do
+        scenario "I see my employee grayed out" do
           visit "/"
           expect(page).not_to have_css ".blur-3 .container"
           within "#charts > div:nth-child(1)" do
@@ -545,13 +545,13 @@ feature "Employee dashboard" do
                                        ]
           end
           expect(page).to have_css "a[href$='/edit']", count: 1
-          within "a[href='/employees/#{employee.uuid}/edit']" do
+          within "a[href='/employees/#{employee.uuid}/edit'].opacity-50" do
             expect(page).to have_css "div:nth-child(2)", text: "#{employee.first_name} #{employee.last_name}"
             expect(page).to have_css "div:nth-child(3)", text: employee.state
-            expect(page).to have_css "div:nth-child(4).text-blue-600", text: "Did Not Submit"
+            expect(page).to have_css "div:nth-child(4).text-gray-600", text: "Deactivated"
             expect(page).to have_css "div:nth-child(5)", text: "Never"
-            expect(page).to have_css "div:nth-child(6) button", text: "Send Reminder"
-            expect(page).to have_css "div:nth-child(7).text-blue-600", text: "Not Registered"
+            expect(page).to have_css "div:nth-child(6)", text: /\A\z/
+            expect(page).to have_css "div:nth-child(7).text-gray-600", text: "Deactivated"
             expect(page).to have_css "div:nth-child(8)", text: "Never"
             expect(page).to have_css "div:nth-child(9)", text: /\A\z/
             expect(page).to have_css "div:nth-child(10) svg"
