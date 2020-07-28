@@ -2,7 +2,7 @@
 @import "tailwindcss/components";
 @import "tailwindcss/utilities";
 
-/* purgecss start ignore */
+/*! purgecss start ignore */
 body{
   overscroll-behavior: none;
   min-width: 320px;
@@ -15,4 +15,4 @@ body{
 @import "fix_file_input";
 @import "spinner";
 @import "tagging";
-/* purgecss end ignore */
+/*! purgecss end ignore */
