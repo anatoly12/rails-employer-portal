@@ -227,7 +227,7 @@ GEM
       tzinfo
     thor (1.0.1)
     thread_safe (0.3.6)
-    tzinfo (1.2.7)
+    tzinfo (1.2.10)
       thread_safe (~> 0.1)
     victor (0.3.2)
     web-console (4.0.2)
